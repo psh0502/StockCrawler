@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DOWILL.Core</name>
+    </assembly>
+    <members>
+        <member name="T:DOWILL.Core.CodeDom.DynamicAssemblyGenerator">
+            <summary>
+            Help class for generating dynamic assembly for C#.
+            </summary>
+        </member>
+        <member name="M:DOWILL.Core.CodeDom.DynamicAssemblyGenerator.#ctor">
+            <summary>
+            Prevent it from been initiated.
+            </summary>
+        </member>
+        <member name="M:DOWILL.Core.CodeDom.DynamicAssemblyGenerator.GenerateAssemblyFromCodeSnipplet(System.String@,System.String,System.String[]@)">
+            <summary>
+            Generate a physic dynamic assembly file.
+            </summary>
+            <param name="codeSnipplet">C# source code content string</param>
+            <param name="destAsmFile">Indicate the destination of dynamic assembly output file</param>
+            <param name="referedDLLs">List of referenced DLL in string array</param>
+        </member>
+        <member name="M:DOWILL.Core.CodeDom.DynamicAssemblyGenerator.GenerateAssemblyFromCodeSnipplet(System.String@,System.String[]@)">
+            <summary>
+            Generate a physic dynamic assembly instance.
+            </summary>
+            <param name="codeSnipplet"></param>
+            <param name="referedDLLs"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DOWILL.Core.CodeDom.DynamicAssemblyGenerator.GenerateAssemblyBytesFromCodeSnipplet(System.String@,System.String[]@)">
+            <summary>
+            Generate a physic dynamic assembly image in byte array.
+            </summary>
+            <param name="codeSnipplet"></param>
+            <param name="referedDLLs"></param>
+            <returns></returns>
+        </member>
+        <member name="T:DOWILL.Core.CopyrightChecker">
+            <summary>
+            Checker for protection of DOWILL library copyright.
+            </summary>
+        </member>
+        <member name="M:DOWILL.Core.CopyrightChecker.CheckCopyright(System.Reflection.Assembly)">
+            <summary>
+            Check if the invocation came from unauthorized program.
+            </summary>
+            <param name="callingAssembly">Pass the calling assembly which is invoking classes in DOWILL library. Pass null as itself.</param>
+            <exception cref="!:DOWILL.Core.Core.CopyrightViolationException">This invocation came from unauthorized program!</exception>
+        </member>
+        <member name="T:DOWILL.Collections.SizeFixiedQueue">
+            <summary>
+            SizeFixiedQueue 的摘要描述。
+            </summary>
+        </member>
+        <member name="M:DOWILL.Collections.SizeFixiedQueue.#ctor(System.Int32)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="MaxSize">The maximum count of object this queue can contain.</param>
+        </member>
+        <member name="M:DOWILL.Collections.SizeFixiedQueue.Enqueue(System.Object)">
+            <summary>
+            Push object into the queue.
+            </summary>
+            <param name="obj">The object you want to pushed.</param>
+            <exception cref="T:System.OverflowException">Queue was filled and removing surplus objects are disabled.</exception>
+        </member>
+        <member name="M:DOWILL.Collections.SizeFixiedQueue.TrimToSize">
+            <summary>
+            Make size limitation as current count of queued object.
+            </summary>
+        </member>
+        <member name="P:DOWILL.Collections.SizeFixiedQueue.Size">
+            <summary>
+            The maximum count of object this queue can contain.
+            </summary>
+        </member>
+        <member name="P:DOWILL.Collections.SizeFixiedQueue.AutoDequeue">
+            <summary>
+            Set it to be true if you want to remove first queued object automatically when it was filled.
+            </summary>
+        </member>
+        <member name="T:DOWILL.Core.DebugInfo">
+            <summary>
+            In Debugging mode, show some formatted info for developer
+            </summary>
+        </member>
+        <member name="M:DOWILL.Core.DebugInfo.WriteLine(System.String)">
+            <summary>
+            In DEBUG mode only, use outputDebugString to show some information, as "[Timestamp] File Name : Method Name : Message"
+            </summary>
+            <param name="message">Debug Message</param>
+        </member>
+        <member name="T:DOWILL.Hex.HexEncoding">
+            <summary>
+            Summary description for HexEncoding.
+            </summary>
+        </member>
+        <member name="M:DOWILL.Hex.HexEncoding.GetBytes(System.String,System.Int32@)">
+            <summary>
+            Creates a byte array from the hexadecimal string. Each two characters are combined
+            to create one byte. First two hexadecimal characters become first byte in returned array.
+            Non-hexadecimal characters are ignored. 
+            </summary>
+            <param name="hexString">string to convert to byte array</param>
+            <param name="discarded">number of characters in string ignored</param>
+            <returns>byte array, in the same left-to-right order as the hexString</returns>
+        </member>
+        <member name="M:DOWILL.Hex.HexEncoding.InHexFormat(System.String)">
+            <summary>
+            Determines if given string is in proper hexadecimal string format
+            </summary>
+            <param name="hexString"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DOWILL.Hex.HexEncoding.IsHexDigit(System.Char)">
+            <summary>
+            Returns true is c is a hexadecimal digit (A-F, a-f, 0-9)
+            </summary>
+            <param name="c">Character to test</param>
+            <returns>true if hex digit, false if not</returns>
+        </member>
+        <member name="M:DOWILL.Hex.HexEncoding.HexToByte(System.String)">
+            <summary>
+            Converts 1 or 2 character string into equivalant byte value
+            </summary>
+            <param name="hex">1 or 2 character string</param>
+            <returns>byte</returns>
+        </member>
+        <member name="T:DOWILL.Core.TranslationPack.Language">
+            <summary>
+            Language 的摘要描述。
+            </summary>
+        </member>
+        <member name="T:DOWILL.TranslationPack.XmlParser">
+            <summary>
+            LangXmlParser 的摘要描述。
+            </summary>
+        </member>
+        <member name="T:DOWILL.Unit.Dollar">
+            <summary>
+            Currency unit.
+            </summary>
+        </member>
+        <member name="T:DOWILL.Unit.Nation">
+            <summary>
+            Nation 的摘要描述。
+            </summary>
+        </member>
+    </members>
+</doc>
