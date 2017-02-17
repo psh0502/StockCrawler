@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Quartz;
+using StockCrawler.Dao;
+using StockCrawler.Dao.Schema;
+using System;
 using System.IO;
 using System.Net;
-using IRONMAN.DAO;
-using Quartz;
-using IRONMAN.DAO.schema;
 
 namespace StockCrawler.Services
 {
@@ -15,7 +15,7 @@ namespace StockCrawler.Services
 
         #region IJob Members
 
-        public void Execute(JobExecutionContext context)
+        public void Execute(IJobExecutionContext context)
         {
             using (var db = StockDataService.GetServiceInstance())
             {

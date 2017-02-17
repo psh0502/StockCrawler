@@ -56,22 +56,22 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DOWILL.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=dce294cc33c2e22b, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ref\DOWILL.Core.dll</HintPath>
+    <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.3.3.1\lib\net40\Common.Logging.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="DOWILL.DBAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ref\DOWILL.DBAccess.dll</HintPath>
+    <Reference Include="Common.Logging.Core, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ref\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=2.0.7.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.7\lib\net40-full\log4net.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Quartz, Version=1.0.2.3, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ref\Quartz.dll</HintPath>
+    <Reference Include="Quartz, Version=2.4.1.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Quartz.2.4.1\lib\net40\Quartz.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -89,25 +89,6 @@
     <Reference Include="System.ServiceModel">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Transactions" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Web.Mobile" />
-    <Reference Include="System.Web.Services" />
-    <Reference Include="System.Workflow.Activities">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Workflow.ComponentModel">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Workflow.Runtime">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.WorkflowServices">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -120,9 +101,7 @@
     <Compile Include="JobUnitTest\StockPriceHistoryInitJobTest.cs" />
     <Compile Include="JobUnitTest\StockPriceUpdateJobTest.cs" />
     <Compile Include="StockHtmlInfoCollectorBaseTest.cs" />
-    <Compile Include="TimeMachineTest.cs" />
     <Compile Include="UnitTestBase.cs" />
-    <Compile Include="UnitTestRobotDataBuilder.cs" />
     <Compile Include="YahooStockHtmlInfoCollectorTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -144,33 +123,25 @@
     <Content Include="test materials\yahoo_tse_all_stock.htm" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\IRONMAN.Core\IRONMAN.Core.csproj">
-      <Project>{2775EDE3-9B3D-4153-81AF-E4247BB31998}</Project>
-      <Name>IRONMAN.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\IRONMAN.DAO\IRONMAN.DAO.csproj">
+    <ProjectReference Include="..\StockCrawler.Dao\StockCrawler.Dao.csproj">
       <Project>{A65FA381-30EF-4399-BC8C-4F3A451ABFF2}</Project>
-      <Name>IRONMAN.DAO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\IRONMAN.Website\IRONMAN.Website.csproj">
-      <Project>{404676C3-1119-4E79-98A6-2E881B561D66}</Project>
-      <Name>IRONMAN.Website</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\IRONMAN.Web\IRONMAN.Web.csproj">
-      <Project>{CD443CBA-ABD6-4779-A7D3-3F1811A3BB16}</Project>
-      <Name>IRONMAN.Web</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\IRONMAN.Workflow\IRONMAN.Workflow.csproj">
-      <Project>{811271EA-02C2-44D1-B9F3-F313D6561C92}</Project>
-      <Name>IRONMAN.Workflow</Name>
+      <Name>StockCrawler.Dao</Name>
     </ProjectReference>
     <ProjectReference Include="..\StockCrawler\StockCrawler.csproj">
       <Project>{D93A54DA-7267-4BB9-9FE2-ADD4808816CF}</Project>
-      <Name>Services</Name>
+      <Name>StockCrawler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TomTang.DbAccess\TomTang.DbAccess.csproj">
+      <Project>{0e8f9795-19f3-4944-8294-2327e525a46b}</Project>
+      <Name>TomTang.DbAccess</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="job_scheduling_data_2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
     <None Include="test materials\table.csv" />
   </ItemGroup>
   <ItemGroup>

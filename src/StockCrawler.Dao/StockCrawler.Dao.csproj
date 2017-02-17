@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{D93A54DA-7267-4BB9-9FE2-ADD4808816CF}</ProjectGuid>
+    <ProjectGuid>{A65FA381-30EF-4399-BC8C-4F3A451ABFF2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>StockCrawler.Services</RootNamespace>
-    <AssemblyName>StockCrawler.Services</AssemblyName>
+    <RootNamespace>StockCrawler.Dao</RootNamespace>
+    <AssemblyName>StockCrawler.Dao</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>false</SignAssembly>
@@ -56,20 +56,8 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Common.Logging.3.3.1\lib\net40\Common.Logging.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Common.Logging.Core, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="log4net, Version=2.0.7.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.7\lib\net40-full\log4net.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Quartz, Version=2.4.1.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Quartz.2.4.1\lib\net40\Quartz.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -77,34 +65,48 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
+    <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Xml.Linq">
+    <Reference Include="System.Data.DataSetExtensions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="JobBase.cs" />
-    <Compile Include="StockDailyPrice\IStockDailyInfoCollector.cs" />
-    <Compile Include="StockDailyPrice\PchomeStockHtmlInfoCollector.cs" />
-    <Compile Include="StockDailyPrice\StockHtmlInfoCollectorBase.cs" />
-    <Compile Include="StockDailyPrice\YahooFinanceDownloader.cs" />
-    <Compile Include="StockDailyPrice\YahooStockHtmlInfoCollector.cs" />
-    <Compile Include="StockPriceUpdateJob.cs" />
-    <Compile Include="StockPriceHistoryInitJob.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="StockDataService.cs" />
+    <Compile Include="Schema\StockDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StockDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTestLogger.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="job_scheduling_data_2_0.xsd">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Schema\StockDataSet.xsc">
+      <DependentUpon>StockDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="Schema\StockDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>StockDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schema\StockDataSet.xss">
+      <DependentUpon>StockDataSet.xsd</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -124,12 +126,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StockCrawler.Dao\StockCrawler.Dao.csproj">
-      <Project>{A65FA381-30EF-4399-BC8C-4F3A451ABFF2}</Project>
-      <Name>StockCrawler.Dao</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TomTang.DbAccess\TomTang.DbAccess.csproj">
-      <Project>{0e8f9795-19f3-4944-8294-2327e525a46b}</Project>
+      <Project>{0E8F9795-19F3-4944-8294-2327E525A46B}</Project>
       <Name>TomTang.DbAccess</Name>
     </ProjectReference>
   </ItemGroup>

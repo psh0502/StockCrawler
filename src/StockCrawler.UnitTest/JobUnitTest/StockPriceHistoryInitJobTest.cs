@@ -1,8 +1,8 @@
-﻿using System.Threading;
-using DOWILL.DBAccess;
-using StockCrawler.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Quartz;
+using StockCrawler.Services;
+using System.Threading;
+using TomTang.DbAccess;
 
 namespace StockCrawler.UnitTest.JobUnitTest
 {
@@ -37,7 +37,7 @@ namespace StockCrawler.UnitTest.JobUnitTest
             #endregion
 
             StockPriceHistoryInitJob target = new StockPriceHistoryInitJob();
-            JobExecutionContext context = null;
+            IJobExecutionContext context = null;
             target.Execute(context);
         }
     }

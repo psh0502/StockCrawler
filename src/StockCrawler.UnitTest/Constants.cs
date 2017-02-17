@@ -7,6 +7,6 @@ namespace StockCrawler.UnitTest
 {
     internal class Constants
     {
-        public const string TEST_MATERIAL_PATH = "..\\..\\..\\Ironman.UnitTest\\test materials\\";
+        public const string TEST_MATERIAL_PATH = "..\\..\\..\\StockCrawler.UnitTest\\test materials\\";
     }
 }

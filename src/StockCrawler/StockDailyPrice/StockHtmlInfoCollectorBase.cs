@@ -1,11 +1,10 @@
-﻿using System.Diagnostics;
+﻿using log4net;
+using log4net.Config;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
-using log4net;
-using log4net.Config;
-using IRONMAN;
 
 namespace StockCrawler.Services.StockDailyPrice
 {

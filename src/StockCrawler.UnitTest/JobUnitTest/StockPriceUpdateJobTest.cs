@@ -24,15 +24,12 @@ namespace StockCrawler.UnitTest.JobUnitTest
             _stockDb.ExecuteCommand.CommandText = "INSERT INTO Stock(StockNo, StockName) VALUES('2002', '中鋼')";
             _stockDb.Execute();
             _stockDb.ExecuteCommand.CommandText = "SELECT MAX(StockID) FROM Stock";
-            int stockID = Convert.ToInt32(_stockDb.ExecuteScalar());
-            _transDb.ExecuteCommand.CommandText = string.Format("INSERT INTO Stock(StockID, StockNo, StockName) VALUES({0}, '2002', '中鋼')", stockID);
-            _transDb.Execute();
             #endregion
 
             Thread.Sleep(5 * 1000);
 
-            StockPriceUpdateJob target = new StockPriceUpdateJob("IRONMAN.UnitTest.MockYahooStockHtmlInfoCollector, IRONMAN.UnitTest");
-            JobExecutionContext context = null;
+            StockPriceUpdateJob target = new StockPriceUpdateJob("StockCrawler.UnitTest.MockYahooStockHtmlInfoCollector, IRONMAN.UnitTest");
+            IJobExecutionContext context = null;
             target.Execute(context);
             Thread.Sleep(5 * 1000);
 
@@ -42,14 +39,6 @@ namespace StockCrawler.UnitTest.JobUnitTest
             _stockDb.Fill(dt);
             Assert.AreEqual<int>(1, dt.Rows.Count, "Date result count is incorrect!");
             DataRow dr = dt.Rows[0];
-            Assert.AreEqual<long>(18935, Convert.ToInt64(dr["Volumn"]), "Volumn value is incorrect!");
-            Assert.AreEqual<DateTime>(DateTime.Today, Convert.ToDateTime(dr["StockDT"]), "StockDT is incorrect!");
-            dt.Clear();
-
-            _transDb.SelectCommand.CommandText = "SELECT sp.* FROM Stock s INNER JOIN StockPrice sp ON s.StockID = sp.StockID WHERE s.StockNo = '2002'";
-            _transDb.Fill(dt);
-            Assert.AreEqual<int>(1, dt.Rows.Count, "Date result count is incorrect!");
-            dr = dt.Rows[0];
             Assert.AreEqual<long>(18935, Convert.ToInt64(dr["Volumn"]), "Volumn value is incorrect!");
             Assert.AreEqual<DateTime>(DateTime.Today, Convert.ToDateTime(dr["StockDT"]), "StockDT is incorrect!");
             dt.Clear();

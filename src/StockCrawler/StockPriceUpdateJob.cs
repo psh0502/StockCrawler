@@ -1,9 +1,9 @@
-﻿using System;
-using System.Configuration;
+﻿using Quartz;
+using StockCrawler.Dao;
+using StockCrawler.Dao.Schema;
 using StockCrawler.Services.StockDailyPrice;
-using IRONMAN.DAO;
-using IRONMAN.DAO.schema;
-using Quartz;
+using System;
+using System.Configuration;
 
 namespace StockCrawler.Services
 {
@@ -22,7 +22,7 @@ namespace StockCrawler.Services
 
         #region IJob Members
 
-        public void Execute(JobExecutionContext context)
+        public void Execute(IJobExecutionContext context)
         {
             if (string.IsNullOrEmpty(CollectorTypeName)) CollectorTypeName = ConfigurationManager.AppSettings[CONST_APPSETTING_DAILY_PRICE_COLLECTOR_TYPE];
             _logger.InfoFormat("[{0}] is going to executing its job by using [{1}].", GetType().FullName, CollectorTypeName);
@@ -65,7 +65,6 @@ namespace StockCrawler.Services
                     }
                     db.UpdateStockPriceHistoryDataTable(dt);
                 }
-                using (var db = TransactionDataService.GetServiceInstance()) db.UpdateStockPriceTable(dt);
             }
             catch (Exception Ex)
             {
