@@ -197,6 +197,7 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagramDbAccess.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
