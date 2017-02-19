@@ -29,7 +29,7 @@ The database file is located in "*database/Access/Stock.mdb*"
 
 You need to edit the configuration "*StockCrawlerRunner.exe.config*" to **specify the location** of this mdb file.
 
-```
+```xml
 <connectionStrings>
     <add name="StockCrawler.Dao.Properties.Settings.StockConnectionString" connectionString="Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\StockCrawler\database\Stock.mdb" providerName="System.Data.OleDb"/>
 </connectionStrings>
