@@ -1,4 +1,4 @@
-# StockCrawler 股票收盤資訊爬蟲
+# StockCrawler
 
 **StockCrawler** is a simple CLI tool can download stock closing price for Taiwan public market.
 
