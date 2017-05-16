@@ -1,4 +1,4 @@
-DROP procedure IF EXISTS `DisableAllStocks`;
+DROP procedure IF EXISTS `InsertOrUpdateStockList`;
 DELIMITER $$
 
 CREATE PROCEDURE `InsertOrUpdateStockList`(
