@@ -17,6 +17,9 @@ namespace StockCrawler.Services
 
         public void Execute(IJobExecutionContext context)
         {
+            // init stock list
+            downloadTwselatestInfo();
+
             using (var db = StockDataService.GetServiceInstance())
             {
                 foreach (var d in db.GetStocks())
@@ -28,6 +31,40 @@ namespace StockCrawler.Services
         }
 
         #endregion
+
+        private void downloadTwselatestInfo()
+        {
+            using (WebClient wc = new WebClient())
+            {
+                var bin = wc.DownloadData(string.Format("http://www.twse.com.tw/ch/trading/exchange/MI_INDEX/MI_INDEX.php?download=csv&qdate={0}/{1}&selectType=ALLBUT0999", DateTime.Today.Year - 1911, DateTime.Today.ToString("MM/dd")));
+                using (StreamReader sr = new StreamReader(new MemoryStream(bin, false)))
+                {
+                    var dt = new StockDataSet.StockDataTable();
+                    sr.ReadLine();
+                    while (true)
+                    {
+                        string s = sr.ReadLine();
+                        if (string.IsNullOrEmpty(s)) break;
+                        string[] datas = s.Split(',');
+                        if (datas.Length == 7)
+                        {
+                            var dr = dt.NewStockRow();
+                            dr.StockDT = DateTime.Parse(datas[0]);
+                            dr.OpenPrice = decimal.Parse(datas[1]);
+                            dr.HighPrice = decimal.Parse(datas[2]);
+                            dr.LowPrice = decimal.Parse(datas[3]);
+                            dr.ClosePrice = decimal.Parse(datas[4]);
+                            dr.Volumn = long.Parse(datas[5]) / 1000;
+                            dr.AdjClosePrice = decimal.Parse(datas[6]);
+                            dr.StockID = stockID;
+                            dr.DateCreated = DateTime.Now;
+                            dt.AddStockRow(dr);
+                        }
+                    }
+                    StockDataService.GetServiceInstance().RenewStockList(dt);
+                }
+            }
+        }
 
         private void downloadYahooStockCSV(string stockNo, DateTime startDT, DateTime endDT, int stockID)
         {

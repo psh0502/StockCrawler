@@ -1,14 +1,14 @@
-﻿using System;
+﻿using StockCrawler.Dao.Schema;
+using System;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using TomTang.DbAccess;
-using StockCrawler.Dao.Schema;
 
 namespace StockCrawler.Dao
 {
-    public class StockDataService : DBServiceBase
+    public class StockDataService : DBServiceBase, IStockDataService
     {
         protected const string CONST_APP_CONNECTION_KEY = "StockCrawler.Dao.Properties.Settings.StockConnectionString";
         protected static readonly string _currentAssemblyLocation = null;
@@ -34,7 +34,7 @@ namespace StockCrawler.Dao
         /// Retrieve a new service instance. It's thread-safe.
         /// </summary>
         /// <returns>Database service instance</returns>
-        public static StockDataService GetServiceInstance()
+        public static IStockDataService GetServiceInstance()
         {
             return new StockDataService();
         }
@@ -150,6 +150,12 @@ namespace StockCrawler.Dao
             Debug.WriteLine("GetStockAvgPriceByDate = " + _db.ExecuteCommand.CommandText);
             object resultFromDB = _db.ExecuteScalar();
             return Convert.ToDouble((DBNull.Value == resultFromDB) ? 0 : resultFromDB);
+        }
+
+        public void RenewStockList(StockDataSet.StockDataTable dt)
+        {
+            //TODO: RenewStockList
+            throw new NotImplementedException();
         }
     }
 }
