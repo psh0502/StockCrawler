@@ -1,4 +1,5 @@
-﻿using Quartz;
+﻿using Common.Logging;
+using Quartz;
 using StockCrawler.Dao;
 using StockCrawler.Dao.Schema;
 using StockCrawler.Services.StockDailyPrice;
@@ -9,6 +10,7 @@ namespace StockCrawler.Services
 {
     public class StockPriceUpdateJob : JobBase, IJob
     {
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(StockPriceUpdateJob));
         private const string CONST_APPSETTING_DAILY_PRICE_COLLECTOR_TYPE = "DailyCollectorType";
 
         public StockPriceUpdateJob() : base() { }

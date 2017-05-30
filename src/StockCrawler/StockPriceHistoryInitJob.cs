@@ -1,4 +1,5 @@
-﻿using Quartz;
+﻿using Common.Logging;
+using Quartz;
 using StockCrawler.Dao;
 using StockCrawler.Dao.Schema;
 using System;
@@ -7,11 +8,10 @@ using System.Net;
 
 namespace StockCrawler.Services
 {
-    public class StockPriceHistoryInitJob : JobBase, IJob, IDisposable
+    public class StockPriceHistoryInitJob : JobBase, IJob
     {
-        private readonly WebClient _wc = new WebClient();
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(StockPriceHistoryInitJob));
         public StockPriceHistoryInitJob() : base() { }
-        ~StockPriceHistoryInitJob() { Dispose(); }
 
         #region IJob Members
 
@@ -71,12 +71,13 @@ namespace StockCrawler.Services
             byte[] csvBin = null;
             try
             {
-                csvBin = _wc.DownloadData(string.Format("http://ichart.finance.yahoo.com/table.csv?s={0}&d={1}&e={2}&f={3}&g=d&a={4}&b={5}&c={6}&ignore=.csv",
-                    stockNo,
-                    endDT.Day - 1, endDT.Month - 1, endDT.Year,
-                    startDT.Day - 1, startDT.Month - 1, startDT.Year));
+                using (WebClient wc = new WebClient())
+                    csvBin = wc.DownloadData(string.Format("http://ichart.finance.yahoo.com/table.csv?s={0}&d={1}&e={2}&f={3}&g=d&a={4}&b={5}&c={6}&ignore=.csv",
+                        stockNo,
+                        endDT.Day - 1, endDT.Month - 1, endDT.Year,
+                        startDT.Day - 1, startDT.Month - 1, startDT.Year));
 
-                using (StreamReader sr = new StreamReader(new MemoryStream(csvBin, false)))
+                using (var sr = new StreamReader(new MemoryStream(csvBin, false)))
                 {
                     var dt = new StockDataSet.StockPriceHistoryDataTable();
                     sr.ReadLine();
@@ -114,14 +115,5 @@ namespace StockCrawler.Services
                 throw;
             }
         }
-
-        #region IDisposable Members
-
-        public void Dispose()
-        {
-            _wc.Dispose();
-        }
-
-        #endregion
     }
 }
