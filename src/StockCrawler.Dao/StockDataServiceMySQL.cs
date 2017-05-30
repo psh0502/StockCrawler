@@ -61,12 +61,16 @@ namespace StockCrawler.Dao
                 var cmd = conn.CreateCommand();
                 cmd.CommandText = "DisableAllStocks";
                 cmd.CommandType = CommandType.StoredProcedure;
+                conn.Open();
                 cmd.ExecuteNonQuery();
+                conn.Close();
                 using (var da = new MySqlDataAdapter())
                 {
                     da.InsertCommand = conn.CreateCommand();
-                    da.InsertCommand.CommandText = "";
+                    da.InsertCommand.CommandText = "InsertOrUpdateStockList";
                     da.InsertCommand.CommandType = CommandType.StoredProcedure;
+                    da.InsertCommand.Parameters.Add("@stockNo", MySqlDbType.VarChar, 10, "StockNo");
+                    da.InsertCommand.Parameters.Add("@stockName", MySqlDbType.VarChar, 50, "StockName");
                     da.Update(dt);
                 }
             }
@@ -74,7 +78,11 @@ namespace StockCrawler.Dao
 
         private static MySqlConnection GetMySqlConnection()
         {
+#if(DEBUG)
+            return new MySqlConnection("server=localhost;uid=tester;pwd=12345;database=stock");
+#else
             return new MySqlConnection(ConfigurationManager.ConnectionStrings[CONST_APP_CONNECTION_KEY].ConnectionString);
+#endif
         }
 
         public void Dispose()

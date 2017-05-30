@@ -21,7 +21,7 @@ namespace StockCrawler.Services
             // init stock list
             downloadTwselatestInfo();
 
-            using (var db = StockDataService.GetServiceInstance())
+            using (var db = StockDataService.GetServiceInstance(StockDataService.EnumDBType.MYSQL))
             {
                 foreach (var d in db.GetStocks())
                 {
@@ -37,12 +37,16 @@ namespace StockCrawler.Services
         {
             byte[] downloaded_data = null;
             using (var wc = new WebClient())
+#if(DEBUG)
+                downloaded_data = wc.DownloadData(string.Format("http://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={0}&type=ALLBUT0999", new DateTime(2017, 5, 26).ToString("yyyyMMdd")));
+#else
                 downloaded_data = wc.DownloadData(string.Format("http://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={0}&type=ALLBUT0999", DateTime.Today.ToString("yyyyMMdd")));
+#endif
+            if (downloaded_data.Length == 0) return; // no data means there's no closed pricing data by the date.It could be caused by national holidays.
 
-            string csv_data = Encoding.UTF8.GetString(downloaded_data);
+            string csv_data = Encoding.Default.GetString(downloaded_data);
 
             // Usage of CsvReader: http://blog.darkthread.net/post-2017-05-13-servicestack-text-csvserializer.aspx
-            var csv_lines = CsvReader.ParseLines(csv_data);
             var dt = new StockDataSet.StockDataTable();
             bool found_stock_list = false;
             foreach (var ln in csv_lines)
@@ -66,12 +70,12 @@ namespace StockCrawler.Services
                 }
                 else
                 {
-                    if ("證券代號" == data[0])
+                    if ("證券代號" == data[0].Trim())
                         found_stock_list = true;
                 }
             }
-
-            StockDataService.GetServiceInstance().RenewStockList(dt);
+            if (dt.Rows.Count > 0)
+                StockDataService.GetServiceInstance(StockDataService.EnumDBType.MYSQL).RenewStockList(dt);
         }
 
         private void downloadYahooStockCSV(string stockNo, DateTime startDT, DateTime endDT, int stockID)
@@ -107,7 +111,7 @@ namespace StockCrawler.Services
                         dt.AddStockPriceHistoryRow(dr);
                     }
                 }
-                StockDataService.GetServiceInstance().UpdateStockPriceHistoryDataTable(dt);
+                StockDataService.GetServiceInstance(StockDataService.EnumDBType.MYSQL).UpdateStockPriceHistoryDataTable(dt);
             }
             catch (WebException wex)
             {

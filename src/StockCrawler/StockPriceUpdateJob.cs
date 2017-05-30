@@ -31,7 +31,7 @@ namespace StockCrawler.Services
             try
             {
                 StockDataSet.StockPriceHistoryDataTable dt = new StockDataSet.StockPriceHistoryDataTable();
-                using (var db = StockDataService.GetServiceInstance())
+                using (var db = StockDataService.GetServiceInstance(StockDataService.EnumDBType.MYSQL))
                 {
                     IStockDailyInfoCollector collector = StockDailyInfoCollectorProvider.GetDailyPriceCollector(CollectorTypeName);
                     foreach (var d in db.GetStocks())

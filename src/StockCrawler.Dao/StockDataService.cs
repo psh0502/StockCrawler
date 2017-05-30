@@ -10,6 +10,13 @@ namespace StockCrawler.Dao
 {
     public class StockDataService : DBServiceBase, IStockDataService
     {
+        public enum EnumDBType
+        {
+            ACCESS,
+            MYSQL,
+            MSSQL
+        }
+
         protected const string CONST_APP_CONNECTION_KEY = "StockCrawler.Dao.Properties.Settings.StockConnectionString";
         protected static readonly string _currentAssemblyLocation = null;
 #if(DEBUG)
@@ -33,10 +40,19 @@ namespace StockCrawler.Dao
         /// <summary>
         /// Retrieve a new service instance. It's thread-safe.
         /// </summary>
+        /// <exception cref="System.NotImplementedException">Not support the specified database yet.</exception>
         /// <returns>Database service instance</returns>
-        public static IStockDataService GetServiceInstance()
+        public static IStockDataService GetServiceInstance(EnumDBType dbType)
         {
-            return new StockDataService();
+            switch (dbType)
+            {
+                case EnumDBType.ACCESS:
+                    return new StockDataService();
+                case EnumDBType.MYSQL:
+                    return new StockDataServiceMySQL();
+                default:
+                    throw new NotImplementedException(dbType.ToString());
+            }
         }
 
         public StockDataSet.StockDataTable GetStocksSchema()
