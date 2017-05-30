@@ -47,6 +47,7 @@ namespace StockCrawler.Services
             string csv_data = Encoding.Default.GetString(downloaded_data);
 
             // Usage of CsvReader: http://blog.darkthread.net/post-2017-05-13-servicestack-text-csvserializer.aspx
+            var csv_lines = CsvReader.ParseLines(csv_data); //FIXIT: This tool class will end the parsing if meets an empty line.... sucker...
             var dt = new StockDataSet.StockDataTable();
             bool found_stock_list = false;
             foreach (var ln in csv_lines)
