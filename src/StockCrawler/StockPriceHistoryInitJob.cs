@@ -45,9 +45,11 @@ namespace StockCrawler.Services
             if (downloaded_data.Length == 0) return; // no data means there's no closed pricing data by the date.It could be caused by national holidays.
 
             string csv_data = Encoding.Default.GetString(downloaded_data);
+            // twse csv has some corrupt lines make parse fail.
+            csv_data = csv_data.Replace("\"\"漲跌價差\"為", "\"\"\"漲跌價差\"\"為").Replace("\"無比價\"含", "\"\"\"無比價\"\"含");
 
             // Usage of CsvReader: http://blog.darkthread.net/post-2017-05-13-servicestack-text-csvserializer.aspx
-            var csv_lines = CsvReader.ParseLines(csv_data); //FIXIT: This tool class will end the parsing if meets an empty line.... sucker...
+            var csv_lines = CsvReader.ParseLines(csv_data);
             var dt = new StockDataSet.StockDataTable();
             bool found_stock_list = false;
             foreach (var ln in csv_lines)
@@ -63,19 +65,19 @@ namespace StockCrawler.Services
                     }
 
                     var dr = dt.NewStockRow();
-                    dr.StockNo = data[0].Trim();
-                    dr.StockName = data[1].Trim();
+                    dr.StockNo = data[0].Replace("=\"", string.Empty).Replace("\"", string.Empty);
+                    dr.StockName = data[1];
                     dr.Enable = true;
                     dr.DateCreated = DateTime.Now;
                     dt.AddStockRow(dr);
                 }
                 else
                 {
-                    if ("證券代號" == data[0].Trim())
+                    if ("證券代號" == data[0])
                         found_stock_list = true;
                 }
             }
-            if (dt.Rows.Count > 0)
+            if (dt.Count > 0)
                 StockDataService.GetServiceInstance(StockDataService.EnumDBType.MYSQL).RenewStockList(dt);
         }
 
