@@ -69,8 +69,8 @@ namespace StockCrawler.Dao
                     da.InsertCommand = conn.CreateCommand();
                     da.InsertCommand.CommandText = "InsertOrUpdateStockList";
                     da.InsertCommand.CommandType = CommandType.StoredProcedure;
-                    da.InsertCommand.Parameters.Add("@stockNo", MySqlDbType.VarChar, 10, "StockNo");
-                    da.InsertCommand.Parameters.Add("@stockName", MySqlDbType.VarChar, 50, "StockName");
+                    da.InsertCommand.Parameters.Add("@pStockNo", MySqlDbType.VarChar, 10, "StockNo");
+                    da.InsertCommand.Parameters.Add("@pStockName", MySqlDbType.VarChar, 50, "StockName");
                     da.Update(dt);
                 }
             }
