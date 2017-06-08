@@ -66,7 +66,7 @@ namespace StockCrawler.Dao
                         OleDbStrHelper.getParamStr(r.HighPrice), 
                         OleDbStrHelper.getParamStr(r.LowPrice), 
                         OleDbStrHelper.getParamStr(r.ClosePrice), 
-                        OleDbStrHelper.getParamStr(r.Volumn), 
+                        OleDbStrHelper.getParamStr(r.Volume), 
                         OleDbStrHelper.getParamStr(r.AdjClosePrice));
                     _db.Execute();
                 }

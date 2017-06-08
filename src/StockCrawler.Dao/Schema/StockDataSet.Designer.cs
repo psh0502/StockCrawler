@@ -652,7 +652,7 @@ namespace StockCrawler.Dao.Schema {
             
             private global::System.Data.DataColumn columnClosePrice;
             
-            private global::System.Data.DataColumn columnVolumn;
+            private global::System.Data.DataColumn columnVolume;
             
             private global::System.Data.DataColumn columnAdjClosePrice;
             
@@ -741,9 +741,9 @@ namespace StockCrawler.Dao.Schema {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn VolumnColumn {
+            public global::System.Data.DataColumn VolumeColumn {
                 get {
-                    return this.columnVolumn;
+                    return this.columnVolume;
                 }
             }
             
@@ -800,7 +800,7 @@ namespace StockCrawler.Dao.Schema {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public StockPriceHistoryRow AddStockPriceHistoryRow(StockRow parentStockRowByStockStockPriceHistory, System.DateTime StockDT, decimal OpenPrice, decimal HighPrice, decimal LowPrice, decimal ClosePrice, long Volumn, decimal AdjClosePrice, System.DateTime DateCreated) {
+            public StockPriceHistoryRow AddStockPriceHistoryRow(StockRow parentStockRowByStockStockPriceHistory, System.DateTime StockDT, decimal OpenPrice, decimal HighPrice, decimal LowPrice, decimal ClosePrice, long Volume, decimal AdjClosePrice, System.DateTime DateCreated) {
                 StockPriceHistoryRow rowStockPriceHistoryRow = ((StockPriceHistoryRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
@@ -809,7 +809,7 @@ namespace StockCrawler.Dao.Schema {
                         HighPrice,
                         LowPrice,
                         ClosePrice,
-                        Volumn,
+                        Volume,
                         AdjClosePrice,
                         DateCreated};
                 if ((parentStockRowByStockStockPriceHistory != null)) {
@@ -851,7 +851,7 @@ namespace StockCrawler.Dao.Schema {
                 this.columnHighPrice = base.Columns["HighPrice"];
                 this.columnLowPrice = base.Columns["LowPrice"];
                 this.columnClosePrice = base.Columns["ClosePrice"];
-                this.columnVolumn = base.Columns["Volumn"];
+                this.columnVolume = base.Columns["Volume"];
                 this.columnAdjClosePrice = base.Columns["AdjClosePrice"];
                 this.columnDateCreated = base.Columns["DateCreated"];
             }
@@ -871,8 +871,8 @@ namespace StockCrawler.Dao.Schema {
                 base.Columns.Add(this.columnLowPrice);
                 this.columnClosePrice = new global::System.Data.DataColumn("ClosePrice", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnClosePrice);
-                this.columnVolumn = new global::System.Data.DataColumn("Volumn", typeof(long), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnVolumn);
+                this.columnVolume = new global::System.Data.DataColumn("Volume", typeof(long), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnVolume);
                 this.columnAdjClosePrice = new global::System.Data.DataColumn("AdjClosePrice", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAdjClosePrice);
                 this.columnDateCreated = new global::System.Data.DataColumn("DateCreated", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
@@ -1259,17 +1259,17 @@ namespace StockCrawler.Dao.Schema {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public long Volumn {
+            public long Volume {
                 get {
                     try {
-                        return ((long)(this[this.tableStockPriceHistory.VolumnColumn]));
+                        return ((long)(this[this.tableStockPriceHistory.VolumeColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Volumn\' in table \'StockPriceHistory\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'Volume\' in table \'StockPriceHistory\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableStockPriceHistory.VolumnColumn] = value;
+                    this[this.tableStockPriceHistory.VolumeColumn] = value;
                 }
             }
             
@@ -1366,14 +1366,14 @@ namespace StockCrawler.Dao.Schema {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsVolumnNull() {
-                return this.IsNull(this.tableStockPriceHistory.VolumnColumn);
+            public bool IsVolumeNull() {
+                return this.IsNull(this.tableStockPriceHistory.VolumeColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetVolumnNull() {
-                this[this.tableStockPriceHistory.VolumnColumn] = global::System.Convert.DBNull;
+            public void SetVolumeNull() {
+                this[this.tableStockPriceHistory.VolumeColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

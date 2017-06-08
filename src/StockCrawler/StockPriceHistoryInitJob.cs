@@ -4,6 +4,7 @@ using ServiceStack.Text;
 using StockCrawler.Dao;
 using StockCrawler.Dao.Schema;
 using System;
+using System.Configuration;
 using System.Net;
 using System.Text;
 
@@ -12,6 +13,11 @@ namespace StockCrawler.Services
     public class StockPriceHistoryInitJob : JobBase, IJob
     {
         private static readonly ILog _logger = LogManager.GetLogger(typeof(StockPriceHistoryInitJob));
+#if(DEBUG)
+        private static readonly string _dbType = "MYSQL";
+#else
+        private static readonly string _dbType = ConfigurationManager.AppSettings["DB_TYPE"];
+#endif
         public StockPriceHistoryInitJob() : base() { }
 
         #region IJob Members
@@ -21,7 +27,7 @@ namespace StockCrawler.Services
             // init stock list
             downloadTwselatestInfo();
 
-            using (var db = StockDataService.GetServiceInstance(StockDataService.EnumDBType.MYSQL))
+            using (var db = StockDataService.GetServiceInstance(_dbType))
             {
                 foreach (var d in db.GetStocks())
                 {
@@ -78,7 +84,7 @@ namespace StockCrawler.Services
                 }
             }
             if (dt.Count > 0)
-                StockDataService.GetServiceInstance(StockDataService.EnumDBType.MYSQL).RenewStockList(dt);
+                StockDataService.GetServiceInstance(_dbType).RenewStockList(dt);
         }
 
         private void downloadYahooStockCSV(string stockNo, DateTime startDT, DateTime endDT, int stockID)
@@ -107,14 +113,14 @@ namespace StockCrawler.Services
                         dr.HighPrice = decimal.Parse(data[2]);
                         dr.LowPrice = decimal.Parse(data[3]);
                         dr.ClosePrice = decimal.Parse(data[4]);
-                        dr.Volumn = long.Parse(data[5]) / 1000;
+                        dr.Volume = long.Parse(data[5]) / 1000;
                         dr.AdjClosePrice = decimal.Parse(data[6]);
                         dr.StockID = stockID;
                         dr.DateCreated = DateTime.Now;
                         dt.AddStockPriceHistoryRow(dr);
                     }
                 }
-                StockDataService.GetServiceInstance(StockDataService.EnumDBType.MYSQL).UpdateStockPriceHistoryDataTable(dt);
+                StockDataService.GetServiceInstance(_dbType).UpdateStockPriceHistoryDataTable(dt);
             }
             catch (WebException wex)
             {

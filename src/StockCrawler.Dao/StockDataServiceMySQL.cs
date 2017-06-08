@@ -41,7 +41,18 @@ namespace StockCrawler.Dao
 
         public StockDataSet.StockDataTable GetStocks()
         {
-            throw new NotImplementedException();
+            StockDataSet.StockDataTable dt = new StockDataSet.StockDataTable();
+            using (var conn = GetMySqlConnection())
+            {
+                using (var da = new MySqlDataAdapter())
+                {
+                    da.SelectCommand = conn.CreateCommand();
+                    da.SelectCommand.CommandText = "GetStocks";
+                    da.SelectCommand.CommandType = CommandType.StoredProcedure;
+                    da.Fill(dt);
+                }
+            }
+            return dt;
         }
 
         public StockDataSet.StockDataTable GetStocksSchema()
@@ -51,7 +62,24 @@ namespace StockCrawler.Dao
 
         public void UpdateStockPriceHistoryDataTable(StockDataSet.StockPriceHistoryDataTable dt)
         {
-            throw new NotImplementedException();
+            using (var conn = GetMySqlConnection())
+            {
+                using (var da = new MySqlDataAdapter())
+                {
+                    da.InsertCommand = conn.CreateCommand();
+                    da.InsertCommand.CommandText = "InsertStockPriceHistoryData";
+                    da.InsertCommand.CommandType = CommandType.StoredProcedure;
+                    da.InsertCommand.Parameters.Add("@pStockID", MySqlDbType.Int32, 11, "StockID");
+                    da.InsertCommand.Parameters.Add("@pStockDT", MySqlDbType.DateTime, 20, "StockDT");
+                    da.InsertCommand.Parameters.Add("@pOpenPrice", MySqlDbType.Decimal, 50, "OpenPrice");
+                    da.InsertCommand.Parameters.Add("@pHighPrice", MySqlDbType.Decimal, 50, "HighPrice");
+                    da.InsertCommand.Parameters.Add("@pLowPrice", MySqlDbType.Decimal, 50, "LowPrice");
+                    da.InsertCommand.Parameters.Add("@pClosePrice", MySqlDbType.Decimal, 50, "ClosePrice");
+                    da.InsertCommand.Parameters.Add("@pVolume", MySqlDbType.Int64, 11, "Volume");
+                    da.InsertCommand.Parameters.Add("@pAdjClosePrice", MySqlDbType.Decimal, 50, "AdjClosePrice");
+                    da.Update(dt);
+                }
+            }
         }
 
         public void RenewStockList(StockDataSet.StockDataTable dt)
@@ -87,7 +115,6 @@ namespace StockCrawler.Dao
 
         public void Dispose()
         {
-            throw new NotImplementedException();
         }
     }
 }

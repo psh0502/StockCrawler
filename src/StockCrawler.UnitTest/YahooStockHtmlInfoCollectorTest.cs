@@ -25,7 +25,7 @@ namespace StockCrawler.UnitTest
             {
                 StockCode = "2002",
                 StockName = "中鋼",
-                Volumn = 18935,
+                Volume = 18935,
                 Change = new decimal(0.2),
                 LastBid = new decimal(31.75),
                 LastTrade = new decimal(31.75),
