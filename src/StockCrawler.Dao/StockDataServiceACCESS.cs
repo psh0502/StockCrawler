@@ -30,11 +30,6 @@ namespace StockCrawler.Dao
 #endif
         protected DBOperatorBase _db { get { return op; } }
 
-        public StockDataSet.StockDataTable GetStocksSchema()
-        {
-            return new StockDataSet.StockDataTable();
-        }
-
         public StockDataSet.StockDataTable GetStocks()
         {
             StockDataSet.StockDataTable dt = new StockDataSet.StockDataTable();

@@ -35,7 +35,6 @@ namespace StockCrawler.Dao
         StockDataSet.StockPriceHistoryRow GetStockPriceDataRowByDate(string sNO, DateTime specifiedDT);
         StockDataSet.StockPriceHistoryDataTable GetStockPriceHistoryData(string sno, DateTime startDT, DateTime endDT);
         StockDataSet.StockDataTable GetStocks();
-        StockDataSet.StockDataTable GetStocksSchema();
         void UpdateStockPriceHistoryDataTable(StockDataSet.StockPriceHistoryDataTable dt);
         void RenewStockList(StockDataSet.StockDataTable dt);
     }

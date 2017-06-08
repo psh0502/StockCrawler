@@ -55,11 +55,6 @@ namespace StockCrawler.Dao
             return dt;
         }
 
-        public StockDataSet.StockDataTable GetStocksSchema()
-        {
-            throw new NotImplementedException();
-        }
-
         public void UpdateStockPriceHistoryDataTable(StockDataSet.StockPriceHistoryDataTable dt)
         {
             using (var conn = GetMySqlConnection())
