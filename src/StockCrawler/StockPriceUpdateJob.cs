@@ -1,4 +1,5 @@
-﻿using Quartz;
+﻿using Common.Logging;
+using Quartz;
 using StockCrawler.Dao;
 using StockCrawler.Dao.Schema;
 using StockCrawler.Services.StockDailyPrice;
@@ -9,7 +10,13 @@ namespace StockCrawler.Services
 {
     public class StockPriceUpdateJob : JobBase, IJob
     {
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(StockPriceUpdateJob));
         private const string CONST_APPSETTING_DAILY_PRICE_COLLECTOR_TYPE = "DailyCollectorType";
+#if(DEBUG)
+        private static readonly string _dbType = "MYSQL";
+#else
+        private static readonly string _dbType = ConfigurationManager.AppSettings["DB_TYPE"];
+#endif
 
         public StockPriceUpdateJob() : base() { }
         public StockPriceUpdateJob(string collector_type_name)
@@ -29,7 +36,7 @@ namespace StockCrawler.Services
             try
             {
                 StockDataSet.StockPriceHistoryDataTable dt = new StockDataSet.StockPriceHistoryDataTable();
-                using (var db = StockDataService.GetServiceInstance())
+                using (var db = StockDataService.GetServiceInstance(_dbType))
                 {
                     IStockDailyInfoCollector collector = StockDailyInfoCollectorProvider.GetDailyPriceCollector(CollectorTypeName);
                     foreach (var d in db.GetStocks())
@@ -39,7 +46,7 @@ namespace StockCrawler.Services
                         if (null != info)
                         {
                             _logger.Debug(info);
-                            if (info.Volumn > 0)
+                            if (info.Volume > 0)
                             {
 
                                 StockDataSet.StockPriceHistoryRow dr = dt.NewStockPriceHistoryRow();
@@ -49,7 +56,7 @@ namespace StockCrawler.Services
                                 dr.HighPrice = info.Top;
                                 dr.LowPrice = info.Lowest;
                                 dr.ClosePrice = info.LastTrade;
-                                dr.Volumn = info.Volumn;
+                                dr.Volume = info.Volume;
                                 dr.AdjClosePrice = info.LastTrade;
                                 dr.DateCreated = DateTime.Now;
 

@@ -118,7 +118,7 @@ namespace StockCrawler.Services.StockDailyPrice
                     IDX_LAST_BID = 3,
                     IDX_LAST_ASK = 4,
                     IDX_CHANGE = 5,
-                    IDX_VOLUMN = 6,
+                    IDX_VOLUME = 6,
                     IDX_PREV_CLOSE = 7,
                     IDX_OPEN = 8,
                     IDX_TOP = 9,
@@ -140,11 +140,11 @@ namespace StockCrawler.Services.StockDailyPrice
                             infoObj.StockName = s[IDX_STOCKNAME].Split(' ')[1];
                             stock_code = infoObj.StockCode;
 
-                            s[IDX_VOLUMN] = s[IDX_VOLUMN].Replace(",", string.Empty);
+                            s[IDX_VOLUME] = s[IDX_VOLUME].Replace(",", string.Empty);
                             s[IDX_CHANGE] = (s[IDX_CHANGE][0] == '△') ? s[IDX_CHANGE].Substring(1) : "-" + s[IDX_CHANGE].Substring(1);
 
                             long tlong = -1;
-                            if (long.TryParse(s[IDX_VOLUMN], out tlong)) infoObj.Volumn = tlong; else _logger.Warn(string.Format("SNO={0} : string data parsing failure for \"{1}\"! raw string={2}", infoObj.StockCode, "Volumn", s[IDX_VOLUMN]));
+                            if (long.TryParse(s[IDX_VOLUME], out tlong)) infoObj.Volume = tlong; else _logger.Warn(string.Format("SNO={0} : string data parsing failure for \"{1}\"! raw string={2}", infoObj.StockCode, "Volumn", s[IDX_VOLUME]));
                             decimal tdecimal = -1;
                             if (decimal.TryParse(s[IDX_CHANGE], out tdecimal)) infoObj.Change = tdecimal; else _logger.Warn(string.Format("SNO={0} : string data parsing failure for \"{1}\"! raw string={2}", infoObj.StockCode, "Change", s[IDX_CHANGE]));
                             tdecimal = -1;

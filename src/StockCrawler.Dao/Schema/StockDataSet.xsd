@@ -47,7 +47,7 @@
               <xs:element name="HighPrice" msprop:Generator_ColumnVarNameInTable="columnHighPrice" msprop:Generator_ColumnPropNameInRow="HighPrice" msprop:Generator_ColumnPropNameInTable="HighPriceColumn" msprop:Generator_UserColumnName="HighPrice" type="xs:decimal" minOccurs="0" />
               <xs:element name="LowPrice" msprop:Generator_ColumnVarNameInTable="columnLowPrice" msprop:Generator_ColumnPropNameInRow="LowPrice" msprop:Generator_ColumnPropNameInTable="LowPriceColumn" msprop:Generator_UserColumnName="LowPrice" type="xs:decimal" minOccurs="0" />
               <xs:element name="ClosePrice" msprop:Generator_ColumnVarNameInTable="columnClosePrice" msprop:Generator_ColumnPropNameInRow="ClosePrice" msprop:Generator_ColumnPropNameInTable="ClosePriceColumn" msprop:Generator_UserColumnName="ClosePrice" type="xs:decimal" minOccurs="0" />
-              <xs:element name="Volumn" msprop:Generator_ColumnVarNameInTable="columnVolumn" msprop:Generator_ColumnPropNameInRow="Volumn" msprop:Generator_ColumnPropNameInTable="VolumnColumn" msprop:Generator_UserColumnName="Volumn" type="xs:long" minOccurs="0" />
+              <xs:element name="Volume" msprop:Generator_ColumnVarNameInTable="columnVolume" msprop:Generator_ColumnPropNameInRow="Volume" msprop:Generator_ColumnPropNameInTable="VolumeColumn" msprop:Generator_UserColumnName="Volume" type="xs:long" minOccurs="0" />
               <xs:element name="AdjClosePrice" msprop:Generator_ColumnVarNameInTable="columnAdjClosePrice" msprop:Generator_ColumnPropNameInRow="AdjClosePrice" msprop:Generator_ColumnPropNameInTable="AdjClosePriceColumn" msprop:Generator_UserColumnName="AdjClosePrice" type="xs:decimal" minOccurs="0" />
               <xs:element name="DateCreated" msprop:Generator_ColumnVarNameInTable="columnDateCreated" msprop:Generator_ColumnPropNameInRow="DateCreated" msprop:Generator_ColumnPropNameInTable="DateCreatedColumn" msprop:Generator_UserColumnName="DateCreated" type="xs:dateTime" minOccurs="0" />
             </xs:sequence>
@@ -67,7 +67,7 @@
   </xs:element>
   <xs:annotation>
     <xs:appinfo>
-      <msdata:Relationship name="StockStockPriceHistory" msdata:parent="Stock" msdata:child="StockPriceHistory" msdata:parentkey="StockID" msdata:childkey="StockID" msprop:Generator_UserChildTable="StockPriceHistory" msprop:Generator_ChildPropName="GetStockPriceHistoryRows" msprop:Generator_UserRelationName="StockStockPriceHistory" msprop:Generator_RelationVarName="relationStockStockPriceHistory" msprop:Generator_UserParentTable="Stock" msprop:Generator_ParentPropName="StockRow" />
+      <msdata:Relationship name="StockStockPriceHistory" msdata:parent="Stock" msdata:child="StockPriceHistory" msdata:parentkey="StockID" msdata:childkey="StockID" msprop:Generator_UserChildTable="StockPriceHistory" msprop:Generator_ChildPropName="GetStockPriceHistoryRows" msprop:Generator_UserRelationName="StockStockPriceHistory" msprop:Generator_ParentPropName="StockRow" msprop:Generator_RelationVarName="relationStockStockPriceHistory" msprop:Generator_UserParentTable="Stock" />
     </xs:appinfo>
   </xs:annotation>
 </xs:schema>

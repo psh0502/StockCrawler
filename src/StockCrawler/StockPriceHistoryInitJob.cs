@@ -1,23 +1,33 @@
-﻿using Quartz;
+﻿using Common.Logging;
+using Quartz;
+using ServiceStack.Text;
 using StockCrawler.Dao;
 using StockCrawler.Dao.Schema;
 using System;
-using System.IO;
+using System.Configuration;
 using System.Net;
+using System.Text;
 
 namespace StockCrawler.Services
 {
-    public class StockPriceHistoryInitJob : JobBase, IJob, IDisposable
+    public class StockPriceHistoryInitJob : JobBase, IJob
     {
-        private readonly WebClient _wc = new WebClient();
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(StockPriceHistoryInitJob));
+#if(DEBUG)
+        private static readonly string _dbType = "MYSQL";
+#else
+        private static readonly string _dbType = ConfigurationManager.AppSettings["DB_TYPE"];
+#endif
         public StockPriceHistoryInitJob() : base() { }
-        ~StockPriceHistoryInitJob() { Dispose(); }
 
         #region IJob Members
 
         public void Execute(IJobExecutionContext context)
         {
-            using (var db = StockDataService.GetServiceInstance())
+            // init stock list
+            downloadTwselatestInfo();
+
+            using (var db = StockDataService.GetServiceInstance(_dbType))
             {
                 foreach (var d in db.GetStocks())
                 {
@@ -29,42 +39,88 @@ namespace StockCrawler.Services
 
         #endregion
 
+        private void downloadTwselatestInfo()
+        {
+            byte[] downloaded_data = null;
+            using (var wc = new WebClient())
+#if(DEBUG)
+                downloaded_data = wc.DownloadData(string.Format("http://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={0}&type=ALLBUT0999", new DateTime(2017, 5, 26).ToString("yyyyMMdd")));
+#else
+                downloaded_data = wc.DownloadData(string.Format("http://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={0}&type=ALLBUT0999", DateTime.Today.ToString("yyyyMMdd")));
+#endif
+            if (downloaded_data.Length == 0) return; // no data means there's no closed pricing data by the date.It could be caused by national holidays.
+
+            string csv_data = Encoding.Default.GetString(downloaded_data);
+            // twse csv has some corrupt lines make parse fail.
+            csv_data = csv_data.Replace("\"\"漲跌價差\"為", "\"\"\"漲跌價差\"\"為").Replace("\"無比價\"含", "\"\"\"無比價\"\"含");
+
+            // Usage of CsvReader: http://blog.darkthread.net/post-2017-05-13-servicestack-text-csvserializer.aspx
+            var csv_lines = CsvReader.ParseLines(csv_data);
+            var dt = new StockDataSet.StockDataTable();
+            bool found_stock_list = false;
+            foreach (var ln in csv_lines)
+            {
+                //證券代號	證券名稱	成交股數	成交筆數	成交金額	開盤價	最高價	最低價	收盤價	漲跌(+/-)	漲跌價差	最後揭示買價	最後揭示買量	最後揭示賣價	最後揭示賣量	本益比
+                string[] data = CsvReader.ParseFields(ln).ToArray();
+                if (found_stock_list)
+                {
+                    if ("備註:" == data[0].Trim())
+                    {
+                        found_stock_list = false;
+                        break;
+                    }
+
+                    var dr = dt.NewStockRow();
+                    dr.StockNo = data[0].Replace("=\"", string.Empty).Replace("\"", string.Empty);
+                    dr.StockName = data[1];
+                    dr.Enable = true;
+                    dr.DateCreated = DateTime.Now;
+                    dt.AddStockRow(dr);
+                }
+                else
+                {
+                    if ("證券代號" == data[0])
+                        found_stock_list = true;
+                }
+            }
+            if (dt.Count > 0)
+                StockDataService.GetServiceInstance(_dbType).RenewStockList(dt);
+        }
+
         private void downloadYahooStockCSV(string stockNo, DateTime startDT, DateTime endDT, int stockID)
         {
-            byte[] csvBin = null;
+            byte[] downloaded_data = null;
             try
             {
-                csvBin = _wc.DownloadData(string.Format("http://ichart.finance.yahoo.com/table.csv?s={0}&d={1}&e={2}&f={3}&g=d&a={4}&b={5}&c={6}&ignore=.csv",
-                    stockNo,
-                    endDT.Day - 1, endDT.Month - 1, endDT.Year,
-                    startDT.Day - 1, startDT.Month - 1, startDT.Year));
+                using (var wc = new WebClient())
+                    downloaded_data = wc.DownloadData(string.Format("http://ichart.finance.yahoo.com/table.csv?s={0}&d={1}&e={2}&f={3}&g=d&a={4}&b={5}&c={6}&ignore=.csv",
+                        stockNo,
+                        endDT.Day - 1, endDT.Month - 1, endDT.Year,
+                        startDT.Day - 1, startDT.Month - 1, startDT.Year));
 
-                using (StreamReader sr = new StreamReader(new MemoryStream(csvBin, false)))
+                string csv_data = Encoding.UTF8.GetString(downloaded_data);
+                var csv_lines = CsvReader.ParseLines(csv_data);
+
+                var dt = new StockDataSet.StockPriceHistoryDataTable();
+                foreach (var ln in csv_lines)
                 {
-                    var dt = new StockDataSet.StockPriceHistoryDataTable();
-                    sr.ReadLine();
-                    while (true)
+                    string[] data = CsvReader.ParseFields(ln).ToArray();
+                    if (data.Length == 7)
                     {
-                        string s = sr.ReadLine();
-                        if (string.IsNullOrEmpty(s)) break;
-                        string[] datas = s.Split(',');
-                        if (datas.Length == 7)
-                        {
-                            var dr = dt.NewStockPriceHistoryRow();
-                            dr.StockDT = DateTime.Parse(datas[0]);
-                            dr.OpenPrice = decimal.Parse(datas[1]);
-                            dr.HighPrice = decimal.Parse(datas[2]);
-                            dr.LowPrice = decimal.Parse(datas[3]);
-                            dr.ClosePrice = decimal.Parse(datas[4]);
-                            dr.Volumn = long.Parse(datas[5]) / 1000;
-                            dr.AdjClosePrice = decimal.Parse(datas[6]);
-                            dr.StockID = stockID;
-                            dr.DateCreated = DateTime.Now;
-                            dt.AddStockPriceHistoryRow(dr);
-                        }
+                        var dr = dt.NewStockPriceHistoryRow();
+                        dr.StockDT = DateTime.Parse(data[0]);
+                        dr.OpenPrice = decimal.Parse(data[1]);
+                        dr.HighPrice = decimal.Parse(data[2]);
+                        dr.LowPrice = decimal.Parse(data[3]);
+                        dr.ClosePrice = decimal.Parse(data[4]);
+                        dr.Volume = long.Parse(data[5]) / 1000;
+                        dr.AdjClosePrice = decimal.Parse(data[6]);
+                        dr.StockID = stockID;
+                        dr.DateCreated = DateTime.Now;
+                        dt.AddStockPriceHistoryRow(dr);
                     }
-                    StockDataService.GetServiceInstance().UpdateStockPriceHistoryDataTable(dt);
                 }
+                StockDataService.GetServiceInstance(_dbType).UpdateStockPriceHistoryDataTable(dt);
             }
             catch (WebException wex)
             {
@@ -77,14 +133,5 @@ namespace StockCrawler.Services
                 throw;
             }
         }
-
-        #region IDisposable Members
-
-        public void Dispose()
-        {
-            _wc.Dispose();
-        }
-
-        #endregion
     }
 }
