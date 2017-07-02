@@ -6,8 +6,8 @@ CREATE TABLE `stockpricehistory` (
   `HighPrice` decimal(10,4) NOT NULL,
   `LowPrice` decimal(10,4) NOT NULL,
   `ClosePrice` decimal(10,4) NOT NULL,
-  `Volume` int(11) NOT NULL,
   `AdjClosePrice` decimal(10,4) NOT NULL,
-  `DateCreated` datetime NOT NULL,
+  `Volume` int(11) NOT NULL,
+  `DateCreated` datetime NOT NULL DEFAULT NOW(),
   PRIMARY KEY (`StockDT`,`StockID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
