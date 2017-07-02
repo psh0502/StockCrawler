@@ -10,17 +10,26 @@ namespace StockCrawler.Services
 {
     public class StockPriceUpdateJob : JobBase, IJob
     {
-        private static readonly ILog _logger = LogManager.GetLogger(typeof(StockPriceUpdateJob));
         private const string CONST_APPSETTING_DAILY_PRICE_COLLECTOR_TYPE = "DailyCollectorType";
-#if(DEBUG)
+#if(UNITTEST)
         private static readonly string _dbType = "MYSQL";
+        public static ILog _logger { get; set; }
 #else
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(StockPriceUpdateJob));
         private static readonly string _dbType = ConfigurationManager.AppSettings["DB_TYPE"];
 #endif
 
-        public StockPriceUpdateJob() : base() { }
-        public StockPriceUpdateJob(string collector_type_name)
+        public StockPriceUpdateJob()
             : base()
+        {
+#if(UNITTEST)
+            if (null == _logger)
+                _logger = LogManager.GetLogger(typeof(StockPriceUpdateJob));
+#endif
+        }
+
+        public StockPriceUpdateJob(string collector_type_name)
+            : this()
         {
             CollectorTypeName = collector_type_name;
         }
@@ -51,12 +60,12 @@ namespace StockCrawler.Services
                                 StockDataSet.StockPriceHistoryRow dr = dt.NewStockPriceHistoryRow();
                                 dr.StockID = d.StockID;
                                 dr.StockDT = info.LastTradeDT.Date;
-                                dr.OpenPrice = info.Open;
-                                dr.HighPrice = info.Top;
-                                dr.LowPrice = info.Lowest;
-                                dr.ClosePrice = info.LastTrade;
+                                dr.OpenPrice = info.OpenPrice;
+                                dr.HighPrice = info.HighPrice;
+                                dr.LowPrice = info.LowPrice;
+                                dr.ClosePrice = info.ClosePrice;
                                 dr.Volume = info.Volume;
-                                dr.AdjClosePrice = info.LastTrade;
+                                dr.AdjClosePrice = info.ClosePrice;
                                 dr.DateCreated = DateTime.Now;
 
                                 dt.AddStockPriceHistoryRow(dr);

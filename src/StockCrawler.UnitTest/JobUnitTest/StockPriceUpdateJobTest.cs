@@ -29,8 +29,10 @@ namespace StockCrawler.UnitTest.JobUnitTest
 
             Thread.Sleep(5 * 1000);
 #endif
-            //StockPriceUpdateJob target = new StockPriceUpdateJob("StockCrawler.UnitTest.MockYahooStockHtmlInfoCollector, IRONMAN.UnitTest");
-            StockPriceUpdateJob target = new StockPriceUpdateJob("StockCrawler.Services.StockDailyPrice.YahooStockHtmlInfoCollector, StockCrawler.Services");
+#if(UNITTEST)
+            StockPriceUpdateJob._logger = new UnitTestLogger();
+#endif
+            StockPriceUpdateJob target = new StockPriceUpdateJob("StockCrawler.Services.StockDailyPrice.TwseStockDailyInfoCollector, StockCrawler.Services");
             IJobExecutionContext context = null;
             target.Execute(context);
 

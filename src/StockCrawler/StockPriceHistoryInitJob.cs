@@ -4,6 +4,7 @@ using ServiceStack.Text;
 using StockCrawler.Dao;
 using StockCrawler.Dao.Schema;
 using System;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -14,13 +15,21 @@ namespace StockCrawler.Services
 {
     public class StockPriceHistoryInitJob : JobBase, IJob
     {
-        private static readonly ILog _logger = LogManager.GetLogger(typeof(StockPriceHistoryInitJob));
-#if(DEBUG)
+#if(UNITTEST)
+        public static ILog _logger { get; set; }
         private static readonly string _dbType = "MYSQL";
 #else
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(StockPriceHistoryInitJob));
         private static readonly string _dbType = ConfigurationManager.AppSettings["DB_TYPE"];
 #endif
-        public StockPriceHistoryInitJob() : base() { }
+        public StockPriceHistoryInitJob()
+            : base()
+        {
+#if(UNITTEST)
+            if (null == _logger)
+                _logger = LogManager.GetLogger(typeof(StockPriceHistoryInitJob));
+#endif
+        }
 
         #region IJob Members
 
@@ -45,7 +54,7 @@ namespace StockCrawler.Services
         {
             byte[] downloaded_data = null;
             using (var wc = new WebClient())
-#if(DEBUG)
+#if(UNITTEST)
                 downloaded_data = wc.DownloadData(string.Format("http://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={0}&type=ALLBUT0999", new DateTime(2017, 5, 26).ToString("yyyyMMdd")));
 #else
                 downloaded_data = wc.DownloadData(string.Format("http://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={0}&type=ALLBUT0999", DateTime.Today.ToString("yyyyMMdd")));

@@ -40,16 +40,9 @@
   <Interface Name="StockCrawler.Services.StockDailyPrice.IStockDailyInfoCollector" Collapsed="true">
     <Position X="5.25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
       <FileName>StockDailyPrice\IStockDailyInfoCollector.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Enum Name="StockCrawler.Services.StockDailyPrice.StockMarketLineEnum" Collapsed="true">
-    <Position X="5.25" Y="2.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
-      <FileName>StockDailyPrice\IStockDailyInfoCollector.cs</FileName>
-    </TypeIdentifier>
-  </Enum>
   <Font Name="Microsoft JhengHei" Size="9" />
 </ClassDiagram>

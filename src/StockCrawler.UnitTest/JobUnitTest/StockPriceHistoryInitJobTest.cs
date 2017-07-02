@@ -24,6 +24,9 @@ namespace StockCrawler.UnitTest.JobUnitTest
         [TestMethod]
         public void StockPriceHistoryInitTest()
         {
+#if(UNITTEST)
+            StockPriceHistoryInitJob._logger = new UnitTestLogger();
+#endif
             StockPriceHistoryInitJob target = new StockPriceHistoryInitJob();
             IJobExecutionContext context = null;
             target.Execute(context);

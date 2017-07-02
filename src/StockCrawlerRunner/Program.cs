@@ -1,5 +1,8 @@
-﻿using StockCrawler.Services;
+﻿using log4net.Config;
+using StockCrawler.Services;
 using System;
+using System.Diagnostics;
+using System.IO;
 
 namespace StockCrawlerRunner
 {
@@ -7,6 +10,8 @@ namespace StockCrawlerRunner
     {
         static void Main(string[] args)
         {
+            FileInfo fi = new FileInfo("log4net.config");
+            if (fi.Exists) XmlConfigurator.ConfigureAndWatch(fi); else Trace.WriteLine(string.Format("{0} is not existing, use itself config to instead of.", fi.FullName));
             try
             {
                 Console.WriteLine("**StockCrawlerRunner**");
