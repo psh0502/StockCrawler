@@ -97,10 +97,7 @@
   <ItemGroup>
     <Compile Include="JobBase.cs" />
     <Compile Include="StockDailyPrice\IStockDailyInfoCollector.cs" />
-    <Compile Include="StockDailyPrice\PchomeStockHtmlInfoCollector.cs" />
-    <Compile Include="StockDailyPrice\StockHtmlInfoCollectorBase.cs" />
-    <Compile Include="StockDailyPrice\YahooFinanceDownloader.cs" />
-    <Compile Include="StockDailyPrice\YahooStockHtmlInfoCollector.cs" />
+    <Compile Include="StockDailyPrice\TwseStockDailyInfoCollector.cs" />
     <Compile Include="StockPriceUpdateJob.cs" />
     <Compile Include="StockPriceHistoryInitJob.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

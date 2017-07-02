@@ -7,6 +7,7 @@ namespace StockCrawler.Services.StockDailyPrice
         tse = 0,
         otc
     }
+
     public interface IStockDailyInfoCollector
     {
         StockDailyPriceInfo GetStockDailyPriceInfo(string stock_code);
