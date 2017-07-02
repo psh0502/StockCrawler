@@ -48,7 +48,6 @@ namespace StockCrawler.Services
                             _logger.Debug(info);
                             if (info.Volume > 0)
                             {
-
                                 StockDataSet.StockPriceHistoryRow dr = dt.NewStockPriceHistoryRow();
                                 dr.StockID = d.StockID;
                                 dr.StockDT = info.LastTradeDT.Date;

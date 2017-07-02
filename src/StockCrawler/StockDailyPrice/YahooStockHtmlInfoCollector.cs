@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace StockCrawler.Services.StockDailyPrice
 {
+    [Obsolete("Since Yahoo has changed the html structure, this class is no useful anymore. Please don't use it.", true)]
 #if(DEBUG)
     public class YahooStockHtmlInfoCollector : StockHtmlInfoCollectorBase, IStockDailyInfoCollector
 #else

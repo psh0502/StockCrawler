@@ -11,8 +11,8 @@ namespace StockCrawler.UnitTest.JobUnitTest
     ///This is a test class for StockPriceUpdateJobTest and is intended
     ///to contain all StockPriceUpdateJobTest Unit Tests
     ///</summary>
-    [TestClass()]
-    public class StockPriceUpdateJobTest : UnitTestBase
+    [TestClass]
+    public class StockPriceUpdateJobTest // : UnitTestBase
     {
         /// <summary>
         ///A test for Execute StockPriceUpdate
@@ -20,6 +20,7 @@ namespace StockCrawler.UnitTest.JobUnitTest
         [TestMethod()]
         public void StockPriceUpdateTest()
         {
+#if(ACCESS)
             #region prepare testing data
             _stockDb.ExecuteCommand.CommandText = "INSERT INTO Stock(StockNo, StockName) VALUES('2002', '中鋼')";
             _stockDb.Execute();
@@ -27,10 +28,13 @@ namespace StockCrawler.UnitTest.JobUnitTest
             #endregion
 
             Thread.Sleep(5 * 1000);
-
-            StockPriceUpdateJob target = new StockPriceUpdateJob("StockCrawler.UnitTest.MockYahooStockHtmlInfoCollector, IRONMAN.UnitTest");
+#endif
+            //StockPriceUpdateJob target = new StockPriceUpdateJob("StockCrawler.UnitTest.MockYahooStockHtmlInfoCollector, IRONMAN.UnitTest");
+            StockPriceUpdateJob target = new StockPriceUpdateJob("StockCrawler.Services.StockDailyPrice.YahooStockHtmlInfoCollector, StockCrawler.Services");
             IJobExecutionContext context = null;
             target.Execute(context);
+
+#if(ACCESS)
             Thread.Sleep(5 * 1000);
 
             #region verifying
@@ -43,6 +47,7 @@ namespace StockCrawler.UnitTest.JobUnitTest
             Assert.AreEqual<DateTime>(DateTime.Today, Convert.ToDateTime(dr["StockDT"]), "StockDT is incorrect!");
             dt.Clear();
             #endregion
+#endif
         }
     }
 }
