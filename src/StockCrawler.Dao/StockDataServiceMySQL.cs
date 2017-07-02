@@ -87,5 +87,20 @@ namespace StockCrawler.Dao
         public void Dispose()
         {
         }
+
+        public void DeleteStockPriceHistoryData(int? stockId, DateTime? tradeDate)
+        {
+            using (var conn = GetMySqlConnection())
+            {
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = "DeleteStockPriceHistoryData";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@pStockID", stockId);
+                cmd.Parameters.Add("@pTradeDate", tradeDate);
+                conn.Open();
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
     }
 }
