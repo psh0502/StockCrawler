@@ -12,7 +12,7 @@ namespace StockCrawler.Dao
     {
         protected const string CONST_APP_CONNECTION_KEY = "StockCrawler.Dao.Properties.Settings.StockConnectionString";
         protected static readonly string _currentAssemblyLocation = null;
-#if(DEBUG)
+#if(UNITTEST)
         static StockDataServiceACCESS()
         {
             FileInfo file = new FileInfo(Assembly.GetExecutingAssembly().Location);
@@ -24,7 +24,7 @@ namespace StockCrawler.Dao
             base(string.Format(ConfigurationManager.ConnectionStrings[CONST_APP_CONNECTION_KEY].ConnectionString, _currentAssemblyLocation + @"\..\..\..\StockCrawler.UnitTest\database\"), 
             DBOperatorType.OleDBOperator) {}
 #else
-        public StockDataService() :
+        public StockDataServiceACCESS() :
             base(ConfigurationManager.ConnectionStrings[CONST_APP_CONNECTION_KEY].ConnectionString, 
             DBOperatorType.OleDBOperator) {}
 #endif
