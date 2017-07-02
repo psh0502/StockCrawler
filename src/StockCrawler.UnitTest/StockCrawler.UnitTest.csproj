@@ -60,6 +60,15 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UNITTEST|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\UNITTEST\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;UNITTEST</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <HintPath>..\packages\Common.Logging.3.3.1\lib\net40\Common.Logging.dll</HintPath>
@@ -96,32 +105,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants.cs" />
-    <Compile Include="PchomeStockHtmlInfoCollectorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="JobUnitTest\StockPriceHistoryInitJobTest.cs" />
     <Compile Include="JobUnitTest\StockPriceUpdateJobTest.cs" />
-    <Compile Include="StockHtmlInfoCollectorBaseTest.cs" />
-    <Compile Include="UnitTestBase.cs" />
-    <Compile Include="YahooStockHtmlInfoCollectorTest.cs" />
+    <Compile Include="UnitTestLogger.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AuthoringTests.txt" />
-    <Content Include="test materials\pchome_SID_2002.htm" />
-    <Content Include="test materials\yahoo_bio.htm" />
-    <Content Include="test materials\yahoo_cement.htm" />
-    <Content Include="test materials\yahoo_chemical.htm" />
-    <Content Include="test materials\yahoo_electronic.htm" />
-    <Content Include="test materials\yahoo_engine.htm" />
-    <Content Include="test materials\yahoo_food.htm" />
-    <Content Include="test materials\yahoo_otc_all_stock.htm" />
-    <Content Include="test materials\yahoo_glass.htm" />
-    <Content Include="test materials\yahoo_plastic.htm" />
-    <Content Include="test materials\yahoo_SID_2002.htm" />
-    <Content Include="test materials\yahoo_spinning.htm" />
-    <Content Include="test materials\yahoo_steel.htm" />
-    <Content Include="test materials\yahoo_stock_categories.htm" />
-    <Content Include="test materials\yahoo_tse_all_stock.htm" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StockCrawler.Dao\StockCrawler.Dao.csproj">
@@ -138,16 +128,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <None Include="test materials\table.csv" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="database\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
       <Visible>False</Visible>

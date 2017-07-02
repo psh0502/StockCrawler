@@ -14,30 +14,6 @@ namespace StockCrawler.Dao
     {
         protected const string CONST_APP_CONNECTION_KEY = "StockCrawler.Dao.Properties.Settings.StockConnectionString";
         private static readonly ILog _logger = LogManager.GetLogger(typeof(StockDataServiceMySQL));
-        public double GetStockAvgPriceByDate(string sNO, DateTime specifiedDT)
-        {
-            throw new NotImplementedException();
-        }
-
-        public double GetStockMaxPriceByPeriod(string sNO, DateTime beginDT, DateTime endDT)
-        {
-            throw new NotImplementedException();
-        }
-
-        public double GetStockPriceByDate(string sNO, DateTime specifiedDT)
-        {
-            throw new NotImplementedException();
-        }
-
-        public StockDataSet.StockPriceHistoryRow GetStockPriceDataRowByDate(string sNO, DateTime specifiedDT)
-        {
-            throw new NotImplementedException();
-        }
-
-        public StockDataSet.StockPriceHistoryDataTable GetStockPriceHistoryData(string sno, DateTime startDT, DateTime endDT)
-        {
-            throw new NotImplementedException();
-        }
 
         public StockDataSet.StockDataTable GetStocks()
         {
@@ -101,7 +77,7 @@ namespace StockCrawler.Dao
 
         private static MySqlConnection GetMySqlConnection()
         {
-#if(DEBUG)
+#if(UNITTEST)
             return new MySqlConnection("server=localhost;uid=tester;pwd=12345;database=stock");
 #else
             return new MySqlConnection(ConfigurationManager.ConnectionStrings[CONST_APP_CONNECTION_KEY].ConnectionString);
