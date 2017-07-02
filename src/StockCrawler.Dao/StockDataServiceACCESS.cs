@@ -143,5 +143,10 @@ namespace StockCrawler.Dao
             //TODO: RenewStockList
             throw new NotImplementedException();
         }
+
+        public void DeleteStockPriceHistoryData(int? stockId, DateTime? tradeDate)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

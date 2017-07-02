@@ -5,6 +5,7 @@ using StockCrawler.Dao;
 using StockCrawler.Dao.Schema;
 using System;
 using System.Configuration;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -40,6 +41,7 @@ namespace StockCrawler.Services
 
             using (var db = StockDataService.GetServiceInstance(_dbType))
             {
+                db.DeleteStockPriceHistoryData(null, null);
                 foreach (var d in db.GetStocks())
                 {
                     initializeHistoricData(d.StockNo, DateTime.Today.AddYears(-5), DateTime.Today, d.StockID);
@@ -165,9 +167,12 @@ namespace StockCrawler.Services
                             dt.AddStockPriceHistoryRow(dr);
                         }
                     }
+                    catch (ConstraintException ex)
+                    {
+                        _logger.Warn(string.Format("Got duplicate data, skip it...[{0}]", stockNo), ex);
+                    }
                     catch (FormatException)
                     {
-                        Debug.WriteLine(string.Format("Got invalid format data...[{0}]", ln));
                         _logger.WarnFormat("Got invalid format data...[{0}]", ln);
                     }
                 }
