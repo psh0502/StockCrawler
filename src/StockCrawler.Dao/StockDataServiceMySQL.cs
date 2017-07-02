@@ -77,7 +77,7 @@ namespace StockCrawler.Dao
 
         private static MySqlConnection GetMySqlConnection()
         {
-#if(DEBUG)
+#if(UNITTEST)
             return new MySqlConnection("server=localhost;uid=tester;pwd=12345;database=stock");
 #else
             return new MySqlConnection(ConfigurationManager.ConnectionStrings[CONST_APP_CONNECTION_KEY].ConnectionString);
