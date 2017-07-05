@@ -15,7 +15,7 @@ GO
 -- Revision:
 -- =============================================
 CREATE PROCEDURE [dbo].[InsertStockPriceHistoryData]
-@pStockID BIGINT, 
+@pStockID INT, 
 @pStockDT DATETIME, 
 @pOpenPrice DECIMAL(10, 4),
 @pHighPrice DECIMAL(10, 4),

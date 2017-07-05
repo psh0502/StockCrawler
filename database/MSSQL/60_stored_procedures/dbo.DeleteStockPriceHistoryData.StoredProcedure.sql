@@ -15,7 +15,7 @@ GO
 -- Revision:
 -- =============================================
 CREATE PROCEDURE [dbo].[DeleteStockPriceHistoryData]
-@pStockID BIGINT, 
+@pStockID INT, 
 @pTradeDate DATETIME
 AS
 BEGIN
