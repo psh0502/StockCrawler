@@ -24,6 +24,8 @@ namespace StockCrawler.Dao
                     return new StockDataServiceACCESS();
                 case EnumDBType.MYSQL:
                     return new StockDataServiceMySQL();
+                case EnumDBType.MSSQL:
+                    return new StockDataServiceMSSQL();
                 default:
                     throw new NotImplementedException(dbType.ToString());
             }

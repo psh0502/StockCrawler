@@ -82,6 +82,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -92,6 +93,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Stock.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Stock.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="StockDataServiceMSSQL.cs" />
     <Compile Include="StockDataServiceACCESS.cs" />
     <Compile Include="IStockDataService.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -127,6 +134,11 @@
     <None Include="Schema\StockDataSet.xss">
       <DependentUpon>StockDataSet.xsd</DependentUpon>
     </None>
+    <None Include="Stock.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>Stock.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -150,6 +162,14 @@
       <Project>{0E8F9795-19F3-4944-8294-2327E525A46B}</Project>
       <Name>TomTang.DbAccess</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Stock.dbml.layout">
+      <DependentUpon>Stock.dbml</DependentUpon>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

@@ -12,7 +12,7 @@ namespace StockCrawler.Services
     {
         private const string CONST_APPSETTING_DAILY_PRICE_COLLECTOR_TYPE = "DailyCollectorType";
 #if(UNITTEST)
-        private static readonly string _dbType = "MYSQL";
+        private static readonly string _dbType = "MSSQL";
         public static ILog _logger { get; set; }
 #else
         private static readonly ILog _logger = LogManager.GetLogger(typeof(StockPriceUpdateJob));
