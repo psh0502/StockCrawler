@@ -3,7 +3,7 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetSt
 DROP PROCEDURE [dbo].[GetStocks]
 GO
 
-/****** Object:  StoredProcedure [dbo].[DeleteAnnouncement] Script Date: 07/15/2013 20:52:04 ******/
+/****** Object:  StoredProcedure [dbo].[GetStocks] Script Date: 07/15/2013 20:52:04 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
