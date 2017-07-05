@@ -10,7 +10,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[StockPriceHistory](
-	[StockID] [bigint] NOT NULL,
+	[StockID] [int] NOT NULL,
 	[StockDT] [datetime] NOT NULL,
 	[OpenPrice] [decimal](10, 4) NOT NULL DEFAULT (0),
 	[HighPrice] [decimal](10, 4) NOT NULL DEFAULT (0),

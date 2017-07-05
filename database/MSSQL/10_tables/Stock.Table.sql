@@ -13,7 +13,7 @@ SET ANSI_PADDING ON
 GO
 
 CREATE TABLE [dbo].[Stock](
-	[StockID] [bigint] IDENTITY(1,1) NOT NULL,
+	[StockID] [int] IDENTITY(1,1) NOT NULL,
 	[StockNo] [varchar](10) NOT NULL,
 	[StockName] [nvarchar](10) NOT NULL,
 	[Enable] [bit] NOT NULL DEFAULT ((1)),
