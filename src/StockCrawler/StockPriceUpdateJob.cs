@@ -5,6 +5,7 @@ using StockCrawler.Dao.Schema;
 using StockCrawler.Services.StockDailyPrice;
 using System;
 using System.Configuration;
+using System.Reflection;
 
 namespace StockCrawler.Services
 {
@@ -40,6 +41,7 @@ namespace StockCrawler.Services
 
         public void Execute(IJobExecutionContext context)
         {
+            _logger.InfoFormat("Invoke [{0}]...", MethodInfo.GetCurrentMethod().Name);
             if (string.IsNullOrEmpty(CollectorTypeName)) CollectorTypeName = ConfigurationManager.AppSettings[CONST_APPSETTING_DAILY_PRICE_COLLECTOR_TYPE];
             _logger.InfoFormat("[{0}] is going to executing its job by using [{1}].", GetType().FullName, CollectorTypeName);
             try
