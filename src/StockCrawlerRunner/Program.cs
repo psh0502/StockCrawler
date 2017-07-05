@@ -1,8 +1,6 @@
-﻿using log4net.Config;
+﻿using Quartz;
 using StockCrawler.Services;
 using System;
-using System.Diagnostics;
-using System.IO;
 
 namespace StockCrawlerRunner
 {
@@ -10,8 +8,6 @@ namespace StockCrawlerRunner
     {
         static void Main(string[] args)
         {
-            FileInfo fi = new FileInfo("log4net.config");
-            if (fi.Exists) XmlConfigurator.ConfigureAndWatch(fi); else Trace.WriteLine(string.Format("{0} is not existing, use itself config to instead of.", fi.FullName));
             try
             {
                 Console.WriteLine("**StockCrawlerRunner**");
@@ -20,18 +16,23 @@ namespace StockCrawlerRunner
                 Console.WriteLine("==========================================");
                 if (args.Length > 0)
                 {
+                    IJob job = null;
                     switch (args[0])
                     {
                         case "-i":
-                            new StockPriceHistoryInitJob().Execute(null);
+                            job = new StockPriceHistoryInitJob();
                             break;
                         case "-u":
-                            new StockPriceUpdateJob().Execute(null);
+                            job = new StockPriceUpdateJob();
                             break;
                         default:
                             ShowHelp();
                             break;
                     }
+                    if (null != job)
+                        job.Execute(null);
+                    else
+                        Console.WriteLine("No job execute.");
                 }
                 else
                 {

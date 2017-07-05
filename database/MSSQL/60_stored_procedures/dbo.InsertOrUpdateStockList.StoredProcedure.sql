@@ -16,7 +16,7 @@ GO
 -- =============================================
 CREATE PROCEDURE [dbo].[InsertOrUpdateStockList]
 @pStockNo VARCHAR(10), 
-@pStockName VARCHAR(50)
+@pStockName NVARCHAR(10)
 AS
 BEGIN
 	DECLARE @TRUE BIT = 1

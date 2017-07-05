@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 
 namespace StockCrawler.Services
@@ -36,6 +37,7 @@ namespace StockCrawler.Services
 
         public void Execute(IJobExecutionContext context)
         {
+            _logger.InfoFormat("Invoke [{0}]...", MethodInfo.GetCurrentMethod().Name);
             // init stock list
             downloadTwselatestInfo();
 
@@ -55,13 +57,17 @@ namespace StockCrawler.Services
         private void downloadTwselatestInfo()
         {
             byte[] downloaded_data = null;
-            using (var wc = new WebClient())
 #if(UNITTEST)
-                downloaded_data = wc.DownloadData(string.Format("http://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={0}&type=ALLBUT0999", new DateTime(2017, 5, 26).ToString("yyyyMMdd")));
+            string url = string.Format("http://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={0}&type=ALLBUT0999", new DateTime(2017, 5, 26).ToString("yyyyMMdd"));
 #else
-                downloaded_data = wc.DownloadData(string.Format("http://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={0}&type=ALLBUT0999", DateTime.Today.ToString("yyyyMMdd")));
+            string url = string.Format("http://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={0}&type=ALLBUT0999", DateTime.Today.ToString("yyyyMMdd"));
 #endif
-            if (downloaded_data.Length == 0) return; // no data means there's no closed pricing data by the date.It could be caused by national holidays.
+            _logger.DebugFormat("url=[{0}]", url);
+            using (var wc = new WebClient())
+                downloaded_data = wc.DownloadData(url);
+
+            _logger.DebugFormat("downloaded_data.Length={0}", downloaded_data.Length);
+            if (downloaded_data.Length == 0) return; // no data means there's no closed pricing data by the date. It could be caused by national holidays.
 
             string csv_data = Encoding.Default.GetString(downloaded_data);
             // twse csv has some corrupt lines make parse fail.
@@ -89,6 +95,7 @@ namespace StockCrawler.Services
                     dr.Enable = true;
                     dr.DateCreated = DateTime.Now;
                     dt.AddStockRow(dr);
+                    _logger.DebugFormat("StockNo={0} - StockName={1}", dr.StockNo, dr.StockName);
                 }
                 else
                 {
@@ -96,6 +103,7 @@ namespace StockCrawler.Services
                         found_stock_list = true;
                 }
             }
+            _logger.DebugFormat("dt.Count={0}", dt.Count);
             if (dt.Count > 0)
                 StockDataService.GetServiceInstance(_dbType).RenewStockList(dt);
         }
@@ -180,12 +188,12 @@ namespace StockCrawler.Services
             }
             catch (WebException wex)
             {
-                _logger.Error("Got web error but will continue...", wex);
+                _logger.Error(string.Format("Got web error but will continue...(StockNo={0})", stockNo), wex);
                 return;
             }
             catch (Exception ex)
             {
-                _logger.Fatal("Got unrecoverable error!", ex);
+                _logger.Fatal(string.Format("Got unrecoverable error!(StockNo={0})", stockNo), ex);
                 throw;
             }
         }
