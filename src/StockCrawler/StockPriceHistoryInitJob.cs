@@ -18,7 +18,7 @@ namespace StockCrawler.Services
     {
 #if(UNITTEST)
         public static ILog _logger { get; set; }
-        private static readonly string _dbType = "MYSQL";
+        private static readonly string _dbType = "MSSQL";
 #else
         private static readonly ILog _logger = LogManager.GetLogger(typeof(StockPriceHistoryInitJob));
         private static readonly string _dbType = ConfigurationManager.AppSettings["DB_TYPE"];
