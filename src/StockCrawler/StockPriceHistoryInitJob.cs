@@ -43,9 +43,9 @@ namespace StockCrawler.Services
 
             using (var db = StockDataService.GetServiceInstance(_dbType))
             {
-                db.DeleteStockPriceHistoryData(null, null);
                 foreach (var d in db.GetStocks())
                 {
+                    db.DeleteStockPriceHistoryData(d.StockID, null);
                     initializeHistoricData(d.StockNo, DateTime.Today.AddYears(-5), DateTime.Today, d.StockID);
                     _logger.Info(string.Format("Finish the {0} stock history task.", d.StockNo));
                 }
