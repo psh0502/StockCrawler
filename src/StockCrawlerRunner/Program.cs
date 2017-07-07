@@ -53,6 +53,8 @@ namespace StockCrawlerRunner
             Console.WriteLine("StockCrawlerRunner.exe <mode>");
             Console.WriteLine(" <mode>: -i");
             Console.WriteLine("     Initialize all stock history data. It will drop all existing data.");
+            Console.WriteLine(" <mode>: -i [StockNo]");
+            Console.WriteLine("     Initialize only one specified stock history data. It will drop all old data by this stock.");
             Console.WriteLine(" <mode>: -u");
             Console.WriteLine("     Append the latest price data in database.");
         }
