@@ -39,8 +39,6 @@ namespace StockCrawler.Services.StockDailyPrice
             if (downloaded_data.Length == 0) return new StockDailyPriceInfo[] { }; // no data means there's no closed pricing data by the date.It could be caused by national holidays.
 
             string csv_data = Encoding.Default.GetString(downloaded_data);
-            // twse csv has some corrupt lines make parse fail.
-            csv_data = csv_data.Replace("\"\"漲跌價差\"為", "\"\"\"漲跌價差\"\"為").Replace("\"無比價\"含", "\"\"\"無比價\"\"含");
 
             // Usage of CsvReader: http://blog.darkthread.net/post-2017-05-13-servicestack-text-csvserializer.aspx
             var csv_lines = CsvReader.ParseLines(csv_data);
