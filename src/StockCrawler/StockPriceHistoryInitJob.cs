@@ -33,6 +33,8 @@ namespace StockCrawler.Services
 #endif
         }
 
+        public int ProcessingStockID { get; set; }
+
         #region IJob Members
 
         public void Execute(IJobExecutionContext context)
@@ -43,7 +45,7 @@ namespace StockCrawler.Services
 
             using (var db = StockDataService.GetServiceInstance(_dbType))
             {
-                foreach (var d in db.GetStocks())
+                foreach (var d in db.GetStocks().Where(d => d.StockID == ProcessingStockID || ProcessingStockID == -1))
                 {
                     db.DeleteStockPriceHistoryData(d.StockID, null);
                     initializeHistoricData(d.StockNo, DateTime.Today.AddYears(-5), DateTime.Today, d.StockID);
