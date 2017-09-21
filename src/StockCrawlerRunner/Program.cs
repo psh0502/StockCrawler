@@ -1,6 +1,9 @@
 ﻿using Quartz;
+using StockCrawler.Dao;
 using StockCrawler.Services;
 using System;
+using System.Configuration;
+using System.Linq;
 
 namespace StockCrawlerRunner
 {
@@ -20,7 +23,17 @@ namespace StockCrawlerRunner
                     switch (args[0])
                     {
                         case "-i":
-                            job = new StockPriceHistoryInitJob();
+                            int stock_id = -1;
+                            if (args.Length > 1)
+                            {
+                                var stock = StockDataService.GetServiceInstance(
+                                    ConfigurationManager.AppSettings["DB_TYPE"]).GetStocks().Where(
+                                        d => d.StockNo == args[1]).FirstOrDefault();
+
+                                if (null != stock)
+                                    stock_id = stock.StockID;
+                            }
+                            job = new StockPriceHistoryInitJob() { ProcessingStockID = stock_id };
                             break;
                         case "-u":
                             job = new StockPriceUpdateJob();
@@ -53,6 +66,8 @@ namespace StockCrawlerRunner
             Console.WriteLine("StockCrawlerRunner.exe <mode>");
             Console.WriteLine(" <mode>: -i");
             Console.WriteLine("     Initialize all stock history data. It will drop all existing data.");
+            Console.WriteLine(" <mode>: -i [StockNo]");
+            Console.WriteLine("     Initialize only one specified stock history data. It will drop all old data by this stock.");
             Console.WriteLine(" <mode>: -u");
             Console.WriteLine("     Append the latest price data in database.");
         }
