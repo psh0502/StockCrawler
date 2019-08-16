@@ -58,13 +58,15 @@ namespace StockCrawler.Services
 
         private void downloadTwselatestInfo()
         {
-            byte[] downloaded_data = null;
+            string downloaded_data = null;
 #if(UNITTEST)
             string url = string.Format("https://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={0}&type=ALLBUT0999", new DateTime(2017, 5, 26).ToString("yyyyMMdd"));
 #else
             string url = string.Format("https://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={0}&type=ALLBUT0999", DateTime.Today.ToString("yyyyMMdd"));
 #endif
             _logger.DebugFormat("url=[{0}]", url);
+            // https://blog.darkthread.net/blog/disable-tls-1-0-issues
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             var req = HttpWebRequest.CreateHttp(url);
             req.Method = "GET";
             req.UserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36";
@@ -72,14 +74,11 @@ namespace StockCrawler.Services
             using (var res1 = req.GetResponse())
             {
                 var stream = res1.GetResponseStream();
-                downloaded_data = new byte[stream.Length];
-                stream.Read(downloaded_data, 0, downloaded_data.Length);
+                using (var sr = new StreamReader(stream, Encoding.Default))
+                    downloaded_data = sr.ReadToEnd();
             }
 
-            _logger.DebugFormat("downloaded_data.Length={0}", downloaded_data.Length);
-            if (downloaded_data.Length == 0) return; // no data means there's no closed pricing data by the date. It could be caused by national holidays.
-
-            string csv_data = Encoding.Default.GetString(downloaded_data);
+            string csv_data = downloaded_data;
 
             // Usage of CsvReader: http://blog.darkthread.net/post-2017-05-13-servicestack-text-csvserializer.aspx
             var csv_lines = CsvReader.ParseLines(csv_data);
