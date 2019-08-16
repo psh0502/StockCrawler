@@ -34,13 +34,13 @@ namespace StockCrawler.Services.StockDailyPrice
         {
             byte[] downloaded_data = null;
             using (var wc = new WebClient())
-                downloaded_data = wc.DownloadData(string.Format("http://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={0}&type=ALLBUT0999", day.ToString("yyyyMMdd")));
+                downloaded_data = wc.DownloadData(string.Format("https://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={0}&type=ALLBUT0999", day.ToString("yyyyMMdd")));
 
             if (downloaded_data.Length == 0) return new StockDailyPriceInfo[] { }; // no data means there's no closed pricing data by the date.It could be caused by national holidays.
 
             string csv_data = Encoding.Default.GetString(downloaded_data);
 
-            // Usage of CsvReader: http://blog.darkthread.net/post-2017-05-13-servicestack-text-csvserializer.aspx
+            // Usage of CsvReader: https://blog.darkthread.net/post-2017-05-13-servicestack-text-csvserializer.aspx
             var csv_lines = CsvReader.ParseLines(csv_data);
             var dsily_info = new List<StockDailyPriceInfo>();
             bool found_stock_list = false;
