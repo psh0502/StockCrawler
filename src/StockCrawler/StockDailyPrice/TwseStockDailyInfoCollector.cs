@@ -33,6 +33,7 @@ namespace StockCrawler.Services.StockDailyPrice
         private static StockDailyPriceInfo[] GetAllStockDailyPriceInfo(DateTime day)
         {
             byte[] downloaded_data = null;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             using (var wc = new WebClient())
                 downloaded_data = wc.DownloadData(string.Format("https://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={0}&type=ALLBUT0999", day.ToString("yyyyMMdd")));
 
