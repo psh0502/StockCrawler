@@ -20,7 +20,7 @@ namespace StockCrawler.Services.StockDailyPrice
                         _logger.Info("Initialize all stock information cache.");
                         _stockInfoDict = new Dictionary<string, StockDailyPriceInfo>();
 #if(UNITTEST)
-                        foreach (var info in GetAllStockDailyPriceInfo(new DateTime(2017, 6, 29)))
+                        foreach (var info in GetAllStockDailyPriceInfo(new DateTime(2019, 6, 29)))
 #else
                         foreach (var info in GetAllStockDailyPriceInfo(DateTime.Today))
 #endif
@@ -43,7 +43,7 @@ namespace StockCrawler.Services.StockDailyPrice
 
             // Usage of CsvReader: https://blog.darkthread.net/post-2017-05-13-servicestack-text-csvserializer.aspx
             var csv_lines = CsvReader.ParseLines(csv_data);
-            var dsily_info = new List<StockDailyPriceInfo>();
+            var daily_info = new List<StockDailyPriceInfo>();
             bool found_stock_list = false;
             foreach (var ln in csv_lines)
             {
@@ -61,7 +61,7 @@ namespace StockCrawler.Services.StockDailyPrice
                         if (!string.IsNullOrEmpty(data[i]))
                             data[i] = data[i].Replace("--", "0").Replace(",", string.Empty);
 
-                    dsily_info.Add(new StockDailyPriceInfo()
+                    daily_info.Add(new StockDailyPriceInfo()
                     {
                         StockCode = data[0].Replace("=\"", string.Empty).Replace("\"", string.Empty),
                         StockName = data[1],
@@ -79,7 +79,7 @@ namespace StockCrawler.Services.StockDailyPrice
                         found_stock_list = true;
                 }
             }
-            return dsily_info.ToArray();
+            return daily_info.ToArray();
         }
     }
 }
