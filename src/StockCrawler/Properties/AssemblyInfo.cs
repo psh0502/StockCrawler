@@ -33,10 +33,10 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 #if(DEBUG)
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("2013.0203.0.0")]
+[assembly: AssemblyFileVersion("2020.0802.0.0")]
 [assembly: AssemblyDescription("Debug build")]
 #else
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("2013.0203.1.0")]
+[assembly: AssemblyFileVersion("2020.0802.1.0")]
 [assembly: AssemblyDescription("Release build")]
 #endif
