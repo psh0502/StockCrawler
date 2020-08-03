@@ -29,7 +29,7 @@
               <xs:element name="StockName" msprop:Generator_ColumnVarNameInTable="columnStockName" msprop:Generator_ColumnPropNameInRow="StockName" msprop:Generator_ColumnPropNameInTable="StockNameColumn" msprop:Generator_UserColumnName="StockName" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
-                    <xs:maxLength value="10" />
+                    <xs:maxLength value="50" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
@@ -67,7 +67,7 @@
   </xs:element>
   <xs:annotation>
     <xs:appinfo>
-      <msdata:Relationship name="StockStockPriceHistory" msdata:parent="Stock" msdata:child="StockPriceHistory" msdata:parentkey="StockID" msdata:childkey="StockID" msprop:Generator_UserChildTable="StockPriceHistory" msprop:Generator_ChildPropName="GetStockPriceHistoryRows" msprop:Generator_UserRelationName="StockStockPriceHistory" msprop:Generator_ParentPropName="StockRow" msprop:Generator_RelationVarName="relationStockStockPriceHistory" msprop:Generator_UserParentTable="Stock" />
+      <msdata:Relationship name="StockStockPriceHistory" msdata:parent="Stock" msdata:child="StockPriceHistory" msdata:parentkey="StockID" msdata:childkey="StockID" msprop:Generator_UserChildTable="StockPriceHistory" msprop:Generator_ChildPropName="GetStockPriceHistoryRows" msprop:Generator_UserRelationName="StockStockPriceHistory" msprop:Generator_RelationVarName="relationStockStockPriceHistory" msprop:Generator_UserParentTable="Stock" msprop:Generator_ParentPropName="StockRow" />
     </xs:appinfo>
   </xs:annotation>
 </xs:schema>

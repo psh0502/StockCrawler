@@ -15,7 +15,7 @@ GO
 CREATE TABLE [dbo].[Stock](
 	[StockID] [int] IDENTITY(1,1) NOT NULL,
 	[StockNo] [varchar](10) NOT NULL,
-	[StockName] [nvarchar](10) NOT NULL,
+	[StockName] [nvarchar](50) NOT NULL,
 	[Enable] [bit] NOT NULL DEFAULT ((1)),
 	[DateCreated] [datetime] NOT NULL DEFAULT (GETDATE()),
  CONSTRAINT [PK_Stock] PRIMARY KEY CLUSTERED 

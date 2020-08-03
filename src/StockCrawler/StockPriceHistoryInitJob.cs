@@ -6,7 +6,6 @@ using StockCrawler.Dao.Schema;
 using System;
 using System.Configuration;
 using System.Data;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -39,16 +38,16 @@ namespace StockCrawler.Services
 
         public void Execute(IJobExecutionContext context)
         {
-            _logger.InfoFormat("Invoke [{0}]...", MethodInfo.GetCurrentMethod().Name);
+            _logger.InfoFormat("Invoke [{0}]...", MethodBase.GetCurrentMethod().Name);
             // init stock list
-            downloadTwselatestInfo();
+            DownloadTwselatestInfo();
 
             using (var db = StockDataService.GetServiceInstance(_dbType))
             {
                 foreach (var d in db.GetStocks().Where(d => d.StockID == ProcessingStockID || ProcessingStockID == -1))
                 {
                     db.DeleteStockPriceHistoryData(d.StockID, null);
-                    initializeHistoricData(d.StockNo, DateTime.Today.AddYears(-5), DateTime.Today, d.StockID);
+                    InitializeHistoricData(d.StockNo, DateTime.Today.AddYears(-5), DateTime.Today, d.StockID);
                     _logger.Info(string.Format("Finish the {0} stock history task.", d.StockNo));
                 }
             }
@@ -56,7 +55,7 @@ namespace StockCrawler.Services
 
         #endregion
 
-        private void downloadTwselatestInfo()
+        private void DownloadTwselatestInfo()
         {
             string downloaded_data = null;
 #if(UNITTEST)
@@ -115,7 +114,7 @@ namespace StockCrawler.Services
                 StockDataService.GetServiceInstance(_dbType).RenewStockList(dt);
         }
 
-        private string downloadYahooStockCSV(string stockNo, DateTime startDT, DateTime endDT)
+        private string DownloadYahooStockCSV(string stockNo, DateTime startDT, DateTime endDT)
         {
             DateTime base_date = new DateTime(1970, 1, 1);
             HttpWebRequest req = null;
@@ -153,11 +152,11 @@ namespace StockCrawler.Services
                 return sr.ReadToEnd();
         }
 
-        private void initializeHistoricData(string stockNo, DateTime startDT, DateTime endDT, int stockID)
+        private void InitializeHistoricData(string stockNo, DateTime startDT, DateTime endDT, int stockID)
         {
             try
             {
-                var csv_data = downloadYahooStockCSV(stockNo, startDT, endDT);
+                var csv_data = DownloadYahooStockCSV(stockNo, startDT, endDT);
 
                 var csv_lines = CsvReader.ParseLines(csv_data).Skip(1);
 
