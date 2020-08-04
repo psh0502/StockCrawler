@@ -21,7 +21,7 @@ AS
 BEGIN
 	DECLARE @TRUE BIT = 1
 	IF EXISTS(SELECT [StockID] FROM [Stock] WHERE [StockNo] = @pStockNo)
-		UPDATE [Stock] SET [Enable] = @TRUE WHERE [StockNo] = @pStockNo
+		UPDATE [Stock] SET [Enable] = @TRUE, StockName = @pStockName WHERE [StockNo] = @pStockNo
 	ELSE
 		INSERT INTO [Stock](
 			[StockNo],
