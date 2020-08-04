@@ -11,7 +11,7 @@ namespace StockCrawler.Services.StockDailyPrice
     {
         private static readonly ILog _logger = LogManager.GetLogger(typeof(TwseStockDailyInfoCollector));
         private Dictionary<string, StockDailyPriceInfo> _stockInfoDict = null;
-        public StockDailyPriceInfo GetStockDailyPriceInfo(string stock_code)
+        public StockDailyPriceInfo GetStockDailyPriceInfo(string stockCode)
         {
             if (null == _stockInfoDict)
                 lock (this)
@@ -30,7 +30,7 @@ namespace StockCrawler.Services.StockDailyPrice
                         }
                     }
 
-            return (_stockInfoDict.ContainsKey(stock_code)) ? _stockInfoDict[stock_code] : null;
+            return (_stockInfoDict.ContainsKey(stockCode)) ? _stockInfoDict[stockCode] : null;
         }
 
         private static StockDailyPriceInfo[] GetAllStockDailyPriceInfo(DateTime day)

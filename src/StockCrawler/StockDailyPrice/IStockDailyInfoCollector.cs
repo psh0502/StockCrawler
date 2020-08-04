@@ -4,7 +4,7 @@ namespace StockCrawler.Services.StockDailyPrice
 {
     public interface IStockDailyInfoCollector
     {
-        StockDailyPriceInfo GetStockDailyPriceInfo(string stock_code);
+        StockDailyPriceInfo GetStockDailyPriceInfo(string stockCode);
     }
 
     public class StockDailyPriceInfo
@@ -19,7 +19,7 @@ namespace StockCrawler.Services.StockDailyPrice
         public long Volume { get; set; }
         public override string ToString()
         {
-            return $"StockCode={StockCode}, StockName={StockName}, LastTradeDT={LastTradeDT:yyyyMMdd HH:mm}, OpenPrice={OpenPrice}, HighPrice={HighPrice}, LowPrice={LowPrice}, ClosePrice={ClosePrice}, Volume={Volume}";
+            return $"StockCode={StockCode}, StockName={StockName}, LastTradeDT={LastTradeDT:yyyyMMdd}, OpenPrice={OpenPrice}, HighPrice={HighPrice}, LowPrice={LowPrice}, ClosePrice={ClosePrice}, Volume={Volume}";
         }
     }
 }
