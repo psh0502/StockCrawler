@@ -142,10 +142,6 @@
       <Project>{A65FA381-30EF-4399-BC8C-4F3A451ABFF2}</Project>
       <Name>StockCrawler.Dao</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TomTang.DbAccess\TomTang.DbAccess.csproj">
-      <Project>{0e8f9795-19f3-4944-8294-2327e525a46b}</Project>
-      <Name>TomTang.DbAccess</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

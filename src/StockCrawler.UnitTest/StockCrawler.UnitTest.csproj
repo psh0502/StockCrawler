@@ -122,10 +122,6 @@
       <Project>{D93A54DA-7267-4BB9-9FE2-ADD4808816CF}</Project>
       <Name>StockCrawler</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TomTang.DbAccess\TomTang.DbAccess.csproj">
-      <Project>{0e8f9795-19f3-4944-8294-2327e525a46b}</Project>
-      <Name>TomTang.DbAccess</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="job_scheduling_data_2_0.xsd">

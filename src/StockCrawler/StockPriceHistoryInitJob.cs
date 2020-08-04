@@ -4,7 +4,6 @@ using ServiceStack.Text;
 using StockCrawler.Dao;
 using StockCrawler.Dao.Schema;
 using System;
-using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -18,10 +17,8 @@ namespace StockCrawler.Services
     {
 #if(UNITTEST)
         public static ILog _logger { get; set; }
-        private static readonly string _dbType = "MSSQL";
 #else
         private static readonly ILog _logger = LogManager.GetLogger(typeof(StockPriceHistoryInitJob));
-        private static readonly string _dbType = ConfigurationManager.AppSettings["DB_TYPE"];
 #endif
         public StockPriceHistoryInitJob()
             : base()
@@ -42,13 +39,13 @@ namespace StockCrawler.Services
             // init stock list
             DownloadTwselatestInfo();
 
-            using (var db = StockDataService.GetServiceInstance(_dbType))
+            using (var db = StockDataService.GetServiceInstance())
             {
                 foreach (var d in db.GetStocks().Where(d => d.StockID == ProcessingStockID || ProcessingStockID == -1))
                 {
                     db.DeleteStockPriceHistoryData(d.StockID, null);
-                    InitializeHistoricData(d.StockNo, DateTime.Today.AddYears(-5), DateTime.Today, d.StockID);
-                    _logger.Info(string.Format("Finish the {0} stock history task.", d.StockNo));
+                    InitializeHistoricData(d.StockNo, DateTime.Today.AddYears(-2), DateTime.Today, d.StockID);
+                    _logger.InfoFormat("Finish the {0} stock history task.", d.StockNo);
                 }
             }
         }
@@ -66,7 +63,7 @@ namespace StockCrawler.Services
             _logger.DebugFormat("url=[{0}]", url);
             // https://blog.darkthread.net/blog/disable-tls-1-0-issues
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            var req = HttpWebRequest.CreateHttp(url);
+            var req = WebRequest.CreateHttp(url);
             req.Method = "GET";
             req.UserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36";
             req.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
@@ -111,7 +108,7 @@ namespace StockCrawler.Services
             }
             _logger.DebugFormat("dt.Count={0}", dt.Count);
             if (dt.Count > 0)
-                StockDataService.GetServiceInstance(_dbType).RenewStockList(dt);
+                StockDataService.GetServiceInstance().RenewStockList(dt);
         }
 
         private string DownloadYahooStockCSV(string stockNo, DateTime startDT, DateTime endDT)
@@ -190,7 +187,7 @@ namespace StockCrawler.Services
                         _logger.WarnFormat("Got invalid format data...[{0}]", ln);
                     }
                 }
-                StockDataService.GetServiceInstance(_dbType).UpdateStockPriceHistoryDataTable(dt);
+                StockDataService.GetServiceInstance().UpdateStockPriceHistoryDataTable(dt);
             }
             catch (WebException wex)
             {

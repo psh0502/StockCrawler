@@ -13,11 +13,9 @@ namespace StockCrawler.Services
     {
         private const string CONST_APPSETTING_DAILY_PRICE_COLLECTOR_TYPE = "DailyCollectorType";
 #if(UNITTEST)
-        private static readonly string _dbType = "MSSQL";
         public static ILog _logger { get; set; }
 #else
         private static readonly ILog _logger = LogManager.GetLogger(typeof(StockPriceUpdateJob));
-        private static readonly string _dbType = ConfigurationManager.AppSettings["DB_TYPE"];
 #endif
 
         public StockPriceUpdateJob()
@@ -41,13 +39,13 @@ namespace StockCrawler.Services
 
         public void Execute(IJobExecutionContext context)
         {
-            _logger.InfoFormat("Invoke [{0}]...", MethodInfo.GetCurrentMethod().Name);
+            _logger.InfoFormat("Invoke [{0}]...", MethodBase.GetCurrentMethod().Name);
             if (string.IsNullOrEmpty(CollectorTypeName)) CollectorTypeName = ConfigurationManager.AppSettings[CONST_APPSETTING_DAILY_PRICE_COLLECTOR_TYPE];
             _logger.InfoFormat("[{0}] is going to executing its job by using [{1}].", GetType().FullName, CollectorTypeName);
             try
             {
                 StockDataSet.StockPriceHistoryDataTable dt = new StockDataSet.StockPriceHistoryDataTable();
-                using (var db = StockDataService.GetServiceInstance(_dbType))
+                using (var db = StockDataService.GetServiceInstance())
                 {
                     IStockDailyInfoCollector collector = StockDailyInfoCollectorProvider.GetDailyPriceCollector(CollectorTypeName);
                     foreach (var d in db.GetStocks())
@@ -57,6 +55,7 @@ namespace StockCrawler.Services
                         if (null != info)
                         {
                             _logger.Debug(info);
+                            db.UpdateStockName(info.StockCode, info.StockName);
                             if (info.Volume > 0)
                             {
                                 StockDataSet.StockPriceHistoryRow dr = dt.NewStockPriceHistoryRow();

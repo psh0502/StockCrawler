@@ -1,13 +1,10 @@
-﻿using log4net;
-using StockCrawler.Dao.Schema;
+﻿using StockCrawler.Dao.Schema;
 using System;
 
 namespace StockCrawler.Dao
 {
     internal class StockDataServiceMSSQL : IStockDataService
     {
-        private static readonly ILog _logger = LogManager.GetLogger(typeof(StockDataServiceMSSQL));
-
         public StockDataSet.StockDataTable GetStocks()
         {
             StockDataSet.StockDataTable dt = new StockDataSet.StockDataTable();
@@ -70,6 +67,11 @@ namespace StockCrawler.Dao
         {
             using (var db = GetMSSQLStockDataContext())
                 db.DeleteStockPriceHistoryData(stockId, tradeDate);
+        }
+        public void UpdateStockName(string stockNo, string stockName)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                db.InsertOrUpdateStockList(stockNo, stockName);
         }
     }
 }

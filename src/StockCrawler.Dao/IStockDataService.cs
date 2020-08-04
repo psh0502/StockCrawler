@@ -37,6 +37,12 @@ namespace StockCrawler.Dao
         StockDataSet.StockDataTable GetStocks();
         void UpdateStockPriceHistoryDataTable(StockDataSet.StockPriceHistoryDataTable dt);
         void RenewStockList(StockDataSet.StockDataTable dt);
+        /// <summary>
+        /// Update stock name by stock no
+        /// </summary>
+        /// <param name="stockNo">stock no</param>
+        /// <param name="stockName">stock name</param>
+        void UpdateStockName(string stockNo, string stockName);
         void DeleteStockPriceHistoryData(int? stockId, DateTime? tradeDate);
     }
 }

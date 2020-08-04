@@ -2,7 +2,6 @@
 using StockCrawler.Dao;
 using StockCrawler.Services;
 using System;
-using System.Configuration;
 using System.Linq;
 
 namespace StockCrawlerRunner
@@ -26,9 +25,8 @@ namespace StockCrawlerRunner
                             int stock_id = -1;
                             if (args.Length > 1)
                             {
-                                var stock = StockDataService.GetServiceInstance(
-                                    ConfigurationManager.AppSettings["DB_TYPE"]).GetStocks().Where(
-                                        d => d.StockNo == args[1]).FirstOrDefault();
+                                var stock = StockDataService.GetServiceInstance().GetStocks()
+                                    .Where(d => d.StockNo == args[1]).FirstOrDefault();
 
                                 if (null != stock)
                                     stock_id = stock.StockID;
