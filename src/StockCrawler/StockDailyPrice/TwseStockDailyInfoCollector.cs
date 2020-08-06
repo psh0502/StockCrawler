@@ -19,12 +19,8 @@ namespace StockCrawler.Services.StockDailyPrice
                     {
                         _logger.Info("Initialize all stock information cache.");
                         _stockInfoDict = new Dictionary<string, StockDailyPriceInfo>();
-#if(UNITTEST)
-                        foreach (var info in GetAllStockDailyPriceInfo(new DateTime(2019, 6, 29))) {
-#else
-                        foreach (var info in GetAllStockDailyPriceInfo(DateTime.Today))
+                        foreach (var info in GetAllStockDailyPriceInfo(SystemTime.Today))
                         {
-#endif
                             _stockInfoDict[info.StockNo] = info;
                             _logger.DebugFormat("[{0}] {1}", info.StockNo, info.ClosePrice);
                         }

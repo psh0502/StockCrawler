@@ -22,7 +22,7 @@ namespace StockCrawler.Services
             if (null == Logger)
                 Logger = LogManager.GetLogger(typeof(StockPriceHistoryInitJob));
         }
-        public string ProcessingStockNo { get; set; }
+        internal string ProcessingStockNo { get; set; }
 
         #region IJob Members
         public void Execute(IJobExecutionContext context)
@@ -36,7 +36,7 @@ namespace StockCrawler.Services
                 foreach (var d in db.GetStocks().Where(d => string.IsNullOrEmpty(ProcessingStockNo) || d.StockNo == ProcessingStockNo))
                 {
                     db.DeleteStockPriceHistoryData(d.StockNo, null);
-                    InitializeHistoricData(d.StockNo, DateTime.Today.AddYears(-2), DateTime.Today);
+                    InitializeHistoricData(d.StockNo, SystemTime.Today.AddYears(-2), SystemTime.Today);
                     Logger.InfoFormat("Finish the {0} stock history task.", d.StockNo);
                 }
             }
@@ -45,11 +45,7 @@ namespace StockCrawler.Services
 
         private void DownloadTwseLatestInfo()
         {
-#if(UNITTEST)
-            string url = string.Format("https://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={0}&type=ALLBUT0999", new DateTime(2017, 5, 26).ToString("yyyyMMdd"));
-#else
-            string url = string.Format("https://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={0}&type=ALLBUT0999", DateTime.Today.ToString("yyyyMMdd"));
-#endif
+            string url = string.Format("https://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={0}&type=ALLBUT0999", SystemTime.Today.ToString("yyyyMMdd"));
             Logger.DebugFormat("url=[{0}]", url);
             
             var csv_data = Tools.DownloadStringData(url, Encoding.Default);

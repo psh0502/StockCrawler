@@ -41,3 +41,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Release build")]
 #endif
 [assembly: InternalsVisibleTo("StockCrawler.UnitTest")]
+[assembly: InternalsVisibleTo("StockCrawlerRunner")]

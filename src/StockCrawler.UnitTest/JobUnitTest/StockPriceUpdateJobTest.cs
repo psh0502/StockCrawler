@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Quartz;
 using StockCrawler.Services;
+using System;
 
 namespace StockCrawler.UnitTest.JobUnitTest
 {
@@ -17,6 +18,7 @@ namespace StockCrawler.UnitTest.JobUnitTest
         [TestMethod()]
         public void StockPriceUpdateTest()
         {
+            Services.SystemTime.SetFakeTime(new DateTime(2019, 6, 29));
             StockPriceUpdateJob.Logger = new UnitTestLogger();
             StockPriceUpdateJob target = new StockPriceUpdateJob("StockCrawler.Services.StockDailyPrice.TwseStockDailyInfoCollector, StockCrawler.Services");
             IJobExecutionContext context = null;

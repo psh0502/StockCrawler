@@ -118,6 +118,7 @@
     <Compile Include="StockPriceUpdateJob.cs" />
     <Compile Include="StockPriceHistoryInitJob.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SystemTime.cs" />
     <Compile Include="Tools.cs" />
   </ItemGroup>
   <ItemGroup>

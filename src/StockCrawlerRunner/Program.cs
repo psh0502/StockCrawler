@@ -22,7 +22,9 @@ namespace StockCrawlerRunner
                         case "-i":
                             string stockNo = null;
                             if (args.Length > 1)
-                                stockNo = args[1];
+                                StockCrawler.Services.SystemTime.SetFakeTime(DateTime.Parse(args[1]));
+                            if (args.Length > 2)
+                                stockNo = args[2];
 
                             job = new StockPriceHistoryInitJob() { ProcessingStockNo = stockNo };
                             break;
@@ -60,7 +62,9 @@ namespace StockCrawlerRunner
             Console.WriteLine("StockCrawlerRunner.exe <mode>");
             Console.WriteLine(" <mode>: -i");
             Console.WriteLine("     Initialize all stock history data. It will drop all existing data.");
-            Console.WriteLine(" <mode>: -i [StockNo]");
+            Console.WriteLine(" <mode>: -i [Date:yyyy/MM/dd]");
+            Console.WriteLine("     Initialize all stock history data by the specified date. It will drop all existing data.");
+            Console.WriteLine(" <mode>: -i <Date:yyyy/MM/dd> [StockNo]");
             Console.WriteLine("     Initialize only one specified stock history data. It will drop all old data by this stock.");
             Console.WriteLine(" <mode>: -u");
             Console.WriteLine("     Append the latest price data in database.");
