@@ -1,4 +1,5 @@
-﻿using Quartz;
+﻿using Common.Logging;
+using Quartz;
 using StockCrawler.Services;
 using System;
 
@@ -6,6 +7,7 @@ namespace StockCrawlerRunner
 {
     class Program
     {
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(Program));
         static void Main(string[] args)
         {
             try
@@ -48,10 +50,16 @@ namespace StockCrawlerRunner
                     ShowHelp();
                 }
             }
-            catch (Exception Ex)
+            catch (Exception ex)
             {
-                Console.WriteLine(Ex);
+                _logger.Error(ex.Message, ex);
+                Console.WriteLine(ex);
                 throw;
+            }
+            finally
+            {
+                _logger.Info("END");
+                Console.WriteLine("END");
             }
         }
 
