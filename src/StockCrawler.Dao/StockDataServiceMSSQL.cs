@@ -13,9 +13,7 @@ namespace StockCrawler.Dao
                 foreach (var d in db.GetStocks())
                 {
                     var dr = dt.NewStockRow();
-                    dr.DateCreated = d.DateCreated;
                     dr.Enable = d.Enable;
-                    dr.StockID = d.StockID;
                     dr.StockName = d.StockName;
                     dr.StockNo = d.StockNo;
 
@@ -30,7 +28,7 @@ namespace StockCrawler.Dao
             using (var db = GetMSSQLStockDataContext())
                 foreach (var dr in dt)
                     db.InsertStockPriceHistoryData(
-                        dr.StockID,
+                        dr.StockNo,
                         dr.StockDT,
                         dr.OpenPrice,
                         dr.HighPrice,
@@ -46,7 +44,7 @@ namespace StockCrawler.Dao
             {
                 db.DisableAllStocks();
                 foreach (var dr in dt)
-                    db.InsertOrUpdateStockList(dr.StockNo, dr.StockName);
+                    db.InsertOrUpdateStock(dr.StockNo, dr.StockName);
             }
         }
 
@@ -63,15 +61,15 @@ namespace StockCrawler.Dao
         {
         }
 
-        public void DeleteStockPriceHistoryData(int? stockId, DateTime? tradeDate)
+        public void DeleteStockPriceHistoryData(string stockNo, DateTime? tradeDate)
         {
             using (var db = GetMSSQLStockDataContext())
-                db.DeleteStockPriceHistoryData(stockId, tradeDate);
+                db.DeleteStockPriceHistoryData(stockNo, tradeDate);
         }
         public void UpdateStockName(string stockNo, string stockName)
         {
             using (var db = GetMSSQLStockDataContext())
-                db.InsertOrUpdateStockList(stockNo, stockName);
+                db.InsertOrUpdateStock(stockNo, stockName);
         }
     }
 }

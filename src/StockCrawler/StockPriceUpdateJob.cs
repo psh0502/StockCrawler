@@ -55,11 +55,11 @@ namespace StockCrawler.Services
                         if (null != info)
                         {
                             _logger.Debug(info);
-                            db.UpdateStockName(info.StockCode, info.StockName);
+                            db.UpdateStockName(info.StockNo, info.StockName);
                             if (info.Volume > 0)
                             {
                                 StockDataSet.StockPriceHistoryRow dr = dt.NewStockPriceHistoryRow();
-                                dr.StockID = d.StockID;
+                                dr.StockNo = info.StockNo;
                                 dr.StockDT = info.LastTradeDT.Date;
                                 dr.OpenPrice = info.OpenPrice;
                                 dr.HighPrice = info.HighPrice;
@@ -67,7 +67,6 @@ namespace StockCrawler.Services
                                 dr.ClosePrice = info.ClosePrice;
                                 dr.Volume = info.Volume;
                                 dr.AdjClosePrice = info.ClosePrice;
-                                dr.DateCreated = DateTime.Now;
 
                                 dt.AddStockPriceHistoryRow(dr);
 

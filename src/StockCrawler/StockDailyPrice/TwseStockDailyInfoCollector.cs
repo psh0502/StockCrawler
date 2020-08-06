@@ -11,7 +11,7 @@ namespace StockCrawler.Services.StockDailyPrice
     {
         private static readonly ILog _logger = LogManager.GetLogger(typeof(TwseStockDailyInfoCollector));
         private Dictionary<string, StockDailyPriceInfo> _stockInfoDict = null;
-        public StockDailyPriceInfo GetStockDailyPriceInfo(string stockCode)
+        public StockDailyPriceInfo GetStockDailyPriceInfo(string stockNo)
         {
             if (null == _stockInfoDict)
                 lock (this)
@@ -25,12 +25,12 @@ namespace StockCrawler.Services.StockDailyPrice
                         foreach (var info in GetAllStockDailyPriceInfo(DateTime.Today))
                         {
 #endif
-                            _stockInfoDict[info.StockCode] = info;
-                            _logger.DebugFormat("[{0}] {1}", info.StockCode, info.ClosePrice);
+                            _stockInfoDict[info.StockNo] = info;
+                            _logger.DebugFormat("[{0}] {1}", info.StockNo, info.ClosePrice);
                         }
                     }
 
-            return (_stockInfoDict.ContainsKey(stockCode)) ? _stockInfoDict[stockCode] : null;
+            return (_stockInfoDict.ContainsKey(stockNo)) ? _stockInfoDict[stockNo] : null;
         }
 
         private static StockDailyPriceInfo[] GetAllStockDailyPriceInfo(DateTime day)
@@ -70,7 +70,7 @@ namespace StockCrawler.Services.StockDailyPrice
 
                     daily_info.Add(new StockDailyPriceInfo()
                     {
-                        StockCode = data[0].Replace("=\"", string.Empty).Replace("\"", string.Empty),
+                        StockNo = data[0].Replace("=\"", string.Empty).Replace("\"", string.Empty),
                         StockName = data[1],
                         Volume = long.Parse(data[2]) / 1000,
                         LastTradeDT = day,

@@ -32,5 +32,15 @@ namespace StockCrawler.Dao.Properties {
                 return ((string)(this["StockConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\SQLEXPRESS;Initial Catalog=Stock;Integrated Security=True")]
+        public string StockConnectionString1 {
+            get {
+                return ((string)(this["StockConnectionString1"]));
+            }
+        }
     }
 }

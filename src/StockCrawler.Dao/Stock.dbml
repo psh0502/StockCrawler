@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Stock" Class="StockDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Stock;Integrated Security=True" SettingsObjectName="StockCrawler.Dao.Properties.Settings" SettingsPropertyName="StockConnectionString1" Provider="System.Data.SqlClient" />
   <Function Name="dbo.DeleteStockPriceHistoryData" Method="DeleteStockPriceHistoryData">
-    <Parameter Name="pStockID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="pTradeDate" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pTradeDate" Type="System.DateTime" DbType="Date" />
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.InsertStockPriceHistoryData" Method="InsertStockPriceHistoryData">
-    <Parameter Name="pStockID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="pStockDT" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="pStockDT" Type="System.DateTime" DbType="Date" />
     <Parameter Name="pOpenPrice" Type="System.Decimal" DbType="Decimal(10,4)" />
     <Parameter Name="pHighPrice" Type="System.Decimal" DbType="Decimal(10,4)" />
     <Parameter Name="pLowPrice" Type="System.Decimal" DbType="Decimal(10,4)" />
@@ -19,18 +19,56 @@
   <Function Name="dbo.DisableAllStocks" Method="DisableAllStocks">
     <Return Type="System.Int32" />
   </Function>
-  <Function Name="dbo.GetStocks" Method="GetStocks">
-    <ElementType Name="GetStocksResult">
-      <Column Name="StockID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+  <Function Name="dbo.GetStockBasicInfo" Method="GetStockBasicInfo">
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <ElementType Name="GetStockBasicInfoResult">
       <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="StockName" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="Enable" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="StockName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="StockNo1" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="Category" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="CompanyName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="CompanyID" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="BuildDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="PublishDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="Capital" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="MarketValue" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="ReleaseStockCount" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="Chairman" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="CEO" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Url" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Businiess" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
     </ElementType>
   </Function>
-  <Function Name="dbo.InsertOrUpdateStockList" Method="InsertOrUpdateStockList">
+  <Function Name="dbo.GetStocks" Method="GetStocks">
+    <ElementType Name="GetStocksResult">
+      <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="StockName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Enable" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.InsertOrUpdateStock" Method="InsertOrUpdateStock">
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
     <Parameter Name="pStockName" Type="System.String" DbType="NVarChar(50)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.InsertOrUpdateStockBasicInfo" Method="InsertOrUpdateStockBasicInfo">
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pCategory" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="pCompanyName" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="pCompanyID" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pBuildDate" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="pPublishDate" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="pCapital" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pMarketValue" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pReleaseStockCount" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="pChairman" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="pCEO" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="pUrl" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="pBusiness" Type="System.String" DbType="NVarChar(1000)" />
     <Return Type="System.Int32" />
   </Function>
 </Database>

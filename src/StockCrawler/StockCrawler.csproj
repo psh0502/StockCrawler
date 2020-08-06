@@ -105,6 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="JobBase.cs" />
+    <Compile Include="StockBasicInfo\IStockBasicInfoCollector.cs" />
     <Compile Include="StockDailyPrice\IStockDailyInfoCollector.cs" />
     <Compile Include="StockDailyPrice\TwseStockDailyInfoCollector.cs" />
     <Compile Include="StockPriceUpdateJob.cs" />

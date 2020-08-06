@@ -28,7 +28,7 @@ namespace StockCrawler.Dao.Schema {
         
         private StockPriceHistoryDataTable tableStockPriceHistory;
         
-        private global::System.Data.DataRelation relationStockStockPriceHistory;
+        private global::System.Data.DataRelation relationStockPriceHistory_Stock;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
@@ -220,7 +220,7 @@ namespace StockCrawler.Dao.Schema {
                     this.tableStockPriceHistory.InitVars();
                 }
             }
-            this.relationStockStockPriceHistory = this.Relations["StockStockPriceHistory"];
+            this.relationStockPriceHistory_Stock = this.Relations["StockPriceHistory_Stock"];
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -235,10 +235,10 @@ namespace StockCrawler.Dao.Schema {
             base.Tables.Add(this.tableStock);
             this.tableStockPriceHistory = new StockPriceHistoryDataTable();
             base.Tables.Add(this.tableStockPriceHistory);
-            this.relationStockStockPriceHistory = new global::System.Data.DataRelation("StockStockPriceHistory", new global::System.Data.DataColumn[] {
-                        this.tableStock.StockIDColumn}, new global::System.Data.DataColumn[] {
-                        this.tableStockPriceHistory.StockIDColumn}, false);
-            this.Relations.Add(this.relationStockStockPriceHistory);
+            this.relationStockPriceHistory_Stock = new global::System.Data.DataRelation("StockPriceHistory_Stock", new global::System.Data.DataColumn[] {
+                        this.tableStockPriceHistory.StockNoColumn}, new global::System.Data.DataColumn[] {
+                        this.tableStock.StockNoColumn}, false);
+            this.Relations.Add(this.relationStockPriceHistory_Stock);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -321,15 +321,11 @@ namespace StockCrawler.Dao.Schema {
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class StockDataTable : global::System.Data.TypedTableBase<StockRow> {
             
-            private global::System.Data.DataColumn columnStockID;
-            
             private global::System.Data.DataColumn columnStockNo;
             
             private global::System.Data.DataColumn columnStockName;
             
             private global::System.Data.DataColumn columnEnable;
-            
-            private global::System.Data.DataColumn columnDateCreated;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
@@ -366,14 +362,6 @@ namespace StockCrawler.Dao.Schema {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn StockIDColumn {
-                get {
-                    return this.columnStockID;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public global::System.Data.DataColumn StockNoColumn {
                 get {
                     return this.columnStockNo;
@@ -393,14 +381,6 @@ namespace StockCrawler.Dao.Schema {
             public global::System.Data.DataColumn EnableColumn {
                 get {
                     return this.columnEnable;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn DateCreatedColumn {
-                get {
-                    return this.columnDateCreated;
                 }
             }
             
@@ -441,14 +421,15 @@ namespace StockCrawler.Dao.Schema {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public StockRow AddStockRow(string StockNo, string StockName, bool Enable, System.DateTime DateCreated) {
+            public StockRow AddStockRow(StockPriceHistoryRow parentStockPriceHistoryRowByStockPriceHistory_Stock, string StockName, bool Enable) {
                 StockRow rowStockRow = ((StockRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
-                        StockNo,
                         StockName,
-                        Enable,
-                        DateCreated};
+                        Enable};
+                if ((parentStockPriceHistoryRowByStockPriceHistory_Stock != null)) {
+                    columnValuesArray[0] = parentStockPriceHistoryRowByStockPriceHistory_Stock[0];
+                }
                 rowStockRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowStockRow);
                 return rowStockRow;
@@ -456,9 +437,9 @@ namespace StockCrawler.Dao.Schema {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public StockRow FindByStockID(int StockID) {
+            public StockRow FindByStockNo(string StockNo) {
                 return ((StockRow)(this.Rows.Find(new object[] {
-                            StockID})));
+                            StockNo})));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -478,33 +459,24 @@ namespace StockCrawler.Dao.Schema {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             internal void InitVars() {
-                this.columnStockID = base.Columns["StockID"];
                 this.columnStockNo = base.Columns["StockNo"];
                 this.columnStockName = base.Columns["StockName"];
                 this.columnEnable = base.Columns["Enable"];
-                this.columnDateCreated = base.Columns["DateCreated"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             private void InitClass() {
-                this.columnStockID = new global::System.Data.DataColumn("StockID", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnStockID);
                 this.columnStockNo = new global::System.Data.DataColumn("StockNo", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnStockNo);
                 this.columnStockName = new global::System.Data.DataColumn("StockName", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnStockName);
                 this.columnEnable = new global::System.Data.DataColumn("Enable", typeof(bool), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnEnable);
-                this.columnDateCreated = new global::System.Data.DataColumn("DateCreated", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnDateCreated);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
-                                this.columnStockID}, true));
-                this.columnStockID.AutoIncrement = true;
-                this.columnStockID.AutoIncrementSeed = -1;
-                this.columnStockID.AutoIncrementStep = -1;
-                this.columnStockID.AllowDBNull = false;
-                this.columnStockID.Unique = true;
+                                this.columnStockNo}, true));
+                this.columnStockNo.AllowDBNull = false;
+                this.columnStockNo.Unique = true;
                 this.columnStockNo.MaxLength = 10;
                 this.columnStockName.MaxLength = 50;
             }
@@ -640,7 +612,7 @@ namespace StockCrawler.Dao.Schema {
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class StockPriceHistoryDataTable : global::System.Data.TypedTableBase<StockPriceHistoryRow> {
             
-            private global::System.Data.DataColumn columnStockID;
+            private global::System.Data.DataColumn columnStockNo;
             
             private global::System.Data.DataColumn columnStockDT;
             
@@ -655,8 +627,6 @@ namespace StockCrawler.Dao.Schema {
             private global::System.Data.DataColumn columnVolume;
             
             private global::System.Data.DataColumn columnAdjClosePrice;
-            
-            private global::System.Data.DataColumn columnDateCreated;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
@@ -693,9 +663,9 @@ namespace StockCrawler.Dao.Schema {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn StockIDColumn {
+            public global::System.Data.DataColumn StockNoColumn {
                 get {
-                    return this.columnStockID;
+                    return this.columnStockNo;
                 }
             }
             
@@ -757,14 +727,6 @@ namespace StockCrawler.Dao.Schema {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn DateCreatedColumn {
-                get {
-                    return this.columnDateCreated;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -800,21 +762,17 @@ namespace StockCrawler.Dao.Schema {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public StockPriceHistoryRow AddStockPriceHistoryRow(StockRow parentStockRowByStockStockPriceHistory, System.DateTime StockDT, decimal OpenPrice, decimal HighPrice, decimal LowPrice, decimal ClosePrice, long Volume, decimal AdjClosePrice, System.DateTime DateCreated) {
+            public StockPriceHistoryRow AddStockPriceHistoryRow(string StockNo, System.DateTime StockDT, decimal OpenPrice, decimal HighPrice, decimal LowPrice, decimal ClosePrice, long Volume, decimal AdjClosePrice) {
                 StockPriceHistoryRow rowStockPriceHistoryRow = ((StockPriceHistoryRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
-                        null,
+                        StockNo,
                         StockDT,
                         OpenPrice,
                         HighPrice,
                         LowPrice,
                         ClosePrice,
                         Volume,
-                        AdjClosePrice,
-                        DateCreated};
-                if ((parentStockRowByStockStockPriceHistory != null)) {
-                    columnValuesArray[0] = parentStockRowByStockStockPriceHistory[0];
-                }
+                        AdjClosePrice};
                 rowStockPriceHistoryRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowStockPriceHistoryRow);
                 return rowStockPriceHistoryRow;
@@ -822,9 +780,9 @@ namespace StockCrawler.Dao.Schema {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public StockPriceHistoryRow FindByStockIDStockDT(int StockID, System.DateTime StockDT) {
+            public StockPriceHistoryRow FindByStockNoStockDT(string StockNo, System.DateTime StockDT) {
                 return ((StockPriceHistoryRow)(this.Rows.Find(new object[] {
-                            StockID,
+                            StockNo,
                             StockDT})));
             }
             
@@ -845,7 +803,7 @@ namespace StockCrawler.Dao.Schema {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             internal void InitVars() {
-                this.columnStockID = base.Columns["StockID"];
+                this.columnStockNo = base.Columns["StockNo"];
                 this.columnStockDT = base.Columns["StockDT"];
                 this.columnOpenPrice = base.Columns["OpenPrice"];
                 this.columnHighPrice = base.Columns["HighPrice"];
@@ -853,14 +811,13 @@ namespace StockCrawler.Dao.Schema {
                 this.columnClosePrice = base.Columns["ClosePrice"];
                 this.columnVolume = base.Columns["Volume"];
                 this.columnAdjClosePrice = base.Columns["AdjClosePrice"];
-                this.columnDateCreated = base.Columns["DateCreated"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             private void InitClass() {
-                this.columnStockID = new global::System.Data.DataColumn("StockID", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnStockID);
+                this.columnStockNo = new global::System.Data.DataColumn("StockNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnStockNo);
                 this.columnStockDT = new global::System.Data.DataColumn("StockDT", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnStockDT);
                 this.columnOpenPrice = new global::System.Data.DataColumn("OpenPrice", typeof(decimal), null, global::System.Data.MappingType.Element);
@@ -875,12 +832,10 @@ namespace StockCrawler.Dao.Schema {
                 base.Columns.Add(this.columnVolume);
                 this.columnAdjClosePrice = new global::System.Data.DataColumn("AdjClosePrice", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAdjClosePrice);
-                this.columnDateCreated = new global::System.Data.DataColumn("DateCreated", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnDateCreated);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
-                                this.columnStockID,
+                                this.columnStockNo,
                                 this.columnStockDT}, true));
-                this.columnStockID.AllowDBNull = false;
+                this.columnStockNo.AllowDBNull = false;
                 this.columnStockDT.AllowDBNull = false;
             }
             
@@ -1024,25 +979,9 @@ namespace StockCrawler.Dao.Schema {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public int StockID {
-                get {
-                    return ((int)(this[this.tableStock.StockIDColumn]));
-                }
-                set {
-                    this[this.tableStock.StockIDColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public string StockNo {
                 get {
-                    try {
-                        return ((string)(this[this.tableStock.StockNoColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("資料表 \'Stock\' 中資料行 \'StockNo\' 的值是 DBNull。", e);
-                    }
+                    return ((string)(this[this.tableStock.StockNoColumn]));
                 }
                 set {
                     this[this.tableStock.StockNoColumn] = value;
@@ -1083,30 +1022,13 @@ namespace StockCrawler.Dao.Schema {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public System.DateTime DateCreated {
+            public StockPriceHistoryRow StockPriceHistoryRow {
                 get {
-                    try {
-                        return ((global::System.DateTime)(this[this.tableStock.DateCreatedColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("資料表 \'Stock\' 中資料行 \'DateCreated\' 的值是 DBNull。", e);
-                    }
+                    return ((StockPriceHistoryRow)(this.GetParentRow(this.Table.ParentRelations["StockPriceHistory_Stock"])));
                 }
                 set {
-                    this[this.tableStock.DateCreatedColumn] = value;
+                    this.SetParentRow(value, this.Table.ParentRelations["StockPriceHistory_Stock"]);
                 }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsStockNoNull() {
-                return this.IsNull(this.tableStock.StockNoColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetStockNoNull() {
-                this[this.tableStock.StockNoColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1132,29 +1054,6 @@ namespace StockCrawler.Dao.Schema {
             public void SetEnableNull() {
                 this[this.tableStock.EnableColumn] = global::System.Convert.DBNull;
             }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsDateCreatedNull() {
-                return this.IsNull(this.tableStock.DateCreatedColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetDateCreatedNull() {
-                this[this.tableStock.DateCreatedColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public StockPriceHistoryRow[] GetStockPriceHistoryRows() {
-                if ((this.Table.ChildRelations["StockStockPriceHistory"] == null)) {
-                    return new StockPriceHistoryRow[0];
-                }
-                else {
-                    return ((StockPriceHistoryRow[])(base.GetChildRows(this.Table.ChildRelations["StockStockPriceHistory"])));
-                }
-            }
         }
         
         /// <summary>
@@ -1173,12 +1072,12 @@ namespace StockCrawler.Dao.Schema {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public int StockID {
+            public string StockNo {
                 get {
-                    return ((int)(this[this.tableStockPriceHistory.StockIDColumn]));
+                    return ((string)(this[this.tableStockPriceHistory.StockNoColumn]));
                 }
                 set {
-                    this[this.tableStockPriceHistory.StockIDColumn] = value;
+                    this[this.tableStockPriceHistory.StockNoColumn] = value;
                 }
             }
             
@@ -1291,33 +1190,6 @@ namespace StockCrawler.Dao.Schema {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public System.DateTime DateCreated {
-                get {
-                    try {
-                        return ((global::System.DateTime)(this[this.tableStockPriceHistory.DateCreatedColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("資料表 \'StockPriceHistory\' 中資料行 \'DateCreated\' 的值是 DBNull。", e);
-                    }
-                }
-                set {
-                    this[this.tableStockPriceHistory.DateCreatedColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public StockRow StockRow {
-                get {
-                    return ((StockRow)(this.GetParentRow(this.Table.ParentRelations["StockStockPriceHistory"])));
-                }
-                set {
-                    this.SetParentRow(value, this.Table.ParentRelations["StockStockPriceHistory"]);
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public bool IsOpenPriceNull() {
                 return this.IsNull(this.tableStockPriceHistory.OpenPriceColumn);
             }
@@ -1390,14 +1262,13 @@ namespace StockCrawler.Dao.Schema {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsDateCreatedNull() {
-                return this.IsNull(this.tableStockPriceHistory.DateCreatedColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetDateCreatedNull() {
-                this[this.tableStockPriceHistory.DateCreatedColumn] = global::System.Convert.DBNull;
+            public StockRow[] GetStockRows() {
+                if ((this.Table.ChildRelations["StockPriceHistory_Stock"] == null)) {
+                    return new StockRow[0];
+                }
+                else {
+                    return ((StockRow[])(base.GetChildRows(this.Table.ChildRelations["StockPriceHistory_Stock"])));
+                }
             }
         }
         

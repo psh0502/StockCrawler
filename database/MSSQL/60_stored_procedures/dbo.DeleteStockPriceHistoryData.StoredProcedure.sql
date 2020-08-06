@@ -15,13 +15,13 @@ GO
 -- Revision:
 -- =============================================
 CREATE PROCEDURE [dbo].[DeleteStockPriceHistoryData]
-@pStockID INT, 
-@pTradeDate DATETIME
+@pStockNo VARCHAR(10), 
+@pTradeDate DATE
 AS
 BEGIN
 	DELETE FROM [StockPriceHistory]
     WHERE
-		(@pStockID IS NULL OR @pStockID < 0 OR StockID = @pStockID)
+		(@pStockNo IS NULL OR @pStockNo < 0 OR StockNo = @pStockNo)
 		AND (@pTradeDate IS NULL OR [StockDT] = @pTradeDate);
 END
 GO

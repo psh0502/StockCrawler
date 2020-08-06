@@ -7,7 +7,6 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading;
-using TomTang.DbAccess;
 
 namespace StockCrawler.UnitTest.JobUnitTest
 {
@@ -36,10 +35,9 @@ namespace StockCrawler.UnitTest.JobUnitTest
         {
             try
             {
-                HttpWebRequest req = null;
                 string s = "https://finance.yahoo.com/quote/2002.TW/history?period1=1339344000&period2=1497110400&interval=1d&filter=history&frequency=1d";
                 Cookie c1 = null;
-                req = HttpWebRequest.CreateHttp(s);
+                var req = WebRequest.CreateHttp(s);
                 req.Method = "GET";
                 req.UserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36";
                 req.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
@@ -60,7 +58,7 @@ namespace StockCrawler.UnitTest.JobUnitTest
                     }
                 }
 
-                req = HttpWebRequest.CreateHttp("https://query1.finance.yahoo.com/v7/finance/download/2002.TW?period1=1339344000&period2=1497110400&interval=1d&events=history&crumb=" + crumb);
+                req = WebRequest.CreateHttp("https://query1.finance.yahoo.com/v7/finance/download/2002.TW?period1=1339344000&period2=1497110400&interval=1d&events=history&crumb=" + crumb);
                 req.Method = "GET";
                 req.CookieContainer = new CookieContainer();
                 req.CookieContainer.Add(c1);

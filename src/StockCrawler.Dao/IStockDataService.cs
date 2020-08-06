@@ -43,6 +43,6 @@ namespace StockCrawler.Dao
         /// <param name="stockNo">stock no</param>
         /// <param name="stockName">stock name</param>
         void UpdateStockName(string stockNo, string stockName);
-        void DeleteStockPriceHistoryData(int? stockId, DateTime? tradeDate);
+        void DeleteStockPriceHistoryData(string stockNo, DateTime? tradeDate);
     }
 }

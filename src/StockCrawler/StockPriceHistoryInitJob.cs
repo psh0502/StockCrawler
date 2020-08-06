@@ -29,7 +29,7 @@ namespace StockCrawler.Services
 #endif
         }
 
-        public int ProcessingStockID { get; set; }
+        public string ProcessingStockNo { get; set; }
 
         #region IJob Members
 
@@ -41,10 +41,10 @@ namespace StockCrawler.Services
 
             using (var db = StockDataService.GetServiceInstance())
             {
-                foreach (var d in db.GetStocks().Where(d => d.StockID == ProcessingStockID || ProcessingStockID == -1))
+                foreach (var d in db.GetStocks().Where(d => d.StockNo == ProcessingStockNo || string.IsNullOrEmpty(ProcessingStockNo)))
                 {
-                    db.DeleteStockPriceHistoryData(d.StockID, null);
-                    InitializeHistoricData(d.StockNo, DateTime.Today.AddYears(-2), DateTime.Today, d.StockID);
+                    db.DeleteStockPriceHistoryData(d.StockNo, null);
+                    InitializeHistoricData(d.StockNo, DateTime.Today.AddYears(-2), DateTime.Today);
                     _logger.InfoFormat("Finish the {0} stock history task.", d.StockNo);
                 }
             }
@@ -96,7 +96,6 @@ namespace StockCrawler.Services
                     dr.StockNo = data[0].Replace("=\"", string.Empty).Replace("\"", string.Empty);
                     dr.StockName = data[1];
                     dr.Enable = true;
-                    dr.DateCreated = DateTime.Now;
                     dt.AddStockRow(dr);
                     _logger.DebugFormat("StockNo={0} - StockName={1}", dr.StockNo, dr.StockName);
                 }
@@ -149,7 +148,7 @@ namespace StockCrawler.Services
                 return sr.ReadToEnd();
         }
 
-        private void InitializeHistoricData(string stockNo, DateTime startDT, DateTime endDT, int stockID)
+        private void InitializeHistoricData(string stockNo, DateTime startDT, DateTime endDT)
         {
             try
             {
@@ -173,8 +172,7 @@ namespace StockCrawler.Services
                             dr.ClosePrice = decimal.Parse(data[4]);
                             dr.AdjClosePrice = decimal.Parse(data[5]);
                             dr.Volume = long.Parse(data[6]) / 1000;
-                            dr.StockID = stockID;
-                            dr.DateCreated = DateTime.Now;
+                            dr.StockNo = stockNo;
                             dt.AddStockPriceHistoryRow(dr);
                         }
                     }

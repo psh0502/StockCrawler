@@ -93,6 +93,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Schema\StockDataSet.cs">
+      <DependentUpon>StockDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Stock.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

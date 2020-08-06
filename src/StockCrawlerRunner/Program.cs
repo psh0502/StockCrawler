@@ -1,8 +1,6 @@
 ﻿using Quartz;
-using StockCrawler.Dao;
 using StockCrawler.Services;
 using System;
-using System.Linq;
 
 namespace StockCrawlerRunner
 {
@@ -22,16 +20,11 @@ namespace StockCrawlerRunner
                     switch (args[0])
                     {
                         case "-i":
-                            int stock_id = -1;
+                            string stockNo = null;
                             if (args.Length > 1)
-                            {
-                                var stock = StockDataService.GetServiceInstance().GetStocks()
-                                    .Where(d => d.StockNo == args[1]).FirstOrDefault();
+                                stockNo = args[1];
 
-                                if (null != stock)
-                                    stock_id = stock.StockID;
-                            }
-                            job = new StockPriceHistoryInitJob() { ProcessingStockID = stock_id };
+                            job = new StockPriceHistoryInitJob() { ProcessingStockNo = stockNo };
                             break;
                         case "-u":
                             job = new StockPriceUpdateJob();

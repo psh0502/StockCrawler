@@ -18,6 +18,6 @@ CREATE PROCEDURE [dbo].[DisableAllStocks]
 AS
 BEGIN
 	DECLARE @FALSE BIT = 0
-	UPDATE [Stock] SET [Enable] = @FALSE;
+	UPDATE [Stock] SET [Enable] = @FALSE, LastModifiedAt = GETDATE()
 END
 GO

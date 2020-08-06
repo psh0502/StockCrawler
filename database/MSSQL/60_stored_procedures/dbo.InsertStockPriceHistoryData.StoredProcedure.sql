@@ -15,8 +15,8 @@ GO
 -- Revision:
 -- =============================================
 CREATE PROCEDURE [dbo].[InsertStockPriceHistoryData]
-@pStockID INT, 
-@pStockDT DATETIME, 
+@pStockNo VARCHAR(20), 
+@pStockDT DATE, 
 @pOpenPrice DECIMAL(10, 4),
 @pHighPrice DECIMAL(10, 4),
 @pLowPrice DECIMAL(10, 4),
@@ -26,7 +26,7 @@ CREATE PROCEDURE [dbo].[InsertStockPriceHistoryData]
 AS
 BEGIN
 	INSERT INTO [StockPriceHistory](
-		[StockID],
+		[StockNo],
         [StockDT],
         [OpenPrice], 
         [HighPrice],
@@ -35,7 +35,7 @@ BEGIN
         [Volume],
         [AdjClosePrice]) 
 	VALUES(
-		@pStockID, 
+		@pStockNo, 
         @pStockDT, 
         @pOpenPrice,
         @pHighPrice,
