@@ -12,25 +12,19 @@ namespace StockCrawler.Services
     public class StockPriceUpdateJob : JobBase, IJob
     {
         private const string CONST_APPSETTING_DAILY_PRICE_COLLECTOR_TYPE = "DailyCollectorType";
-#if(UNITTEST)
-        public static ILog _logger { get; set; }
-#else
-        private static readonly ILog _logger = LogManager.GetLogger(typeof(StockPriceUpdateJob));
-#endif
+        internal static ILog Logger { get; set; } = LogManager.GetLogger(typeof(StockPriceUpdateJob));
 
         public StockPriceUpdateJob()
             : base()
         {
-#if(UNITTEST)
-            if (null == _logger)
-                _logger = LogManager.GetLogger(typeof(StockPriceUpdateJob));
-#endif
+            if (null == Logger)
+                Logger = LogManager.GetLogger(typeof(StockPriceUpdateJob));
         }
 
-        public StockPriceUpdateJob(string collector_type_name)
+        public StockPriceUpdateJob(string collectorTypeName)
             : this()
         {
-            CollectorTypeName = collector_type_name;
+            CollectorTypeName = collectorTypeName;
         }
 
         public string CollectorTypeName { get; private set; }
@@ -39,9 +33,9 @@ namespace StockCrawler.Services
 
         public void Execute(IJobExecutionContext context)
         {
-            _logger.InfoFormat("Invoke [{0}]...", MethodBase.GetCurrentMethod().Name);
+            Logger.InfoFormat("Invoke [{0}]...", MethodBase.GetCurrentMethod().Name);
             if (string.IsNullOrEmpty(CollectorTypeName)) CollectorTypeName = ConfigurationManager.AppSettings[CONST_APPSETTING_DAILY_PRICE_COLLECTOR_TYPE];
-            _logger.InfoFormat("[{0}] is going to executing its job by using [{1}].", GetType().FullName, CollectorTypeName);
+            Logger.InfoFormat("[{0}] is going to executing its job by using [{1}].", GetType().FullName, CollectorTypeName);
             try
             {
                 StockDataSet.StockPriceHistoryDataTable dt = new StockDataSet.StockPriceHistoryDataTable();
@@ -50,11 +44,11 @@ namespace StockCrawler.Services
                     IStockDailyInfoCollector collector = StockDailyInfoCollectorProvider.GetDailyPriceCollector(CollectorTypeName);
                     foreach (var d in db.GetStocks())
                     {
-                        _logger.DebugFormat("Retrieving daily price of [{0}] stock.", d.StockNo);
+                        Logger.DebugFormat("Retrieving daily price of [{0}] stock.", d.StockNo);
                         StockDailyPriceInfo info = collector.GetStockDailyPriceInfo(d.StockNo);
                         if (null != info)
                         {
-                            _logger.Debug(info);
+                            Logger.Debug(info);
                             db.UpdateStockName(info.StockNo, info.StockName);
                             if (info.Volume > 0)
                             {
@@ -70,35 +64,34 @@ namespace StockCrawler.Services
 
                                 dt.AddStockPriceHistoryRow(dr);
 
-                                _logger.InfoFormat("Finish the {0} stock daily price retrieving task.", d.StockNo);
+                                Logger.InfoFormat("Finish the {0} stock daily price retrieving task.", d.StockNo);
                             }
                             else
                             {
-                                _logger.WarnFormat("The {0} stock has no volumn today, skip it.", d.StockNo);
+                                Logger.WarnFormat("The {0} stock has no volumn today, skip it.", d.StockNo);
                             }
                         }
                     }
                     db.UpdateStockPriceHistoryDataTable(dt);
                 }
             }
-            catch (Exception Ex)
+            catch (Exception ex)
             {
-                _logger.Error("Job executing failed!", Ex);
+                Logger.Error("Job executing failed!", ex);
                 throw;
             }
         }
-
         #endregion
     }
 
     public class StockDailyInfoCollectorProvider
     {
         private StockDailyInfoCollectorProvider() { }
-        public static IStockDailyInfoCollector GetDailyPriceCollector(string class_assembly_qualified_name)
+        public static IStockDailyInfoCollector GetDailyPriceCollector(string classAssemblyQualifiedName)
         {
-            Type collector_type = Type.GetType(class_assembly_qualified_name);
+            var collector_type = Type.GetType(classAssemblyQualifiedName);
             IStockDailyInfoCollector collector = (IStockDailyInfoCollector)Activator.CreateInstance(collector_type);
-            if (collector == null) throw new NullReferenceException(class_assembly_qualified_name + " is unavailable collector type, please check your setting.");
+            if (collector == null) throw new NullReferenceException(classAssemblyQualifiedName + " is unavailable collector type, please check your setting.");
             return collector;
         }
     }

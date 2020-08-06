@@ -15,29 +15,21 @@ namespace StockCrawler.Services
 {
     public class StockPriceHistoryInitJob : JobBase, IJob
     {
-#if(UNITTEST)
-        public static ILog _logger { get; set; }
-#else
-        private static readonly ILog _logger = LogManager.GetLogger(typeof(StockPriceHistoryInitJob));
-#endif
+        public static ILog Logger { get; set; } = LogManager.GetLogger(typeof(StockPriceHistoryInitJob));
         public StockPriceHistoryInitJob()
             : base()
         {
-#if(UNITTEST)
-            if (null == _logger)
-                _logger = LogManager.GetLogger(typeof(StockPriceHistoryInitJob));
-#endif
+            if (null == Logger)
+                Logger = LogManager.GetLogger(typeof(StockPriceHistoryInitJob));
         }
-
-        public string ProcessingStockNo { get; set; }
+        private string ProcessingStockNo { get; set; }
 
         #region IJob Members
-
         public void Execute(IJobExecutionContext context)
         {
-            _logger.InfoFormat("Invoke [{0}]...", MethodBase.GetCurrentMethod().Name);
+            Logger.InfoFormat("Invoke [{0}]...", MethodBase.GetCurrentMethod().Name);
             // init stock list
-            DownloadTwselatestInfo();
+            DownloadTwseLatestInfo();
 
             using (var db = StockDataService.GetServiceInstance())
             {
@@ -45,36 +37,22 @@ namespace StockCrawler.Services
                 {
                     db.DeleteStockPriceHistoryData(d.StockNo, null);
                     InitializeHistoricData(d.StockNo, DateTime.Today.AddYears(-2), DateTime.Today);
-                    _logger.InfoFormat("Finish the {0} stock history task.", d.StockNo);
+                    Logger.InfoFormat("Finish the {0} stock history task.", d.StockNo);
                 }
             }
         }
-
         #endregion
 
-        private void DownloadTwselatestInfo()
+        private void DownloadTwseLatestInfo()
         {
-            string downloaded_data = null;
 #if(UNITTEST)
             string url = string.Format("https://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={0}&type=ALLBUT0999", new DateTime(2017, 5, 26).ToString("yyyyMMdd"));
 #else
             string url = string.Format("https://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={0}&type=ALLBUT0999", DateTime.Today.ToString("yyyyMMdd"));
 #endif
-            _logger.DebugFormat("url=[{0}]", url);
-            // https://blog.darkthread.net/blog/disable-tls-1-0-issues
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            var req = WebRequest.CreateHttp(url);
-            req.Method = "GET";
-            req.UserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36";
-            req.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
-            using (var res1 = req.GetResponse())
-            {
-                var stream = res1.GetResponseStream();
-                using (var sr = new StreamReader(stream, Encoding.Default))
-                    downloaded_data = sr.ReadToEnd();
-            }
-
-            string csv_data = downloaded_data;
+            Logger.DebugFormat("url=[{0}]", url);
+            
+            var csv_data = Tools.DownloadStringData(url, Encoding.Default);
 
             // Usage of CsvReader: http://blog.darkthread.net/post-2017-05-13-servicestack-text-csvserializer.aspx
             var csv_lines = CsvReader.ParseLines(csv_data);
@@ -97,7 +75,7 @@ namespace StockCrawler.Services
                     dr.StockName = data[1];
                     dr.Enable = true;
                     dt.AddStockRow(dr);
-                    _logger.DebugFormat("StockNo={0} - StockName={1}", dr.StockNo, dr.StockName);
+                    Logger.DebugFormat("StockNo={0} - StockName={1}", dr.StockNo, dr.StockName);
                 }
                 else
                 {
@@ -105,23 +83,20 @@ namespace StockCrawler.Services
                         found_stock_list = true;
                 }
             }
-            _logger.DebugFormat("dt.Count={0}", dt.Count);
+            Logger.DebugFormat("dt.Count={0}", dt.Count);
             if (dt.Count > 0)
                 StockDataService.GetServiceInstance().RenewStockList(dt);
         }
-
         private string DownloadYahooStockCSV(string stockNo, DateTime startDT, DateTime endDT)
         {
             DateTime base_date = new DateTime(1970, 1, 1);
-            HttpWebRequest req = null;
             string url = string.Format("https://finance.yahoo.com/quote/{0}.TW/history?period1={1}&period2={2}&interval=1d&filter=history&frequency=1d",
                 stockNo, (startDT - base_date).TotalSeconds, (endDT - base_date).TotalSeconds);
             Cookie c1 = null;
-            req = HttpWebRequest.CreateHttp(url);
+            var req = WebRequest.CreateHttp(url);
             req.Method = "GET";
             req.UserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36";
             req.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
-            Uri target = new Uri("https://query1.finance.yahoo.com/");
             string crumb = null;
             using (var res1 = req.GetResponse())
             {
@@ -138,7 +113,7 @@ namespace StockCrawler.Services
                 }
             }
 
-            req = HttpWebRequest.CreateHttp(string.Format("https://query1.finance.yahoo.com/v7/finance/download/{0}.TW?period1={1}&period2={2}&interval=1d&events=history&crumb={3}",
+            req = WebRequest.CreateHttp(string.Format("https://query1.finance.yahoo.com/v7/finance/download/{0}.TW?period1={1}&period2={2}&interval=1d&events=history&crumb={3}",
                 stockNo, (startDT - base_date).TotalSeconds, (endDT - base_date).TotalSeconds, crumb));
             req.Method = "GET";
             req.CookieContainer = new CookieContainer();
@@ -147,7 +122,6 @@ namespace StockCrawler.Services
             using (var sr = new StreamReader(res.GetResponseStream(), Encoding.UTF8))
                 return sr.ReadToEnd();
         }
-
         private void InitializeHistoricData(string stockNo, DateTime startDT, DateTime endDT)
         {
             try
@@ -178,23 +152,23 @@ namespace StockCrawler.Services
                     }
                     catch (ConstraintException ex)
                     {
-                        _logger.Warn(string.Format("Got duplicate data, skip it...[{0}]", stockNo), ex);
+                        Logger.Warn(string.Format("Got duplicate data, skip it...[{0}]", stockNo), ex);
                     }
                     catch (FormatException)
                     {
-                        _logger.WarnFormat("Got invalid format data...[{0}]", ln);
+                        Logger.WarnFormat("Got invalid format data...[{0}]", ln);
                     }
                 }
                 StockDataService.GetServiceInstance().UpdateStockPriceHistoryDataTable(dt);
             }
             catch (WebException wex)
             {
-                _logger.Error(string.Format("Got web error but will continue...(StockNo={0})", stockNo), wex);
+                Logger.Error(string.Format("Got web error but will continue...(StockNo={0})", stockNo), wex);
                 return;
             }
             catch (Exception ex)
             {
-                _logger.Fatal(string.Format("Got unrecoverable error!(StockNo={0})", stockNo), ex);
+                Logger.Fatal(string.Format("Got unrecoverable error!(StockNo={0})", stockNo), ex);
                 throw;
             }
         }

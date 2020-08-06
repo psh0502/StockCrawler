@@ -40,3 +40,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("2020.0802.1.0")]
 [assembly: AssemblyDescription("Release build")]
 #endif
+[assembly: InternalsVisibleTo("StockCrawler.UnitTest")]
