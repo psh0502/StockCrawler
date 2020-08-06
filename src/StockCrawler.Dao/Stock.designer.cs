@@ -33,7 +33,7 @@ namespace StockCrawler.Dao
     #endregion
 		
 		public StockDataContext() : 
-				base(global::StockCrawler.Dao.Properties.Settings.Default.StockConnectionString1, mappingSource)
+				base(global::StockCrawler.Dao.Properties.Settings.Default.StockConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
