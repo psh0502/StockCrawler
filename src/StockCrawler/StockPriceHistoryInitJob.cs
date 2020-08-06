@@ -22,7 +22,7 @@ namespace StockCrawler.Services
             if (null == Logger)
                 Logger = LogManager.GetLogger(typeof(StockPriceHistoryInitJob));
         }
-        private string ProcessingStockNo { get; set; }
+        public string ProcessingStockNo { get; set; }
 
         #region IJob Members
         public void Execute(IJobExecutionContext context)
@@ -31,9 +31,9 @@ namespace StockCrawler.Services
             // init stock list
             DownloadTwseLatestInfo();
 
-            using (var db = StockDataService.GetServiceInstance())
+            using (var db = StockDataServiceProvider.GetServiceInstance())
             {
-                foreach (var d in db.GetStocks().Where(d => d.StockNo == ProcessingStockNo || string.IsNullOrEmpty(ProcessingStockNo)))
+                foreach (var d in db.GetStocks().Where(d => string.IsNullOrEmpty(ProcessingStockNo) || d.StockNo == ProcessingStockNo))
                 {
                     db.DeleteStockPriceHistoryData(d.StockNo, null);
                     InitializeHistoricData(d.StockNo, DateTime.Today.AddYears(-2), DateTime.Today);
@@ -85,7 +85,7 @@ namespace StockCrawler.Services
             }
             Logger.DebugFormat("dt.Count={0}", dt.Count);
             if (dt.Count > 0)
-                StockDataService.GetServiceInstance().RenewStockList(dt);
+                StockDataServiceProvider.GetServiceInstance().RenewStockList(dt);
         }
         private string DownloadYahooStockCSV(string stockNo, DateTime startDT, DateTime endDT)
         {
@@ -159,7 +159,7 @@ namespace StockCrawler.Services
                         Logger.WarnFormat("Got invalid format data...[{0}]", ln);
                     }
                 }
-                StockDataService.GetServiceInstance().UpdateStockPriceHistoryDataTable(dt);
+                StockDataServiceProvider.GetServiceInstance().UpdateStockPriceHistoryDataTable(dt);
             }
             catch (WebException wex)
             {

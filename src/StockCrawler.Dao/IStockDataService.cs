@@ -1,10 +1,16 @@
 ﻿using StockCrawler.Dao.Schema;
 using System;
+using System.Collections.Generic;
 
 namespace StockCrawler.Dao
 {
     public interface IStockDataService : IDisposable
     {
+        /// <summary>
+        /// Update stock company's basic information. If it doesn't exist, it will insert it.
+        /// </summary>
+        /// <param name="data">Collection of stock company's basic information</param>
+        void UpdateStockBasicInfo(IEnumerable<GetStockBasicInfoResult> data);
         ///// <summary>
         ///// Retrieve the average close price of the specified stock since the specified date.
         ///// </summary>
@@ -43,6 +49,6 @@ namespace StockCrawler.Dao
         /// <param name="stockNo">stock no</param>
         /// <param name="stockName">stock name</param>
         void UpdateStockName(string stockNo, string stockName);
-        void DeleteStockPriceHistoryData(string stockNo, DateTime? tradeDate);
+        void DeleteStockPriceHistoryData(string stockNo, DateTime? tradeDate = null);
     }
 }

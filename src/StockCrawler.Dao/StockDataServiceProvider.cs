@@ -1,6 +1,6 @@
 ﻿namespace StockCrawler.Dao
 {
-    public abstract class StockDataService
+    public abstract class StockDataServiceProvider
     {
         /// <summary>
         /// Retrieve a new service instance. It's thread-safe.

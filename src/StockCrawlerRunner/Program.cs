@@ -29,6 +29,9 @@ namespace StockCrawlerRunner
                         case "-u":
                             job = new StockPriceUpdateJob();
                             break;
+                        case "-b":
+                            job = new StockBasicInfoUpdateJob();
+                            break;
                         default:
                             ShowHelp();
                             break;
@@ -61,6 +64,8 @@ namespace StockCrawlerRunner
             Console.WriteLine("     Initialize only one specified stock history data. It will drop all old data by this stock.");
             Console.WriteLine(" <mode>: -u");
             Console.WriteLine("     Append the latest price data in database.");
+            Console.WriteLine(" <mode>: -b");
+            Console.WriteLine("     Update the latest company basic information in database.");
         }
     }
 }

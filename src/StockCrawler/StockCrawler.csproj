@@ -108,11 +108,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CollectorProviderService.cs" />
     <Compile Include="JobBase.cs" />
     <Compile Include="StockBasicInfo\GoodInfoStockBasicInfoCollector.cs" />
     <Compile Include="StockBasicInfo\IStockBasicInfoCollector.cs" />
     <Compile Include="StockDailyPrice\IStockDailyInfoCollector.cs" />
     <Compile Include="StockDailyPrice\TwseStockDailyInfoCollector.cs" />
+    <Compile Include="StockBasicInfoUpdateJob.cs" />
     <Compile Include="StockPriceUpdateJob.cs" />
     <Compile Include="StockPriceHistoryInitJob.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

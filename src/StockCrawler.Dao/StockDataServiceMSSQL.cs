@@ -1,5 +1,6 @@
 ﻿using StockCrawler.Dao.Schema;
 using System;
+using System.Collections.Generic;
 
 namespace StockCrawler.Dao
 {
@@ -70,6 +71,27 @@ namespace StockCrawler.Dao
         {
             using (var db = GetMSSQLStockDataContext())
                 db.InsertOrUpdateStock(stockNo, stockName);
+        }
+        public void UpdateStockBasicInfo(IEnumerable<GetStockBasicInfoResult> data)
+        {
+            using (var db = GetMSSQLStockDataContext())
+            {
+                foreach (var d in data)
+                    db.InsertOrUpdateStockBasicInfo(
+                        d.StockNo,
+                        d.Category,
+                        d.CompanyName,
+                        d.CompanyID,
+                        d.BuildDate,
+                        d.PublishDate,
+                        d.Capital,
+                        d.MarketValue,
+                        d.ReleaseStockCount,
+                        d.Chairman,
+                        d.CEO,
+                        d.Url,
+                        d.Businiess);
+            }
         }
     }
 }
