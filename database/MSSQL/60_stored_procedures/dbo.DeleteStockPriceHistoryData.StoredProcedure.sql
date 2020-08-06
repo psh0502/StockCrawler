@@ -21,7 +21,7 @@ AS
 BEGIN
 	DELETE FROM [StockPriceHistory]
     WHERE
-		(@pStockNo IS NULL OR @pStockNo < 0 OR StockNo = @pStockNo)
+		(@pStockNo IS NULL OR @pStockNo = '' OR StockNo = @pStockNo)
 		AND (@pTradeDate IS NULL OR [StockDT] = @pTradeDate);
 END
 GO
