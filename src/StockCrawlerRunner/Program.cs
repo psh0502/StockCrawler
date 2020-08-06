@@ -2,6 +2,7 @@
 using Quartz;
 using StockCrawler.Services;
 using System;
+using System.Threading;
 
 namespace StockCrawlerRunner
 {
@@ -31,6 +32,8 @@ namespace StockCrawlerRunner
                             job = new StockPriceHistoryInitJob() { ProcessingStockNo = stockNo };
                             break;
                         case "-u":
+                            if (args.Length > 1)
+                                StockCrawler.Services.SystemTime.SetFakeTime(DateTime.Parse(args[1]));
                             job = new StockPriceUpdateJob();
                             break;
                         case "-b":
@@ -59,6 +62,7 @@ namespace StockCrawlerRunner
             finally
             {
                 _logger.Info("END");
+                Thread.Sleep(500);
                 Console.WriteLine("END");
             }
         }
@@ -76,6 +80,8 @@ namespace StockCrawlerRunner
             Console.WriteLine("     Initialize only one specified stock history data. It will drop all old data by this stock.");
             Console.WriteLine(" <mode>: -u");
             Console.WriteLine("     Append the latest price data in database.");
+            Console.WriteLine(" <mode>: -u [Date:yyyy/MM/dd]");
+            Console.WriteLine("     Append the specified date price data in database.");
             Console.WriteLine(" <mode>: -b");
             Console.WriteLine("     Update the latest company basic information in database.");
         }
