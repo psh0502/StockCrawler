@@ -74,23 +74,27 @@ namespace StockCrawler.Dao
         }
         public void UpdateStockBasicInfo(IEnumerable<GetStockBasicInfoResult> data)
         {
+            foreach (var d in data)
+                UpdateStockBasicInfo(d);
+        }
+        public void UpdateStockBasicInfo(GetStockBasicInfoResult d)
+        {
             using (var db = GetMSSQLStockDataContext())
             {
-                foreach (var d in data)
-                    db.InsertOrUpdateStockBasicInfo(
-                        d.StockNo,
-                        d.Category,
-                        d.CompanyName,
-                        d.CompanyID,
-                        d.BuildDate,
-                        d.PublishDate,
-                        d.Capital,
-                        d.MarketValue,
-                        d.ReleaseStockCount,
-                        d.Chairman,
-                        d.CEO,
-                        d.Url,
-                        d.Businiess);
+                db.InsertOrUpdateStockBasicInfo(
+                    d.StockNo,
+                    d.Category,
+                    d.CompanyName,
+                    d.CompanyID,
+                    d.BuildDate,
+                    d.PublishDate,
+                    d.Capital,
+                    d.MarketValue,
+                    d.ReleaseStockCount,
+                    d.Chairman,
+                    d.CEO,
+                    d.Url,
+                    d.Businiess);
             }
         }
     }

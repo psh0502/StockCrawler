@@ -2,6 +2,8 @@
 using HtmlAgilityPack;
 using StockCrawler.Dao;
 using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Web;
@@ -18,7 +20,12 @@ namespace StockCrawler.Services.StockBasicInfo
             string html;
             do
             {
-                html = Tools.DownloadStringData(url, Encoding.UTF8);
+                List<Cookie> cookies = new List<Cookie>
+                {
+                    new Cookie("CLIENT_ID", "20200807171730878%5F220%2E135%2E20%2E48", "/", "goodinfo.tw"),
+                    new Cookie("SCREEN_SIZE", "WIDTH=1920&HEIGHT=1080", "/", "goodinfo.tw")
+                };
+                html = Tools.DownloadStringData(url, Encoding.UTF8, cookies.ToArray());
                 if (string.IsNullOrEmpty(html)) return null;
                 if (html.Contains("您的瀏覽量異常"))
                 {

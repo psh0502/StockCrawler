@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
+using System.Threading;
 
 namespace StockCrawler.Services
 {
@@ -37,17 +38,16 @@ namespace StockCrawler.Services
                 using (var db = StockDataServiceProvider.GetServiceInstance())
                 {
                     var collector = string.IsNullOrEmpty(CollectorTypeName) ? CollectorProviderService.GetBasicInfoCollector() : CollectorProviderService.GetBasicInfoCollector(CollectorTypeName);
-                    List<GetStockBasicInfoResult> list = new List<GetStockBasicInfoResult>();
                     foreach (var d in db.GetStocks().Where(d => !d.StockNo.StartsWith("0"))) // 排除非公司的基金型股票
                     {
                         var info = collector.GetStockBasicInfo(d.StockNo);
                         if (null != info)
-                            list.Add(info);
+                            db.UpdateStockBasicInfo(info);
                         else
                             Logger.InfoFormat("[{0}] has no basic info", d.StockNo);
-                    }
 
-                    db.UpdateStockBasicInfo(list);
+                        Thread.Sleep(10 * 1000); // Don't get target website pissed off...
+                    }
                 }
             }
             catch (Exception ex)

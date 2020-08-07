@@ -11,6 +11,7 @@ namespace StockCrawler.Dao
         /// </summary>
         /// <param name="data">Collection of stock company's basic information</param>
         void UpdateStockBasicInfo(IEnumerable<GetStockBasicInfoResult> data);
+        void UpdateStockBasicInfo(GetStockBasicInfoResult data);
         ///// <summary>
         ///// Retrieve the average close price of the specified stock since the specified date.
         ///// </summary>
