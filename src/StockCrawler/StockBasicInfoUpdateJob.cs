@@ -4,6 +4,7 @@ using StockCrawler.Dao;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace StockCrawler.Services
 {
@@ -38,7 +39,13 @@ namespace StockCrawler.Services
                     var collector = string.IsNullOrEmpty(CollectorTypeName) ? CollectorProviderService.GetBasicInfoCollector() : CollectorProviderService.GetBasicInfoCollector(CollectorTypeName);
                     List<GetStockBasicInfoResult> list = new List<GetStockBasicInfoResult>();
                     foreach (var d in db.GetStocks())
-                        list.Add(collector.GetStockBasicInfo(d.StockNo));
+                    {
+                        var info = collector.GetStockBasicInfo(d.StockNo);
+                        if (null != info)
+                            list.Add(info);
+                        else
+                            Logger.InfoFormat("[{0}] has no basic info", d.StockNo);
+                    }
 
                     db.UpdateStockBasicInfo(list);
                 }

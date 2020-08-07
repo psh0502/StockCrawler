@@ -24,7 +24,7 @@ namespace StockCrawler.Services
                 using (var sr = new StreamReader(stream, encode))
                     downloaded_data = sr.ReadToEnd();
             }
-            return downloaded_data;
+            return downloaded_data.Trim();
         }
     }
 }
