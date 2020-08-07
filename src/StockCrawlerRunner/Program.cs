@@ -37,7 +37,11 @@ namespace StockCrawlerRunner
                             job = new StockPriceUpdateJob();
                             break;
                         case "-b":
-                            job = new StockBasicInfoUpdateJob();
+                            stockNo = null;
+                            if (args.Length > 1)
+                                job = new StockBasicInfoUpdateJob() { BeginStockNo = args[1] };
+                            else
+                                job = new StockBasicInfoUpdateJob();
                             break;
                         default:
                             ShowHelp();
@@ -84,6 +88,8 @@ namespace StockCrawlerRunner
             Console.WriteLine("     Append the specified date price data in database.");
             Console.WriteLine(" <mode>: -b");
             Console.WriteLine("     Update the latest company basic information in database.");
+            Console.WriteLine(" <mode>: -b <stockNo>");
+            Console.WriteLine("     Update the latest company basic information in database since the specified stockNo.");
         }
     }
 }

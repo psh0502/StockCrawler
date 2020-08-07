@@ -2,7 +2,6 @@
 using Quartz;
 using StockCrawler.Dao;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
 using System.Threading;
@@ -27,6 +26,7 @@ namespace StockCrawler.Services
         }
 
         public string CollectorTypeName { get; private set; }
+        public string BeginStockNo { get; set; }
 
         #region IJob Members
 
@@ -38,7 +38,7 @@ namespace StockCrawler.Services
                 using (var db = StockDataServiceProvider.GetServiceInstance())
                 {
                     var collector = string.IsNullOrEmpty(CollectorTypeName) ? CollectorProviderService.GetBasicInfoCollector() : CollectorProviderService.GetBasicInfoCollector(CollectorTypeName);
-                    foreach (var d in db.GetStocks().Where(d => !d.StockNo.StartsWith("0"))) // 排除非公司的基金型股票
+                    foreach (var d in db.GetStocks().Where(d => !d.StockNo.StartsWith("0") && (string.IsNullOrEmpty(BeginStockNo) || int.Parse(d.StockNo.Substring(0, 4)) >= int.Parse(BeginStockNo)))) // 排除非公司的基金型股票
                     {
                         var info = collector.GetStockBasicInfo(d.StockNo);
                         if (null != info)

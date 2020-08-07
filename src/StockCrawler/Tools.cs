@@ -1,4 +1,5 @@
 ﻿using Common.Logging;
+using HtmlAgilityPack;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -32,6 +33,15 @@ namespace StockCrawler.Services
                     downloaded_data = sr.ReadToEnd();
             }
             return downloaded_data.Trim();
+        }
+
+        public static string GetMyIpAddress()
+        {
+            var html = DownloadStringData("https://www.whatismyip.com.tw/", Encoding.UTF8);
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(html);
+            var text = doc.DocumentNode.SelectSingleNode("/html/body/b/span").InnerText.Trim();
+            return text;
         }
     }
 }
