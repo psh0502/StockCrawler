@@ -10,7 +10,7 @@ namespace StockCrawler.Services
 {
     public class StockBasicInfoUpdateJob : JobBase, IJob
     {
-        internal static ILog Logger { get; set; } = LogManager.GetLogger(typeof(StockPriceUpdateJob));
+        internal static ILog Logger { get; set; } = LogManager.GetLogger(typeof(StockBasicInfoUpdateJob));
 
         public StockBasicInfoUpdateJob()
             : base()
