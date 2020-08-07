@@ -3,8 +3,8 @@ using Quartz;
 using StockCrawler.Dao;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Reflection;
-using System.Runtime.InteropServices;
 
 namespace StockCrawler.Services
 {
@@ -38,7 +38,7 @@ namespace StockCrawler.Services
                 {
                     var collector = string.IsNullOrEmpty(CollectorTypeName) ? CollectorProviderService.GetBasicInfoCollector() : CollectorProviderService.GetBasicInfoCollector(CollectorTypeName);
                     List<GetStockBasicInfoResult> list = new List<GetStockBasicInfoResult>();
-                    foreach (var d in db.GetStocks())
+                    foreach (var d in db.GetStocks().Where(d => !d.StockNo.StartsWith("0"))) // 排除非公司的基金型股票
                     {
                         var info = collector.GetStockBasicInfo(d.StockNo);
                         if (null != info)

@@ -3,6 +3,7 @@ using HtmlAgilityPack;
 using StockCrawler.Dao;
 using System;
 using System.Text;
+using System.Threading;
 using System.Web;
 
 namespace StockCrawler.Services.StockBasicInfo
@@ -14,13 +15,29 @@ namespace StockCrawler.Services.StockBasicInfo
         public GetStockBasicInfoResult GetStockBasicInfo(string stockNo)
         {
             var url = string.Format("https://goodinfo.tw/StockInfo/BasicInfo.asp?STOCK_ID={0}", stockNo);
-            var html = Tools.DownloadStringData(url, Encoding.UTF8);
-            if (string.IsNullOrEmpty(html)) return null;
+            string html;
+            do
+            {
+                html = Tools.DownloadStringData(url, Encoding.UTF8);
+                if (string.IsNullOrEmpty(html)) return null;
+                if (html.Contains("您的瀏覽量異常"))
+                {
+                    _logger.InfoFormat("The target[{0}] is pissed off....wait a second...", stockNo);
+                    Thread.Sleep(10 * 1000);
+                }
+                else
+                    break;
+            } while (true);
 
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(html);
             var node = doc.DocumentNode.ChildNodes[2].SelectSingleNode("/html/body/table[2]/tr/td[3]/table[2]");
-            if (null == node) return null;
+            if (null == node)
+            {
+                if (html.Contains("查無基本資料")) return null;
+                _logger.InfoFormat("[{0}] can't find the table node! html={1}", stockNo, html);
+                return null;
+            }
             try
             {
                 return new GetStockBasicInfoResult()
