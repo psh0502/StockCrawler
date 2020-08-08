@@ -14,16 +14,17 @@ namespace StockCrawler.Services.StockBasicInfo
     {
         private static readonly ILog _logger = LogManager.GetLogger(typeof(GoodInfoStockBasicInfoCollector));
         private static readonly string UTF8SpacingChar = Encoding.UTF8.GetString(new byte[] { 0xC2, 0xA0 });
-        private static readonly DateTime now = SystemTime.Now;
+        private readonly DateTime now = SystemTime.Now;
         public GetStockBasicInfoResult GetStockBasicInfo(string stockNo)
         {
             var url = string.Format("https://goodinfo.tw/StockInfo/BasicInfo.asp?STOCK_ID={0}", stockNo);
             string html;
+            var ipAddress = Tools.GetMyIpAddress();
             do
             {
                 List<Cookie> cookies = new List<Cookie>
                 {
-                    new Cookie("CLIENT_ID", string.Format("{0}_{1}", now.ToString("yyyyMMddHHmmssfff"), Tools.GetMyIpAddress()), "/", "goodinfo.tw"),
+                    new Cookie("CLIENT_ID", string.Format("{0}_{1}", now.ToString("yyyyMMddHHmmssfff"), ipAddress), "/", "goodinfo.tw"),
                     new Cookie("SCREEN_SIZE", "WIDTH=1920&HEIGHT=1080", "/", "goodinfo.tw")
                 };
                 html = Tools.DownloadStringData(url, Encoding.UTF8, cookies.ToArray());
