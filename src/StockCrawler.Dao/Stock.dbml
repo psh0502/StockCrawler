@@ -71,4 +71,25 @@
     <Parameter Name="pBusiness" Type="System.String" DbType="NVarChar(1000)" />
     <Return Type="System.Int32" />
   </Function>
+  <Function Name="dbo.GetStockHistory" Method="GetStockHistory">
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pDateBegin" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="pDateEnd" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="pTop" Type="System.Int32" DbType="Int" />
+    <Parameter Name="pCurrentPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="pPageSize" Type="System.Int32" DbType="Int" />
+    <Parameter Name="oPageCount" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <ElementType Name="GetStockHistoryResult">
+      <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="StockDT" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="OpenPrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
+      <Column Name="HighPrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
+      <Column Name="LowPrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
+      <Column Name="ClosePrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
+      <Column Name="AdjClosePrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
+      <Column Name="Volume" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="RNO" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
 </Database>

@@ -110,6 +110,14 @@ namespace StockCrawler.Dao
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pCategory, pCompanyName, pCompanyID, pBuildDate, pPublishDate, pCapital, pMarketValue, pReleaseStockCount, pChairman, pCEO, pUrl, pBusiness);
 			return ((int)(result.ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetStockHistory")]
+		public ISingleResult<GetStockHistoryResult> GetStockHistory([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pDateBegin, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pDateEnd, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> pTop, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> pCurrentPage, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> pPageSize, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] ref System.Nullable<int> oPageCount)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pDateBegin, pDateEnd, pTop, pCurrentPage, pPageSize, oPageCount);
+			oPageCount = ((System.Nullable<int>)(result.GetParameterValue(6)));
+			return ((ISingleResult<GetStockHistoryResult>)(result.ReturnValue));
+		}
 	}
 	
 	public partial class GetStockBasicInfoResult
@@ -519,6 +527,194 @@ namespace StockCrawler.Dao
 				if ((this._LastModifiedAt != value))
 				{
 					this._LastModifiedAt = value;
+				}
+			}
+		}
+	}
+	
+	public partial class GetStockHistoryResult
+	{
+		
+		private string _StockNo;
+		
+		private System.DateTime _StockDT;
+		
+		private decimal _OpenPrice;
+		
+		private decimal _HighPrice;
+		
+		private decimal _LowPrice;
+		
+		private decimal _ClosePrice;
+		
+		private decimal _AdjClosePrice;
+		
+		private long _Volume;
+		
+		private System.DateTime _CreatedAt;
+		
+		private System.Nullable<long> _RNO;
+		
+		public GetStockHistoryResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockNo", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string StockNo
+		{
+			get
+			{
+				return this._StockNo;
+			}
+			set
+			{
+				if ((this._StockNo != value))
+				{
+					this._StockNo = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockDT", DbType="Date NOT NULL")]
+		public System.DateTime StockDT
+		{
+			get
+			{
+				return this._StockDT;
+			}
+			set
+			{
+				if ((this._StockDT != value))
+				{
+					this._StockDT = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OpenPrice", DbType="Decimal(10,4) NOT NULL")]
+		public decimal OpenPrice
+		{
+			get
+			{
+				return this._OpenPrice;
+			}
+			set
+			{
+				if ((this._OpenPrice != value))
+				{
+					this._OpenPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HighPrice", DbType="Decimal(10,4) NOT NULL")]
+		public decimal HighPrice
+		{
+			get
+			{
+				return this._HighPrice;
+			}
+			set
+			{
+				if ((this._HighPrice != value))
+				{
+					this._HighPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LowPrice", DbType="Decimal(10,4) NOT NULL")]
+		public decimal LowPrice
+		{
+			get
+			{
+				return this._LowPrice;
+			}
+			set
+			{
+				if ((this._LowPrice != value))
+				{
+					this._LowPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ClosePrice", DbType="Decimal(10,4) NOT NULL")]
+		public decimal ClosePrice
+		{
+			get
+			{
+				return this._ClosePrice;
+			}
+			set
+			{
+				if ((this._ClosePrice != value))
+				{
+					this._ClosePrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AdjClosePrice", DbType="Decimal(10,4) NOT NULL")]
+		public decimal AdjClosePrice
+		{
+			get
+			{
+				return this._AdjClosePrice;
+			}
+			set
+			{
+				if ((this._AdjClosePrice != value))
+				{
+					this._AdjClosePrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Volume", DbType="BigInt NOT NULL")]
+		public long Volume
+		{
+			get
+			{
+				return this._Volume;
+			}
+			set
+			{
+				if ((this._Volume != value))
+				{
+					this._Volume = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedAt", DbType="DateTime NOT NULL")]
+		public System.DateTime CreatedAt
+		{
+			get
+			{
+				return this._CreatedAt;
+			}
+			set
+			{
+				if ((this._CreatedAt != value))
+				{
+					this._CreatedAt = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RNO", DbType="BigInt")]
+		public System.Nullable<long> RNO
+		{
+			get
+			{
+				return this._RNO;
+			}
+			set
+			{
+				if ((this._RNO != value))
+				{
+					this._RNO = value;
 				}
 			}
 		}
