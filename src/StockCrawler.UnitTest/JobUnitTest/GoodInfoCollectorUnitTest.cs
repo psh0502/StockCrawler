@@ -5,7 +5,7 @@ using System;
 namespace StockCrawler.UnitTest.JobUnitTest
 {
     [TestClass]
-    public class GoodInfoDownloaderUnitTest
+    public class GoodInfoCollectorUnitTest
     {
         [TestMethod]
         public void CollectorTestMethod_2330()

@@ -105,10 +105,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="JobUnitTest\GoodInfoDownloaderUnitTest.cs" />
+    <Compile Include="JobUnitTest\GoodInfoCollectorUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="JobUnitTest\StockPriceHistoryInitJobTest.cs" />
     <Compile Include="JobUnitTest\StockPriceUpdateJobTest.cs" />
+    <Compile Include="StockFinanceReport\TwseReportCollectorTests.cs" />
     <Compile Include="ToolsTests.cs" />
     <Compile Include="UnitTestLogger.cs" />
   </ItemGroup>

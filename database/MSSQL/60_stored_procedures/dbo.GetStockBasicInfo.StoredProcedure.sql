@@ -20,9 +20,9 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 	DECLARE @TRUE BIT = 1
-	SELECT a.StockNo, a.StockName, b.*
+	SELECT a.StockName, b.*
 	FROM [Stock] a(NOLOCK)
-		LEFT JOIN [StockBasicInfo] b(NOLOCK) ON a.StockNo = b.StockNo
+		INNER JOIN [StockBasicInfo] b(NOLOCK) ON a.StockNo = b.StockNo
     WHERE
 		a.StockNo = @pStockNo
 		AND a.[Enable] = @TRUE

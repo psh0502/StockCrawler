@@ -22,23 +22,64 @@
   <Function Name="dbo.GetStockBasicInfo" Method="GetStockBasicInfo">
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
     <ElementType Name="GetStockBasicInfoResult">
-      <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="StockName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="StockNo1" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
-      <Column Name="Category" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="CompanyName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="CompanyID" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
-      <Column Name="BuildDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-      <Column Name="PublishDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-      <Column Name="Capital" Type="System.Decimal" DbType="Money" CanBeNull="true" />
-      <Column Name="MarketValue" Type="System.Decimal" DbType="Money" CanBeNull="true" />
-      <Column Name="ReleaseStockCount" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
-      <Column Name="Chairman" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="CEO" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="Url" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
-      <Column Name="Businiess" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
-      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Category" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyID" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="BuildDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="PublishDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Capital" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="MarketValue" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="ReleaseStockCount" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="Chairman" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="CEO" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Url" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Businiess" Type="System.String" DbType="NVarChar(1000) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetStockHistory" Method="GetStockHistory">
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pDateBegin" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="pDateEnd" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="pTop" Type="System.Int32" DbType="Int" />
+    <Parameter Name="pCurrentPage" Type="System.Int32" DbType="Int" />
+    <Parameter Name="pPageSize" Type="System.Int32" DbType="Int" />
+    <Parameter Name="oPageCount" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <ElementType Name="GetStockHistoryResult">
+      <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="StockDT" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="OpenPrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
+      <Column Name="HighPrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
+      <Column Name="LowPrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
+      <Column Name="ClosePrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
+      <Column Name="AdjClosePrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
+      <Column Name="Volume" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="RNO" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetStockReportCashFlow" Method="GetStockReportCashFlow">
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="pSeason" Type="System.Int16" DbType="SmallInt" />
+    <ElementType Name="GetStockReportCashFlowResult">
+      <Column Name="StockName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Year" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="Season" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="Depreciation" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="AmortizationFee" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="BusinessCashflow" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="InvestmentCashflow" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="FinancingCashflow" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="CapitalExpenditures" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="FreeCashflow" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="NetCashflow" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
   <Function Name="dbo.GetStocks" Method="GetStocks">
@@ -71,25 +112,18 @@
     <Parameter Name="pBusiness" Type="System.String" DbType="NVarChar(1000)" />
     <Return Type="System.Int32" />
   </Function>
-  <Function Name="dbo.GetStockHistory" Method="GetStockHistory">
+  <Function Name="dbo.InsertOrUpdateStockReportCashFlow" Method="InsertOrUpdateStockReportCashFlow">
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
-    <Parameter Name="pDateBegin" Type="System.DateTime" DbType="Date" />
-    <Parameter Name="pDateEnd" Type="System.DateTime" DbType="Date" />
-    <Parameter Name="pTop" Type="System.Int32" DbType="Int" />
-    <Parameter Name="pCurrentPage" Type="System.Int32" DbType="Int" />
-    <Parameter Name="pPageSize" Type="System.Int32" DbType="Int" />
-    <Parameter Name="oPageCount" Type="System.Int32" DbType="Int" Direction="InOut" />
-    <ElementType Name="GetStockHistoryResult">
-      <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="StockDT" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
-      <Column Name="OpenPrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
-      <Column Name="HighPrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
-      <Column Name="LowPrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
-      <Column Name="ClosePrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
-      <Column Name="AdjClosePrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
-      <Column Name="Volume" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
-      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="RNO" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
-    </ElementType>
+    <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="pSeason" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="pDepreciation" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pAmortizationFee" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pBusinessCashflow" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pInvestmentCashflow" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pFinancingCashflow" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pCapitalExpenditures" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pFreeCashflow" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pNetCashflow" Type="System.Decimal" DbType="Money" />
+    <Return Type="System.Int32" />
   </Function>
 </Database>
