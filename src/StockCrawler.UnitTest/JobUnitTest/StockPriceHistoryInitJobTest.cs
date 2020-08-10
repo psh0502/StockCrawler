@@ -23,7 +23,6 @@ namespace StockCrawler.UnitTest.JobUnitTest
         [TestMethod]
         public void StockPriceHistoryInitTest()
         {
-            Services.SystemTime.SetFakeTime(new DateTime(2017, 5, 26));
             StockPriceHistoryInitJob.Logger = new UnitTestLogger();
             StockPriceHistoryInitJob target = new StockPriceHistoryInitJob();
             IJobExecutionContext context = null;

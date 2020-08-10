@@ -18,7 +18,7 @@ namespace StockCrawler.UnitTest.JobUnitTest
         [TestMethod()]
         public void StockPriceUpdateTest()
         {
-            Services.SystemTime.SetFakeTime(new DateTime(2019, 6, 29));
+            Services.SystemTime.SetFakeTime(new DateTime(2020, 6, 29));
             StockPriceUpdateJob.Logger = new UnitTestLogger();
             StockPriceUpdateJob target = new StockPriceUpdateJob("StockCrawler.Services.StockDailyPrice.TwseStockDailyInfoCollector, StockCrawler.Services");
             IJobExecutionContext context = null;

@@ -4,6 +4,7 @@ using ServiceStack.Text;
 using StockCrawler.Dao;
 using StockCrawler.Dao.Schema;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -48,7 +49,7 @@ namespace StockCrawler.Services
             string url = string.Format("https://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={0}&type=ALLBUT0999", SystemTime.Today.ToString("yyyyMMdd"));
             Logger.DebugFormat("url=[{0}]", url);
             
-            var csv_data = Tools.DownloadStringData(url, Encoding.Default, out Cookie[] _);
+            var csv_data = Tools.DownloadStringData(new Uri(url), Encoding.Default, out List<Cookie> _);
 
             // Usage of CsvReader: http://blog.darkthread.net/post-2017-05-13-servicestack-text-csvserializer.aspx
             var csv_lines = CsvReader.ParseLines(csv_data);

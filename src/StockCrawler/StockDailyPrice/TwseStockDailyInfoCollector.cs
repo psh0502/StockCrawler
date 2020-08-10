@@ -31,7 +31,7 @@ namespace StockCrawler.Services.StockDailyPrice
         private static StockDailyPriceInfo[] GetAllStockDailyPriceInfo(DateTime day)
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            var csv_data = Tools.DownloadStringData($"https://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={day:yyyyMMdd}&type=ALLBUT0999", Encoding.Default, out Cookie[] _);
+            var csv_data = Tools.DownloadStringData(new Uri($"https://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={day:yyyyMMdd}&type=ALLBUT0999"), Encoding.Default, out List<Cookie> _);
             if (string.IsNullOrEmpty(csv_data)) {
                 _logger.WarnFormat("Download has no data by date[{0}]", day.ToString("yyyyMMdd"));
                 return null; 

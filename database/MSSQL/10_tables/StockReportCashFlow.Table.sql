@@ -19,7 +19,7 @@ CREATE TABLE [dbo].[StockReportCashFlow](
 	[InvestmentCashflow] [MONEY] NOT NULL, -- 投資現金流, 投資活動之淨現金流入（流出）
 	[FinancingCashflow][MONEY] NOT NULL, -- 融資現金流, 籌資活動之淨現金流入（流出）
 	[CapitalExpenditures][MONEY] NOT NULL,-- 資本支出, (取得不動產、廠房及設備 + 處分不動產、廠房及設備)
-	[FreeCashflow][MONEY] NOT NULL,-- 自由現金流 = (營業現金流 - 資本支出)
+	[FreeCashflow][MONEY] NOT NULL,-- 自由現金流 = (營業現金流 - 資本支出 - 股利支出)
 	[NetCashflow][MONEY] NOT NULL,-- 淨現金流 = 營業現金流 - 投資現金流 + 融資現金流
 	[CreatedAt] [datetime] NOT NULL,
 	[LastModifiedAt] [datetime] NOT NULL,
