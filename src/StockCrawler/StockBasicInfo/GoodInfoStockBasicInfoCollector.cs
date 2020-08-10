@@ -27,7 +27,7 @@ namespace StockCrawler.Services.StockBasicInfo
                     new Cookie("CLIENT_ID", string.Format("{0}_{1}", now.ToString("yyyyMMddHHmmssfff"), ipAddress), "/", "goodinfo.tw"),
                     new Cookie("SCREEN_SIZE", "WIDTH=1920&HEIGHT=1080", "/", "goodinfo.tw")
                 };
-                html = Tools.DownloadStringData(url, Encoding.UTF8, cookies.ToArray());
+                html = Tools.DownloadStringData(url, Encoding.UTF8, out Cookie[] _, cookies.ToArray());
                 if (string.IsNullOrEmpty(html)) return null;
                 if (html.Contains("您的瀏覽量異常"))
                 {
