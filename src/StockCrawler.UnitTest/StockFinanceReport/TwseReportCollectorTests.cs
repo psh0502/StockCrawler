@@ -23,8 +23,8 @@ namespace StockCrawler.Services.StockFinanceReport.Tests
             Assert.AreEqual(-188993268, data.InvestmentCashflow);
             Assert.AreEqual(-40757411, data.FinancingCashflow);
             //Assert.AreEqual(-192063846, data.CapitalExpenditures);
-            //Assert.AreEqual(10965596, data.FreeCashflow);
-            //Assert.AreEqual(-26721237, data.NetCashflow);
+            Assert.AreEqual(14036174, data.FreeCashflow);
+            Assert.AreEqual(-26721237, data.NetCashflow);
         }
         [TestMethod()]
         public void GetStockFinanceReportCashFlowTest_108Q4()
@@ -43,8 +43,8 @@ namespace StockCrawler.Services.StockFinanceReport.Tests
             Assert.AreEqual(-171605106, data.InvestmentCashflow);
             Assert.AreEqual(-17182776, data.FinancingCashflow);
             //Assert.AreEqual(-170009539, data.CapitalExpenditures);
-            //Assert.AreEqual(32944878, data.FreeCashflow);
-            //Assert.AreEqual(14166535, data.NetCashflow);
+            Assert.AreEqual(31349311, data.FreeCashflow);
+            Assert.AreEqual(14166535, data.NetCashflow);
         }
     }
 }

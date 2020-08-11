@@ -2,6 +2,7 @@
 using HtmlAgilityPack;
 using StockCrawler.Dao;
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Web;
 
@@ -13,58 +14,87 @@ namespace StockCrawler.Services.StockFinanceReport
         public GetStockReportCashFlowResult GetStockFinanceReportCashFlow(string stockNo, short year, short season)
         {
             var url = "https://mops.twse.com.tw/mops/web/ajax_t164sb05";
-            var formData = HttpUtility.ParseQueryString(string.Empty);
-            formData.Add("step", "1");
-            formData.Add("firstin", "1");
-            formData.Add("off", "1");
-            formData.Add("queryName", "co_id");
-            formData.Add("inpuType", "co_id");
-            formData.Add("TYPEK", "all");
-            formData.Add("isnew", true.ToString());
-            formData.Add("co_id", stockNo);
-            formData.Add("year", year.ToString());
-            formData.Add("season", season.ToString("00"));
-            _logger.Debug("formData=" + formData.ToString());
+            List<GetStockReportCashFlowResult> results = new List<GetStockReportCashFlowResult>();
+            //// 因為 TWSE 的每季報表都是根據當年度累加上來的數字, 所以只有多抓前一期的報表數字差額才能顯示當季真正財務
+            for (short i = (short)Math.Max(1, season - 1); i <= season; i++)
+            {
+                var formData = HttpUtility.ParseQueryString(string.Empty);
+                formData.Add("step", "1");
+                formData.Add("firstin", "1");
+                formData.Add("off", "1");
+                formData.Add("queryName", "co_id");
+                formData.Add("inpuType", "co_id");
+                formData.Add("TYPEK", "all");
+                formData.Add("isnew", true.ToString());
+                formData.Add("co_id", stockNo);
+                formData.Add("year", year.ToString());
+                formData.Add("season", i.ToString("00"));
+                _logger.Debug("formData=" + formData.ToString());
 
-            var html = Tools.DownloadStringData(new Uri(url), Encoding.UTF8, out _, "application/x-www-form-urlencoded", null, "POST", formData);
-            HtmlDocument doc = new HtmlDocument();
-            doc.LoadHtml(html);
-            var tableNode = doc.DocumentNode.SelectSingleNode("/html/body/center/table[2]");
-            if (null == tableNode || string.IsNullOrEmpty(tableNode.InnerText.Trim()))
-            {
-                _logger.Warn($"[{stockNo}] can't get the body node, html={html}");
-                return null;
+                var html = Tools.DownloadStringData(new Uri(url), Encoding.UTF8, out _, "application/x-www-form-urlencoded", null, "POST", formData);
+                HtmlDocument doc = new HtmlDocument();
+                doc.LoadHtml(html);
+                var tableNode = doc.DocumentNode.SelectSingleNode("/html/body/center/table[2]");
+                if (null == tableNode || string.IsNullOrEmpty(tableNode.InnerText.Trim()))
+                {
+                    _logger.Warn($"[{stockNo}] can't get the body node, html={html}");
+                    return null;
+                }
+                else
+                {
+                    _logger.Info($"[{stockNo}] get the body node successfully.");
+                    var result = TransformNodeToDataRow(tableNode);
+                    result.StockNo = stockNo;
+                    result.Year = year;
+                    result.Season = season;
+                    results.Add(result);
+                }
             }
-            else
+            //// 因為 TWSE 的每季報表都是根據當年度累加上來的數字, 所以只有減去前一期的報表數字差額才能顯示當季真正財務
+            if (results.Count > 1)
             {
-                _logger.Info($"[{stockNo}] get the body node successfully. text={tableNode.InnerText}");
-                var result = TransformNodeToDataRow(tableNode);
-                result.StockNo = stockNo;
-                result.Year = year;
-                result.Season = season;
-                return result;
+                var seasonRecord = results[1];
+                var lastSeaonRecord = results[0];
+                seasonRecord.Depreciation -= lastSeaonRecord.Depreciation;
+                seasonRecord.AmortizationFee -= lastSeaonRecord.AmortizationFee;
+                seasonRecord.BusinessCashflow -= lastSeaonRecord.BusinessCashflow;
+                seasonRecord.InvestmentCashflow -= lastSeaonRecord.InvestmentCashflow;
+                seasonRecord.FinancingCashflow -= lastSeaonRecord.FinancingCashflow;
+                seasonRecord.CapitalExpenditures -= lastSeaonRecord.CapitalExpenditures;
+                seasonRecord.FreeCashflow -= lastSeaonRecord.FreeCashflow;
+                seasonRecord.NetCashflow -= lastSeaonRecord.NetCashflow;
+                return seasonRecord;
             }
+            return results[0];
         }
 
         private static GetStockReportCashFlowResult TransformNodeToDataRow(HtmlNode bodyNode)
         {
             var result = new GetStockReportCashFlowResult()
             {
-                Depreciation = GetNodeTextToDecimal(bodyNode.SelectSingleNode("./tr[8]/td[2]")),
-                AmortizationFee = GetNodeTextToDecimal(bodyNode.SelectSingleNode("./tr[9]/td[2]")),
-                //營業現金流, 營業活動之淨現金流入（流出）
-                BusinessCashflow = GetNodeTextToDecimal(bodyNode.SelectSingleNode("./tr[43]/td[2]")),
-                InvestmentCashflow = GetNodeTextToDecimal(bodyNode.SelectSingleNode("./tr[58]/td[2]")),
-                FinancingCashflow = GetNodeTextToDecimal(bodyNode.SelectSingleNode("./tr[72]/td[2]")),
-                // 資本支出, (取得不動產、廠房及設備 + 處分不動產、廠房及設備)
-                CapitalExpenditures = GetNodeTextToDecimal(bodyNode.SelectSingleNode("./tr[50]/td[2]")) + GetNodeTextToDecimal(bodyNode.SelectSingleNode("./tr[51]/td[2]")),
+                Depreciation = GetNodeTextToDecimal(SearchValueNode(bodyNode, "折舊")),
+                AmortizationFee = GetNodeTextToDecimal(SearchValueNode(bodyNode, "攤銷")),
+                BusinessCashflow = GetNodeTextToDecimal(SearchValueNode(bodyNode, "營業活動之淨現金流入")),
+                InvestmentCashflow = GetNodeTextToDecimal(SearchValueNode(bodyNode, "投資活動之淨現金流入")),
+                FinancingCashflow = GetNodeTextToDecimal(SearchValueNode(bodyNode, "籌資活動之淨現金流入")),
+                CapitalExpenditures = GetNodeTextToDecimal(SearchValueNode(bodyNode, "取得不動產")) + GetNodeTextToDecimal(SearchValueNode(bodyNode, "處分不動產")),
             };
-            // 自由現金流 = (營業現金流 - 資本支出 - 股利支出)
-            result.FreeCashflow = result.BusinessCashflow - result.CapitalExpenditures - result.InvestmentCashflow - GetNodeTextToDecimal(bodyNode.SelectSingleNode("./tr[69]/td[2]"));
-            // 淨現金流 = 營業現金流 - 投資現金流 + 融資現金流
-            result.NetCashflow = result.BusinessCashflow - result.InvestmentCashflow + result.FinancingCashflow;
+            result.FreeCashflow = result.BusinessCashflow + result.InvestmentCashflow;
+            result.NetCashflow = result.BusinessCashflow + result.InvestmentCashflow + result.FinancingCashflow;
 
             return result;
+        }
+        private static HtmlNode SearchValueNode(HtmlNode bodyNode, string keyword)
+        {
+            int index = 5;
+            do
+            {
+                var item = bodyNode.SelectSingleNode($"./tr[{index}]/td[1]");
+                if (item.InnerText.Contains(keyword))
+                    return bodyNode.SelectSingleNode($"./tr[{index}]/td[2]");
+                if (null == item) return null;
+                index++;
+            } while (true);
         }
         private static decimal GetNodeTextToDecimal(HtmlNode node)
         {
