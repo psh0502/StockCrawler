@@ -20,7 +20,7 @@ namespace StockCrawler.UnitTest.JobUnitTest
         {
             Services.SystemTime.SetFakeTime(new DateTime(2020, 6, 29));
             StockPriceUpdateJob.Logger = new UnitTestLogger();
-            StockPriceUpdateJob target = new StockPriceUpdateJob("StockCrawler.Services.StockDailyPrice.TwseStockDailyInfoCollector, StockCrawler.Services");
+            StockPriceUpdateJob target = new StockPriceUpdateJob();
             IJobExecutionContext context = null;
             target.Execute(context);
         }

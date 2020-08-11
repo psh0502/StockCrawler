@@ -110,6 +110,7 @@
     <Compile Include="JobUnitTest\StockPriceHistoryInitJobTest.cs" />
     <Compile Include="JobUnitTest\StockPriceUpdateJobTest.cs" />
     <Compile Include="StockFinanceReport\TwseReportCollectorTests.cs" />
+    <Compile Include="JobUnitTest\StockFinReportUpdateJobTests.cs" />
     <Compile Include="ToolsTests.cs" />
     <Compile Include="UnitTestLogger.cs" />
   </ItemGroup>

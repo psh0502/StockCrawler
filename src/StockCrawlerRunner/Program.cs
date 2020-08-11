@@ -44,6 +44,9 @@ namespace StockCrawlerRunner
                                 job = new StockBasicInfoUpdateJob();
                             break;
                         case "-f":
+                            if (args.Length > 1)
+                                job = new StockFinReportUpdateJob() { BeginYear = short.Parse(args[1]) };
+                            else
                                 job = new StockFinReportUpdateJob();
                             break;
                         default:
@@ -86,15 +89,17 @@ namespace StockCrawlerRunner
             Console.WriteLine(" <mode>: -i <Date:yyyy/MM/dd> [StockNo]");
             Console.WriteLine("     Initialize only one specified stock history data. It will drop all old data by this stock.");
             Console.WriteLine(" <mode>: -u");
-            Console.WriteLine("     Append the latest price data in database.");
+            Console.WriteLine("     Append the latest price data.");
             Console.WriteLine(" <mode>: -u [Date:yyyy/MM/dd]");
-            Console.WriteLine("     Append the specified date price data in database.");
+            Console.WriteLine("     Append the specified date price data.");
             Console.WriteLine(" <mode>: -b");
-            Console.WriteLine("     Update the latest company basic information in database.");
+            Console.WriteLine("     Update the latest company basic information.");
             Console.WriteLine(" <mode>: -b <stockNo>");
-            Console.WriteLine("     Update the latest company basic information in database since the specified stockNo.");
+            Console.WriteLine("     Update the latest company basic information since the specified stockNo.");
             Console.WriteLine(" <mode>: -f");
-            Console.WriteLine("     Update the latest company finance report in database.");
+            Console.WriteLine("     Update the latest company finance report.");
+            Console.WriteLine(" <mode>: -f <taiwan year>");
+            Console.WriteLine("     Update the company finance report since the specified Taiwan year.");
         }
     }
 }

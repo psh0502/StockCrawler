@@ -26,7 +26,7 @@ namespace StockCrawler.Services
         }
 
         public string CollectorTypeName { get; private set; }
-        public string BeginStockNo { get; set; }
+        public short BeginYear { get; set; } = -1;
 
         #region IJob Members
 
@@ -38,13 +38,31 @@ namespace StockCrawler.Services
                 using (var db = StockDataServiceProvider.GetServiceInstance())
                 {
                     var collector = string.IsNullOrEmpty(CollectorTypeName) ? CollectorProviderService.GetFinanceReportCashFlowCollector() : CollectorProviderService.GetFinanceReportCashFlowCollector(CollectorTypeName);
-                    foreach (var d in db.GetStocks().Where(d => !d.StockNo.StartsWith("0") && (string.IsNullOrEmpty(BeginStockNo) || int.Parse(d.StockNo.Substring(0, 4)) >= int.Parse(BeginStockNo)))) // 排除非公司的基金型股票
+                    foreach (var d in db.GetStocks().Where(d => !d.StockNo.StartsWith("0") && (int.TryParse(d.StockNo.Substring(0, 4), out _)))) // 排除非公司的基金型股票
                     {
-                        var info = collector.GetStockFinanceReportCashFlow(d.StockNo, GetTaiwanYear(), GetSeason());
-                        if (null != info)
-                            db.UpdateStockFinaniceCashflowReport(info);
-                        else
-                            Logger.InfoFormat("[{0}] has no finance report", d.StockNo);
+                        short year = GetTaiwanYear();
+                        short season = GetSeason();
+                        if (BeginYear > 100)
+                        {
+                            year = BeginYear;
+                            season = 1;
+                        }
+
+                        for (; year <= GetTaiwanYear(); year++)
+                        {
+                            for (; season <= 4; season++)
+                            {
+                                var info = collector.GetStockFinanceReportCashFlow(d.StockNo, year, season);
+                                if (null != info)
+                                    db.UpdateStockFinaniceCashflowReport(info);
+                                else
+                                {
+                                    Logger.InfoFormat("[{0}] has no finance report(year={1}/season={2})", d.StockNo, year, season);
+                                    break;
+                                }
+                            }
+                            season = 1;
+                        }
 
                         Thread.Sleep(1 * 1000); // Don't get target website pissed off...
                     }
