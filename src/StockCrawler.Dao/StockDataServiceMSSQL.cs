@@ -51,7 +51,7 @@ namespace StockCrawler.Dao
 
         private static StockDataContext GetMSSQLStockDataContext()
         {
-#if(UNITTEST)
+#if(DEBUG)
             return new StockDataContext(@"Data Source=.\SQLEXPRESS;Initial Catalog=Stock;User ID=crawler;password=crawler");
 #else
             return new StockDataContext();
