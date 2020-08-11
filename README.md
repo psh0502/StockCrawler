@@ -20,16 +20,20 @@ StockCrawlerRunner.exe <mode>
      Initialize all stock history data. It will drop all existing data.
  <mode>: -i [StockNo]
      Initialize only one specified stock history data. It will drop all old data by this stock.
- <mode>: -i [Date:yyyy/MM/dd]");
-     Initialize all stock history data by the specified date. It will drop all existing data.");
- <mode>: -i <Date:yyyy/MM/dd> [StockNo]");
-     Initialize only one specified stock history data. It will drop all old data by this stock.");
- <mode>: -u");
-     Append the latest price data in database.");
- <mode>: -u [Date:yyyy/MM/dd]");
-     Append the specified date price data in database.");
- <mode>: -b");
-     Update the latest company basic information in database.");
+ <mode>: -i [Date:yyyy/MM/dd]
+     Initialize all stock history data by the specified date. It will drop all existing data.
+ <mode>: -i <Date:yyyy/MM/dd> [StockNo]
+     Initialize only one specified stock history data. It will drop all old data by this stock.
+ <mode>: -u
+     Append the latest price data in database.
+ <mode>: -u [Date:yyyy/MM/dd]
+     Append the specified date price data in database.
+ <mode>: -b
+     Update the latest company basic information in database.
+ <mode>: -b <stockNo> Update the latest company basic info by the specified stock No
+     Update the latest company basic information in database.
+ <mode>: -f
+     Update the latest company finance report in database.
 
 ```
 

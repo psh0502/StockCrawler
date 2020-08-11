@@ -110,6 +110,7 @@
   <ItemGroup>
     <Compile Include="CollectorProviderService.cs" />
     <Compile Include="JobBase.cs" />
+    <Compile Include="StockFinReportUpdateJob.cs" />
     <Compile Include="StockBasicInfo\GoodInfoStockBasicInfoCollector.cs" />
     <Compile Include="StockBasicInfo\IStockBasicInfoCollector.cs" />
     <Compile Include="StockDailyPrice\IStockDailyInfoCollector.cs" />

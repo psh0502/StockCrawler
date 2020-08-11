@@ -80,7 +80,6 @@ namespace StockCrawler.Dao
         public void UpdateStockBasicInfo(GetStockBasicInfoResult d)
         {
             using (var db = GetMSSQLStockDataContext())
-            {
                 db.InsertOrUpdateStockBasicInfo(
                     d.StockNo,
                     d.Category,
@@ -95,7 +94,23 @@ namespace StockCrawler.Dao
                     d.CEO,
                     d.Url,
                     d.Businiess);
-            }
+        }
+
+        public void UpdateStockFinaniceCashflowReport(GetStockReportCashFlowResult d)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                db.InsertOrUpdateStockReportCashFlow(
+                    d.StockNo,
+                    d.Year,
+                    d.Season,
+                    d.Depreciation,
+                    d.AmortizationFee,
+                    d.BusinessCashflow,
+                    d.InvestmentCashflow,
+                    d.FinancingCashflow,
+                    d.CapitalExpenditures,
+                    d.FreeCashflow,
+                    d.NetCashflow);
         }
     }
 }

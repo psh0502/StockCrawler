@@ -43,6 +43,9 @@ namespace StockCrawlerRunner
                             else
                                 job = new StockBasicInfoUpdateJob();
                             break;
+                        case "-f":
+                                job = new StockFinReportUpdateJob();
+                            break;
                         default:
                             ShowHelp();
                             break;
@@ -90,6 +93,8 @@ namespace StockCrawlerRunner
             Console.WriteLine("     Update the latest company basic information in database.");
             Console.WriteLine(" <mode>: -b <stockNo>");
             Console.WriteLine("     Update the latest company basic information in database since the specified stockNo.");
+            Console.WriteLine(" <mode>: -f");
+            Console.WriteLine("     Update the latest company finance report in database.");
         }
     }
 }
