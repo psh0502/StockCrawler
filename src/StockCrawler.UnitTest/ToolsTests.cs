@@ -1,9 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using StockCrawler.UnitTest;
 
 namespace StockCrawler.Services.Tests
 {
     [TestClass()]
-    public class ToolsTests
+    public class ToolsTests : UnitTestBase
     {
         [TestMethod()]
         public void GetMyIpAddressTest()

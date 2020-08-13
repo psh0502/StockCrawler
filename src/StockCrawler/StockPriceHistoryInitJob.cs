@@ -69,7 +69,8 @@ namespace StockCrawler.Services
                 new Cookie() {
                     Name = "B",
                     Value = respCookie[0].Value,
-                    Domain = ".yahoo.com"
+                    Domain = ".yahoo.com",
+                    Path = "/"
                 }
             };
             string key = "\"CrumbStore\":{\"crumb\":\"";

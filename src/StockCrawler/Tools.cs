@@ -51,8 +51,8 @@ namespace StockCrawler.Services
                         if (ck.Length > 1)
                             respCookies.Add(new Cookie
                             {
-                                Name = ck[0],
-                                Value = ck[1],
+                                Name = ck[0].Trim(),
+                                Value = ck[1].Trim(),
                                 Domain = url.Host,
                                 Path ="/",
                             });

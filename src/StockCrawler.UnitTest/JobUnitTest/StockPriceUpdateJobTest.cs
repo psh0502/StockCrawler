@@ -10,7 +10,7 @@ namespace StockCrawler.UnitTest.JobUnitTest
     ///to contain all StockPriceUpdateJobTest Unit Tests
     ///</summary>
     [TestClass]
-    public class StockPriceUpdateJobTest // : UnitTestBase
+    public class StockPriceUpdateJobTest : UnitTestBase
     {
         /// <summary>
         ///A test for Execute StockPriceUpdate

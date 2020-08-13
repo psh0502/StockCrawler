@@ -25,9 +25,11 @@ BEGIN
 	ELSE
 		INSERT INTO [Stock](
 			[StockNo],
-			[StockName])
+			[StockName],
+			[Enable])
 		VALUES(
 			@pStockNo,
-			@pStockName);
+			@pStockName,
+			@TRUE);
 END
 GO

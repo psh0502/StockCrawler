@@ -4,7 +4,7 @@ using StockCrawler.UnitTest;
 namespace StockCrawler.Services.StockFinanceReport.Tests
 {
     [TestClass()]
-    public class TwseReportCollectorTests
+    public class TwseReportCollectorTests : UnitTestBase
     {
         [TestMethod()]
         public void GetStockFinanceReportCashFlowTest_109Q1()

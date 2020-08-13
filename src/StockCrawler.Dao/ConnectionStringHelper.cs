@@ -9,7 +9,7 @@ namespace StockCrawler.Dao
             get
             {
 #if (DEBUG)
-                return @"Data Source=.\SQLEXPRESS;Initial Catalog=Stock;User ID=crawler;password=crawler";
+                return @"Data Source=.\SQLEXPRESS;Initial Catalog=Stock;Integrated Security=True";
 #else
                 return ConfigurationManager.ConnectionStrings["StockCrawler.Dao.Properties.Settings.StockConnectionString"]?.ToString();
 #endif

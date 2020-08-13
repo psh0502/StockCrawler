@@ -6,7 +6,7 @@ using System;
 namespace StockCrawler.UnitTest.JobUnitTest
 {
     [TestClass()]
-    public class StockFinReportUpdateJobTests
+    public class StockFinReportUpdateJobTests : UnitTestBase
     {
         [TestMethod()]
         public void ExecuteTest()
