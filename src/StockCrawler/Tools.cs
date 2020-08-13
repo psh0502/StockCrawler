@@ -12,7 +12,7 @@ namespace StockCrawler.Services
     public class Tools
     {
         internal static ILog _logger = LogManager.GetLogger(typeof(Tools));
-        public static string DownloadStringData(Uri url, Encoding encode, out List<Cookie> respCookies, string contentType = null, List<Cookie> cookies = null, string method = "GET", NameValueCollection formdata = null, string refer = null)
+        public static string DownloadStringData(Uri url, Encoding encode, out IList<Cookie> respCookies, string contentType = null, IList<Cookie> cookies = null, string method = "GET", NameValueCollection formdata = null, string refer = null)
         {
             _logger.DebugFormat("url=[{0}]", url.OriginalString);
              

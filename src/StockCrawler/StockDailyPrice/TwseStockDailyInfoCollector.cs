@@ -2,6 +2,7 @@
 using ServiceStack.Text;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Text;
 
@@ -10,28 +11,33 @@ namespace StockCrawler.Services.StockDailyPrice
     internal class TwseStockDailyInfoCollector : IStockDailyInfoCollector
     {
         private static readonly ILog _logger = LogManager.GetLogger(typeof(TwseStockDailyInfoCollector));
-        private Dictionary<string, StockDailyPriceInfo> _stockInfoDict = null;
+        private Dictionary<string, StockDailyPriceInfo> _stockInfoDictCache = null;
         public StockDailyPriceInfo GetStockDailyPriceInfo(string stockNo)
         {
-            if (null == _stockInfoDict)
+            InitStockDailyPriceCache();
+            return (_stockInfoDictCache.ContainsKey(stockNo)) ? _stockInfoDictCache[stockNo] : null;
+        }
+
+        private void InitStockDailyPriceCache()
+        {
+            if (null == _stockInfoDictCache)
                 lock (this)
-                    if (null == _stockInfoDict)
+                    if (null == _stockInfoDictCache)
                     {
                         _logger.Info("Initialize all stock information cache.");
-                        _stockInfoDict = new Dictionary<string, StockDailyPriceInfo>();
+                        _stockInfoDictCache = new Dictionary<string, StockDailyPriceInfo>();
                         foreach (var info in GetAllStockDailyPriceInfo(SystemTime.Today))
                         {
-                            _stockInfoDict[info.StockNo] = info;
+                            _stockInfoDictCache[info.StockNo] = info;
                             _logger.DebugFormat("[{0}] {1}", info.StockNo, info.ClosePrice);
                         }
                     }
-
-            return (_stockInfoDict.ContainsKey(stockNo)) ? _stockInfoDict[stockNo] : null;
         }
+
         private static StockDailyPriceInfo[] GetAllStockDailyPriceInfo(DateTime day)
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            var csv_data = Tools.DownloadStringData(new Uri($"https://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={day:yyyyMMdd}&type=ALLBUT0999"), Encoding.Default, out List<Cookie> _);
+            var csv_data = Tools.DownloadStringData(new Uri($"https://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={day:yyyyMMdd}&type=ALLBUT0999"), Encoding.Default, out IList<Cookie> _);
             if (string.IsNullOrEmpty(csv_data)) {
                 _logger.WarnFormat("Download has no data by date[{0}]", day.ToString("yyyyMMdd"));
                 return null; 
@@ -76,6 +82,11 @@ namespace StockCrawler.Services.StockDailyPrice
                 }
             }
             return daily_info.ToArray();
+        }
+
+        public IList<StockDailyPriceInfo> GetStockDailyPriceInfo()
+        {
+            return _stockInfoDictCache.Select(d => d.Value).ToList();
         }
     }
 }

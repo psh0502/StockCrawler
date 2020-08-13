@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace StockCrawler.Services.StockDailyPrice
 {
     public interface IStockDailyInfoCollector
     {
         StockDailyPriceInfo GetStockDailyPriceInfo(string stockNo);
+        IList<StockDailyPriceInfo> GetStockDailyPriceInfo();
     }
 
     public class StockDailyPriceInfo

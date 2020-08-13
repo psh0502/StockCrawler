@@ -89,9 +89,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Schema\StockDataSet.cs">
-      <DependentUpon>StockDataSet.xsd</DependentUpon>
-    </Compile>
+    <Compile Include="ConnectionStringHelper.cs" />
     <Compile Include="Stock.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -105,11 +103,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="StockDataServiceProvider.cs" />
-    <Compile Include="Schema\StockDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>StockDataSet.xsd</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -118,17 +111,6 @@
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Schema\StockDataSet.xsc">
-      <DependentUpon>StockDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="Schema\StockDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>StockDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Schema\StockDataSet.xss">
-      <DependentUpon>StockDataSet.xsd</DependentUpon>
     </None>
     <None Include="Stock.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>

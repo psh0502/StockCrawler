@@ -2,11 +2,10 @@
 using Quartz;
 using ServiceStack.Text;
 using StockCrawler.Dao;
-using StockCrawler.Dao.Schema;
+using StockCrawler.Services.StockDailyPrice;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -24,6 +23,8 @@ namespace StockCrawler.Services
                 Logger = LogManager.GetLogger(typeof(StockPriceHistoryInitJob));
         }
         internal string ProcessingStockNo { get; set; }
+
+        internal IStockDailyInfoCollector StockInfoCollector { get; set; } = new TwseStockDailyInfoCollector();
 
         #region IJob Members
         public void Execute(IJobExecutionContext context)
@@ -46,78 +47,40 @@ namespace StockCrawler.Services
 
         private void DownloadTwseLatestInfo()
         {
-            string url = string.Format("https://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={0}&type=ALLBUT0999", SystemTime.Today.ToString("yyyyMMdd"));
-            Logger.DebugFormat("url=[{0}]", url);
-            
-            var csv_data = Tools.DownloadStringData(new Uri(url), Encoding.Default, out List<Cookie> _);
-
-            // Usage of CsvReader: http://blog.darkthread.net/post-2017-05-13-servicestack-text-csvserializer.aspx
-            var csv_lines = CsvReader.ParseLines(csv_data);
-            var dt = new StockDataSet.StockDataTable();
-            bool found_stock_list = false;
-            foreach (var ln in csv_lines)
-            {
-                //證券代號	證券名稱	成交股數	成交筆數	成交金額	開盤價	最高價	最低價	收盤價	漲跌(+/-)	漲跌價差	最後揭示買價	最後揭示買量	最後揭示賣價	最後揭示賣量	本益比
-                string[] data = CsvReader.ParseFields(ln).ToArray();
-                if (found_stock_list)
+            var list = StockInfoCollector.GetStockDailyPriceInfo()
+                .Select(d => new GetStocksResult()
                 {
-                    if ("備註:" == data[0].Trim())
-                    {
-                        found_stock_list = false;
-                        break;
-                    }
+                    StockNo = d.StockNo,
+                    StockName = d.StockName,
+                    Enable = true
+                }).ToList();
 
-                    var dr = dt.NewStockRow();
-                    dr.StockNo = data[0].Replace("=\"", string.Empty).Replace("\"", string.Empty);
-                    dr.StockName = data[1];
-                    dr.Enable = true;
-                    dt.AddStockRow(dr);
-                    Logger.DebugFormat("StockNo={0} - StockName={1}", dr.StockNo, dr.StockName);
-                }
-                else
-                {
-                    if ("證券代號" == data[0])
-                        found_stock_list = true;
-                }
-            }
-            Logger.DebugFormat("dt.Count={0}", dt.Count);
-            if (dt.Count > 0)
-                StockDataServiceProvider.GetServiceInstance().RenewStockList(dt);
+            if (list.Count > 0)
+                StockDataServiceProvider.GetServiceInstance().RenewStockList(list);
         }
         private string DownloadYahooStockCSV(string stockNo, DateTime startDT, DateTime endDT)
         {
             DateTime base_date = new DateTime(1970, 1, 1);
             string url = string.Format("https://finance.yahoo.com/quote/{0}.TW/history?period1={1}&period2={2}&interval=1d&filter=history&frequency=1d",
                 stockNo, (startDT - base_date).TotalSeconds, (endDT - base_date).TotalSeconds);
-            Cookie c1 = null;
-            var req = WebRequest.CreateHttp(url);
-            req.Method = "GET";
-            req.UserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36";
-            req.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
-            string crumb = null;
-            using (var res1 = req.GetResponse())
+            var data = Tools.DownloadStringData(new Uri(url), Encoding.UTF8, out IList<Cookie> respCookie);
+            IList<Cookie> cookies = new List<Cookie>
             {
-                string s2 = res1.Headers["Set-Cookie"];
-                c1 = new Cookie("B", s2.Split(';')[0].Substring(2)) { Domain = ".yahoo.com" };
-                string key = "\"CrumbStore\":{\"crumb\":\"";
-                using (var sr = new StreamReader(res1.GetResponseStream(), Encoding.UTF8))
-                {
-                    var data = sr.ReadToEnd();
-                    int sub_beg = data.IndexOf(key) + key.Length;
-                    data = data.Substring(sub_beg);
-                    int sub_end = data.IndexOf("\"");
-                    crumb = data.Substring(0, sub_end);
+                new Cookie() {
+                    Name = "B",
+                    Value = respCookie[0].Value,
+                    Domain = ".yahoo.com"
                 }
-            }
+            };
+            string key = "\"CrumbStore\":{\"crumb\":\"";
+            int sub_beg = data.IndexOf(key) + key.Length;
+            data = data.Substring(sub_beg);
+            int sub_end = data.IndexOf("\"");
+            string crumb = data.Substring(0, sub_end);
 
-            req = WebRequest.CreateHttp(string.Format("https://query1.finance.yahoo.com/v7/finance/download/{0}.TW?period1={1}&period2={2}&interval=1d&events=history&crumb={3}",
-                stockNo, (startDT - base_date).TotalSeconds, (endDT - base_date).TotalSeconds, crumb));
-            req.Method = "GET";
-            req.CookieContainer = new CookieContainer();
-            req.CookieContainer.Add(c1);
-            var res = req.GetResponse();
-            using (var sr = new StreamReader(res.GetResponseStream(), Encoding.UTF8))
-                return sr.ReadToEnd();
+            url = string.Format("https://query1.finance.yahoo.com/v7/finance/download/{0}.TW?period1={1}&period2={2}&interval=1d&events=history&crumb={3}",
+                stockNo, (startDT - base_date).TotalSeconds, (endDT - base_date).TotalSeconds, crumb);
+            return Tools.DownloadStringData(new Uri(url), Encoding.UTF8, out _, null, cookies);
         }
         private void InitializeHistoricData(string stockNo, DateTime startDT, DateTime endDT)
         {
@@ -127,7 +90,7 @@ namespace StockCrawler.Services
 
                 var csv_lines = CsvReader.ParseLines(csv_data).Skip(1);
 
-                var dt = new StockDataSet.StockPriceHistoryDataTable();
+                var dt = new List<GetStockHistoryResult>();
                 foreach (var ln in csv_lines)
                 {
                     string[] data = CsvReader.ParseFields(ln).ToArray();
@@ -135,16 +98,18 @@ namespace StockCrawler.Services
                     {
                         if (data.Length == 7)
                         {
-                            var dr = dt.NewStockPriceHistoryRow();
-                            dr.StockDT = DateTime.Parse(data[0]);
-                            dr.OpenPrice = decimal.Parse(data[1]);
-                            dr.HighPrice = decimal.Parse(data[2]);
-                            dr.LowPrice = decimal.Parse(data[3]);
-                            dr.ClosePrice = decimal.Parse(data[4]);
-                            dr.AdjClosePrice = decimal.Parse(data[5]);
-                            dr.Volume = long.Parse(data[6]) / 1000;
-                            dr.StockNo = stockNo;
-                            dt.AddStockPriceHistoryRow(dr);
+                            var dr = new GetStockHistoryResult
+                            {
+                                StockDT = DateTime.Parse(data[0]),
+                                OpenPrice = decimal.Parse(data[1]),
+                                HighPrice = decimal.Parse(data[2]),
+                                LowPrice = decimal.Parse(data[3]),
+                                ClosePrice = decimal.Parse(data[4]),
+                                AdjClosePrice = decimal.Parse(data[5]),
+                                Volume = long.Parse(data[6]) / 1000,
+                                StockNo = stockNo
+                            };
+                            dt.Add(dr);
                         }
                     }
                     catch (ConstraintException ex)

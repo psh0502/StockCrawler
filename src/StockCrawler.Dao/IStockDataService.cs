@@ -1,5 +1,4 @@
-﻿using StockCrawler.Dao.Schema;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace StockCrawler.Dao
@@ -43,9 +42,9 @@ namespace StockCrawler.Dao
         ///// <returns>The price datarow on the specified date.</returns>
         //StockDataSet.StockPriceHistoryRow GetStockPriceDataRowByDate(string sNO, DateTime specifiedDT);
         //StockDataSet.StockPriceHistoryDataTable GetStockPriceHistoryData(string sno, DateTime startDT, DateTime endDT);
-        StockDataSet.StockDataTable GetStocks();
-        void UpdateStockPriceHistoryDataTable(StockDataSet.StockPriceHistoryDataTable dt);
-        void RenewStockList(StockDataSet.StockDataTable dt);
+        IList<GetStocksResult> GetStocks();
+        void UpdateStockPriceHistoryDataTable(IList<GetStockHistoryResult> list);
+        void RenewStockList(IList<GetStocksResult> list);
         /// <summary>
         /// Update stock name by stock no
         /// </summary>

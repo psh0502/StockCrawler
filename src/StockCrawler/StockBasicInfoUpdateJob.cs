@@ -3,6 +3,7 @@ using Quartz;
 using StockCrawler.Dao;
 using System;
 using System.Data;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 

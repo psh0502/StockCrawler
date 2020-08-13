@@ -1,33 +1,34 @@
-﻿using StockCrawler.Dao.Schema;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace StockCrawler.Dao
 {
     internal class StockDataServiceMSSQL : IStockDataService
     {
-        public StockDataSet.StockDataTable GetStocks()
+        public IList<GetStocksResult> GetStocks()
         {
-            StockDataSet.StockDataTable dt = new StockDataSet.StockDataTable();
+            List<GetStocksResult> dt = new List<GetStocksResult>();
             using (var db = GetMSSQLStockDataContext())
             {
                 foreach (var d in db.GetStocks())
                 {
-                    var dr = dt.NewStockRow();
-                    dr.Enable = d.Enable;
-                    dr.StockName = d.StockName;
-                    dr.StockNo = d.StockNo;
+                    var dr = new GetStocksResult
+                    {
+                        Enable = d.Enable,
+                        StockName = d.StockName,
+                        StockNo = d.StockNo
+                    };
 
-                    dt.AddStockRow(dr);
+                    dt.Add(dr);
                 }
             }
             return dt;
         }
 
-        public void UpdateStockPriceHistoryDataTable(StockDataSet.StockPriceHistoryDataTable dt)
+        public void UpdateStockPriceHistoryDataTable(IList<GetStockHistoryResult> list)
         {
             using (var db = GetMSSQLStockDataContext())
-                foreach (var dr in dt)
+                foreach (var dr in list)
                     db.InsertStockPriceHistoryData(
                         dr.StockNo,
                         dr.StockDT,
@@ -39,23 +40,19 @@ namespace StockCrawler.Dao
                         dr.AdjClosePrice);
         }
 
-        public void RenewStockList(StockDataSet.StockDataTable dt)
+        public void RenewStockList(IList<GetStocksResult> list)
         {
             using (var db = GetMSSQLStockDataContext())
             {
                 db.DisableAllStocks();
-                foreach (var dr in dt)
+                foreach (var dr in list)
                     db.InsertOrUpdateStock(dr.StockNo, dr.StockName);
             }
         }
 
         private static StockDataContext GetMSSQLStockDataContext()
         {
-#if(DEBUG)
-            return new StockDataContext(@"Data Source=.\SQLEXPRESS;Initial Catalog=Stock;User ID=crawler;password=crawler");
-#else
-            return new StockDataContext();
-#endif
+            return new StockDataContext(ConnectionStringHelper.StockConnectionString);
         }
 
         public void Dispose()

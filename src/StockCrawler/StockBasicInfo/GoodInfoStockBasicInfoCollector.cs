@@ -22,12 +22,12 @@ namespace StockCrawler.Services.StockBasicInfo
             var ipAddress = Tools.GetMyIpAddress();
             do
             {
-                List<Cookie> cookies = new List<Cookie>
+                IList<Cookie> cookies = new List<Cookie>
                 {
                     new Cookie("CLIENT_ID", string.Format("{0}_{1}", now.ToString("yyyyMMddHHmmssfff"), ipAddress), "/", "goodinfo.tw"),
                     new Cookie("SCREEN_SIZE", "WIDTH=1920&HEIGHT=1080", "/", "goodinfo.tw")
                 };
-                html = Tools.DownloadStringData(new Uri(url), Encoding.UTF8, out List<Cookie> _, null, cookies);
+                html = Tools.DownloadStringData(new Uri(url), Encoding.UTF8, out IList<Cookie> _, null, cookies);
                 if (string.IsNullOrEmpty(html)) return null;
                 if (html.Contains("您的瀏覽量異常"))
                 {
