@@ -3,6 +3,7 @@ using Quartz;
 using StockCrawler.Dao;
 using StockCrawler.Services;
 using StockCrawler.UnitTest.Mocks;
+using System;
 using System.Linq;
 
 namespace StockCrawler.UnitTest.Jobs
@@ -20,6 +21,7 @@ namespace StockCrawler.UnitTest.Jobs
         [TestMethod]
         public void StockPriceHistoryInitTest()
         {
+            Services.SystemTime.SetFakeTime(new DateTime(2020, 8, 1));
             StockPriceHistoryInitJob.Logger = new UnitTestLogger();
             StockPriceHistoryInitJob target = new StockPriceHistoryInitJob();
             IJobExecutionContext context = null;
@@ -29,7 +31,7 @@ namespace StockCrawler.UnitTest.Jobs
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
             {
                 {
-                    var data = db.ExecuteQuery<GetStocksResult>("SELECT * FROM Stock(NOLOCK)").ToList();
+                    var data = db.GetStocks().ToList();
                     Assert.AreEqual(1, data.Count);
                     Assert.AreEqual("2330", data.First().StockNo);
                 }
@@ -40,7 +42,12 @@ namespace StockCrawler.UnitTest.Jobs
                     Assert.AreEqual(10, pageCount);
                     var d1 = data.First();
                     Assert.AreEqual("2330", d1.StockNo);
-                    StockPriceHistoryInitJob.Logger.InfoFormat("{0}, {1}", d1.OpenPrice, d1.ClosePrice);
+                    Assert.AreEqual(425.50M, d1.ClosePrice);
+                    Assert.AreEqual(426M, d1.OpenPrice);
+                    Assert.AreEqual(432.00M, d1.HighPrice);
+                    Assert.AreEqual(425.50M, d1.LowPrice);
+                    Assert.AreEqual(49897, d1.Volume);
+                    Assert.AreEqual(new DateTime(2020, 7, 31), d1.StockDT);
                 }
             }
         }

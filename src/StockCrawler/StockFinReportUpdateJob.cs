@@ -42,7 +42,8 @@ namespace StockCrawler.Services
                     foreach (var d in db.GetStocks().Where(d => !d.StockNo.StartsWith("0") && (int.TryParse(d.StockNo.Substring(0, 4), out _)))) // 排除非公司的基金型股票
                     {
                         short year = GetTaiwanYear();
-                        short season = GetSeason();
+                        short season = (short)(GetSeason() - 1);
+                        if (season <= 0) { season = 4; year -= 1; }
                         if (BeginYear > 100)
                         {
                             year = BeginYear;
@@ -55,7 +56,10 @@ namespace StockCrawler.Services
                             {
                                 var info = collector.GetStockFinanceReportCashFlow(d.StockNo, year, season);
                                 if (null != info)
+                                {
                                     db.UpdateStockFinaniceCashflowReport(info);
+                                    Logger.InfoFormat("[{0}] get its finance report(year={1}/season={2})", d.StockNo, year, season);
+                                }
                                 else
                                 {
                                     Logger.InfoFormat("[{0}] has no finance report(year={1}/season={2})", d.StockNo, year, season);

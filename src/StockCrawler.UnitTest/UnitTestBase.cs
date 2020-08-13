@@ -15,6 +15,7 @@ namespace StockCrawler.UnitTest
                 db.ExecuteCommand("TRUNCATE TABLE StockBasicInfo");
                 db.ExecuteCommand("TRUNCATE TABLE StockReportCashFlow");
                 db.ExecuteCommand("DELETE Stock");
+                db.InsertOrUpdateStock("2330", "台積電");
             }
             Tools._logger = new UnitTestLogger();
         }

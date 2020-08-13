@@ -25,7 +25,8 @@ namespace StockCrawler.Services.StockBasicInfo
                 IList<Cookie> cookies = new List<Cookie>
                 {
                     new Cookie("CLIENT_ID", string.Format("{0}_{1}", now.ToString("yyyyMMddHHmmssfff"), ipAddress), "/", "goodinfo.tw"),
-                    new Cookie("SCREEN_SIZE", "WIDTH=1920&HEIGHT=1080", "/", "goodinfo.tw")
+                    new Cookie("SCREEN_SIZE", "WIDTH=1920&HEIGHT=1080", "/", "goodinfo.tw"),
+                    new Cookie("GOOD_INFO_STOCK_BROWSE_LIST", $"3|{stockNo}", "/", "goodinfo.tw")
                 };
                 html = Tools.DownloadStringData(new Uri(url), Encoding.UTF8, out IList<Cookie> _, null, cookies);
                 if (string.IsNullOrEmpty(html)) return null;
