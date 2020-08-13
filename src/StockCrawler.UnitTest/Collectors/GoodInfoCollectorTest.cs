@@ -2,10 +2,10 @@
 using StockCrawler.Services.StockBasicInfo;
 using System;
 
-namespace StockCrawler.UnitTest.JobUnitTest
+namespace StockCrawler.UnitTest.Collectors
 {
     [TestClass]
-    public class GoodInfoCollectorUnitTest : UnitTestBase
+    public class GoodInfoCollectorTest : UnitTestBase
     {
         [TestMethod]
         public void CollectorTestMethod_2330()

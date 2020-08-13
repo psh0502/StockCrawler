@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StockCrawler.UnitTest;
+using StockCrawler.Services;
 
-namespace StockCrawler.Services.Tests
+namespace StockCrawler.UnitTest.Others
 {
     [TestClass()]
     public class ToolsTests : UnitTestBase

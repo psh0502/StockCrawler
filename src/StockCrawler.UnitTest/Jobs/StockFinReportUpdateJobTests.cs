@@ -3,7 +3,7 @@ using Quartz;
 using StockCrawler.Services;
 using System;
 
-namespace StockCrawler.UnitTest.JobUnitTest
+namespace StockCrawler.UnitTest.Jobs
 {
     [TestClass()]
     public class StockFinReportUpdateJobTests : UnitTestBase

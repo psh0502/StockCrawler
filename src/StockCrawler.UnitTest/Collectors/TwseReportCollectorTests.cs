@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StockCrawler.UnitTest;
+using StockCrawler.Services.StockFinanceReport;
 
-namespace StockCrawler.Services.StockFinanceReport.Tests
+namespace StockCrawler.UnitTest.Collectors
 {
     [TestClass()]
     public class TwseReportCollectorTests : UnitTestBase
@@ -11,7 +11,6 @@ namespace StockCrawler.Services.StockFinanceReport.Tests
         {
             var collector = new TwseReportCollector();
             TwseReportCollector._logger = new UnitTestLogger();
-            Tools._logger = new UnitTestLogger();
             var data = collector.GetStockFinanceReportCashFlow("2330", 109, 1);
             Assert.IsNotNull(data);
             Assert.AreEqual("2330", data.StockNo);
@@ -31,7 +30,6 @@ namespace StockCrawler.Services.StockFinanceReport.Tests
         {
             var collector = new TwseReportCollector();
             TwseReportCollector._logger = new UnitTestLogger();
-            Tools._logger = new UnitTestLogger();
             var data = collector.GetStockFinanceReportCashFlow("2330", 108, 4);
             Assert.IsNotNull(data);
             Assert.AreEqual("2330", data.StockNo);
