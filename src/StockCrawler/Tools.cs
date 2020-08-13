@@ -1,5 +1,4 @@
 ﻿using Common.Logging;
-using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -67,11 +66,13 @@ namespace StockCrawler.Services
 
         public static string GetMyIpAddress()
         {
-            var html = DownloadStringData(new Uri("https://www.whatismyip.com.tw/"), Encoding.UTF8, out _);
-            HtmlDocument doc = new HtmlDocument();
-            doc.LoadHtml(html);
-            var text = doc.DocumentNode.SelectSingleNode("/html/body/b/span").InnerText.Trim();
-            return text;
+            return DownloadStringData(new Uri("http://www.comeondata.com/App/api/IpLocApi/GetMyIpInfo"), Encoding.UTF8, out _).Replace("\"", string.Empty);
+
+            //var html = DownloadStringData(new Uri("https://www.whatismyip.com.tw/"), Encoding.UTF8, out _);
+            //HtmlDocument doc = new HtmlDocument();
+            //doc.LoadHtml(html);
+            //var text = doc.DocumentNode.SelectSingleNode("/html/body/b/span").InnerText.Trim();
+            //return text;
         }
     }
 }
