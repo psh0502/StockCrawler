@@ -54,7 +54,7 @@ namespace StockCrawler.Services
                         {
                             for (; season <= 4; season++)
                             {
-                                var info = collector.GetStockFinanceReportCashFlow(d.StockNo, year, season);
+                                var info = collector.GetStockReportCashFlow(d.StockNo, year, season);
                                 if (null != info)
                                 {
                                     db.UpdateStockFinaniceCashflowReport(info);

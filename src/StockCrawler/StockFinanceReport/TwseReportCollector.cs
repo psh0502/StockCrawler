@@ -8,10 +8,10 @@ using System.Web;
 
 namespace StockCrawler.Services.StockFinanceReport
 {
-    internal class TwseReportCollector : IStockFinanceReportCashFlowCollector
+    internal class TwseReportCollector : IStockReportCashFlowCollector
     {
         internal static ILog _logger = LogManager.GetLogger(typeof(TwseReportCollector));
-        public GetStockReportCashFlowResult GetStockFinanceReportCashFlow(string stockNo, short year, short season)
+        public GetStockReportCashFlowResult GetStockReportCashFlow(string stockNo, short year, short season)
         {
             var url = "https://mops.twse.com.tw/mops/web/ajax_t164sb05";
             List<GetStockReportCashFlowResult> results = new List<GetStockReportCashFlowResult>();
@@ -99,6 +99,11 @@ namespace StockCrawler.Services.StockFinanceReport
         private static decimal GetNodeTextToDecimal(HtmlNode node)
         {
             return decimal.Parse(node.InnerText.Trim().Replace(",", string.Empty));
+        }
+
+        public GetStockReportIncomeResult GetStockReportIncome(string stockNo, short year, short season)
+        {
+            throw new NotImplementedException();
         }
     }
 }
