@@ -116,7 +116,7 @@
     <Compile Include="StockDailyPrice\IStockDailyInfoCollector.cs" />
     <Compile Include="StockDailyPrice\TwseStockDailyInfoCollector.cs" />
     <Compile Include="StockBasicInfoUpdateJob.cs" />
-    <Compile Include="StockFinanceReport\IStockFinanceReportCollector.cs" />
+    <Compile Include="StockFinanceReport\IStockReportCollector.cs" />
     <Compile Include="StockFinanceReport\TwseReportCollector.cs" />
     <Compile Include="StockPriceUpdateJob.cs" />
     <Compile Include="StockPriceHistoryInitJob.cs" />
