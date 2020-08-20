@@ -74,40 +74,57 @@ namespace StockCrawler.Dao
             foreach (var d in data)
                 UpdateStockBasicInfo(d);
         }
-        public void UpdateStockBasicInfo(GetStockBasicInfoResult d)
+        public void UpdateStockBasicInfo(GetStockBasicInfoResult info)
         {
             using (var db = GetMSSQLStockDataContext())
                 db.InsertOrUpdateStockBasicInfo(
-                    d.StockNo,
-                    d.Category,
-                    d.CompanyName,
-                    d.CompanyID,
-                    d.BuildDate,
-                    d.PublishDate,
-                    d.Capital,
-                    d.MarketValue,
-                    d.ReleaseStockCount,
-                    d.Chairman,
-                    d.CEO,
-                    d.Url,
-                    d.Businiess);
+                    info.StockNo,
+                    info.Category,
+                    info.CompanyName,
+                    info.CompanyID,
+                    info.BuildDate,
+                    info.PublishDate,
+                    info.Capital,
+                    info.MarketValue,
+                    info.ReleaseStockCount,
+                    info.Chairman,
+                    info.CEO,
+                    info.Url,
+                    info.Businiess);
         }
-
-        public void UpdateStockFinaniceCashflowReport(GetStockReportCashFlowResult d)
+        public void UpdateStockCashflowReport(GetStockReportCashFlowResult info)
         {
             using (var db = GetMSSQLStockDataContext())
                 db.InsertOrUpdateStockReportCashFlow(
-                    d.StockNo,
-                    d.Year,
-                    d.Season,
-                    d.Depreciation,
-                    d.AmortizationFee,
-                    d.BusinessCashflow,
-                    d.InvestmentCashflow,
-                    d.FinancingCashflow,
-                    d.CapitalExpenditures,
-                    d.FreeCashflow,
-                    d.NetCashflow);
+                    info.StockNo,
+                    info.Year,
+                    info.Season,
+                    info.Depreciation,
+                    info.AmortizationFee,
+                    info.BusinessCashflow,
+                    info.InvestmentCashflow,
+                    info.FinancingCashflow,
+                    info.CapitalExpenditures,
+                    info.FreeCashflow,
+                    info.NetCashflow);
+        }
+
+        public void UpdateStockIncomeReport(GetStockReportIncomeResult info)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                db.InsertOrUpdateStockReportIncome(
+                    info.StockNo,
+                    info.Year,
+                    info.Season,
+                    info.Revenue,
+                    info.GrossProfit,
+                    info.SalesExpense,
+                    info.ManagementCost,
+                    info.RDExpense,
+                    info.OperatingExpenses,
+                    info.BusinessInterest,
+                    info.NetProfitTaxFree,
+                    info.NetProfitTaxed);
         }
     }
 }

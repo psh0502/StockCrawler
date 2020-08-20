@@ -8,7 +8,7 @@ using System.Web;
 
 namespace StockCrawler.Services.StockFinanceReport
 {
-    internal class TwseReportCollector : IStockReportCashFlowCollector
+    internal class TwseReportCollector : IStockReportCollector
     {
         internal static ILog _logger = LogManager.GetLogger(typeof(TwseReportCollector));
         public GetStockReportCashFlowResult GetStockReportCashFlow(string stockNo, short year, short season)
@@ -25,7 +25,7 @@ namespace StockCrawler.Services.StockFinanceReport
                 formData.Add("queryName", "co_id");
                 formData.Add("inpuType", "co_id");
                 formData.Add("TYPEK", "all");
-                formData.Add("isnew", true.ToString());
+                formData.Add("isnew", false.ToString());
                 formData.Add("co_id", stockNo);
                 formData.Add("year", year.ToString());
                 formData.Add("season", i.ToString("00"));
@@ -43,7 +43,7 @@ namespace StockCrawler.Services.StockFinanceReport
                 else
                 {
                     _logger.Info($"[{stockNo}] get the body node successfully.");
-                    var result = TransformNodeToDataRow(tableNode);
+                    var result = TransformNodeToCashflowRow(tableNode);
                     result.StockNo = stockNo;
                     result.Year = year;
                     result.Season = season;
@@ -67,8 +67,7 @@ namespace StockCrawler.Services.StockFinanceReport
             }
             return results[0];
         }
-
-        private static GetStockReportCashFlowResult TransformNodeToDataRow(HtmlNode bodyNode)
+        private static GetStockReportCashFlowResult TransformNodeToCashflowRow(HtmlNode bodyNode)
         {
             var result = new GetStockReportCashFlowResult()
             {
@@ -81,6 +80,23 @@ namespace StockCrawler.Services.StockFinanceReport
             };
             result.FreeCashflow = result.BusinessCashflow + result.InvestmentCashflow;
             result.NetCashflow = result.BusinessCashflow + result.InvestmentCashflow + result.FinancingCashflow;
+
+            return result;
+        }
+        private static GetStockReportIncomeResult TransformNodeToIncomeRow(HtmlNode bodyNode)
+        {
+            var result = new GetStockReportIncomeResult()
+            {
+                Revenue = GetNodeTextToDecimal(SearchValueNode(bodyNode, "營業收入合計")),
+                GrossProfit = GetNodeTextToDecimal(SearchValueNode(bodyNode, "營業毛利")),
+                SalesExpense = GetNodeTextToDecimal(SearchValueNode(bodyNode, "推銷費用")),
+                ManagementCost = GetNodeTextToDecimal(SearchValueNode(bodyNode, "管理費用")),
+                RDExpense = GetNodeTextToDecimal(SearchValueNode(bodyNode, "研究發展費用")),
+                OperatingExpenses = GetNodeTextToDecimal(SearchValueNode(bodyNode, "營業費用合計")),
+                BusinessInterest = GetNodeTextToDecimal(SearchValueNode(bodyNode, "營業利益")),
+                NetProfitTaxFree = GetNodeTextToDecimal(SearchValueNode(bodyNode, "稅前淨利")),
+                NetProfitTaxed = GetNodeTextToDecimal(SearchValueNode(bodyNode, "本期淨利")),
+            };
 
             return result;
         }
@@ -100,10 +116,40 @@ namespace StockCrawler.Services.StockFinanceReport
         {
             return decimal.Parse(node.InnerText.Trim().Replace(",", string.Empty));
         }
-
         public GetStockReportIncomeResult GetStockReportIncome(string stockNo, short year, short season)
         {
-            throw new NotImplementedException();
+            var url = "https://mops.twse.com.tw/mops/web/ajax_t164sb04";
+            var formData = HttpUtility.ParseQueryString(string.Empty);
+            formData.Add("step", "1");
+            formData.Add("firstin", "1");
+            formData.Add("off", "1");
+            formData.Add("queryName", "co_id");
+            formData.Add("inpuType", "co_id");
+            formData.Add("TYPEK", "all");
+            formData.Add("isnew", false.ToString());
+            formData.Add("co_id", stockNo);
+            formData.Add("year", year.ToString());
+            formData.Add("season", season.ToString("00"));
+            _logger.Debug("formData=" + formData.ToString());
+
+            var html = Tools.DownloadStringData(new Uri(url), Encoding.UTF8, out _, "application/x-www-form-urlencoded", null, "POST", formData);
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(html);
+            var tableNode = doc.DocumentNode.SelectSingleNode("/html/body/center/table[2]");
+            if (null == tableNode || string.IsNullOrEmpty(tableNode.InnerText.Trim()))
+            {
+                _logger.Warn($"[{stockNo}] can't get the body node, html={html}");
+                return null;
+            }
+            else
+            {
+                _logger.Info($"[{stockNo}] get the body node successfully.");
+                var result = TransformNodeToIncomeRow(tableNode);
+                result.StockNo = stockNo;
+                result.Year = year;
+                result.Season = season;
+                return result;
+            }
         }
     }
 }

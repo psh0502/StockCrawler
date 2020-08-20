@@ -11,7 +11,7 @@ namespace StockCrawler.Dao
         /// <param name="data">Collection of stock company's basic information</param>
         void UpdateStockBasicInfo(IEnumerable<GetStockBasicInfoResult> data);
         void UpdateStockBasicInfo(GetStockBasicInfoResult data);
-        void UpdateStockFinaniceCashflowReport(GetStockReportCashFlowResult info);
+        void UpdateStockCashflowReport(GetStockReportCashFlowResult info);
 
         ///// <summary>
         ///// Retrieve the average close price of the specified stock since the specified date.
@@ -52,5 +52,6 @@ namespace StockCrawler.Dao
         /// <param name="stockName">stock name</param>
         void UpdateStockName(string stockNo, string stockName);
         void DeleteStockPriceHistoryData(string stockNo, DateTime? tradeDate = null);
+        void UpdateStockIncomeReport(GetStockReportIncomeResult info);
     }
 }

@@ -9,7 +9,7 @@ namespace StockCrawler.UnitTest
 
         public void Debug(object message, Exception exception)
         {
-            System.Diagnostics.Debug.WriteLine(string.Format("[DEBUG] {0}\n{1}", message, exception));
+            System.Diagnostics.Debug.WriteLine(string.Format("[DEBUG] [{2}] {0}\n{1}", message, exception, DateTime.Now));
         }
 
         public void Debug(object message)
@@ -44,7 +44,7 @@ namespace StockCrawler.UnitTest
 
         public void Error(object message, Exception exception)
         {
-            System.Diagnostics.Debug.WriteLine(string.Format("[ERROR] {0}\n{1}", message, exception));
+            System.Diagnostics.Debug.WriteLine(string.Format("[ERROR] [{2}] {0}\n{1}", message, exception, DateTime.Now));
         }
 
         public void Error(object message)
@@ -79,7 +79,7 @@ namespace StockCrawler.UnitTest
 
         public void Fatal(object message, Exception exception)
         {
-            System.Diagnostics.Debug.WriteLine(string.Format("[FATAL] {0}\n{1}", message, exception));
+            System.Diagnostics.Debug.WriteLine(string.Format("[FATAL] [{2}] {0}\n{1}", message, exception, DateTime.Now));
         }
 
         public void Fatal(object message)
@@ -114,7 +114,7 @@ namespace StockCrawler.UnitTest
 
         public void Info(object message, Exception exception)
         {
-            System.Diagnostics.Debug.WriteLine(string.Format("[INFO] {0}\n{1}", message, exception));
+            System.Diagnostics.Debug.WriteLine(string.Format("[INFO] [{2}] {0}\n{1}", message, exception, DateTime.Now));
         }
 
         public void Info(object message)
@@ -174,7 +174,7 @@ namespace StockCrawler.UnitTest
 
         public void Warn(object message, Exception exception)
         {
-            System.Diagnostics.Debug.WriteLine(string.Format("[WARN] {0}\n{1}", message, exception));
+            System.Diagnostics.Debug.WriteLine(string.Format("[WARN] [{2}] {0}\n{1}", message, exception, DateTime.Now));
         }
 
         public void Warn(object message)

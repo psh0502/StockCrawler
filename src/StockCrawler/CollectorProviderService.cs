@@ -30,13 +30,13 @@ namespace StockCrawler.Services
         {
             return GetBasicInfoCollector(ConfigurationManager.AppSettings[CONST_APPSETTING_BASIC_INFO_COLLECTOR_TYPE]);
         }
-        public static IStockReportCashFlowCollector GetFinanceReportCashFlowCollector()
+        public static IStockReportCollector GetFinanceReportCashFlowCollector()
         {
             return GetFinanceReportCashFlowCollector(ConfigurationManager.AppSettings[CONST_APPSETTING_FINANIC_REPORT_COLLECTOR_TYPE]);
         }
-        public static IStockReportCashFlowCollector GetFinanceReportCashFlowCollector(string classAssemblyQualifiedName)
+        public static IStockReportCollector GetFinanceReportCashFlowCollector(string classAssemblyQualifiedName)
         {
-            return GetCollectorInstance<IStockReportCashFlowCollector>(classAssemblyQualifiedName);
+            return GetCollectorInstance<IStockReportCollector>(classAssemblyQualifiedName);
         }
         private static T GetCollectorInstance<T>(string classAssemblyQualifiedName)
         {
