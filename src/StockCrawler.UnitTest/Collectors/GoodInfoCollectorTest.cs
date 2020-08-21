@@ -41,7 +41,7 @@ namespace StockCrawler.UnitTest.Collectors
             //Assert.AreEqual(1061.2M * 100000000, r.MarketValue);
             Assert.AreEqual(1309.5M * 100000000, r.Capital);
             Assert.AreEqual("吳東進", r.Chairman);
-            Assert.AreEqual("黃敏義代理", r.CEO);
+            Assert.AreEqual("吳欣儒", r.CEO);
             Assert.AreEqual("https://www.skfh.com.tw", r.Url);
             Assert.AreEqual("金控業", r.Category);
             Assert.AreEqual("H801011金融控股公司業", r.Businiess);

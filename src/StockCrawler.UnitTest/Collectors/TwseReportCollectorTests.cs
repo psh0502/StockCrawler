@@ -9,7 +9,7 @@ namespace StockCrawler.UnitTest.Collectors
         [TestMethod]
         public void GetStockReportCashFlowTest_109Q1()
         {
-            var collector = new TwseReportCollector();
+            IStockReportCollector collector = new TwseReportCollector();
             TwseReportCollector._logger = new UnitTestLogger();
             var data = collector.GetStockReportCashFlow("2330", 109, 1);
             Assert.IsNotNull(data);
@@ -28,7 +28,7 @@ namespace StockCrawler.UnitTest.Collectors
         [TestMethod]
         public void GetStockReportCashFlowTest_108Q4()
         {
-            var collector = new TwseReportCollector();
+            IStockReportCollector collector = new TwseReportCollector();
             TwseReportCollector._logger = new UnitTestLogger();
             var data = collector.GetStockReportCashFlow("2330", 108, 4);
             Assert.IsNotNull(data);
@@ -47,7 +47,7 @@ namespace StockCrawler.UnitTest.Collectors
         [TestMethod]
         public void GetStockReportIncomeTest_109Q1()
         {
-            var collector = new TwseReportCollector();
+            IStockReportCollector collector = new TwseReportCollector();
             TwseReportCollector._logger = new UnitTestLogger();
             var data = collector.GetStockReportIncome("2330", 109, 1);
             Assert.IsNotNull(data);
@@ -63,6 +63,44 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual(128521637, data.BusinessInterest);
             Assert.AreEqual(132147178, data.NetProfitTaxFree);
             Assert.AreEqual(117062893, data.NetProfitTaxed);
+        }
+        [TestMethod]
+        public void GetStockReportBalanceTest_109Q1()
+        {
+            IStockReportCollector collector = new TwseReportCollector();
+            TwseReportCollector._logger = new UnitTestLogger();
+            var data = collector.GetStockReportBalance("2330", 109, 1);
+            Assert.IsNotNull(data);
+            Assert.AreEqual("2330", data.StockNo);
+            Assert.AreEqual(109, data.Year);
+            Assert.AreEqual(1, data.Season);
+
+            #region 資產
+            Assert.AreEqual(430777229, data.CashAndEquivalents);    // 現金及約當現金
+            Assert.AreEqual(1254253, data.ShortInvestments);    // 短期投資
+            Assert.AreEqual(146420632, data.BillsReceivable);   // 應收帳款及票據
+            Assert.AreEqual(78277834, data.Stock);  // 存貨
+            Assert.AreEqual(145740092, data.OtherCurrentAssets);    // 其餘流動資產
+            Assert.AreEqual(802470040, data.CurrentAssets);     // 流動資產
+            Assert.AreEqual(19381760, data.LongInvestment);     // 長期投資
+            Assert.AreEqual(1438215285, data.FixedAssets);      // 固定資產
+            Assert.AreEqual(83228611, data.OtherAssets);        // 其餘資產
+            Assert.AreEqual(2343295696, data.TotalAssets);      // 總資產
+            #endregion
+
+            #region 負債
+            Assert.AreEqual(139310384, data.ShortLoan);
+            Assert.AreEqual(2992858, data.ShortBillsPayable);
+            Assert.AreEqual(39774214, data.AccountsAndBillsPayable); //應付帳款及票據
+            Assert.AreEqual(0, data.AdvenceReceipt);     //預收款項
+            Assert.AreEqual(12800000, data.LongLiabilitiesWithinOneYear); // 一年內到期長期負債
+            Assert.AreEqual(394590603, data.OtherCurrentLiabilities);   // 其餘流動負債
+            Assert.AreEqual(589468059, data.CurrentLiabilities); // 流動負債
+            Assert.AreEqual(46475148, data.LongLiabilities);  // 長期負債
+            Assert.AreEqual(30323958, data.OtherLiabilities);   // 其餘負債
+            Assert.AreEqual(666267165, data.TtotalLiability);  // 總負債
+            Assert.AreEqual(16770285311677028531, data.NetWorth);     // 淨值
+            #endregion
         }
     }
 }

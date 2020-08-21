@@ -151,5 +151,9 @@ namespace StockCrawler.Services.StockFinanceReport
                 return result;
             }
         }
+        public dynamic GetStockReportBalance(string stockNo, short year, short season)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
