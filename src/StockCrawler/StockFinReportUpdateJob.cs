@@ -63,6 +63,7 @@ namespace StockCrawler.Services
                             {
                                 if (!GetCashflowIntoDatabase(db, collector, d.StockNo, year, season)) break;
                                 if (!GetIncomeIntoDatabase(db, collector, d.StockNo, year, season)) break;
+                                if (!GetBalanceIntoDatabase(db, collector, d.StockNo, year, season)) break;
                             }
                             if (year == now_year) break;
                             season = 1;
@@ -107,6 +108,21 @@ namespace StockCrawler.Services
             else
             {
                 Logger.InfoFormat("[{0}] has no cashflow report(year={1}/season={2})", stockNo, year, season);
+                return false;
+            }
+        }
+        private static bool GetBalanceIntoDatabase(IStockDataService db, IStockReportCollector collector, string stockNo, short year, short season)
+        {
+            var info = collector.GetStockReportBalance(stockNo, year, season);
+            if (null != info)
+            {
+                db.UpdateStockBalanceReport(info);
+                Logger.InfoFormat("[{0}] get its balance report(year={1}/season={2})", stockNo, year, season);
+                return true;
+            }
+            else
+            {
+                Logger.InfoFormat("[{0}] has no balance report(year={1}/season={2})", stockNo, year, season);
                 return false;
             }
         }

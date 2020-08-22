@@ -53,5 +53,6 @@ namespace StockCrawler.Dao
         void UpdateStockName(string stockNo, string stockName);
         void DeleteStockPriceHistoryData(string stockNo, DateTime? tradeDate = null);
         void UpdateStockIncomeReport(GetStockReportIncomeResult info);
+        void UpdateStockBalanceReport(GetStockReportBalanceResult info);
     }
 }

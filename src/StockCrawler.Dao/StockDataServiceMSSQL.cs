@@ -126,5 +126,35 @@ namespace StockCrawler.Dao
                     info.NetProfitTaxFree,
                     info.NetProfitTaxed);
         }
+
+        public void UpdateStockBalanceReport(GetStockReportBalanceResult info)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                db.InsertOrUpdateStockReportBalance(
+                    info.StockNo,
+                    info.Year,
+                    info.Season,
+                    info.CashAndEquivalents,
+                    info.ShortInvestments,
+                    info.BillsReceivable,
+                    info.Stock,
+                    info.OtherCurrentAssets,
+                    info.CurrentAssets,
+                    info.LongInvestment,
+                    info.FixedAssets,
+                    info.OtherAssets,
+                    info.TotalAssets,
+                    info.ShortLoan,
+                    info.ShortBillsPayable,
+                    info.AccountsAndBillsPayable,
+                    info.AdvenceReceipt,
+                    info.LongLiabilitiesWithinOneYear,
+                    info.OtherCurrentLiabilities,
+                    info.CurrentLiabilities,
+                    info.LongLiabilities,
+                    info.OtherLiabilities,
+                    info.TotalLiability,
+                    info.NetWorth);
+        }
     }
 }
