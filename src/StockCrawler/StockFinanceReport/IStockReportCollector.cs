@@ -30,6 +30,6 @@ namespace StockCrawler.Services.StockFinanceReport
         /// <param name="year">中華民國年度</param>
         /// <param name="season">第幾季</param>
         /// <returns>資產負債表</returns>
-        dynamic GetStockReportBalance(string stockNo, short year, short season);
+        GetStockReportBalanceResult GetStockReportBalance(string stockNo, short year, short season);
     }
 }

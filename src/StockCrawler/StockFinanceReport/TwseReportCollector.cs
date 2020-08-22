@@ -85,7 +85,7 @@ namespace StockCrawler.Services.StockFinanceReport
         }
         private static GetStockReportIncomeResult TransformNodeToIncomeRow(HtmlNode bodyNode)
         {
-            var result = new GetStockReportIncomeResult()
+            return new GetStockReportIncomeResult()
             {
                 Revenue = GetNodeTextToDecimal(SearchValueNode(bodyNode, "營業收入合計")),
                 GrossProfit = GetNodeTextToDecimal(SearchValueNode(bodyNode, "營業毛利")),
@@ -97,8 +97,6 @@ namespace StockCrawler.Services.StockFinanceReport
                 NetProfitTaxFree = GetNodeTextToDecimal(SearchValueNode(bodyNode, "稅前淨利")),
                 NetProfitTaxed = GetNodeTextToDecimal(SearchValueNode(bodyNode, "本期淨利")),
             };
-
-            return result;
         }
         private static HtmlNode SearchValueNode(HtmlNode bodyNode, string keyword)
         {
@@ -106,19 +104,30 @@ namespace StockCrawler.Services.StockFinanceReport
             do
             {
                 var item = bodyNode.SelectSingleNode($"./tr[{index}]/td[1]");
+                if (null == item) return null;
                 if (item.InnerText.Contains(keyword))
                     return bodyNode.SelectSingleNode($"./tr[{index}]/td[2]");
-                if (null == item) return null;
                 index++;
             } while (true);
         }
         private static decimal GetNodeTextToDecimal(HtmlNode node)
         {
+            if (null == node) return 0m;
             return decimal.Parse(node.InnerText.Trim().Replace(",", string.Empty));
         }
         public GetStockReportIncomeResult GetStockReportIncome(string stockNo, short year, short season)
         {
             var url = "https://mops.twse.com.tw/mops/web/ajax_t164sb04";
+            var tableNode = GetTwseDataBack(stockNo, year, season, url);
+            var result = TransformNodeToIncomeRow(tableNode);
+            result.StockNo = stockNo;
+            result.Year = year;
+            result.Season = season;
+            return result;
+        }
+
+        private static HtmlNode GetTwseDataBack(string stockNo, short year, short season, string url)
+        {
             var formData = HttpUtility.ParseQueryString(string.Empty);
             formData.Add("step", "1");
             formData.Add("firstin", "1");
@@ -144,16 +153,60 @@ namespace StockCrawler.Services.StockFinanceReport
             else
             {
                 _logger.Info($"[{stockNo}] get the body node successfully.");
-                var result = TransformNodeToIncomeRow(tableNode);
-                result.StockNo = stockNo;
-                result.Year = year;
-                result.Season = season;
-                return result;
+                return tableNode;
             }
         }
-        public dynamic GetStockReportBalance(string stockNo, short year, short season)
+
+        public GetStockReportBalanceResult GetStockReportBalance(string stockNo, short year, short season)
         {
-            throw new NotImplementedException();
+            var url = "https://mops.twse.com.tw/mops/web/ajax_t164sb03";
+            var tableNode = GetTwseDataBack(stockNo, year, season, url);
+            var result = TransformNodeToBalanceRow(tableNode);
+            result.StockNo = stockNo;
+            result.Year = year;
+            result.Season = season;
+            return result;
+        }
+
+        private static GetStockReportBalanceResult TransformNodeToBalanceRow(HtmlNode bodyNode)
+        {
+            return new GetStockReportBalanceResult()
+            {
+                // asset
+                CashAndEquivalents = GetNodeTextToDecimal(SearchValueNode(bodyNode, "現金及約當現金")),
+                ShortInvestments = GetNodeTextToDecimal(SearchValueNode(bodyNode, "金融資產－流動")),
+                BillsReceivable = GetNodeTextToDecimal(SearchValueNode(bodyNode, "應收帳款淨額"))
+                    + GetNodeTextToDecimal(SearchValueNode(bodyNode, "應收帳款－關係人")),
+                Stock = GetNodeTextToDecimal(SearchValueNode(bodyNode, "存貨")),
+                OtherCurrentAssets = GetNodeTextToDecimal(SearchValueNode(bodyNode, "其他流動資產")),
+                CurrentAssets = GetNodeTextToDecimal(SearchValueNode(bodyNode, "流動資產合計")),
+                LongInvestment = GetNodeTextToDecimal(SearchValueNode(bodyNode, "採用權益法之投資")),
+                FixedAssets = GetNodeTextToDecimal(SearchValueNode(bodyNode, "不動產、廠房及設備")),
+                OtherAssets = GetNodeTextToDecimal(SearchValueNode(bodyNode, "透過其他綜合損益按公允價值衡量之金融資產－非流動"))
+                    + GetNodeTextToDecimal(SearchValueNode(bodyNode, "按攤銷後成本衡量之金融資產－非流動"))
+                    + GetNodeTextToDecimal(SearchValueNode(bodyNode, "使用權資產"))
+                    + GetNodeTextToDecimal(SearchValueNode(bodyNode, "無形資產"))
+                    + GetNodeTextToDecimal(SearchValueNode(bodyNode, "遞延所得稅資產"))
+                    + GetNodeTextToDecimal(SearchValueNode(bodyNode, "其他非流動資產")),
+                TotalAssets = GetNodeTextToDecimal(SearchValueNode(bodyNode, "資產總額")),
+                // Liabilities
+                ShortLoan = GetNodeTextToDecimal(SearchValueNode(bodyNode, "短期借款")),
+                ShortBillsPayable = GetNodeTextToDecimal(SearchValueNode(bodyNode, "應付短期票券")),
+                AccountsAndBillsPayable = GetNodeTextToDecimal(SearchValueNode(bodyNode, "應付帳款"))
+                    + GetNodeTextToDecimal(SearchValueNode(bodyNode, "應付帳款－關係人")),
+                AdvenceReceipt = GetNodeTextToDecimal(SearchValueNode(bodyNode, "預收款項")),
+                LongLiabilitiesWithinOneYear = GetNodeTextToDecimal(SearchValueNode(bodyNode, "一年內到期長期負債")),
+                OtherCurrentLiabilities = GetNodeTextToDecimal(SearchValueNode(bodyNode, "其他應付款"))
+                    + GetNodeTextToDecimal(SearchValueNode(bodyNode, "本期所得稅負債"))
+                    + GetNodeTextToDecimal(SearchValueNode(bodyNode, "其他流動負債")),
+                CurrentLiabilities = GetNodeTextToDecimal(SearchValueNode(bodyNode, "流動負債合計")),
+                LongLiabilities = GetNodeTextToDecimal(SearchValueNode(bodyNode, "應付公司債")),
+                OtherLiabilities = GetNodeTextToDecimal(SearchValueNode(bodyNode, "遞延所得稅負債"))
+                    + GetNodeTextToDecimal(SearchValueNode(bodyNode, "租賃負債－非流動"))
+                    + +GetNodeTextToDecimal(SearchValueNode(bodyNode, "其他非流動負債")),
+                TotalLiability = GetNodeTextToDecimal(SearchValueNode(bodyNode, "負債總額")),
+                NetWorth = GetNodeTextToDecimal(SearchValueNode(bodyNode, "權益總額")),
+            };
         }
     }
 }
