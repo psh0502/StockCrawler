@@ -1,8 +1,3 @@
-/****** Object:  StoredProcedure [dbo].[InsertOrUpdateStockReportIncome]    Script Date: 07/15/2013 20:52:04 ******/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[InsertOrUpdateStockReportIncome]') AND type in (N'P', N'PC'))
-DROP PROCEDURE [dbo].[InsertOrUpdateStockReportIncome]
-GO
-
 /****** Object:  StoredProcedure [dbo].[InsertOrUpdateStockReportIncome] Script Date: 07/15/2013 20:52:04 ******/
 SET ANSI_NULLS ON
 GO
@@ -14,7 +9,7 @@ GO
 -- Description: Patch company income report
 -- Revision:
 -- =============================================
-CREATE PROCEDURE [dbo].[InsertOrUpdateStockReportIncome]
+CREATE OR ALTER PROCEDURE [dbo].[InsertOrUpdateStockReportIncome]
 @pStockNo VARCHAR(10), 
 @pYear SMALLINT,
 @pSeason SMALLINT,

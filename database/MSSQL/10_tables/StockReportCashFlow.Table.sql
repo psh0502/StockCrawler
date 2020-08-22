@@ -1,5 +1,5 @@
 /****** Object:  Table [dbo].[StockReportCashFlow]    Script Date: 2020/8/9 ¤W¤È 08:30:38 ******/
-DROP TABLE [dbo].[StockReportCashFlow]
+DROP TABLE IF EXISTS [dbo].[StockReportCashFlow]
 GO
 
 /****** Object:  Table [dbo].[StockReportCashFlow]    Script Date: 2020/8/9 ¤W¤È 08:30:38 ******/

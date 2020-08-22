@@ -1,8 +1,4 @@
 /****** Object:  StoredProcedure [dbo].[GetStockHistory] ******/
-DROP PROCEDURE [dbo].[GetStockHistory]
-GO
-
-/****** Object:  StoredProcedure [dbo].[GetStockHistory] ******/
 SET ANSI_NULLS ON
 GO
 
@@ -15,7 +11,7 @@ GO
 -- Description:	Get stock history records
 -- Revision:
 -- =============================================
-CREATE PROCEDURE [dbo].[GetStockHistory]
+CREATE OR ALTER PROCEDURE [dbo].[GetStockHistory]
 @pStockNo VARCHAR(10),
 @pDateBegin DATE,
 @pDateEnd DATE,

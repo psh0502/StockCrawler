@@ -1,5 +1,5 @@
 /****** Object:  Table [dbo].[Stock]    Script Date: 2017/7/3 ¤U¤È 09:12:15 ******/
-DROP TABLE [dbo].[Stock]
+DROP TABLE IF EXISTS [dbo].[Stock]
 GO
 
 /****** Object:  Table [dbo].[Stock]    Script Date: 2017/7/3 ¤U¤È 09:12:15 ******/

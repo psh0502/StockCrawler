@@ -1,8 +1,3 @@
-/****** Object:  StoredProcedure [dbo].[InsertOrUpdateStockBasicInfo]    Script Date: 07/15/2013 20:52:04 ******/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[InsertOrUpdateStockBasicInfo]') AND type in (N'P', N'PC'))
-DROP PROCEDURE [dbo].[InsertOrUpdateStockBasicInfo]
-GO
-
 /****** Object:  StoredProcedure [dbo].[InsertOrUpdateStockBasicInfo] Script Date: 07/15/2013 20:52:04 ******/
 SET ANSI_NULLS ON
 GO
@@ -14,7 +9,7 @@ GO
 -- Description: Patch company information
 -- Revision:
 -- =============================================
-CREATE PROCEDURE [dbo].[InsertOrUpdateStockBasicInfo]
+CREATE OR ALTER PROCEDURE [dbo].[InsertOrUpdateStockBasicInfo]
 @pStockNo VARCHAR(10), 
 @pCategory NVARCHAR(50),
 @pCompanyName NVARCHAR(100),

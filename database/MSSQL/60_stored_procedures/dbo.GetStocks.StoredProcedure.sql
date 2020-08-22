@@ -1,8 +1,3 @@
-/****** Object:  StoredProcedure [dbo].[GetStocks]    Script Date: 07/15/2013 20:52:04 ******/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[GetStocks]') AND type in (N'P', N'PC'))
-DROP PROCEDURE [dbo].[GetStocks]
-GO
-
 /****** Object:  StoredProcedure [dbo].[GetStocks] Script Date: 07/15/2013 20:52:04 ******/
 SET ANSI_NULLS ON
 GO
@@ -14,7 +9,7 @@ GO
 -- Description: Get all stocks
 -- Revision:
 -- =============================================
-CREATE PROCEDURE [dbo].[GetStocks]
+CREATE OR ALTER PROCEDURE [dbo].[GetStocks]
 AS
 BEGIN
 	SET NOCOUNT ON;
