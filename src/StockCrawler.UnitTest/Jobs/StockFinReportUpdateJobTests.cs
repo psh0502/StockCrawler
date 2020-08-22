@@ -63,6 +63,44 @@ namespace StockCrawler.UnitTest.Jobs
                     Assert.AreEqual(117062893, d1.NetProfitTaxed);
                 }
                 #endregion
+
+                #region balance
+                {
+                    var data = db.GetStockReportBalance("2330", (short)(Services.SystemTime.Today.Year - 1911), 1).ToList();
+                    Assert.AreEqual(1, data.Count);
+                    var d1 = data.First();
+                    Assert.AreEqual("2330", d1.StockNo);
+                    Assert.AreEqual(109, d1.Year);
+                    Assert.AreEqual(1, d1.Season);
+
+                    #region 資產
+                    Assert.AreEqual(430777229, d1.CashAndEquivalents);    // 現金及約當現金
+                    Assert.AreEqual(1254253, d1.ShortInvestments);    // 短期投資
+                    Assert.AreEqual(146420632, d1.BillsReceivable);   // 應收帳款及票據
+                    Assert.AreEqual(78277834, d1.Stock);  // 存貨
+                    //Assert.AreEqual(145740092, data.OtherCurrentAssets);    // 其餘流動資產
+                    Assert.AreEqual(802470040, d1.CurrentAssets);     // 流動資產
+                    Assert.AreEqual(19381760, d1.LongInvestment);     // 長期投資
+                    Assert.AreEqual(1438215285, d1.FixedAssets);      // 固定資產
+                    Assert.AreEqual(83228611, d1.OtherAssets);        // 其餘資產
+                    Assert.AreEqual(2343295696, d1.TotalAssets);      // 總資產
+                    #endregion
+
+                    #region 負債
+                    Assert.AreEqual(139310384, d1.ShortLoan); // 短期借款
+                    Assert.AreEqual(2992858, d1.ShortBillsPayable);   // 應付短期票券
+                    Assert.AreEqual(39774214, d1.AccountsAndBillsPayable); //應付帳款及票據
+                    Assert.AreEqual(0, d1.AdvenceReceipt);     //預收款項
+                    //Assert.AreEqual(12800000, data.LongLiabilitiesWithinOneYear); // 一年內到期長期負債
+                    //Assert.AreEqual(394590603, data.OtherCurrentLiabilities);   // 其餘流動負債
+                    Assert.AreEqual(589468059, d1.CurrentLiabilities); // 流動負債
+                    Assert.AreEqual(46475148, d1.LongLiabilities);  // 長期負債
+                    Assert.AreEqual(30323958, d1.OtherLiabilities);   // 其餘負債
+                    Assert.AreEqual(666267165, d1.TotalLiability);  // 總負債
+                    Assert.AreEqual(1677028531, d1.NetWorth);     // 淨值(權益總額)
+                    #endregion
+                }
+                #endregion
             }
         }
     }
