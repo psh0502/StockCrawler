@@ -86,6 +86,7 @@ namespace StockCrawler.Services.StockDailyPrice
 
         public IList<StockDailyPriceInfo> GetStockDailyPriceInfo()
         {
+            InitStockDailyPriceCache();
             return _stockInfoDictCache.Select(d => d.Value).ToList();
         }
     }
