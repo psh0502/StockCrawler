@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿using Common.Logging;
 using ServiceStack.Text;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ namespace StockCrawler.Services.StockDailyPrice
 {
     internal class TwseStockDailyInfoCollector : IStockDailyInfoCollector
     {
-        private static readonly ILog _logger = LogManager.GetLogger(typeof(TwseStockDailyInfoCollector));
+        internal static ILog _logger = LogManager.GetLogger(typeof(TwseStockDailyInfoCollector));
         private Dictionary<string, StockDailyPriceInfo> _stockInfoDictCache = null;
         public StockDailyPriceInfo GetStockDailyPriceInfo(string stockNo)
         {

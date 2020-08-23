@@ -106,6 +106,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collectors\TwseStockDailyInfoCollectorTest.cs" />
     <Compile Include="Collectors\GoodInfoCollectorTest.cs" />
     <Compile Include="Mocks\StockDailyInfoCollectorMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
