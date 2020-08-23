@@ -119,6 +119,13 @@ namespace StockCrawler.Dao
 			return ((ISingleResult<GetStockReportIncomeResult>)(result.ReturnValue));
 		}
 		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetStockReportMonthlyNetProfitTaxed")]
+		public ISingleResult<GetStockReportMonthlyNetProfitTaxedResult> GetStockReportMonthlyNetProfitTaxed([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pYear, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pMonth)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pYear, pMonth);
+			return ((ISingleResult<GetStockReportMonthlyNetProfitTaxedResult>)(result.ReturnValue));
+		}
+		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetStocks")]
 		public ISingleResult<GetStocksResult> GetStocks()
 		{
@@ -1787,6 +1794,374 @@ namespace StockCrawler.Dao
 				if ((this._LastModifiedAt != value))
 				{
 					this._LastModifiedAt = value;
+				}
+			}
+		}
+	}
+	
+	public partial class GetStockReportMonthlyNetProfitTaxedResult
+	{
+		
+		private string _StockName;
+		
+		private string _StockNo;
+		
+		private string _StockName1;
+		
+		private bool _Enable;
+		
+		private System.DateTime _CreatedAt;
+		
+		private System.DateTime _LastModifiedAt;
+		
+		private string _StockNo1;
+		
+		private short _Year;
+		
+		private short _Month;
+		
+		private decimal _NetProfitTaxed;
+		
+		private decimal _LastYearNetProfitTaxed;
+		
+		private decimal _Delta;
+		
+		private decimal _DeltaPercent;
+		
+		private decimal _ThisYearTillThisMonth;
+		
+		private decimal _LastYearTillThisMonth;
+		
+		private decimal _TillThisMonthDelta;
+		
+		private decimal _TillThisMonthDeltaPercent;
+		
+		private string _Remark;
+		
+		private System.DateTime _CreatedAt1;
+		
+		private System.DateTime _LastModifiedAt1;
+		
+		public GetStockReportMonthlyNetProfitTaxedResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string StockName
+		{
+			get
+			{
+				return this._StockName;
+			}
+			set
+			{
+				if ((this._StockName != value))
+				{
+					this._StockName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockNo", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string StockNo
+		{
+			get
+			{
+				return this._StockNo;
+			}
+			set
+			{
+				if ((this._StockNo != value))
+				{
+					this._StockNo = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockName1", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string StockName1
+		{
+			get
+			{
+				return this._StockName1;
+			}
+			set
+			{
+				if ((this._StockName1 != value))
+				{
+					this._StockName1 = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Enable", DbType="Bit NOT NULL")]
+		public bool Enable
+		{
+			get
+			{
+				return this._Enable;
+			}
+			set
+			{
+				if ((this._Enable != value))
+				{
+					this._Enable = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedAt", DbType="DateTime NOT NULL")]
+		public System.DateTime CreatedAt
+		{
+			get
+			{
+				return this._CreatedAt;
+			}
+			set
+			{
+				if ((this._CreatedAt != value))
+				{
+					this._CreatedAt = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastModifiedAt", DbType="DateTime NOT NULL")]
+		public System.DateTime LastModifiedAt
+		{
+			get
+			{
+				return this._LastModifiedAt;
+			}
+			set
+			{
+				if ((this._LastModifiedAt != value))
+				{
+					this._LastModifiedAt = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockNo1", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string StockNo1
+		{
+			get
+			{
+				return this._StockNo1;
+			}
+			set
+			{
+				if ((this._StockNo1 != value))
+				{
+					this._StockNo1 = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Year", DbType="SmallInt NOT NULL")]
+		public short Year
+		{
+			get
+			{
+				return this._Year;
+			}
+			set
+			{
+				if ((this._Year != value))
+				{
+					this._Year = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Month", DbType="SmallInt NOT NULL")]
+		public short Month
+		{
+			get
+			{
+				return this._Month;
+			}
+			set
+			{
+				if ((this._Month != value))
+				{
+					this._Month = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NetProfitTaxed", DbType="Money NOT NULL")]
+		public decimal NetProfitTaxed
+		{
+			get
+			{
+				return this._NetProfitTaxed;
+			}
+			set
+			{
+				if ((this._NetProfitTaxed != value))
+				{
+					this._NetProfitTaxed = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastYearNetProfitTaxed", DbType="Money NOT NULL")]
+		public decimal LastYearNetProfitTaxed
+		{
+			get
+			{
+				return this._LastYearNetProfitTaxed;
+			}
+			set
+			{
+				if ((this._LastYearNetProfitTaxed != value))
+				{
+					this._LastYearNetProfitTaxed = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Delta", DbType="Money NOT NULL")]
+		public decimal Delta
+		{
+			get
+			{
+				return this._Delta;
+			}
+			set
+			{
+				if ((this._Delta != value))
+				{
+					this._Delta = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DeltaPercent", DbType="Decimal(18,4) NOT NULL")]
+		public decimal DeltaPercent
+		{
+			get
+			{
+				return this._DeltaPercent;
+			}
+			set
+			{
+				if ((this._DeltaPercent != value))
+				{
+					this._DeltaPercent = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ThisYearTillThisMonth", DbType="Money NOT NULL")]
+		public decimal ThisYearTillThisMonth
+		{
+			get
+			{
+				return this._ThisYearTillThisMonth;
+			}
+			set
+			{
+				if ((this._ThisYearTillThisMonth != value))
+				{
+					this._ThisYearTillThisMonth = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastYearTillThisMonth", DbType="Money NOT NULL")]
+		public decimal LastYearTillThisMonth
+		{
+			get
+			{
+				return this._LastYearTillThisMonth;
+			}
+			set
+			{
+				if ((this._LastYearTillThisMonth != value))
+				{
+					this._LastYearTillThisMonth = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TillThisMonthDelta", DbType="Money NOT NULL")]
+		public decimal TillThisMonthDelta
+		{
+			get
+			{
+				return this._TillThisMonthDelta;
+			}
+			set
+			{
+				if ((this._TillThisMonthDelta != value))
+				{
+					this._TillThisMonthDelta = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TillThisMonthDeltaPercent", DbType="Decimal(18,4) NOT NULL")]
+		public decimal TillThisMonthDeltaPercent
+		{
+			get
+			{
+				return this._TillThisMonthDeltaPercent;
+			}
+			set
+			{
+				if ((this._TillThisMonthDeltaPercent != value))
+				{
+					this._TillThisMonthDeltaPercent = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Remark", DbType="NVarChar(1000) NOT NULL", CanBeNull=false)]
+		public string Remark
+		{
+			get
+			{
+				return this._Remark;
+			}
+			set
+			{
+				if ((this._Remark != value))
+				{
+					this._Remark = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedAt1", DbType="DateTime NOT NULL")]
+		public System.DateTime CreatedAt1
+		{
+			get
+			{
+				return this._CreatedAt1;
+			}
+			set
+			{
+				if ((this._CreatedAt1 != value))
+				{
+					this._CreatedAt1 = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastModifiedAt1", DbType="DateTime NOT NULL")]
+		public System.DateTime LastModifiedAt1
+		{
+			get
+			{
+				return this._LastModifiedAt1;
+			}
+			set
+			{
+				if ((this._LastModifiedAt1 != value))
+				{
+					this._LastModifiedAt1 = value;
 				}
 			}
 		}

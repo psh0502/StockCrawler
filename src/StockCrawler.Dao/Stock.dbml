@@ -143,6 +143,33 @@
       <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
+  <Function Name="dbo.GetStockReportMonthlyNetProfitTaxed" Method="GetStockReportMonthlyNetProfitTaxed">
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="pMonth" Type="System.Int16" DbType="SmallInt" />
+    <ElementType Name="GetStockReportMonthlyNetProfitTaxedResult">
+      <Column Name="StockName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="StockName1" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Enable" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="StockNo1" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Year" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="Month" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="NetProfitTaxed" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="LastYearNetProfitTaxed" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="Delta" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="DeltaPercent" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="ThisYearTillThisMonth" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="LastYearTillThisMonth" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="TillThisMonthDelta" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="TillThisMonthDeltaPercent" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="Remark" Type="System.String" DbType="NVarChar(1000) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedAt1" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LastModifiedAt1" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
   <Function Name="dbo.GetStocks" Method="GetStocks">
     <ElementType Name="GetStocksResult">
       <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />

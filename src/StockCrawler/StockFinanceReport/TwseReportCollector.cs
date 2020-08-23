@@ -208,5 +208,10 @@ namespace StockCrawler.Services.StockFinanceReport
                 NetWorth = GetNodeTextToDecimal(SearchValueNode(bodyNode, "權益總額")),
             };
         }
+
+        public GetStockReportMonthlyNetProfitTaxedResult GetStockReportMonthlyNetProfitTaxed(string stockNo, short year, short month)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

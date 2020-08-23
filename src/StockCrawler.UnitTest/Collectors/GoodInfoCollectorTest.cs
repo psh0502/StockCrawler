@@ -17,7 +17,7 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual("台積電", r.StockName);
             Assert.AreEqual(new DateTime(1987, 2, 21), r.BuildDate);
             Assert.AreEqual(new DateTime(1994, 9, 5), r.PublishDate);
-            //Assert.AreEqual(11.3M * 1000000000000, r.MarketValue);
+            //Assert.AreEqual(11.3M * 1000000000000, r.MarketValue); // 因每日隨市價變動, 無法固定驗證資料
             Assert.AreEqual(2593M * 100000000, r.Capital);
             Assert.AreEqual("劉德音", r.Chairman);
             Assert.AreEqual("總裁: 魏哲家", r.CEO);
@@ -38,7 +38,7 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual("新光金", r.StockName);
             Assert.AreEqual(new DateTime(2002, 2, 19), r.BuildDate);
             Assert.AreEqual(new DateTime(2002, 2, 19), r.PublishDate);
-            //Assert.AreEqual(1061.2M * 100000000, r.MarketValue);
+            //Assert.AreEqual(1061.2M * 100000000, r.MarketValue);  // 因每日隨市價變動, 無法固定驗證資料
             Assert.AreEqual(1309.5M * 100000000, r.Capital);
             Assert.AreEqual("吳東進", r.Chairman);
             Assert.AreEqual("吳欣儒", r.CEO);

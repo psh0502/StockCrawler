@@ -21,7 +21,7 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual(203029442, data.BusinessCashflow);
             Assert.AreEqual(-188993268, data.InvestmentCashflow);
             Assert.AreEqual(-40757411, data.FinancingCashflow);
-            //Assert.AreEqual(-192063846, data.CapitalExpenditures);
+            //Assert.AreEqual(-192063846, data.CapitalExpenditures);    // 不知如何計算此數值
             Assert.AreEqual(14036174, data.FreeCashflow);
             Assert.AreEqual(-26721237, data.NetCashflow);
         }
@@ -40,7 +40,7 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual(202954417, data.BusinessCashflow);
             Assert.AreEqual(-171605106, data.InvestmentCashflow);
             Assert.AreEqual(-17182776, data.FinancingCashflow);
-            //Assert.AreEqual(-170009539, data.CapitalExpenditures);
+            //Assert.AreEqual(-170009539, data.CapitalExpenditures);    // 不知如何計算此數值
             Assert.AreEqual(31349311, data.FreeCashflow);
             Assert.AreEqual(14166535, data.NetCashflow);
         }
@@ -80,7 +80,7 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual(1254253, data.ShortInvestments);    // 短期投資
             Assert.AreEqual(146420632, data.BillsReceivable);   // 應收帳款及票據
             Assert.AreEqual(78277834, data.Stock);  // 存貨
-            //Assert.AreEqual(145740092, data.OtherCurrentAssets);    // 其餘流動資產
+            //Assert.AreEqual(145740092, data.OtherCurrentAssets);    // 其餘流動資產 // 不知如何計算此數值
             Assert.AreEqual(802470040, data.CurrentAssets);     // 流動資產
             Assert.AreEqual(19381760, data.LongInvestment);     // 長期投資
             Assert.AreEqual(1438215285, data.FixedAssets);      // 固定資產
@@ -93,14 +93,34 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual(2992858, data.ShortBillsPayable);   // 應付短期票券
             Assert.AreEqual(39774214, data.AccountsAndBillsPayable); //應付帳款及票據
             Assert.AreEqual(0, data.AdvenceReceipt);     //預收款項
-            //Assert.AreEqual(12800000, data.LongLiabilitiesWithinOneYear); // 一年內到期長期負債
-            //Assert.AreEqual(394590603, data.OtherCurrentLiabilities);   // 其餘流動負債
+            //Assert.AreEqual(12800000, data.LongLiabilitiesWithinOneYear); // 一年內到期長期負債  // 不知如何計算此數值
+            //Assert.AreEqual(394590603, data.OtherCurrentLiabilities);   // 其餘流動負債 // 不知如何計算此數值
             Assert.AreEqual(589468059, data.CurrentLiabilities); // 流動負債
             Assert.AreEqual(46475148, data.LongLiabilities);  // 長期負債
             Assert.AreEqual(30323958, data.OtherLiabilities);   // 其餘負債
             Assert.AreEqual(666267165, data.TotalLiability);  // 總負債
             Assert.AreEqual(1677028531, data.NetWorth);     // 淨值(權益總額)
             #endregion
+        }
+        [TestMethod]
+        public void GetStockReportMonthlyNetProfitTaxed_10907()
+        {
+            IStockReportCollector collector = new TwseReportCollector();
+            TwseReportCollector._logger = new UnitTestLogger();
+            var data = collector.GetStockReportMonthlyNetProfitTaxed("2330", 109, 7);
+            Assert.IsNotNull(data);
+            Assert.AreEqual("2330", data.StockNo);
+            Assert.AreEqual(109, data.Year);
+            Assert.AreEqual(7, data.Month);
+            Assert.AreEqual(105963468, data.NetProfitTaxed);    // 本月
+            Assert.AreEqual(84757724, data.LastYearNetProfitTaxed); // 去年同期
+            Assert.AreEqual(21205744, data.Delta); // 增減金額
+            Assert.AreEqual(25.02 / 100, data.DeltaPercent); // 增減百分比
+            Assert.AreEqual(727259018, data.ThisYearTillThisMonth); // 本年累計
+            Assert.AreEqual(544460668, data.LastYearTillThisMonth); // 去年累計
+            Assert.AreEqual(182798350, data.TillThisMonthDelta);    // 增減金額
+            Assert.AreEqual(33.57 / 100, data.TillThisMonthDeltaPercent);    // 增減百分比
+            Assert.AreEqual(string.Empty, data.Remark);   // 備註/營收變化原因說明
         }
     }
 }
