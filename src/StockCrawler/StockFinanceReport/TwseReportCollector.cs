@@ -11,6 +11,10 @@ namespace StockCrawler.Services.StockFinanceReport
     internal class TwseReportCollector : IStockReportCollector
     {
         internal static ILog _logger = LogManager.GetLogger(typeof(TwseReportCollector));
+        private const string _xpath_01 = "/html/body/center/table[2]";
+        private const string _xpath_02 = "/html/body/table[4]";
+        private static readonly string UTF8SpacingChar = Encoding.UTF8.GetString(new byte[] { 0xC2, 0xA0 });
+
         public GetStockReportCashFlowResult GetStockReportCashFlow(string stockNo, short year, short season)
         {
             var url = "https://mops.twse.com.tw/mops/web/ajax_t164sb05";
@@ -98,27 +102,33 @@ namespace StockCrawler.Services.StockFinanceReport
                 NetProfitTaxed = GetNodeTextToDecimal(SearchValueNode(bodyNode, "本期淨利")),
             };
         }
-        private static HtmlNode SearchValueNode(HtmlNode bodyNode, string keyword)
+        private static HtmlNode SearchValueNode(HtmlNode bodyNode, string keyword, int beginIndex = 5, string xpath1 = "./tr[{0}]/td[1]", string xpath2 = "./tr[{0}]/td[2]")
         {
-            int index = 5;
+            if (null == bodyNode) throw new ArgumentException("The parameter can't be null", "bodyNode");
+            int index = beginIndex;
             do
             {
-                var item = bodyNode.SelectSingleNode($"./tr[{index}]/td[1]");
-                if (null == item) return null;
+                var item = bodyNode.SelectSingleNode(string.Format(xpath1, index));
+                if (null == item)
+                {
+                    _logger.WarnFormat("Can't find the keyword[{0}] in this html:\r\n{1}", keyword, bodyNode.InnerHtml);
+                    return null;
+                }
                 if (item.InnerText.Contains(keyword))
-                    return bodyNode.SelectSingleNode($"./tr[{index}]/td[2]");
+                    return bodyNode.SelectSingleNode(string.Format(xpath2, index));
                 index++;
             } while (true);
         }
         private static decimal GetNodeTextToDecimal(HtmlNode node)
         {
             if (null == node) return 0m;
-            return decimal.Parse(node.InnerText.Trim().Replace(",", string.Empty));
+            var innerText = HttpUtility.HtmlDecode(node.InnerText.Trim().Replace(",", string.Empty));
+            return decimal.Parse(innerText.Replace(UTF8SpacingChar, string.Empty));
         }
         public GetStockReportIncomeResult GetStockReportIncome(string stockNo, short year, short season)
         {
             var url = "https://mops.twse.com.tw/mops/web/ajax_t164sb04";
-            var tableNode = GetTwseDataBack(stockNo, year, season, url);
+            var tableNode = GetTwseDataBack(url, stockNo, year, season);
             var result = TransformNodeToIncomeRow(tableNode);
             result.StockNo = stockNo;
             result.Year = year;
@@ -126,7 +136,7 @@ namespace StockCrawler.Services.StockFinanceReport
             return result;
         }
 
-        private static HtmlNode GetTwseDataBack(string stockNo, short year, short season, string url)
+        private static HtmlNode GetTwseDataBack(string url, string stockNo, short year, short season = -1, short month = -1, string xpath = _xpath_01)
         {
             var formData = HttpUtility.ParseQueryString(string.Empty);
             formData.Add("step", "1");
@@ -138,13 +148,14 @@ namespace StockCrawler.Services.StockFinanceReport
             formData.Add("isnew", false.ToString());
             formData.Add("co_id", stockNo);
             formData.Add("year", year.ToString());
-            formData.Add("season", season.ToString("00"));
+            if (season != -1) formData.Add("season", season.ToString("00"));
+            if (month != -1) formData.Add("month", month.ToString("00"));
             _logger.Debug("formData=" + formData.ToString());
 
             var html = Tools.DownloadStringData(new Uri(url), Encoding.UTF8, out _, "application/x-www-form-urlencoded", null, "POST", formData);
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(html);
-            var tableNode = doc.DocumentNode.SelectSingleNode("/html/body/center/table[2]");
+            var tableNode = doc.DocumentNode.SelectSingleNode(xpath);
             if (null == tableNode || string.IsNullOrEmpty(tableNode.InnerText.Trim()))
             {
                 _logger.Warn($"[{stockNo}] can't get the body node, html={html}");
@@ -160,7 +171,7 @@ namespace StockCrawler.Services.StockFinanceReport
         public GetStockReportBalanceResult GetStockReportBalance(string stockNo, short year, short season)
         {
             var url = "https://mops.twse.com.tw/mops/web/ajax_t164sb03";
-            var tableNode = GetTwseDataBack(stockNo, year, season, url);
+            var tableNode = GetTwseDataBack(url, stockNo, year, season);
             var result = TransformNodeToBalanceRow(tableNode);
             result.StockNo = stockNo;
             result.Year = year;
@@ -211,7 +222,29 @@ namespace StockCrawler.Services.StockFinanceReport
 
         public GetStockReportMonthlyNetProfitTaxedResult GetStockReportMonthlyNetProfitTaxed(string stockNo, short year, short month)
         {
-            throw new NotImplementedException();
+            var url = "https://mops.twse.com.tw/mops/web/ajax_t05st10_ifrs";
+            var tableNode = GetTwseDataBack(url, stockNo, year, month: month, xpath: _xpath_02);
+            var result = TransformNodeToMonlyNetProfitTaxedRow(tableNode);
+            result.StockNo = stockNo;
+            result.Year = year;
+            result.Month = month;
+            return result;
+        }
+
+        private GetStockReportMonthlyNetProfitTaxedResult TransformNodeToMonlyNetProfitTaxedRow(HtmlNode bodyNode)
+        {
+            return new GetStockReportMonthlyNetProfitTaxedResult()
+            {
+                NetProfitTaxed = GetNodeTextToDecimal(SearchValueNode(bodyNode, "本月", beginIndex:1, xpath1: "./tr[{0}]/th[1]", xpath2: "./tr[{0}]/td[1]")),
+                LastYearNetProfitTaxed = GetNodeTextToDecimal(SearchValueNode(bodyNode, "去年同期", beginIndex: 1, xpath1: "./tr[{0}]/th[1]", xpath2: "./tr[{0}]/td[1]")),
+                Delta = GetNodeTextToDecimal(SearchValueNode(bodyNode, "增減金額", beginIndex: 1, xpath1: "./tr[{0}]/th[1]", xpath2: "./tr[{0}]/td[1]")),
+                DeltaPercent = GetNodeTextToDecimal(SearchValueNode(bodyNode, "增減百分比", beginIndex: 1, xpath1: "./tr[{0}]/th[1]", xpath2: "./tr[{0}]/td[1]")) / 100,
+                ThisYearTillThisMonth = GetNodeTextToDecimal(SearchValueNode(bodyNode, "本年累計", beginIndex: 1, xpath1: "./tr[{0}]/th[1]", xpath2: "./tr[{0}]/td[1]")),
+                LastYearTillThisMonth = GetNodeTextToDecimal(SearchValueNode(bodyNode, "去年累計", beginIndex: 1, xpath1: "./tr[{0}]/th[1]", xpath2: "./tr[{0}]/td[1]")),
+                TillThisMonthDelta = GetNodeTextToDecimal(SearchValueNode(bodyNode, "增減金額", beginIndex: 8, xpath1: "./tr[{0}]/th[1]", xpath2: "./tr[{0}]/td[1]")),
+                TillThisMonthDeltaPercent = GetNodeTextToDecimal(SearchValueNode(bodyNode, "增減百分比", beginIndex: 9, xpath1: "./tr[{0}]/th[1]", xpath2: "./tr[{0}]/td[1]")) / 100,
+                Remark = SearchValueNode(bodyNode, "備註/營收變化原因說明", beginIndex: 1, xpath1: "./th[1]", xpath2: "./td[1]").InnerText.Trim().Replace(" ", string.Empty),
+            };
         }
     }
 }

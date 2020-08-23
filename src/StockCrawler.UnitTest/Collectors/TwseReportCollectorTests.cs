@@ -115,11 +115,11 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual(105963468, data.NetProfitTaxed);    // 本月
             Assert.AreEqual(84757724, data.LastYearNetProfitTaxed); // 去年同期
             Assert.AreEqual(21205744, data.Delta); // 增減金額
-            Assert.AreEqual(25.02 / 100, data.DeltaPercent); // 增減百分比
+            Assert.AreEqual((decimal)(25.02 / 100), data.DeltaPercent); // 增減百分比
             Assert.AreEqual(727259018, data.ThisYearTillThisMonth); // 本年累計
             Assert.AreEqual(544460668, data.LastYearTillThisMonth); // 去年累計
             Assert.AreEqual(182798350, data.TillThisMonthDelta);    // 增減金額
-            Assert.AreEqual(33.57 / 100, data.TillThisMonthDeltaPercent);    // 增減百分比
+            Assert.AreEqual((decimal)(33.57 / 100), data.TillThisMonthDeltaPercent);    // 增減百分比
             Assert.AreEqual(string.Empty, data.Remark);   // 備註/營收變化原因說明
         }
     }

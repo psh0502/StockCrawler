@@ -79,7 +79,7 @@ namespace StockCrawler.Services.StockBasicInfo
         {
             innerText = HttpUtility.HtmlDecode(innerText);
             var position = innerText.IndexOf(UTF8SpacingChar);
-            return long.Parse(innerText.Substring(0, position).Replace(",", ""));
+            return long.Parse(innerText.Substring(0, position).Replace(",", string.Empty));
         }
 
         private static decimal ParseCapital(string innerText)

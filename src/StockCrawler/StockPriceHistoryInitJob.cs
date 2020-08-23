@@ -126,7 +126,7 @@ namespace StockCrawler.Services
             }
             catch (WebException wex)
             {
-                Logger.Error(string.Format("Got web error but will continue...(StockNo={0})", stockNo), wex);
+                Logger.WarnFormat("Got web error[{1}] but will continue...(StockNo={0})", stockNo, wex.Status);
                 return;
             }
             catch (Exception ex)
