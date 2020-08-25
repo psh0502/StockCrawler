@@ -256,4 +256,19 @@
     <Parameter Name="pNetProfitTaxed" Type="System.Decimal" DbType="Money" />
     <Return Type="System.Int32" />
   </Function>
+  <Function Name="dbo.InsertOrUpdateStockReportMonthlyNetProfitTaxed" Method="InsertOrUpdateStockReportMonthlyNetProfitTaxed">
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="pMonth" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="pNetProfitTaxed" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pLastYearNetProfitTaxed" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pDelta" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pDeltaPercent" Type="System.Decimal" DbType="Decimal(18,4)" />
+    <Parameter Name="pThisYearTillThisMonth" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pLastYearTillThisMonth" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pTillThisMonthDelta" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pTillThisMonthDeltaPercent" Type="System.Decimal" DbType="Decimal(18,4)" />
+    <Parameter Name="pRemark" Type="System.String" DbType="NVarChar(1000)" />
+    <Return Type="System.Int32" />
+  </Function>
 </Database>

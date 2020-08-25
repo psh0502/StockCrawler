@@ -44,8 +44,10 @@ namespace StockCrawler.Services
                     {
                         short now_year = GetTaiwanYear();
                         short now_season = GetSeason();
+                        short now_month = (short)SystemTime.Today.Month;
                         short season = (short)(now_season - 1); // 抓上一季報告
                         short year = now_year;
+                        short month = (short)(now_month - 1); // 抓上月報告;
 
                         if (season <= 0) { season = 4; year -= 1; }
                         
@@ -54,6 +56,7 @@ namespace StockCrawler.Services
                         {
                             year = BeginYear;
                             season = 1;
+                            month = 1;
                         }
 
                         for (; year <= now_year; year++)
@@ -65,8 +68,11 @@ namespace StockCrawler.Services
                                 if (!GetIncomeIntoDatabase(db, collector, d.StockNo, year, season)) break;
                                 if (!GetBalanceIntoDatabase(db, collector, d.StockNo, year, season)) break;
                             }
-                            if (year == now_year) break;
+                            for(; month <= 12 && !(year == now_year && month == now_month); month++)
+                                if (!GetMonthlyNetProfitTaxedIntoDatabase(db, collector, d.StockNo, year, month)) break;
+
                             season = 1;
+                            month = 1;
                         }
 
                         Thread.Sleep(1 * 1000); // Don't get target website pissed off...
@@ -80,7 +86,23 @@ namespace StockCrawler.Services
             }
         }
 
-        private bool GetIncomeIntoDatabase(IStockDataService db, IStockReportCollector collector, string stockNo, short year, short season)
+        private static bool GetMonthlyNetProfitTaxedIntoDatabase(IStockDataService db, IStockReportCollector collector, string stockNo, short year, short month)
+        {
+            var info = collector.GetStockReportMonthlyNetProfitTaxed(stockNo, year, month);
+            if (null != info)
+            {
+                db.UpdateStockMonthlyNetProfitTaxedReport(info);
+                Logger.InfoFormat("[{0}] get its monthly net profit report(year={1}/month={2})", stockNo, year, month);
+                return true;
+            }
+            else
+            {
+                Logger.InfoFormat("[{0}] has no monthly net profit report(year={1}/month={2})", stockNo, year, month);
+                return false;
+            }
+        }
+
+        private static bool GetIncomeIntoDatabase(IStockDataService db, IStockReportCollector collector, string stockNo, short year, short season)
         {
             var info = collector.GetStockReportIncome(stockNo, year, season);
             if (null != info)

@@ -156,5 +156,23 @@ namespace StockCrawler.Dao
                     info.TotalLiability,
                     info.NetWorth);
         }
+
+        public void UpdateStockMonthlyNetProfitTaxedReport(GetStockReportMonthlyNetProfitTaxedResult info)
+        {
+            using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
+                db.InsertOrUpdateStockReportMonthlyNetProfitTaxed(
+                    info.StockNo,
+                    info.Year,
+                    info.Month,
+                    info.NetProfitTaxed,
+                    info.LastYearNetProfitTaxed,
+                    info.Delta,
+                    info.DeltaPercent,
+                    info.ThisYearTillThisMonth,
+                    info.LastYearTillThisMonth,
+                    info.TillThisMonthDelta,
+                    info.TillThisMonthDeltaPercent,
+                    info.Remark);
+        }
     }
 }
