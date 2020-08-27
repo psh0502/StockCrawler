@@ -47,7 +47,7 @@ namespace StockCrawler.Services
                         short now_month = (short)SystemTime.Today.Month;
                         short season = (short)(now_season - 1); // 抓上一季報告
                         short year = now_year;
-                        short month = (short)(now_month - 1); // 抓上月報告;
+                        
 
                         if (season <= 0) { season = 4; year -= 1; }
                         
@@ -56,7 +56,6 @@ namespace StockCrawler.Services
                         {
                             year = BeginYear;
                             season = 1;
-                            month = 1;
                         }
 
                         for (; year <= now_year; year++)
@@ -68,12 +67,20 @@ namespace StockCrawler.Services
                                 if (!GetIncomeIntoDatabase(db, collector, d.StockNo, year, season)) break;
                                 if (!GetBalanceIntoDatabase(db, collector, d.StockNo, year, season)) break;
                             }
-                            for(; month <= 12 && !(year == now_year && month == now_month); month++)
-                                if (!GetMonthlyNetProfitTaxedIntoDatabase(db, collector, d.StockNo, year, month)) break;
-
                             season = 1;
+                        }
+
+                        year = now_year;
+                        short month = (short)(now_month - 1); // 抓上月報告;
+                        if (BeginYear > 100)
+                        {
+                            year = BeginYear;
                             month = 1;
                         }
+                        if (month <= 0) { month = 1; year -= 1; }
+                        for (; year <= now_year; year++)
+                            for (; month <= 12 && !(year == now_year && month == now_month); month++)
+                                if (!GetMonthlyNetProfitTaxedIntoDatabase(db, collector, d.StockNo, year, month)) break;
 
                         Thread.Sleep(1 * 1000); // Don't get target website pissed off...
                     }
