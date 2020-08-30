@@ -12,7 +12,7 @@ namespace StockCrawler.Services.StockDailyPrice
     {
         internal static ILog _logger = LogManager.GetLogger(typeof(TwseStockDailyInfoCollector));
         private Dictionary<string, StockDailyPriceInfo> _stockInfoDictCache = null;
-        public StockDailyPriceInfo GetStockDailyPriceInfo(string stockNo)
+        public virtual StockDailyPriceInfo GetStockDailyPriceInfo(string stockNo)
         {
             InitStockDailyPriceCache();
             return (_stockInfoDictCache.ContainsKey(stockNo)) ? _stockInfoDictCache[stockNo] : null;
@@ -84,7 +84,7 @@ namespace StockCrawler.Services.StockDailyPrice
             return daily_info.ToArray();
         }
 
-        public IList<StockDailyPriceInfo> GetStockDailyPriceInfo()
+        public virtual IList<StockDailyPriceInfo> GetStockDailyPriceInfo()
         {
             InitStockDailyPriceCache();
             return _stockInfoDictCache.Select(d => d.Value).ToList();

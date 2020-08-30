@@ -19,14 +19,6 @@ namespace StockCrawler.Services
             if (null == Logger)
                 Logger = LogManager.GetLogger(typeof(StockBasicInfoUpdateJob));
         }
-
-        public StockBasicInfoUpdateJob(string collectorTypeName)
-            : this()
-        {
-            CollectorTypeName = collectorTypeName;
-        }
-
-        public string CollectorTypeName { get; private set; }
         public string BeginStockNo { get; set; }
 
         #region IJob Members
@@ -38,7 +30,7 @@ namespace StockCrawler.Services
             {
                 using (var db = StockDataServiceProvider.GetServiceInstance())
                 {
-                    var collector = string.IsNullOrEmpty(CollectorTypeName) ? CollectorProviderService.GetBasicInfoCollector() : CollectorProviderService.GetBasicInfoCollector(CollectorTypeName);
+                    var collector = CollectorProviderService.GetBasicInfoCollector();
                     foreach (var d in db.GetStocks().Where(d => !d.StockNo.StartsWith("0") && (string.IsNullOrEmpty(BeginStockNo) || int.Parse(d.StockNo.Substring(0, 4)) >= int.Parse(BeginStockNo)))) // 排除非公司的基金型股票
                     {
                         var info = collector.GetStockBasicInfo(d.StockNo);

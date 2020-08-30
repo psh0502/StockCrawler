@@ -15,7 +15,7 @@ namespace StockCrawler.Services.StockFinanceReport
         private const string _xpath_02 = "/html/body/table[4]";
         private static readonly string UTF8SpacingChar = Encoding.UTF8.GetString(new byte[] { 0xC2, 0xA0 });
 
-        public GetStockReportCashFlowResult GetStockReportCashFlow(string stockNo, short year, short season)
+        public virtual GetStockReportCashFlowResult GetStockReportCashFlow(string stockNo, short year, short season)
         {
             var url = "https://mops.twse.com.tw/mops/web/ajax_t164sb05";
             List<GetStockReportCashFlowResult> results = new List<GetStockReportCashFlowResult>();
@@ -125,7 +125,7 @@ namespace StockCrawler.Services.StockFinanceReport
             var innerText = HttpUtility.HtmlDecode(node.InnerText.Trim().Replace(",", string.Empty));
             return decimal.Parse(innerText.Replace(UTF8SpacingChar, string.Empty));
         }
-        public GetStockReportIncomeResult GetStockReportIncome(string stockNo, short year, short season)
+        public virtual GetStockReportIncomeResult GetStockReportIncome(string stockNo, short year, short season)
         {
             var url = "https://mops.twse.com.tw/mops/web/ajax_t164sb04";
             var tableNode = GetTwseDataBack(url, stockNo, year, season);
@@ -168,7 +168,7 @@ namespace StockCrawler.Services.StockFinanceReport
             }
         }
 
-        public GetStockReportBalanceResult GetStockReportBalance(string stockNo, short year, short season)
+        public virtual GetStockReportBalanceResult GetStockReportBalance(string stockNo, short year, short season)
         {
             var url = "https://mops.twse.com.tw/mops/web/ajax_t164sb03";
             var tableNode = GetTwseDataBack(url, stockNo, year, season);
@@ -220,7 +220,7 @@ namespace StockCrawler.Services.StockFinanceReport
             };
         }
 
-        public GetStockReportMonthlyNetProfitTaxedResult GetStockReportMonthlyNetProfitTaxed(string stockNo, short year, short month)
+        public virtual GetStockReportMonthlyNetProfitTaxedResult GetStockReportMonthlyNetProfitTaxed(string stockNo, short year, short month)
         {
             var url = "https://mops.twse.com.tw/mops/web/ajax_t05st10_ifrs";
             var tableNode = GetTwseDataBack(url, stockNo, year, month: month, xpath: _xpath_02);

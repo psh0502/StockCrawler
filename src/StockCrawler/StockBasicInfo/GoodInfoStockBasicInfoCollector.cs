@@ -15,7 +15,7 @@ namespace StockCrawler.Services.StockBasicInfo
         private static readonly ILog _logger = LogManager.GetLogger(typeof(GoodInfoStockBasicInfoCollector));
         private static readonly string UTF8SpacingChar = Encoding.UTF8.GetString(new byte[] { 0xC2, 0xA0 });
         private readonly DateTime now = SystemTime.Now;
-        public GetStockBasicInfoResult GetStockBasicInfo(string stockNo)
+        public virtual GetStockBasicInfoResult GetStockBasicInfo(string stockNo)
         {
             var url = string.Format("https://goodinfo.tw/StockInfo/BasicInfo.asp?STOCK_ID={0}", stockNo);
             string html;

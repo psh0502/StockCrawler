@@ -18,15 +18,6 @@ namespace StockCrawler.Services
             if (null == Logger)
                 Logger = LogManager.GetLogger(typeof(StockPriceUpdateJob));
         }
-
-        public StockPriceUpdateJob(string collectorTypeName)
-            : this()
-        {
-            CollectorTypeName = collectorTypeName;
-        }
-
-        public string CollectorTypeName { get; private set; }
-
         #region IJob Members
 
         public void Execute(IJobExecutionContext context)
@@ -37,7 +28,7 @@ namespace StockCrawler.Services
                 var list = new List<GetStockHistoryResult>();
                 using (var db = StockDataServiceProvider.GetServiceInstance())
                 {
-                    var collector = string.IsNullOrEmpty(CollectorTypeName) ? CollectorProviderService.GetDailyPriceCollector() : CollectorProviderService.GetDailyPriceCollector(CollectorTypeName);
+                    var collector = CollectorProviderService.GetDailyPriceCollector();
                     foreach (var d in db.GetStocks())
                     {
                         Logger.DebugFormat("Retrieving daily price of [{0}] stock.", d.StockNo);

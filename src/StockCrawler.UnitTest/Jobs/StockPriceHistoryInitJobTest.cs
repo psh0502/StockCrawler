@@ -2,7 +2,6 @@
 using Quartz;
 using StockCrawler.Dao;
 using StockCrawler.Services;
-using StockCrawler.UnitTest.Mocks;
 using System;
 using System.Linq;
 
@@ -25,7 +24,6 @@ namespace StockCrawler.UnitTest.Jobs
             StockPriceHistoryInitJob.Logger = new UnitTestLogger();
             StockPriceHistoryInitJob target = new StockPriceHistoryInitJob();
             IJobExecutionContext context = null;
-            target.StockInfoCollector = new StockDailyInfoCollectorMock();
             target.Execute(context);
 
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))

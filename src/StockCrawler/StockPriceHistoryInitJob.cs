@@ -2,7 +2,6 @@
 using Quartz;
 using ServiceStack.Text;
 using StockCrawler.Dao;
-using StockCrawler.Services.StockDailyPrice;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -23,8 +22,6 @@ namespace StockCrawler.Services
                 Logger = LogManager.GetLogger(typeof(StockPriceHistoryInitJob));
         }
         internal string ProcessingStockNo { get; set; }
-
-        internal IStockDailyInfoCollector StockInfoCollector { get; set; } = new TwseStockDailyInfoCollector();
 
         #region IJob Members
         public void Execute(IJobExecutionContext context)
@@ -47,7 +44,7 @@ namespace StockCrawler.Services
 
         private void DownloadTwseLatestInfo()
         {
-            var list = StockInfoCollector.GetStockDailyPriceInfo()
+            var list = CollectorProviderService.GetDailyPriceCollector().GetStockDailyPriceInfo()
                 .Select(d => new GetStocksResult()
                 {
                     StockNo = d.StockNo,

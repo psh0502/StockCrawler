@@ -20,14 +20,6 @@ namespace StockCrawler.Services
             if (null == Logger)
                 Logger = LogManager.GetLogger(typeof(StockBasicInfoUpdateJob));
         }
-
-        public StockFinReportUpdateJob(string collectorTypeName)
-            : this()
-        {
-            CollectorTypeName = collectorTypeName;
-        }
-
-        public string CollectorTypeName { get; private set; }
         public short BeginYear { get; set; } = -1;
 
         #region IJob Members
@@ -39,7 +31,7 @@ namespace StockCrawler.Services
             {
                 using (var db = StockDataServiceProvider.GetServiceInstance())
                 {
-                    var collector = string.IsNullOrEmpty(CollectorTypeName) ? CollectorProviderService.GetFinanceReportCashFlowCollector() : CollectorProviderService.GetFinanceReportCashFlowCollector(CollectorTypeName);
+                    var collector = CollectorProviderService.GetFinanceReportCashFlowCollector();
                     foreach (var d in db.GetStocks().Where(d => !d.StockNo.StartsWith("0") && (int.TryParse(d.StockNo.Substring(0, 4), out _)))) // 排除非公司的基金型股票
                     {
                         short now_year = GetTaiwanYear();
