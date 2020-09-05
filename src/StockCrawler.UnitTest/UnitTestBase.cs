@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Common.Logging;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StockCrawler.Dao;
 using StockCrawler.Services;
 
@@ -6,8 +7,9 @@ namespace StockCrawler.UnitTest
 {
     public class UnitTestBase
     {
+        protected static readonly ILog _logger = new UnitTestLogger();
         [TestInitialize]
-        public void Init()
+        public virtual void Init()
         {
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
             {
@@ -19,6 +21,7 @@ namespace StockCrawler.UnitTest
                 db.InsertOrUpdateStock("2330", "台積電");
             }
             Tools._logger = new UnitTestLogger();
+            TwseCollectorBase._logger = new UnitTestLogger();
         }
     }
 }

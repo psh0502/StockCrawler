@@ -34,11 +34,11 @@ BEGIN
 			,[BuildDate] = @pBuildDate
 			,[PublishDate] = @pPublishDate
 			,[Capital] = @pCapital
-			,[MarketValue] = @pMarketValue
+			,[MarketValue] = (CASE @pMarketValue WHEN 0 THEN [MarketValue] ELSE @pMarketValue END)
 			,[ReleaseStockCount] = @pReleaseStockCount
 			,[Chairman] = @pChairman
 			,[CEO] = @pCEO
-			,[Url] = @pUrl
+			,[Url] = ISNULL(@pUrl, [Url])
 			,[Businiess] = @pBusiness
 			,[LastModifiedAt] = GETDATE()
 		WHERE [StockNo] = @pStockNo

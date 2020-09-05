@@ -125,6 +125,7 @@
   <ItemGroup>
     <Compile Include="CollectorProviderService.cs" />
     <Compile Include="JobBase.cs" />
+    <Compile Include="StockBasicInfo\TwseStockBasicInfoCollector.cs" />
     <Compile Include="StockFinReportUpdateJob.cs" />
     <Compile Include="StockBasicInfo\GoodInfoStockBasicInfoCollector.cs" />
     <Compile Include="StockBasicInfo\IStockBasicInfoCollector.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemTime.cs" />
     <Compile Include="Tools.cs" />
+    <Compile Include="TwseCollectorBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

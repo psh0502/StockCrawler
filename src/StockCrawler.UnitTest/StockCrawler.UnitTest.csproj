@@ -118,6 +118,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collectors\TwseStockBasicInfoCollectorTest.cs" />
     <Compile Include="Collectors\TwseStockDailyInfoCollectorTest.cs" />
     <Compile Include="Collectors\GoodInfoCollectorTest.cs" />
     <Compile Include="Mocks\StockDailyInfoCollectorMock.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="Collectors\TwseReportCollectorTests.cs" />
     <Compile Include="Jobs\StockFinReportUpdateJobTests.cs" />
     <Compile Include="Others\ToolsTests.cs" />
+    <Compile Include="Jobs\StockBasicInfoUpdateJobTests.cs" />
     <Compile Include="UnitTestBase.cs" />
     <Compile Include="UnitTestLogger.cs" />
   </ItemGroup>
