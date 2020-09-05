@@ -10,7 +10,7 @@ In 2010, I was going to build a stock trading bot. I need all history stock pric
 
 ## How to use
 
-This is a CLI executive - **StockCrawlerRunner.exe**
+There is a CLI executive - **StockCrawlerRunner.exe**
 
 Here is the instruction:
 
@@ -40,11 +40,13 @@ StockCrawlerRunner.exe <mode>
 ## Note
 
 ```xml
-MSSQL as following:
+It supports MSSQL currently, so you need modify the following setting to connect your own database.
 
 <connectionStrings>
     <add name="StockCrawler.Dao.Properties.Settings.StockConnectionString" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Stock;Integrated Security=True" providerName="System.Data.SqlClient" />
 </connectionStrings>
 ```
+BTW, since we adopt Unity DI framework, you can implement your IStockDataService interface to support other database.
+Wish to see someone to do that.
 
 Have fun~~
