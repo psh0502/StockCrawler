@@ -7,10 +7,10 @@ using System.Linq;
 
 namespace StockCrawler.UnitTest.Jobs
 {
-    [TestClass()]
+    [TestClass]
     public class StockFinReportUpdateJobTests : UnitTestBase
     {
-        [TestMethod()]
+        [TestMethod]
         public void ExecuteTest()
         {
             Services.SystemTime.SetFakeTime(new DateTime(2020, 4, 6));
