@@ -8,7 +8,7 @@ namespace StockCrawler.Services.StockFinanceReport
 {
     internal class TwseReportCollector : TwseCollectorBase, IStockReportCollector
     {
-        internal static ILog _logger = LogManager.GetLogger(typeof(TwseReportCollector));
+        internal new static ILog _logger = LogManager.GetLogger(typeof(TwseReportCollector));
 
         public virtual GetStockReportCashFlowResult GetStockReportCashFlow(string stockNo, short year, short season)
         {
