@@ -1,8 +1,6 @@
 ﻿using Common.Logging;
 using HtmlAgilityPack;
 using StockCrawler.Dao;
-using System;
-using System.Collections.Generic;
 
 namespace StockCrawler.Services.StockFinanceReport
 {
@@ -13,36 +11,16 @@ namespace StockCrawler.Services.StockFinanceReport
         public virtual GetStockReportCashFlowResult GetStockReportCashFlow(string stockNo, short year, short season)
         {
             var url = "https://mops.twse.com.tw/mops/web/ajax_t164sb05";
-            List<GetStockReportCashFlowResult> results = new List<GetStockReportCashFlowResult>();
-            // 因為 TWSE 的每季報表都是根據當年度累加上來的數字, 所以只有多抓前一期的報表數字差額才能顯示當季真正財務
-            for (short i = (short)Math.Max(1, season - 1); i <= season; i++)
+            GetStockReportCashFlowResult result = null;
+            var tableNode = GetTwseDataBack(url, stockNo, year, season);
+            if (null != tableNode)
             {
-                var tableNode = GetTwseDataBack(url, stockNo, year, i);
-                if (null != tableNode)
-                {
-                    var result = TransformNodeToCashflowRow(tableNode);
-                    result.StockNo = stockNo;
-                    result.Year = year;
-                    result.Season = season;
-                    results.Add(result);
-                }
+                result = TransformNodeToCashflowRow(tableNode);
+                result.StockNo = stockNo;
+                result.Year = year;
+                result.Season = season;
             }
-            // 因為 TWSE 的每季報表都是根據當年度累加上來的數字, 所以只有減去前一期的報表數字差額才能顯示當季真正財務
-            if (results.Count > 1)
-            {
-                var seasonRecord = results[1];
-                var lastSeaonRecord = results[0];
-                seasonRecord.Depreciation -= lastSeaonRecord.Depreciation;
-                seasonRecord.AmortizationFee -= lastSeaonRecord.AmortizationFee;
-                seasonRecord.BusinessCashflow -= lastSeaonRecord.BusinessCashflow;
-                seasonRecord.InvestmentCashflow -= lastSeaonRecord.InvestmentCashflow;
-                seasonRecord.FinancingCashflow -= lastSeaonRecord.FinancingCashflow;
-                seasonRecord.CapitalExpenditures -= lastSeaonRecord.CapitalExpenditures;
-                seasonRecord.FreeCashflow -= lastSeaonRecord.FreeCashflow;
-                seasonRecord.NetCashflow -= lastSeaonRecord.NetCashflow;
-                return seasonRecord;
-            }
-            return results[0];
+            return result;
         }
         private static GetStockReportCashFlowResult TransformNodeToCashflowRow(HtmlNode bodyNode)
         {
