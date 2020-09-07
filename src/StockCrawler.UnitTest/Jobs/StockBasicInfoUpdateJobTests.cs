@@ -23,7 +23,7 @@ namespace StockCrawler.UnitTest.Jobs
                    ([StockNo], [Category], [CompanyName], [CompanyID]
                     , [BuildDate], [PublishDate]
                     , [Capital], [MarketValue], [ReleaseStockCount], [Chairman]
-                    , [CEO], [Url], [Businiess])
+                    , [CEO], [Url], [Business])
                  VALUES
                        ('2330', N'" + data.Category + "', N'" + data.CompanyName + "','" + data.CompanyID + @"'
                         ,'" + data.BuildDate.ToString("yyyy-MM-dd") + "', '" + data.PublishDate.ToString("yyyy-MM-dd") + @"'
