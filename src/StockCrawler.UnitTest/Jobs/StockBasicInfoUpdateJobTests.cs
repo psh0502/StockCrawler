@@ -28,7 +28,7 @@ namespace StockCrawler.UnitTest.Jobs
                        ('2330', N'" + data.Category + "', N'" + data.CompanyName + "','" + data.CompanyID + @"'
                         ,'" + data.BuildDate.ToString("yyyy-MM-dd") + "', '" + data.PublishDate.ToString("yyyy-MM-dd") + @"'
                        ," + data.Capital + ", " + data.MarketValue + ", " + data.ReleaseStockCount + ", N'" + data.Chairman + @"'
-                       ,N'" + data.CEO + "', '" + data.Url + "', N'" + data.Businiess + "')";
+                       ,N'" + data.CEO + "', '" + data.Url + "', N'" + data.Business + "')";
                 _logger.Info("sql=" + sql);
                 db.ExecuteCommand(sql);
             }
@@ -59,7 +59,7 @@ namespace StockCrawler.UnitTest.Jobs
                     Assert.AreEqual("總裁: 魏哲家", data.CEO);
                     Assert.AreEqual("http://www.tsmc.com", data.Url);
                     Assert.AreEqual("半導體業", data.Category);
-                    Assert.AreEqual("依客戶之訂單與其提供之產品設計說明，以從事製造與銷售積體電路以及其他晶圓半導體裝置。提供前述產品之封裝與測試服務、積體電路之電腦輔助設計技術服務。提供製造光罩及其設計服務。", data.Businiess);
+                    Assert.AreEqual("依客戶之訂單與其提供之產品設計說明，以從事製造與銷售積體電路以及其他晶圓半導體裝置。提供前述產品之封裝與測試服務、積體電路之電腦輔助設計技術服務。提供製造光罩及其設計服務。", data.Business);
                     Assert.AreEqual("22099131", data.CompanyID);
                     Assert.AreEqual("台灣積體電路製造股份有限公司", data.CompanyName);
                     Assert.AreEqual(25930380458, data.ReleaseStockCount);

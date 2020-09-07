@@ -38,5 +38,9 @@ BEGIN
         @pClosePrice,
         @pVolume,
         @pAdjClosePrice);
+
+	UPDATE [StockBasicInfo] 
+	SET MarketValue = ReleaseStockCount * @pClosePrice 
+	WHERE StockNo = @pStockNo
 END
 GO

@@ -50,7 +50,7 @@ namespace StockCrawler.Services.StockBasicInfo
             }
             try
             {
-                return new GetStockBasicInfoResult()
+                var result = new GetStockBasicInfoResult()
                 {
                     StockNo = stockNo,
                     StockName = node.SelectSingleNode("tr[2]/td[4]").InnerText,
@@ -65,8 +65,10 @@ namespace StockCrawler.Services.StockBasicInfo
                     CEO = node.SelectSingleNode("tr[13]/td[2]").InnerText,
                     CompanyID = node.SelectSingleNode("tr[16]/td[2]").InnerText,
                     Url = node.SelectSingleNode("tr[20]/td[2]").InnerText,
-                    Businiess = node.SelectSingleNode("tr[23]/td[2]").InnerText
+                    Business = node.SelectSingleNode("tr[23]/td[2]").InnerText
                 };
+                Thread.Sleep(10 * 1000);
+                return result;
             }
             catch (Exception ex)
             {

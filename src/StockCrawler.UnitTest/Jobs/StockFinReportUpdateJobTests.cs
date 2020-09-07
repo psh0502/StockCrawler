@@ -123,6 +123,19 @@ namespace StockCrawler.UnitTest.Jobs
                 }
                 #endregion
 
+                #region other season number
+                {
+                    var data = db.GetStockReportPerSeason("2330", (short)(Services.SystemTime.Today.Year - 1911), 3).ToList();
+                    Assert.AreEqual(1, data.Count, "report count");
+                    var d1 = data.First();
+                    Assert.AreEqual("2330", d1.StockNo);
+                    Assert.AreEqual(109, d1.Year);
+                    Assert.AreEqual(1, d1.Season);
+                    Assert.AreEqual(4.51, d1.EPS);
+                    Assert.AreEqual(64.64, d1.NetValue);
+                }
+                #endregion
+
             }
         }
     }

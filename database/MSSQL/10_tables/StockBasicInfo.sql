@@ -25,7 +25,7 @@ CREATE TABLE [dbo].[StockBasicInfo](
 	[Chairman][nvarchar](50) NOT NULL,
 	[CEO][nvarchar](50) NOT NULL,
 	[Url][varchar](100) NOT NULL,
-	[Businiess][nvarchar](1000) NOT NULL,
+	[Business][nvarchar](1000) NOT NULL,
 	[CreatedAt] [datetime] NOT NULL DEFAULT (GETDATE()),
 	[LastModifiedAt] [datetime] NOT NULL DEFAULT (GETDATE()),
  CONSTRAINT [PK_StockBasicInfo] PRIMARY KEY CLUSTERED 

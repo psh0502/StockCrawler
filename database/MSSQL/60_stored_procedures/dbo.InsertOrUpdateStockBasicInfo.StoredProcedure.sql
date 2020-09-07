@@ -5,7 +5,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 -- =============================================
 -- Author: Tom Tang
--- Create date: 2020-08-06
+-- Create date: 2020-09-07
 -- Description: Patch company information
 -- Revision:
 -- =============================================
@@ -28,18 +28,18 @@ BEGIN
 	IF EXISTS(SELECT [StockNo] FROM [StockBasicInfo](NOLOCK) WHERE [StockNo] = @pStockNo)
 		UPDATE [StockBasicInfo]
 		SET
-			[Category] = @pCategory
-			,[CompanyName] = @pCompanyName
-			,[CompanyID] = @pCompanyID
-			,[BuildDate] = @pBuildDate
-			,[PublishDate] = @pPublishDate
-			,[Capital] = @pCapital
-			,[MarketValue] = (CASE @pMarketValue WHEN 0 THEN [MarketValue] ELSE @pMarketValue END)
-			,[ReleaseStockCount] = @pReleaseStockCount
-			,[Chairman] = @pChairman
-			,[CEO] = @pCEO
+			[Category] = ISNULL(@pCategory, [Category])
+			,[CompanyName] = ISNULL(@pCompanyName, [CompanyName])
+			,[CompanyID] = ISNULL(@pCompanyID, [CompanyID])
+			,[BuildDate] = ISNULL(@pBuildDate, [BuildDate])
+			,[PublishDate] = ISNULL(@pPublishDate, [PublishDate])
+			,[Capital] = ISNULL(@pCapital, [Capital])
+			,[MarketValue] = ISNULL(@pMarketValue, [MarketValue])
+			,[ReleaseStockCount] = ISNULL(@pReleaseStockCount, [ReleaseStockCount])
+			,[Chairman] = ISNULL(@pChairman, [Chairman])
+			,[CEO] = ISNULL(@pCEO, [CEO])
 			,[Url] = ISNULL(@pUrl, [Url])
-			,[Businiess] = @pBusiness
+			,[Business] = ISNULL(@pBusiness, [Business])
 			,[LastModifiedAt] = GETDATE()
 		WHERE [StockNo] = @pStockNo
 
@@ -57,7 +57,7 @@ BEGIN
 			,[Chairman]
 			,[CEO]
 			,[Url]
-			,[Businiess])
+			,[Business])
 		 VALUES
 			(@pStockNo
 			,@pCategory

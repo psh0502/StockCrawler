@@ -33,13 +33,18 @@ namespace StockCrawler.Services
                     var collector = CollectorProviderService.GetBasicInfoCollector();
                     foreach (var d in db.GetStocks().Where(d => !d.StockNo.StartsWith("0") && (string.IsNullOrEmpty(BeginStockNo) || int.Parse(d.StockNo.Substring(0, 4)) >= int.Parse(BeginStockNo)))) // 排除非公司的基金型股票
                     {
-                        var info = collector.GetStockBasicInfo(d.StockNo);
-                        if (null != info)
-                            db.UpdateStockBasicInfo(info);
-                        else
-                            Logger.InfoFormat("[{0}] has no basic info", d.StockNo);
-
-                        Thread.Sleep(10 * 1000); // Don't get target website pissed off...
+                        try
+                        {
+                            var info = collector.GetStockBasicInfo(d.StockNo);
+                            if (null != info)
+                                db.UpdateStockBasicInfo(info);
+                            else
+                                Logger.InfoFormat("[{0}] has no basic info", d.StockNo);
+                        }catch(Exception e)
+                        {
+                            Logger.WarnFormat("[{0}] has no basic info", d.StockNo, e);
+                        }
+                        Thread.Sleep(1 * 1000);
                     }
                 }
             }

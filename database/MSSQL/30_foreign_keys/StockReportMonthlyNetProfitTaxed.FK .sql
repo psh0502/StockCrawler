@@ -1,6 +1,6 @@
-ALTER TABLE [dbo].[StockReportMonthlyNetProfitTaxed]  WITH CHECK ADD  CONSTRAINT [FK_StockReportMonthlyNetProfitTaxed_Stock] FOREIGN KEY([StockNo])
+ALTER TABLE [dbo].[StockReportPerSeason]  WITH CHECK ADD  CONSTRAINT [FK_StockReportPerSeason_Stock] FOREIGN KEY([StockNo])
 REFERENCES [dbo].[Stock] ([StockNo])
 GO
 
-ALTER TABLE [dbo].[StockReportMonthlyNetProfitTaxed] CHECK CONSTRAINT [FK_StockReportMonthlyNetProfitTaxed_Stock]
+ALTER TABLE [dbo].[StockReportPerSeason] CHECK CONSTRAINT [FK_StockReportPerSeason_Stock]
 GO

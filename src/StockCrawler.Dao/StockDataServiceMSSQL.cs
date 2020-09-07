@@ -85,12 +85,12 @@ namespace StockCrawler.Dao
                     info.BuildDate,
                     info.PublishDate,
                     info.Capital,
-                    info.MarketValue,
+                    (info.MarketValue == 0) ? null : (decimal?)info.MarketValue,
                     info.ReleaseStockCount,
                     info.Chairman,
                     info.CEO,
                     info.Url,
-                    info.Businiess);
+                    info.Business);
         }
         public void UpdateStockCashflowReport(GetStockReportCashFlowResult info)
         {
