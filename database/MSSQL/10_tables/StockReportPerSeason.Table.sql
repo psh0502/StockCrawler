@@ -13,7 +13,7 @@ CREATE TABLE [dbo].[StockReportPerSeason](
 	[StockNo] [varchar](10) NOT NULL,
 	[Year] [smallint] NOT NULL,
 	[Season] [smallint] NOT NULL,
-	[EPS][MONEY] NOT NULL, -- 每股盈餘：公式：單季EPS = 單季稅後淨利 / 已發行股數
+	[EPS] [MONEY] NOT NULL, -- 每股盈餘：公式：單季EPS = 單季稅後淨利 / 已發行股數
 	[NetValue] [MONEY] NOT NULL, -- 每股淨值：公式：每股淨值 = 淨值(股東權益) / 在外流通股數
 	[CreatedAt] [datetime] NOT NULL,
 	[LastModifiedAt] [datetime] NOT NULL,

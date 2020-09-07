@@ -170,6 +170,20 @@
       <Column Name="LastModifiedAt1" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
+  <Function Name="dbo.GetStockReportPerMonth" Method="GetStockReportPerMonth">
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="pMonth" Type="System.Int16" DbType="SmallInt" />
+    <ElementType Name="GetStockReportPerMonthResult">
+      <Column Name="StockName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Year" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="Month" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="PE" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
   <Function Name="dbo.GetStockReportPerSeason" Method="GetStockReportPerSeason">
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
     <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
@@ -284,6 +298,13 @@
     <Parameter Name="pTillThisMonthDelta" Type="System.Decimal" DbType="Money" />
     <Parameter Name="pTillThisMonthDeltaPercent" Type="System.Decimal" DbType="Decimal(18,4)" />
     <Parameter Name="pRemark" Type="System.String" DbType="NVarChar(1000)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.InsertOrUpdateStockReportPerMonth" Method="InsertOrUpdateStockReportPerMonth">
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="pMonth" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="pPE" Type="System.Decimal" DbType="Money" />
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.InsertOrUpdateStockReportPerSeason" Method="InsertOrUpdateStockReportPerSeason">

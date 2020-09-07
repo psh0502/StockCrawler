@@ -44,7 +44,7 @@ namespace StockCrawler.Services
 
         private void DownloadTwseLatestInfo()
         {
-            var list = CollectorProviderService.GetDailyPriceCollector().GetStockDailyPriceInfo()
+            var list = CollectorProviderService.GetStockDailyPriceCollector().GetStockDailyPriceInfo()
                 .Select(d => new GetStocksResult()
                 {
                     StockNo = d.StockNo,

@@ -137,8 +137,11 @@
     <Compile Include="StockPriceUpdateJob.cs" />
     <Compile Include="StockPriceHistoryInitJob.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StockSeasonReport\GoodInfoStockSeasonCollector.cs" />
+    <Compile Include="StockSeasonReport\IStockSeasonReportCollector.cs" />
     <Compile Include="SystemTime.cs" />
     <Compile Include="Tools.cs" />
+    <Compile Include="GoodInfoCollectorBase.cs" />
     <Compile Include="TwseCollectorBase.cs" />
   </ItemGroup>
   <ItemGroup>

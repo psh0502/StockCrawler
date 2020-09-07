@@ -1,43 +1,16 @@
-﻿using Common.Logging;
-using HtmlAgilityPack;
+﻿using HtmlAgilityPack;
 using StockCrawler.Dao;
 using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
 using System.Threading;
 using System.Web;
 
 namespace StockCrawler.Services.StockBasicInfo
 {
-    internal class GoodInfoStockBasicInfoCollector : IStockBasicInfoCollector
+    internal class GoodInfoStockBasicInfoCollector : GoodInfoCollectorBase, IStockBasicInfoCollector
     {
-        private static readonly ILog _logger = LogManager.GetLogger(typeof(GoodInfoStockBasicInfoCollector));
-        private static readonly string UTF8SpacingChar = Encoding.UTF8.GetString(new byte[] { 0xC2, 0xA0 });
-        private readonly DateTime now = SystemTime.Now;
         public virtual GetStockBasicInfoResult GetStockBasicInfo(string stockNo)
         {
-            var url = string.Format("https://goodinfo.tw/StockInfo/BasicInfo.asp?STOCK_ID={0}", stockNo);
-            string html;
-            var ipAddress = Tools.GetMyIpAddress();
-            do
-            {
-                IList<Cookie> cookies = new List<Cookie>
-                {
-                    new Cookie("CLIENT_ID", string.Format("{0}_{1}", now.ToString("yyyyMMddHHmmssfff"), ipAddress), "/", "goodinfo.tw"),
-                    new Cookie("SCREEN_SIZE", "WIDTH=1920&HEIGHT=1080", "/", "goodinfo.tw"),
-                    new Cookie("GOOD_INFO_STOCK_BROWSE_LIST", $"3|{stockNo}", "/", "goodinfo.tw")
-                };
-                html = Tools.DownloadStringData(new Uri(url), Encoding.UTF8, out IList<Cookie> _, null, cookies);
-                if (string.IsNullOrEmpty(html)) return null;
-                if (html.Contains("您的瀏覽量異常"))
-                {
-                    _logger.InfoFormat("The target[{0}] is pissed off....wait a second...", stockNo);
-                    Thread.Sleep(10 * 1000);
-                }
-                else
-                    break;
-            } while (true);
+            string html = GetGoodInfoData("https://goodinfo.tw/StockInfo/BasicInfo.asp?STOCK_ID={0}", stockNo);
 
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(html);

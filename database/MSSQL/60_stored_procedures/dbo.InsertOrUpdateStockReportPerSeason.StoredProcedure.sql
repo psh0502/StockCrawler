@@ -36,7 +36,7 @@ BEGIN
            (@pStockNo
            ,@pYear
            ,@pSeason
-           ,@pEPS
-           ,@pNetValue)
+           ,ISNULL(@pEPS, 0)
+           ,ISNULL(@pNetValue, 0))
 END
 GO

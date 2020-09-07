@@ -30,7 +30,7 @@ namespace StockCrawler.Services
             {
                 using (var db = StockDataServiceProvider.GetServiceInstance())
                 {
-                    var collector = CollectorProviderService.GetBasicInfoCollector();
+                    var collector = CollectorProviderService.GetStockBasicInfoCollector();
                     foreach (var d in db.GetStocks().Where(d => !d.StockNo.StartsWith("0") && (string.IsNullOrEmpty(BeginStockNo) || int.Parse(d.StockNo.Substring(0, 4)) >= int.Parse(BeginStockNo)))) // 排除非公司的基金型股票
                     {
                         try

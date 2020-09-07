@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace StockCrawler.Dao
 {
@@ -24,7 +25,6 @@ namespace StockCrawler.Dao
             }
             return dt;
         }
-
         public void UpdateStockPriceHistoryDataTable(IList<GetStockHistoryResult> list)
         {
             using (var db = GetMSSQLStockDataContext())
@@ -39,7 +39,6 @@ namespace StockCrawler.Dao
                         dr.Volume,
                         dr.AdjClosePrice);
         }
-
         public void RenewStockList(IList<GetStocksResult> list)
         {
             using (var db = GetMSSQLStockDataContext())
@@ -49,16 +48,13 @@ namespace StockCrawler.Dao
                     db.InsertOrUpdateStock(dr.StockNo, dr.StockName);
             }
         }
-
         private static StockDataContext GetMSSQLStockDataContext()
         {
             return new StockDataContext(ConnectionStringHelper.StockConnectionString);
         }
-
         public void Dispose()
         {
         }
-
         public void DeleteStockPriceHistoryData(string stockNo, DateTime? tradeDate)
         {
             using (var db = GetMSSQLStockDataContext())
@@ -108,7 +104,6 @@ namespace StockCrawler.Dao
                     info.FreeCashflow,
                     info.NetCashflow);
         }
-
         public void UpdateStockIncomeReport(GetStockReportIncomeResult info)
         {
             using (var db = GetMSSQLStockDataContext())
@@ -126,10 +121,10 @@ namespace StockCrawler.Dao
                     info.NetProfitTaxFree,
                     info.NetProfitTaxed);
         }
-
         public void UpdateStockBalanceReport(GetStockReportBalanceResult info)
         {
             using (var db = GetMSSQLStockDataContext())
+            {
                 db.InsertOrUpdateStockReportBalance(
                     info.StockNo,
                     info.Year,
@@ -155,8 +150,8 @@ namespace StockCrawler.Dao
                     info.OtherLiabilities,
                     info.TotalLiability,
                     info.NetWorth);
+            }
         }
-
         public void UpdateStockMonthlyNetProfitTaxedReport(GetStockReportMonthlyNetProfitTaxedResult info)
         {
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
@@ -173,6 +168,25 @@ namespace StockCrawler.Dao
                     info.TillThisMonthDelta,
                     info.TillThisMonthDeltaPercent,
                     info.Remark);
+        }
+        public void UpdateStockReportPerSeason(GetStockReportPerSeasonResult info)
+        {
+            using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
+            {
+                long releaseStockCount = db.GetStockBasicInfo(info.StockNo).First().ReleaseStockCount;
+                if (releaseStockCount > 0)
+                {
+                    info.EPS /= releaseStockCount;
+                    info.NetValue /= releaseStockCount;
+                }
+
+                db.InsertOrUpdateStockReportPerSeason(
+                    info.StockNo,
+                    info.Year,
+                    info.Season,
+                    info.EPS == 0 ? null : (decimal?)info.EPS,
+                    info.NetValue == 0 ? null : (decimal?)info.NetValue);
+            }
         }
     }
 }

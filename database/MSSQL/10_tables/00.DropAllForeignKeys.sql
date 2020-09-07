@@ -10,4 +10,8 @@ ALTER TABLE [dbo].[StockReportBalance] DROP CONSTRAINT [FK_StockReportBalance_St
 GO
 ALTER TABLE [dbo].[StockReportMonthlyNetProfitTaxed] DROP CONSTRAINT [FK_StockReportMonthlyNetProfitTaxed_Stock]
 GO
+ALTER TABLE [dbo].[StockReportPerSeason] DROP CONSTRAINT [FK_StockReportPerSeason_Stock]
+GO
+ALTER TABLE [dbo].[StockReportPerMonth] DROP CONSTRAINT [FK_StockReportPerMonth_Stock]
+GO
 

@@ -142,5 +142,10 @@ namespace StockCrawler.Services.StockFinanceReport
                 Remark = SearchValueNode(bodyNode, "備註/營收變化原因說明", beginIndex: 1, xpath1: "./th[1]", xpath2: "./td[1]").InnerText.Trim().Replace(" ", string.Empty),
             };
         }
+
+        public decimal GetStockMonthPE(string stockNo, short year, short season)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
