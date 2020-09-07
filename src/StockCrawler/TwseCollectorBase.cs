@@ -2,6 +2,7 @@
 using HtmlAgilityPack;
 using System;
 using System.Text;
+using System.Threading;
 using System.Web;
 
 namespace StockCrawler.Services
@@ -67,6 +68,12 @@ namespace StockCrawler.Services
             _logger.Debug("formData=" + formData.ToString());
 
             var html = Tools.DownloadStringData(new Uri(url), Encoding.UTF8, out _, "application/x-www-form-urlencoded", null, "POST", formData);
+            if (html.Contains("Overrun"))
+            {
+                _logger.InfoFormat("The target[{0}] is pissed off....wait a second...", stockNo);
+                Thread.Sleep(10 * 1000);
+            }
+
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(html);
             var tableNode = doc.DocumentNode.SelectSingleNode(xpath);
