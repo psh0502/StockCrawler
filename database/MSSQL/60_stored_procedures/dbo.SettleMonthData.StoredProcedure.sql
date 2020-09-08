@@ -18,7 +18,7 @@ BEGIN
 	SET NOCOUNT ON
 	DECLARE @vYear SMALLINT = @pYear
 
-	DECLARE @vAvgEPS MONEY,
+	DECLARE @vSumEPS MONEY,
 		@v20DayAvgClosedPrice MONEY,
 		@vPE MONEY,
 		@vCalulateDate DATE,
@@ -33,7 +33,7 @@ BEGIN
 	SET @vCalulateDate = CONVERT(DATE, CONVERT(VARCHAR, @vYear + 1911))
 	SET @vCalulateDate = DATEADD(DAY, -1, DATEADD(MONTH, @pMonth, @vCalulateDate))
 
-	SELECT @vAvgEPS = AVG(EPS) FROM(
+	SELECT @vSumEPS = SUM(EPS) FROM(
 		SELECT TOP 4 EPS FROM [dbo].[StockReportPerSeason](NOLOCK) 
 		WHERE StockNo = @pStockNo 
 			AND [Year] <= @vYear AND (([Year] = @vYear AND Season <= @vSeason) OR [Year] < @vYear)
@@ -45,7 +45,7 @@ BEGIN
 			AND [StockDT] <= @vCalulateDate
 		ORDER BY [StockDT] DESC) t
 
-	SET @vPE = @v20DayAvgClosedPrice / @vAvgEPS
+	SET @vPE = @v20DayAvgClosedPrice / @vSumEPS
 	EXEC InsertOrUpdateStockReportPerMonth @pStockNo = @pStockNo, @pYear = @pYear, @pMonth = @pMonth, @pPE = @vPE
 END
 GO

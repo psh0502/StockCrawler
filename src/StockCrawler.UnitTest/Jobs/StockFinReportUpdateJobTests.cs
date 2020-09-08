@@ -35,8 +35,10 @@ namespace StockCrawler.UnitTest.Jobs
         {
             Services.SystemTime.SetFakeTime(new DateTime(2020, 4, 6));
             StockFinReportUpdateJob.Logger = new UnitTestLogger();
-            StockFinReportUpdateJob target = new StockFinReportUpdateJob();
-            target.BeginYear = 108;
+            StockFinReportUpdateJob target = new StockFinReportUpdateJob
+            {
+                BeginYear = 108
+            };
             IJobExecutionContext context = null;
             target.Execute(context);
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
