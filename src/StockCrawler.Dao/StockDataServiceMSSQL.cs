@@ -169,24 +169,14 @@ namespace StockCrawler.Dao
                     info.TillThisMonthDeltaPercent,
                     info.Remark);
         }
-        public void UpdateStockReportPerSeason(GetStockReportPerSeasonResult info)
+        public void SettleMonthData(string stockNo, short year, short season)
         {
-            using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
-            {
-                long releaseStockCount = db.GetStockBasicInfo(info.StockNo).First().ReleaseStockCount;
-                if (releaseStockCount > 0)
-                {
-                    info.EPS /= releaseStockCount;
-                    info.NetValue /= releaseStockCount;
-                }
+            throw new NotImplementedException();
+        }
 
-                db.InsertOrUpdateStockReportPerSeason(
-                    info.StockNo,
-                    info.Year,
-                    info.Season,
-                    info.EPS == 0 ? null : (decimal?)info.EPS,
-                    info.NetValue == 0 ? null : (decimal?)info.NetValue);
-            }
+        public void SettleSeasonData(string stockNo, short year, short season)
+        {
+            throw new NotImplementedException();
         }
     }
 }

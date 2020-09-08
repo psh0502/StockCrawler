@@ -1,7 +1,6 @@
 ﻿using Common.Logging;
 using Quartz;
 using StockCrawler.Dao;
-using StockCrawler.Services.StockSeasonReport;
 using StockCrawler.Services.StockFinanceReport;
 using System;
 using System.Data;
@@ -32,7 +31,6 @@ namespace StockCrawler.Services
                 using (var db = StockDataServiceProvider.GetServiceInstance())
                 {
                     var collector = CollectorProviderService.GetStockReportCollector();
-                    var seasonCollector = CollectorProviderService.GetStockSeasonReportCollector();
                     foreach (var d in db.GetStocks().Where(d => !d.StockNo.StartsWith("0") && (int.TryParse(d.StockNo.Substring(0, 4), out _)))) // 排除非公司的基金型股票
                     {
                         short now_year = GetTaiwanYear();
@@ -59,7 +57,8 @@ namespace StockCrawler.Services
                                 if (!GetCashflowIntoDatabase(db, collector, d.StockNo, year, season)) break;
                                 if (!GetIncomeIntoDatabase(db, collector, d.StockNo, year, season)) break;
                                 if (!GetBalanceIntoDatabase(db, collector, d.StockNo, year, season)) break;
-                                if (!GetSeasonDataIntoDatabase(db, seasonCollector, d.StockNo, year, season)) break;
+                                db.SettleSeasonData(d.StockNo, year, season);
+                                Thread.Sleep(5 * 1000);
                             }
                             season = 1;
                         }
@@ -74,9 +73,11 @@ namespace StockCrawler.Services
                         if (month <= 0) { month = 1; year -= 1; }
                         for (; year <= now_year; year++)
                             for (; month <= 12 && !(year == now_year && month == now_month); month++)
+                            {
                                 if (!GetMonthlyNetProfitTaxedIntoDatabase(db, collector, d.StockNo, year, month)) break;
-
-                        Thread.Sleep(1 * 1000); // Don't get target website pissed off...
+                                db.SettleMonthData(d.StockNo, year, month);
+                                Thread.Sleep(5 * 1000);
+                            }
                     }
                 }
             }
@@ -86,6 +87,7 @@ namespace StockCrawler.Services
                 throw;
             }
         }
+
         private static bool GetMonthlyNetProfitTaxedIntoDatabase(IStockDataService db, IStockReportCollector collector, string stockNo, short year, short month)
         {
             var info = collector.GetStockReportMonthlyNetProfitTaxed(stockNo, year, month);
@@ -143,25 +145,6 @@ namespace StockCrawler.Services
             else
             {
                 Logger.InfoFormat("[{0}] has no balance report(year={1}/season={2})", stockNo, year, season);
-                return false;
-            }
-        }
-        private static bool GetSeasonDataIntoDatabase(IStockDataService db, IStockSeasonReportCollector collector, string stockNo, short year, short season)
-        {
-            try
-            {
-                var info = new GetStockReportPerSeasonResult
-                {
-                    EPS = collector.GetStockSeasonEPS(stockNo, year, season),
-                    NetValue = collector.GetStockSeasonNetValue(stockNo, year, season),
-                };
-                db.UpdateStockReportPerSeason(info);
-                Logger.InfoFormat("[{0}] get its season EPS report(year={1}/season={2})", stockNo, year, season);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(string.Format("[{0}] has no season EPS report(year={1}/season={2})", stockNo, year, season), ex);
                 return false;
             }
         }

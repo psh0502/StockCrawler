@@ -63,7 +63,6 @@ namespace StockCrawler.Services.StockFinanceReport
             result.Season = season;
             return result;
         }
-
         public virtual GetStockReportBalanceResult GetStockReportBalance(string stockNo, short year, short season)
         {
             var url = "https://mops.twse.com.tw/mops/web/ajax_t164sb03";
@@ -74,7 +73,6 @@ namespace StockCrawler.Services.StockFinanceReport
             result.Season = season;
             return result;
         }
-
         private static GetStockReportBalanceResult TransformNodeToBalanceRow(HtmlNode bodyNode)
         {
             return new GetStockReportBalanceResult()
@@ -115,7 +113,6 @@ namespace StockCrawler.Services.StockFinanceReport
                 NetWorth = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "權益總額")),
             };
         }
-
         public virtual GetStockReportMonthlyNetProfitTaxedResult GetStockReportMonthlyNetProfitTaxed(string stockNo, short year, short month)
         {
             var url = "https://mops.twse.com.tw/mops/web/ajax_t05st10_ifrs";
@@ -126,7 +123,6 @@ namespace StockCrawler.Services.StockFinanceReport
             result.Month = month;
             return result;
         }
-
         private GetStockReportMonthlyNetProfitTaxedResult TransformNodeToMonlyNetProfitTaxedRow(HtmlNode bodyNode)
         {
             return new GetStockReportMonthlyNetProfitTaxedResult()
@@ -141,11 +137,6 @@ namespace StockCrawler.Services.StockFinanceReport
                 TillThisMonthDeltaPercent = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "增減百分比", beginIndex: 9, xpath1: "./tr[{0}]/th[1]", xpath2: "./tr[{0}]/td[1]")) / 100,
                 Remark = SearchValueNode(bodyNode, "備註/營收變化原因說明", beginIndex: 1, xpath1: "./th[1]", xpath2: "./td[1]").InnerText.Trim().Replace(" ", string.Empty),
             };
-        }
-
-        public decimal GetStockMonthPE(string stockNo, short year, short season)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

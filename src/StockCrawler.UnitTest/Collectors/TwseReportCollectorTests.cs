@@ -122,13 +122,5 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual((decimal)(33.57 / 100), data.TillThisMonthDeltaPercent);    // 增減百分比
             Assert.AreEqual(string.Empty, data.Remark);   // 備註/營收變化原因說明
         }
-        [TestMethod]
-        public void GetStockMonthPE_10907()
-        {
-            IStockReportCollector collector = new TwseReportCollector();
-            TwseReportCollector._logger = new UnitTestLogger();
-            var data = collector.GetStockMonthPE("2330", 109, 7);
-            Assert.AreEqual(23.98M, data, "本益比");
-        }
     }
 }

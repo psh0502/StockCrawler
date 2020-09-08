@@ -147,7 +147,6 @@ namespace StockCrawler.UnitTest.Jobs
                     Assert.AreEqual(24.49, d1.PE, "本益比");
                 }
                 #endregion
-
             }
         }
     }

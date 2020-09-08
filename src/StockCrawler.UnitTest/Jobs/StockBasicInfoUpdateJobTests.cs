@@ -18,7 +18,6 @@ namespace StockCrawler.UnitTest.Jobs
             var data = new GoodInfoStockBasicInfoCollector().GetStockBasicInfo("2330");
             using(var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
             {
-
                 var sql = @"INSERT INTO[dbo].[StockBasicInfo]
                    ([StockNo], [Category], [CompanyName], [CompanyID]
                     , [BuildDate], [PublishDate]
