@@ -69,10 +69,10 @@ namespace StockCrawler.Dao
 			return ((int)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertStockPriceHistoryData")]
-		public int InsertStockPriceHistoryData([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(20)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pStockDT, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pOpenPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pHighPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pLowPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pClosePrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="BigInt")] System.Nullable<long> pVolume, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pAdjClosePrice)
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SettleSeasonData")]
+		public int SettleSeasonData([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pYear, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pSeason)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pStockDT, pOpenPrice, pHighPrice, pLowPrice, pClosePrice, pVolume, pAdjClosePrice);
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pYear, pSeason);
 			return ((int)(result.ReturnValue));
 		}
 		
@@ -224,6 +224,20 @@ namespace StockCrawler.Dao
 		public int InsertOrUpdateStockReportPerSeason([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pYear, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pSeason, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pEPS, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pNetValue)
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pYear, pSeason, pEPS, pNetValue);
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertStockPriceHistoryData")]
+		public int InsertStockPriceHistoryData([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(20)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pStockDT, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pOpenPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pHighPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pLowPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pClosePrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="BigInt")] System.Nullable<long> pVolume, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pAdjClosePrice)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pStockDT, pOpenPrice, pHighPrice, pLowPrice, pClosePrice, pVolume, pAdjClosePrice);
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SettleMonthData")]
+		public int SettleMonthData([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pYear, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pMonth)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pYear, pMonth);
 			return ((int)(result.ReturnValue));
 		}
 	}

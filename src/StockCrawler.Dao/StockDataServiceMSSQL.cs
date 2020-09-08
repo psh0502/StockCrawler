@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace StockCrawler.Dao
 {
@@ -169,14 +168,16 @@ namespace StockCrawler.Dao
                     info.TillThisMonthDeltaPercent,
                     info.Remark);
         }
-        public void SettleMonthData(string stockNo, short year, short season)
+        public void SettleMonthData(string stockNo, short year, short month)
         {
-            throw new NotImplementedException();
+            using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
+                db.SettleMonthData(stockNo, year, month);
         }
 
         public void SettleSeasonData(string stockNo, short year, short season)
         {
-            throw new NotImplementedException();
+            using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
+                db.SettleSeasonData(stockNo, year, season);
         }
     }
 }

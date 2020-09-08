@@ -5,15 +5,10 @@
     <Parameter Name="pTradeDate" Type="System.DateTime" DbType="Date" />
     <Return Type="System.Int32" />
   </Function>
-  <Function Name="dbo.InsertStockPriceHistoryData" Method="InsertStockPriceHistoryData">
-    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(20)" />
-    <Parameter Name="pStockDT" Type="System.DateTime" DbType="Date" />
-    <Parameter Name="pOpenPrice" Type="System.Decimal" DbType="Decimal(10,4)" />
-    <Parameter Name="pHighPrice" Type="System.Decimal" DbType="Decimal(10,4)" />
-    <Parameter Name="pLowPrice" Type="System.Decimal" DbType="Decimal(10,4)" />
-    <Parameter Name="pClosePrice" Type="System.Decimal" DbType="Decimal(10,4)" />
-    <Parameter Name="pVolume" Type="System.Int64" DbType="BigInt" />
-    <Parameter Name="pAdjClosePrice" Type="System.Decimal" DbType="Decimal(10,4)" />
+  <Function Name="dbo.SettleSeasonData" Method="SettleSeasonData">
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="pSeason" Type="System.Int16" DbType="SmallInt" />
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.DisableAllStocks" Method="DisableAllStocks">
@@ -313,6 +308,23 @@
     <Parameter Name="pSeason" Type="System.Int16" DbType="SmallInt" />
     <Parameter Name="pEPS" Type="System.Decimal" DbType="Money" />
     <Parameter Name="pNetValue" Type="System.Decimal" DbType="Money" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.InsertStockPriceHistoryData" Method="InsertStockPriceHistoryData">
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="pStockDT" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="pOpenPrice" Type="System.Decimal" DbType="Decimal(10,4)" />
+    <Parameter Name="pHighPrice" Type="System.Decimal" DbType="Decimal(10,4)" />
+    <Parameter Name="pLowPrice" Type="System.Decimal" DbType="Decimal(10,4)" />
+    <Parameter Name="pClosePrice" Type="System.Decimal" DbType="Decimal(10,4)" />
+    <Parameter Name="pVolume" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="pAdjClosePrice" Type="System.Decimal" DbType="Decimal(10,4)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SettleMonthData" Method="SettleMonthData">
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="pMonth" Type="System.Int16" DbType="SmallInt" />
     <Return Type="System.Int32" />
   </Function>
 </Database>
