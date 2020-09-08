@@ -1,5 +1,4 @@
 ﻿using Microsoft.Practices.Unity.Configuration;
-using StockCrawler.Services.StockSeasonReport;
 using StockCrawler.Services.StockBasicInfo;
 using StockCrawler.Services.StockDailyPrice;
 using StockCrawler.Services.StockFinanceReport;
@@ -26,10 +25,6 @@ namespace StockCrawler.Services
         public static IStockReportCollector GetStockReportCollector()
         {
             return _container.Resolve<IStockReportCollector>();
-        }
-        public static IStockSeasonReportCollector GetStockSeasonReportCollector()
-        {
-            return _container.Resolve<IStockSeasonReportCollector>();
         }
     }
 }

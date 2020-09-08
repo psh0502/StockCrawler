@@ -55,7 +55,7 @@ namespace StockCrawler.Dao
         void UpdateStockIncomeReport(GetStockReportIncomeResult info);
         void UpdateStockBalanceReport(GetStockReportBalanceResult info);
         void UpdateStockMonthlyNetProfitTaxedReport(GetStockReportMonthlyNetProfitTaxedResult info);
-        void SettleMonthData(string stockNo, short year, short season);
+        void SettleMonthData(string stockNo, short year, short month);
         void SettleSeasonData(string stockNo, short year, short season);
     }
 }
