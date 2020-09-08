@@ -17,27 +17,23 @@ AS
 BEGIN
 	SET NOCOUNT ON
 	DECLARE @vTotalReleaseStockCount BIGINT, 
-		@vTotalAssets MONEY,
+		@vNetWorth MONEY,
 		@vNetValue MONEY, 
 		@vSeasonNetProfit MONEY,
 		@vEPS MONEY
-	SELECT @vTotalReleaseStockCount = 0 FROM [dbo].[StockBasicInfo](NOLOCK) WHERE StockNo = @pStockNo
+	SELECT @vTotalReleaseStockCount = ReleaseStockCount FROM [dbo].[StockBasicInfo](NOLOCK) WHERE StockNo = @pStockNo
 	IF (@vTotalReleaseStockCount > 0) BEGIN
-		SELECT @vTotalAssets = TotalAssets * 1000
+		SELECT @vNetWorth = [NetWorth] * 1000
 		FROM [dbo].[StockReportBalance](NOLOCK) 
 		WHERE StockNo = @pStockNo AND [Year] = @pYear AND [Season] = @pSeason
 
-		IF(@vTotalAssets > 0)BEGIN
-			SET @vNetValue = @vTotalAssets / @vTotalReleaseStockCount
-		END
+		SET @vNetValue = @vNetWorth / @vTotalReleaseStockCount
 
-		SELECT @vSeasonNetProfit = [NetProfitTaxed]
+		SELECT @vSeasonNetProfit = [NetProfitTaxed] * 1000
 		FROM [dbo].[StockReportIncome](NOLOCK)
 		WHERE StockNo = @pStockNo AND [Year] = @pYear AND [Season] = @pSeason
 
-		IF(@vSeasonNetProfit > 0)BEGIN
-			SET @vEPS = @vSeasonNetProfit / @vTotalReleaseStockCount
-		END
+		SET @vEPS = @vSeasonNetProfit / @vTotalReleaseStockCount
 
 		EXEC [dbo].[InsertOrUpdateStockReportPerSeason] @pStockNo = @pStockNo, @pYear = @pYear, @pSeason = @pSeason, 
 			@pEPS = @vEPS, @pNetValue = @vNetValue

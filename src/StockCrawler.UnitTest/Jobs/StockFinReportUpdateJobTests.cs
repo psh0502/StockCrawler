@@ -2,6 +2,7 @@
 using Quartz;
 using StockCrawler.Dao;
 using StockCrawler.Services;
+using StockCrawler.Services.StockBasicInfo;
 using System;
 using System.Linq;
 
@@ -10,6 +11,23 @@ namespace StockCrawler.UnitTest.Jobs
     [TestClass]
     public class StockFinReportUpdateJobTests : UnitTestBase
     {
+        [TestInitialize]
+        public override void Init()
+        {
+            base.Init();
+            using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
+                db.ExecuteCommand(@"INSERT [dbo].[StockBasicInfo]
+                    ([StockNo],[Category],[CompanyName],[CompanyID]
+                    ,[BuildDate],[PublishDate],[Capital],[MarketValue]
+                    ,[ReleaseStockCount],[Chairman],[CEO], [Url]
+                    ,[Business])
+                VALUES
+                    ('2330', N'半導體業', N'台灣積體電路製造股份有限公司', '22099131'
+                    , '1987-02-21', '1994-09-05', 259303804580.00, 11000000000000
+                    , '25930380458', N'劉德音', N'總裁: 魏哲家', 'http://www.tsmc.com'
+                    , N'依客戶之訂單與其提供之產品設計說明，以從事製造與銷售積體電路以及其他晶圓半導體裝置。提供前述產品之封裝與測試服務、積體電路之電腦輔助設計技術服務。提供製造光罩及其設計服務。')
+                ");
+        }
         [TestMethod]
         public void ExecuteTest()
         {
@@ -131,8 +149,8 @@ namespace StockCrawler.UnitTest.Jobs
                     Assert.AreEqual("2330", d1.StockNo);
                     Assert.AreEqual(109, d1.Year);
                     Assert.AreEqual(1, d1.Season);
-                    Assert.AreEqual(4.51, d1.EPS, "每股盈餘(EPS)");
-                    Assert.AreEqual(64.64, d1.NetValue, "每股淨值");
+                    Assert.AreEqual(4.5145M, d1.EPS, "每股盈餘(EPS)");
+                    Assert.AreEqual(64.6742M, d1.NetValue, "每股淨值");
                 }
                 #endregion
 
@@ -144,7 +162,7 @@ namespace StockCrawler.UnitTest.Jobs
                     Assert.AreEqual("2330", d1.StockNo);
                     Assert.AreEqual(109, d1.Year);
                     Assert.AreEqual(8, d1.Month);
-                    Assert.AreEqual(24.49, d1.PE, "本益比");
+                    Assert.AreEqual(24.49M, d1.PE, "本益比");
                 }
                 #endregion
             }

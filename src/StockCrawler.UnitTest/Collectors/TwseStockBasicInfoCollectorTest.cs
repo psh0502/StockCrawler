@@ -18,6 +18,7 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual(new DateTime(1987, 2, 21), r.BuildDate);
             Assert.AreEqual(new DateTime(1994, 9, 5), r.PublishDate);
             Assert.AreEqual(259303804580, r.Capital);
+            // Assert.AreNotEqual(0, r.MarketValue, "市場總值");
             Assert.AreEqual("劉德音", r.Chairman);
             Assert.AreEqual("總裁: 魏哲家", r.CEO);
             Assert.AreEqual("半導體業", r.Category);
