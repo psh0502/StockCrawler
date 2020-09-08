@@ -35,7 +35,7 @@ namespace StockCrawler.Services
                 foreach (var d in db.GetStocks().Where(d => string.IsNullOrEmpty(ProcessingStockNo) || d.StockNo == ProcessingStockNo))
                 {
                     db.DeleteStockPriceHistoryData(d.StockNo, null);
-                    InitializeHistoricData(d.StockNo, SystemTime.Today.AddYears(-2), SystemTime.Today);
+                    InitializeHistoricData(d.StockNo, SystemTime.Today.AddYears(-2), SystemTime.Today.AddDays(1));
                     Logger.InfoFormat("Finish the {0} stock history task.", d.StockNo);
                 }
             }

@@ -27,6 +27,8 @@ namespace StockCrawler.UnitTest.Jobs
                     , '25930380458', N'劉德音', N'總裁: 魏哲家', 'http://www.tsmc.com'
                     , N'依客戶之訂單與其提供之產品設計說明，以從事製造與銷售積體電路以及其他晶圓半導體裝置。提供前述產品之封裝與測試服務、積體電路之電腦輔助設計技術服務。提供製造光罩及其設計服務。')
                 ");
+            SqlTool.ConnectionString = ConnectionStringHelper.StockConnectionString;
+            SqlTool.ExecuteSqlFile(@"..\..\Sql\test_data.sql");
         }
         [TestMethod]
         public void ExecuteTest()
@@ -34,6 +36,7 @@ namespace StockCrawler.UnitTest.Jobs
             Services.SystemTime.SetFakeTime(new DateTime(2020, 4, 6));
             StockFinReportUpdateJob.Logger = new UnitTestLogger();
             StockFinReportUpdateJob target = new StockFinReportUpdateJob();
+            target.BeginYear = 108;
             IJobExecutionContext context = null;
             target.Execute(context);
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
@@ -67,6 +70,7 @@ namespace StockCrawler.UnitTest.Jobs
                     var data = db.GetStockReportIncome("2330", (short)(Services.SystemTime.Today.Year - 1911), 1).ToList();
                     Assert.AreEqual(1, data.Count, "資料筆數");
                     var d1 = data.First();
+
                     Assert.AreEqual("2330", d1.StockNo);
                     Assert.AreEqual(109, d1.Year);
                     Assert.AreEqual(1, d1.Season);
@@ -87,6 +91,7 @@ namespace StockCrawler.UnitTest.Jobs
                     var data = db.GetStockReportBalance("2330", (short)(Services.SystemTime.Today.Year - 1911), 1).ToList();
                     Assert.AreEqual(1, data.Count, "資料筆數");
                     var d1 = data.First();
+
                     Assert.AreEqual("2330", d1.StockNo);
                     Assert.AreEqual(109, d1.Year);
                     Assert.AreEqual(1, d1.Season);
@@ -126,6 +131,7 @@ namespace StockCrawler.UnitTest.Jobs
                     var data = db.GetStockReportMonthlyNetProfitTaxed("2330", (short)(Services.SystemTime.Today.Year - 1911), 3).ToList();
                     Assert.AreEqual(1, data.Count, "資料筆數");
                     var d1 = data.First();
+
                     Assert.AreEqual("2330", d1.StockNo);
                     Assert.AreEqual(109, d1.Year);
                     Assert.AreEqual(3, d1.Month);
@@ -146,6 +152,7 @@ namespace StockCrawler.UnitTest.Jobs
                     var data = db.GetStockReportPerSeason("2330", (short)(Services.SystemTime.Today.Year - 1911), 1).ToList();
                     Assert.AreEqual(1, data.Count, "資料筆數");
                     var d1 = data.First();
+
                     Assert.AreEqual("2330", d1.StockNo);
                     Assert.AreEqual(109, d1.Year);
                     Assert.AreEqual(1, d1.Season);
@@ -156,13 +163,14 @@ namespace StockCrawler.UnitTest.Jobs
 
                 #region other monthly numbers
                 {
-                    var data = db.GetStockReportPerMonth("2330", (short)(Services.SystemTime.Today.Year - 1911), 8).ToList();
+                    var data = db.GetStockReportPerMonth("2330", (short)(Services.SystemTime.Today.Year - 1911), 4).ToList();
                     Assert.AreEqual(1, data.Count, "資料筆數");
                     var d1 = data.First();
+
                     Assert.AreEqual("2330", d1.StockNo);
                     Assert.AreEqual(109, d1.Year);
-                    Assert.AreEqual(8, d1.Month);
-                    Assert.AreEqual(24.49M, d1.PE, "本益比");
+                    Assert.AreEqual(3, d1.Month);
+                    Assert.AreEqual(21.51M, d1.PE, "本益比");
                 }
                 #endregion
             }

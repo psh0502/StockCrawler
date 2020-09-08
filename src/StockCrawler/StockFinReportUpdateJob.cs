@@ -72,12 +72,15 @@ namespace StockCrawler.Services
                         }
                         if (month <= 0) { month = 1; year -= 1; }
                         for (; year <= now_year; year++)
+                        {
                             for (; month <= 12 && !(year == now_year && month == now_month); month++)
                             {
                                 if (!GetMonthlyNetProfitTaxedIntoDatabase(db, collector, d.StockNo, year, month)) break;
                                 db.SettleMonthData(d.StockNo, year, month);
                                 Thread.Sleep(5 * 1000);
                             }
+                            month = 1;
+                        }
                     }
                 }
             }
