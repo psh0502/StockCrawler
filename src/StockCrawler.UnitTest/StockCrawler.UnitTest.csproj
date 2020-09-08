@@ -129,11 +129,13 @@
     <Compile Include="Jobs\StockFinReportUpdateJobTests.cs" />
     <Compile Include="Others\ToolsTests.cs" />
     <Compile Include="Jobs\StockBasicInfoUpdateJobTests.cs" />
+    <Compile Include="SqlTool.cs" />
     <Compile Include="UnitTestBase.cs" />
     <Compile Include="UnitTestLogger.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AuthoringTests.txt" />
+    <Content Include="Sql\test_data.sql" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StockCrawler.Dao\StockCrawler.Dao.csproj">

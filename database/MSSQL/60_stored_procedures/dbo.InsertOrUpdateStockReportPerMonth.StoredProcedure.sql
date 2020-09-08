@@ -29,7 +29,7 @@ BEGIN
            ,[Year]
            ,[Month]
            ,[PE])
-     VALUES
+		VALUES
            (@pStockNo
            ,@pYear
            ,@pMonth

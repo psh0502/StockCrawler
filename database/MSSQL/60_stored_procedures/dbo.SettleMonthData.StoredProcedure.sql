@@ -16,6 +16,8 @@ CREATE OR ALTER PROCEDURE [dbo].[SettleMonthData]
 AS
 BEGIN
 	SET NOCOUNT ON
+	DECLARE @vYear SMALLINT = @pYear
+
 	DECLARE @vAvgEPS MONEY,
 		@v20DayAvgClosedPrice MONEY,
 		@vPE MONEY,
@@ -24,17 +26,17 @@ BEGIN
 
 	SET @vSeason = (@pMonth / 4)
 	IF(@vSeason = 0) BEGIN
-		SET @pYear -= 1
+		SET @vYear -= 1
 		SET @vSeason = 4
 	END
 
-	SET @vCalulateDate = CONVERT(DATE, CONVERT(VARCHAR, @pYear + 1911))
+	SET @vCalulateDate = CONVERT(DATE, CONVERT(VARCHAR, @vYear + 1911))
 	SET @vCalulateDate = DATEADD(DAY, -1, DATEADD(MONTH, @pMonth, @vCalulateDate))
 
 	SELECT @vAvgEPS = AVG(EPS) FROM(
 		SELECT TOP 4 EPS FROM [dbo].[StockReportPerSeason](NOLOCK) 
 		WHERE StockNo = @pStockNo 
-			AND [Year] <= @pYear AND (([Year] = @pYear AND Season <= @vSeason) OR [Year] < @pYear)
+			AND [Year] <= @vYear AND (([Year] = @vYear AND Season <= @vSeason) OR [Year] < @vYear)
 		ORDER BY [Year], [Season] DESC) t
 
 	SELECT @v20DayAvgClosedPrice = AVG(ClosePrice) FROM(
