@@ -173,7 +173,6 @@ namespace StockCrawler.Dao
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
                 db.SettleMonthData(stockNo, year, month);
         }
-
         public void SettleSeasonData(string stockNo, short year, short season)
         {
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))

@@ -2,7 +2,6 @@
 using Quartz;
 using StockCrawler.Dao;
 using StockCrawler.Services;
-using StockCrawler.Services.StockBasicInfo;
 using System;
 using System.Linq;
 
@@ -15,8 +14,7 @@ namespace StockCrawler.UnitTest.Jobs
         public override void Init()
         {
             base.Init();
-            using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
-                db.ExecuteCommand(@"INSERT [dbo].[StockBasicInfo]
+            SqlTool.ExecuteSql(@"INSERT [dbo].[StockBasicInfo]
                     ([StockNo],[Category],[CompanyName],[CompanyID]
                     ,[BuildDate],[PublishDate],[Capital],[MarketValue]
                     ,[ReleaseStockCount],[Chairman],[CEO], [Url]
@@ -28,7 +26,7 @@ namespace StockCrawler.UnitTest.Jobs
                     , N'依客戶之訂單與其提供之產品設計說明，以從事製造與銷售積體電路以及其他晶圓半導體裝置。提供前述產品之封裝與測試服務、積體電路之電腦輔助設計技術服務。提供製造光罩及其設計服務。')
                 ");
             SqlTool.ConnectionString = ConnectionStringHelper.StockConnectionString;
-            SqlTool.ExecuteSqlFile(@"..\..\..\StockCrawler.UnitTest\Sql\test_data.sql");
+            SqlTool.ExecuteSqlFile(@"..\..\..\StockCrawler.UnitTest\Sql\DailyPriceTestData_10704_10903.sql");
         }
         [TestMethod]
         public void ExecuteTest()
