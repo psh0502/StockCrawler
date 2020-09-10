@@ -88,7 +88,7 @@ namespace StockCrawler.Services
 
                 var csv_lines = CsvReader.ParseLines(csv_data).Skip(1);
 
-                var dt = new List<GetStockPriceHistoryResult>();
+                var list = new List<GetStockPriceHistoryResult>();
                 foreach (var ln in csv_lines)
                 {
                     string[] data = CsvReader.ParseFields(ln).ToArray();
@@ -96,7 +96,7 @@ namespace StockCrawler.Services
                     {
                         if (data.Length == 7)
                         {
-                            var dr = new GetStockPriceHistoryResult
+                            list.Add(new GetStockPriceHistoryResult()
                             {
                                 StockDT = DateTime.Parse(data[0]),
                                 Period = 1,
@@ -107,8 +107,8 @@ namespace StockCrawler.Services
                                 AdjClosePrice = decimal.Parse(data[5]),
                                 Volume = long.Parse(data[6]) / 1000,
                                 StockNo = stockNo
-                            };
-                            dt.Add(dr);
+                            });
+
                         }
                     }
                     catch (ConstraintException ex)
@@ -120,7 +120,8 @@ namespace StockCrawler.Services
                         Logger.WarnFormat("Got invalid format data...[{0}]", ln);
                     }
                 }
-                StockDataServiceProvider.GetServiceInstance().UpdateStockPriceHistoryDataTable(dt);
+                using (var db = StockDataServiceProvider.GetServiceInstance()) 
+                    db.UpdateStockPriceHistoryDataTable(list);
             }
             catch (WebException wex)
             {

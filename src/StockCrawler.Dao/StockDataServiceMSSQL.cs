@@ -173,5 +173,33 @@ namespace StockCrawler.Dao
                     info.Remark,
                     info.PE);
         }
+
+        public void GetStockPriceAVG(string stockNo, DateTime begDate, DateTime endDate, short period, int top, out decimal avgClosePrice, out decimal avgOpenPrice, out decimal avgHighPrice, out decimal avgLowPrice, out long sumVolume)
+        {
+            decimal? oAvgClosePrice = null, 
+                oAvgOpenPrice = null, 
+                oAgHighPrice = null, 
+                oAvgLowPrice = null;
+            long? oSumVolume = null;
+
+            using (var db = GetMSSQLStockDataContext())
+                db.GetStockPriceAVG(
+                    stockNo,
+                    begDate,
+                    endDate,
+                    period,
+                    top,
+                    ref oAvgClosePrice,
+                    ref oAvgOpenPrice,
+                    ref oAgHighPrice,
+                    ref oAvgLowPrice,
+                    ref oSumVolume);
+
+            avgClosePrice = oAvgClosePrice ?? 0;
+            avgOpenPrice = oAvgOpenPrice ?? 0;
+            avgHighPrice = oAgHighPrice ?? 0;
+            avgLowPrice = oAvgLowPrice ?? 0;
+            sumVolume = oSumVolume ?? 0;
+        }
     }
 }
