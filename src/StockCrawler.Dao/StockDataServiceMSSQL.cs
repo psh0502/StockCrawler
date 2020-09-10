@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace StockCrawler.Dao
 {
@@ -24,7 +25,7 @@ namespace StockCrawler.Dao
             }
             return dt;
         }
-        public void UpdateStockPriceHistoryDataTable(IList<GetStockPriceHistoryResult> list)
+        public void InsertOrUpdateStockPriceHistory(IList<GetStockPriceHistoryResult> list)
         {
             using (var db = GetMSSQLStockDataContext())
                 foreach (var dr in list)
@@ -173,33 +174,23 @@ namespace StockCrawler.Dao
                     info.Remark,
                     info.PE);
         }
-
-        public void GetStockPriceAVG(string stockNo, DateTime begDate, DateTime endDate, short period, int top, out decimal avgClosePrice, out decimal avgOpenPrice, out decimal avgHighPrice, out decimal avgLowPrice, out long sumVolume)
+        public decimal GetStockPriceAVG(string stockNo, DateTime endDate, short period)
         {
-            decimal? oAvgClosePrice = null, 
-                oAvgOpenPrice = null, 
-                oAgHighPrice = null, 
-                oAvgLowPrice = null;
-            long? oSumVolume = null;
+            decimal? oAvgClosePrice = null;
 
             using (var db = GetMSSQLStockDataContext())
                 db.GetStockPriceAVG(
                     stockNo,
-                    begDate,
                     endDate,
                     period,
-                    top,
-                    ref oAvgClosePrice,
-                    ref oAvgOpenPrice,
-                    ref oAgHighPrice,
-                    ref oAvgLowPrice,
-                    ref oSumVolume);
+                    ref oAvgClosePrice);
 
-            avgClosePrice = oAvgClosePrice ?? 0;
-            avgOpenPrice = oAvgOpenPrice ?? 0;
-            avgHighPrice = oAgHighPrice ?? 0;
-            avgLowPrice = oAvgLowPrice ?? 0;
-            sumVolume = oSumVolume ?? 0;
+            return oAvgClosePrice ?? 0;
+        }
+        public IList<GetStockPeriodPriceResult> GetStockPeriodPrice(string stockNo, DateTime endDate, short period)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                return db.GetStockPeriodPrice(stockNo, endDate, period).ToList();
         }
     }
 }

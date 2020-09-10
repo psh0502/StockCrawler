@@ -13,34 +13,20 @@ GO
 -- =============================================
 CREATE OR ALTER PROCEDURE [dbo].[GetStockPriceAVG]
 @pStockNo VARCHAR(10),
-@pDateBegin DATE,
 @pDateEnd DATE,
 @pPeriod SMALLINT,
-@pTop INT,
-@oAvgClosePrice MONEY OUTPUT,
-@oAvgOpenPrice MONEY OUTPUT,
-@oAvgHighPrice MONEY OUTPUT,
-@oAvgLowPrice MONEY OUTPUT,
-@oTotalVolume BIGINT OUTPUT
+@oAvgClosePrice MONEY OUTPUT
 AS
 BEGIN
 	SET NOCOUNT ON
 	SELECT 
-		@oAvgClosePrice = AVG(ClosePrice),  
-		@oAvgOpenPrice = AVG(OpenPrice), 
-		@oAvgHighPrice = AVG(HighPrice), 
-		@oAvgLowPrice = AVG(LowPrice),
-		@oTotalVolume = SUM(Volume)
+		@oAvgClosePrice = AVG(ClosePrice)
 	FROM(
-		SELECT TOP (@pTop) ClosePrice, OpenPrice, HighPrice, LowPrice, Volume
+		SELECT TOP (@pPeriod) ClosePrice
 		FROM StockPriceHistory(NOLOCK)
-		WHERE StockNo = @pStockNo AND StockDT BETWEEN @pDateBegin AND @pDateEnd AND [Period] = @pPeriod
+		WHERE StockNo = @pStockNo AND StockDT <= @pDateEnd
 		ORDER BY StockDT DESC
 	) t
 	SET @oAvgClosePrice = ISNULL(@oAvgClosePrice, 0)
-	SET @oAvgOpenPrice = ISNULL(@oAvgOpenPrice, 0)
-	SET @oAvgHighPrice = ISNULL(@oAvgHighPrice, 0)
-	SET @oAvgLowPrice = ISNULL(@oAvgLowPrice, 0)
-	SET @oTotalVolume = ISNULL(@oTotalVolume, 0)
 END
 GO

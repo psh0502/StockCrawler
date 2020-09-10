@@ -108,7 +108,6 @@ namespace StockCrawler.Services
                                 Volume = long.Parse(data[6]) / 1000,
                                 StockNo = stockNo
                             });
-
                         }
                     }
                     catch (ConstraintException ex)
@@ -120,8 +119,12 @@ namespace StockCrawler.Services
                         Logger.WarnFormat("Got invalid format data...[{0}]", ln);
                     }
                 }
-                using (var db = StockDataServiceProvider.GetServiceInstance()) 
-                    db.UpdateStockPriceHistoryDataTable(list);
+                if (list.Any())
+                    using (var db = StockDataServiceProvider.GetServiceInstance())
+                    {
+                        db.InsertOrUpdateStockPriceHistory(list);
+                        list.Clear();
+                    }
             }
             catch (WebException wex)
             {

@@ -43,7 +43,7 @@ namespace StockCrawler.Dao
         //StockDataSet.StockPriceHistoryRow GetStockPriceDataRowByDate(string sNO, DateTime specifiedDT);
         //StockDataSet.StockPriceHistoryDataTable GetStockPriceHistoryData(string sno, DateTime startDT, DateTime endDT);
         IList<GetStocksResult> GetStocks();
-        void UpdateStockPriceHistoryDataTable(IList<GetStockPriceHistoryResult> list);
+        void InsertOrUpdateStockPriceHistory(IList<GetStockPriceHistoryResult> list);
         void RenewStockList(IList<GetStocksResult> list);
         /// <summary>
         /// Update stock name by stock no
@@ -56,18 +56,20 @@ namespace StockCrawler.Dao
         void UpdateStockBalanceReport(GetStockReportBalanceResult info);
         void UpdateStockMonthlyNetProfitTaxedReport(GetStockReportMonthlyNetProfitTaxedResult info);
         /// <summary>
-        /// 取得股價週其平均值
+        /// 取得股價週期平均值
         /// </summary>
         /// <param name="stockNo">股票代碼</param>
-        /// <param name="begDate">開始日期</param>
+        /// <param name="endDate">結束日期</param>
+        /// <param name="period">週期天數, 週線: 5, 雙週線: 10, 月線: 20, 季線: 60</param>
+        /// <returns>平均收盤價</returns>
+        decimal GetStockPriceAVG(string stockNo, DateTime endDate, short period);
+        /// <summary>
+        /// 取得指定期間的股價明細
+        /// </summary>
+        /// <param name="stockNo">股票代碼</param>
         /// <param name="endDate">結束日期</param>
         /// <param name="period">週期天數</param>
-        /// <param name="top">取多少筆資料</param>
-        /// <param name="avgClosePrice">平均收盤價</param>
-        /// <param name="avgOpenPrice">平均開盤價</param>
-        /// <param name="avgHighPrice">平均最高價</param>
-        /// <param name="avgLowPrice">平均最低價</param>
-        /// <param name="sumVolume">總交易量</param>
-        void GetStockPriceAVG(string stockNo, DateTime begDate, DateTime endDate, short period, int top, out decimal avgClosePrice, out decimal avgOpenPrice, out decimal avgHighPrice, out decimal avgLowPrice, out long sumVolume);
+        /// <returns>每日收盤資料列表</returns>
+        IList<GetStockPeriodPriceResult> GetStockPeriodPrice(string stockNo, DateTime endDate, short period);
     }
 }
