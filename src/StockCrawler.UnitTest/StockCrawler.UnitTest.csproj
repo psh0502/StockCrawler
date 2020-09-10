@@ -121,6 +121,7 @@
     <Compile Include="Collectors\TwseStockBasicInfoCollectorTest.cs" />
     <Compile Include="Collectors\TwseStockDailyInfoCollectorTest.cs" />
     <Compile Include="Collectors\GoodInfoCollectorTest.cs" />
+    <Compile Include="Mocks\StockReportCollectorMock.cs" />
     <Compile Include="Mocks\StockDailyInfoCollectorMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Jobs\StockPriceHistoryInitJobTest.cs" />
@@ -135,7 +136,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AuthoringTests.txt" />
-    <Content Include="Sql\test_data.sql" />
+    <Content Include="Sql\FinanceTestData_10704_10903.sql" />
+    <Content Include="Sql\DailyPriceTestData_10704_10903.sql" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StockCrawler.Dao\StockCrawler.Dao.csproj">

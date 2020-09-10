@@ -14,6 +14,7 @@ namespace StockCrawler.UnitTest.Jobs
         public override void Init()
         {
             base.Init();
+            SqlTool.ConnectionString = ConnectionStringHelper.StockConnectionString;
             SqlTool.ExecuteSql(@"INSERT [dbo].[StockBasicInfo]
                     ([StockNo],[Category],[CompanyName],[CompanyID]
                     ,[BuildDate],[PublishDate],[Capital],[MarketValue]
@@ -25,7 +26,6 @@ namespace StockCrawler.UnitTest.Jobs
                     , '25930380458', N'劉德音', N'總裁: 魏哲家', 'http://www.tsmc.com'
                     , N'依客戶之訂單與其提供之產品設計說明，以從事製造與銷售積體電路以及其他晶圓半導體裝置。提供前述產品之封裝與測試服務、積體電路之電腦輔助設計技術服務。提供製造光罩及其設計服務。')
                 ");
-            SqlTool.ConnectionString = ConnectionStringHelper.StockConnectionString;
             SqlTool.ExecuteSqlFile(@"..\..\..\StockCrawler.UnitTest\Sql\DailyPriceTestData_10704_10903.sql");
         }
         [TestMethod]
