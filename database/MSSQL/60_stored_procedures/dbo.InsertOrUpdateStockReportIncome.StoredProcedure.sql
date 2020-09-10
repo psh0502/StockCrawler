@@ -21,7 +21,10 @@ CREATE OR ALTER PROCEDURE [dbo].[InsertOrUpdateStockReportIncome]
 @pOperatingExpenses MONEY,
 @pBusinessInterest MONEY,
 @pNetProfitTaxFree MONEY,
-@pNetProfitTaxed MONEY
+@pNetProfitTaxed MONEY,
+@pEPS MONEY,
+@pSEPS MONEY,
+@pRelaseStockCount BIGINT
 AS
 BEGIN
 	IF EXISTS(SELECT [StockNo] FROM [StockReportIncome](NOLOCK) WHERE [StockNo] = @pStockNo AND [Year] = @pYear AND [Season] = @pSeason)
@@ -36,6 +39,9 @@ BEGIN
 			[BusinessInterest] = @pBusinessInterest,
 			[NetProfitTaxFree] = @pNetProfitTaxFree,
 			[NetProfitTaxed] = @pNetProfitTaxed,
+			[EPS] = @pEPS,
+			[SEPS] = @pSEPS,
+			[ReleaseStockCount] = @pRelaseStockCount,
 			[LastModifiedAt] = GETDATE()
 		WHERE [StockNo] = @pStockNo AND [Year] = @pYear AND [Season] = @pSeason
 
@@ -52,7 +58,10 @@ BEGIN
            ,[OperatingExpenses]
            ,[BusinessInterest]
            ,[NetProfitTaxFree]
-           ,[NetProfitTaxed])
+           ,[NetProfitTaxed]
+		   ,[EPS]
+		   ,[SEPS]
+		   ,[ReleaseStockCount])
      VALUES
            (@pStockNo
            ,@pYear
@@ -65,6 +74,9 @@ BEGIN
            ,@pOperatingExpenses
            ,@pBusinessInterest
            ,@pNetProfitTaxFree
-           ,@pNetProfitTaxed)
+           ,@pNetProfitTaxed
+		   ,@pEPS
+		   ,@pSEPS
+		   ,@pRelaseStockCount)
 END
 GO

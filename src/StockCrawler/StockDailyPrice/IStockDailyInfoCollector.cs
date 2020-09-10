@@ -14,6 +14,7 @@ namespace StockCrawler.Services.StockDailyPrice
         public string StockNo { get; set; }
         public string StockName { get; set; }
         public DateTime LastTradeDT { get; set; }
+        public short Period { get; } = 1;
         public decimal OpenPrice { get; set; }
         public decimal HighPrice { get; set; }
         public decimal LowPrice { get; set; }

@@ -43,7 +43,7 @@ namespace StockCrawler.Dao
         //StockDataSet.StockPriceHistoryRow GetStockPriceDataRowByDate(string sNO, DateTime specifiedDT);
         //StockDataSet.StockPriceHistoryDataTable GetStockPriceHistoryData(string sno, DateTime startDT, DateTime endDT);
         IList<GetStocksResult> GetStocks();
-        void UpdateStockPriceHistoryDataTable(IList<GetStockHistoryResult> list);
+        void UpdateStockPriceHistoryDataTable(IList<GetStockPriceHistoryResult> list);
         void RenewStockList(IList<GetStocksResult> list);
         /// <summary>
         /// Update stock name by stock no
@@ -55,7 +55,5 @@ namespace StockCrawler.Dao
         void UpdateStockIncomeReport(GetStockReportIncomeResult info);
         void UpdateStockBalanceReport(GetStockReportBalanceResult info);
         void UpdateStockMonthlyNetProfitTaxedReport(GetStockReportMonthlyNetProfitTaxedResult info);
-        void SettleMonthData(string stockNo, short year, short month);
-        void SettleSeasonData(string stockNo, short year, short season);
     }
 }

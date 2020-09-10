@@ -88,7 +88,7 @@ namespace StockCrawler.Services
 
                 var csv_lines = CsvReader.ParseLines(csv_data).Skip(1);
 
-                var dt = new List<GetStockHistoryResult>();
+                var dt = new List<GetStockPriceHistoryResult>();
                 foreach (var ln in csv_lines)
                 {
                     string[] data = CsvReader.ParseFields(ln).ToArray();
@@ -96,9 +96,10 @@ namespace StockCrawler.Services
                     {
                         if (data.Length == 7)
                         {
-                            var dr = new GetStockHistoryResult
+                            var dr = new GetStockPriceHistoryResult
                             {
                                 StockDT = DateTime.Parse(data[0]),
+                                Period = 1,
                                 OpenPrice = decimal.Parse(data[1]),
                                 HighPrice = decimal.Parse(data[2]),
                                 LowPrice = decimal.Parse(data[3]),

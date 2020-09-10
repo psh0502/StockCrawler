@@ -24,13 +24,14 @@ namespace StockCrawler.Dao
             }
             return dt;
         }
-        public void UpdateStockPriceHistoryDataTable(IList<GetStockHistoryResult> list)
+        public void UpdateStockPriceHistoryDataTable(IList<GetStockPriceHistoryResult> list)
         {
             using (var db = GetMSSQLStockDataContext())
                 foreach (var dr in list)
-                    db.InsertStockPriceHistoryData(
+                    db.InsertOrUpdateStockPriceHistory(
                         dr.StockNo,
                         dr.StockDT,
+                        dr.Period,
                         dr.OpenPrice,
                         dr.HighPrice,
                         dr.LowPrice,
@@ -118,7 +119,10 @@ namespace StockCrawler.Dao
                     info.OperatingExpenses,
                     info.BusinessInterest,
                     info.NetProfitTaxFree,
-                    info.NetProfitTaxed);
+                    info.NetProfitTaxed,
+                    info.EPS,
+                    info.SEPS,
+                    info.ReleaseStockCount);
         }
         public void UpdateStockBalanceReport(GetStockReportBalanceResult info)
         {
@@ -166,17 +170,8 @@ namespace StockCrawler.Dao
                     info.LastYearTillThisMonth,
                     info.TillThisMonthDelta,
                     info.TillThisMonthDeltaPercent,
-                    info.Remark);
-        }
-        public void SettleMonthData(string stockNo, short year, short month)
-        {
-            using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
-                db.SettleMonthData(stockNo, year, month);
-        }
-        public void SettleSeasonData(string stockNo, short year, short season)
-        {
-            using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
-                db.SettleSeasonData(stockNo, year, season);
+                    info.Remark,
+                    info.PE);
         }
     }
 }

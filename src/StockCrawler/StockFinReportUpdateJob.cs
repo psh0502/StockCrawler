@@ -57,7 +57,6 @@ namespace StockCrawler.Services
                                 if (!GetCashflowIntoDatabase(db, collector, d.StockNo, year, season)) break;
                                 if (!GetIncomeIntoDatabase(db, collector, d.StockNo, year, season)) break;
                                 if (!GetBalanceIntoDatabase(db, collector, d.StockNo, year, season)) break;
-                                db.SettleSeasonData(d.StockNo, year, season);
                                 Thread.Sleep(_breakInternval);
                             }
                             season = 1;
@@ -76,7 +75,6 @@ namespace StockCrawler.Services
                             for (; month <= 12 && !(year == now_year && month == now_month); month++)
                             {
                                 if (!GetMonthlyNetProfitTaxedIntoDatabase(db, collector, d.StockNo, year, month)) break;
-                                db.SettleMonthData(d.StockNo, year, month);
                                 Thread.Sleep(_breakInternval);
                             }
                             month = 1;

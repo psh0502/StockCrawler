@@ -35,7 +35,7 @@ namespace StockCrawler.UnitTest.Jobs
                 }
                 {
                     int? pageCount = null;
-                    var data = db.GetStockHistory("2330", Services.SystemTime.Today.AddYears(-1), Services.SystemTime.Today.AddDays(1), 100, 1, 10, ref pageCount).ToList();
+                    var data = db.GetStockPriceHistory("2330", Services.SystemTime.Today.AddYears(-1), Services.SystemTime.Today.AddDays(1), 1, 100, 1, 10, ref pageCount).ToList();
                     Assert.AreEqual(10, data.Count);
                     Assert.AreEqual(10, pageCount);
                     var d1 = data.First();

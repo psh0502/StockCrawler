@@ -25,7 +25,7 @@ namespace StockCrawler.Services
             Logger.InfoFormat("Invoke [{0}]...", MethodBase.GetCurrentMethod().Name);
             try
             {
-                var list = new List<GetStockHistoryResult>();
+                var list = new List<GetStockPriceHistoryResult>();
                 using (var db = StockDataServiceProvider.GetServiceInstance())
                 {
                     var collector = CollectorProviderService.GetStockDailyPriceCollector();
@@ -39,10 +39,11 @@ namespace StockCrawler.Services
                             db.UpdateStockName(info.StockNo, info.StockName);
                             if (info.Volume > 0)
                             {
-                                GetStockHistoryResult dr = new GetStockHistoryResult
+                                var dr = new GetStockPriceHistoryResult
                                 {
                                     StockNo = info.StockNo,
                                     StockDT = info.LastTradeDT.Date,
+                                    Period = info.Period,
                                     OpenPrice = info.OpenPrice,
                                     HighPrice = info.HighPrice,
                                     LowPrice = info.LowPrice,

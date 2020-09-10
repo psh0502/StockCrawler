@@ -8,7 +8,7 @@ GO
 
 SET QUOTED_IDENTIFIER ON
 GO
--- 損益表
+-- 合併綜合損益表
 CREATE TABLE [dbo].[StockReportIncome](
 	[StockNo] [varchar](10) NOT NULL,
 	[Year] [smallint] NOT NULL,
@@ -22,6 +22,9 @@ CREATE TABLE [dbo].[StockReportIncome](
 	[BusinessInterest][MONEY] NOT NULL,-- 營業利益
 	[NetProfitTaxFree][MONEY] NOT NULL,-- 稅前淨利
 	[NetProfitTaxed][MONEY] NOT NULL, -- 稅後淨利
+	[EPS][MONEY] NOT NULL, -- 每股盈餘
+	[SEPS][MONEY] NOT NULL, -- 本季每股盈餘
+	[ReleaseStockCount] BIGINT NOT NULL, -- 發行股數
 	[CreatedAt] [datetime] NOT NULL,
 	[LastModifiedAt] [datetime] NOT NULL,
  CONSTRAINT [PK_StockReportIncome] PRIMARY KEY CLUSTERED 

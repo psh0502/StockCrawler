@@ -83,6 +83,7 @@ namespace StockCrawler.UnitTest.Jobs
                     Assert.AreEqual(128521637, d1.BusinessInterest);
                     Assert.AreEqual(132147178, d1.NetProfitTaxFree);
                     Assert.AreEqual(117062893, d1.NetProfitTaxed);
+                    Assert.AreEqual(4.5145M, d1.EPS, "每股盈餘(EPS)");
                 }
                 #endregion
 
@@ -123,6 +124,7 @@ namespace StockCrawler.UnitTest.Jobs
                     Assert.AreEqual(1677028531, d1.NetWorth);     // 淨值(權益總額)
                     #endregion
 
+                    Assert.AreEqual(64.6742M, d1.NAV, "每股淨值");
                 }
                 #endregion
 
@@ -144,33 +146,6 @@ namespace StockCrawler.UnitTest.Jobs
                     Assert.AreEqual(91892714, d1.TillThisMonthDelta);
                     Assert.AreEqual((decimal)(42.02 / 100), d1.TillThisMonthDeltaPercent);
                     Assert.AreEqual(string.Empty, d1.Remark);
-                }
-                #endregion
-
-                #region other season numbers
-                {
-                    var data = db.GetStockReportPerSeason("2330", (short)(Services.SystemTime.Today.Year - 1911), 1).ToList();
-                    Assert.AreEqual(1, data.Count, "資料筆數");
-                    var d1 = data.First();
-
-                    Assert.AreEqual("2330", d1.StockNo);
-                    Assert.AreEqual(109, d1.Year);
-                    Assert.AreEqual(1, d1.Season);
-                    Assert.AreEqual(4.5145M, d1.EPS, "每股盈餘(EPS)");
-                    Assert.AreEqual(64.6742M, d1.NetValue, "每股淨值");
-                }
-                #endregion
-
-                #region other monthly numbers
-                {
-                    var data = db.GetStockReportPerMonth("2330", (short)(Services.SystemTime.Today.Year - 1911), 3).ToList();
-                    Assert.AreEqual(1, data.Count, "資料筆數");
-                    var d1 = data.First();
-
-                    Assert.AreEqual("2330", d1.StockNo);
-                    Assert.AreEqual(109, d1.Year);
-                    Assert.AreEqual(3, d1.Month);
-                    Assert.AreEqual(21.51M, d1.PE, "本益比");
                 }
                 #endregion
             }

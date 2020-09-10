@@ -22,6 +22,7 @@ CREATE TABLE [dbo].[StockReportMonthlyNetProfitTaxed](
     TillThisMonthDelta MONEY NOT NULL,    -- 增減金額
     TillThisMonthDeltaPercent DECIMAL(18, 4) NOT NULL,    -- 增減百分比
     Remark NVARCHAR(1000) NOT NULL,   -- 備註/營收變化原因說明
+	[PE] MONEY NOT NULL,
 	[CreatedAt] [datetime] NOT NULL,
 	[LastModifiedAt] [datetime] NOT NULL,
  CONSTRAINT [PK_StockReportMonthlyNetProfitTaxed] PRIMARY KEY CLUSTERED 

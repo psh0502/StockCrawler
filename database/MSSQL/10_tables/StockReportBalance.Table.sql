@@ -36,6 +36,7 @@ CREATE TABLE [dbo].[StockReportBalance](
 	[OtherLiabilities][MONEY] NOT NULL, -- ¨ä¾l­t¶Å
 	[TotalLiability][MONEY] NOT NULL, -- Á`­t¶Å
 	[NetWorth][MONEY] NOT NULL, -- ²b­È
+	[NAV][MONEY] NOT NULL, -- ¨CªÑ²b­È
 
 	[CreatedAt] [datetime] NOT NULL,
 	[LastModifiedAt] [datetime] NOT NULL,

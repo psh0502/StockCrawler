@@ -17,7 +17,7 @@ namespace StockCrawler.UnitTest.Jobs
         /// <summary>
         ///A test for Execute StockPriceUpdate
         ///</summary>
-        [TestMethod()]
+        [TestMethod]
         public void StockPriceUpdateTest()
         {
             Services.SystemTime.SetFakeTime(new DateTime(2020, 7, 31));
@@ -35,7 +35,7 @@ namespace StockCrawler.UnitTest.Jobs
                 }
                 {
                     int? pageCount = null;
-                    var data = db.GetStockHistory("2330", Services.SystemTime.Today, Services.SystemTime.Today, 100, 1, 10, ref pageCount).ToList();
+                    var data = db.GetStockPriceHistory("2330", Services.SystemTime.Today, Services.SystemTime.Today, 1, 100, 1, 10, ref pageCount).ToList();
                     Assert.AreEqual(1, data.Count);
                     Assert.AreEqual(1, pageCount);
                     var d1 = data.First();
