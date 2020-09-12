@@ -21,7 +21,9 @@ CREATE OR ALTER PROCEDURE [dbo].[InsertOrUpdateStockPriceHistory]
 @pAdjClosePrice DECIMAL(10, 4)
 AS
 BEGIN
-	IF EXISTS(SELECT [StockNo] FROM [StockPriceHistory](NOLOCK) WHERE [StockNo] = @pStockNo AND [StockDT] = @pStockDT)
+	DECLARE @DAILY_PERIOD SMALLINT = 1
+
+	IF EXISTS(SELECT [StockNo] FROM [StockPriceHistory](NOLOCK) WHERE [StockNo] = @pStockNo AND [StockDT] = @pStockDT AND [Period] = @pPeriod)
 		UPDATE [StockPriceHistory]
 		SET
 			[OpenPrice] = ISNULL(@pOpenPrice, [OpenPrice])
@@ -52,10 +54,11 @@ BEGIN
 			@pLowPrice,
 			@pClosePrice,
 			@pVolume,
-			@pAdjClosePrice);
+			@pAdjClosePrice)
 
-	UPDATE [StockBasicInfo] 
-	SET MarketValue = ReleaseStockCount * @pClosePrice 
-	WHERE StockNo = @pStockNo
+	IF (@pPeriod = @DAILY_PERIOD)
+		UPDATE [StockBasicInfo] 
+		SET MarketValue = ReleaseStockCount * @pClosePrice 
+		WHERE StockNo = @pStockNo
 END
 GO

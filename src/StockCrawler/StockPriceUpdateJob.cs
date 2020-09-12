@@ -4,6 +4,7 @@ using StockCrawler.Dao;
 using StockCrawler.Services.StockDailyPrice;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace StockCrawler.Services
@@ -39,7 +40,7 @@ namespace StockCrawler.Services
                             db.UpdateStockName(info.StockNo, info.StockName);
                             if (info.Volume > 0)
                             {
-                                var dr = new GetStockPriceHistoryResult
+                                list.Add(new GetStockPriceHistoryResult
                                 {
                                     StockNo = info.StockNo,
                                     StockDT = info.LastTradeDT.Date,
@@ -50,9 +51,7 @@ namespace StockCrawler.Services
                                     ClosePrice = info.ClosePrice,
                                     Volume = info.Volume,
                                     AdjClosePrice = info.ClosePrice
-                                };
-
-                                list.Add(dr);
+                                });
 
                                 Logger.InfoFormat("Finish the {0} stock daily price retrieving task.", d.StockNo);
                             }
@@ -62,7 +61,8 @@ namespace StockCrawler.Services
                             }
                         }
                     }
-                    db.UpdateStockPriceHistoryDataTable(list);
+                    if (list.Any())
+                        Tools.CalculateMAAndPeriodK(list);
                 }
             }
             catch (Exception ex)

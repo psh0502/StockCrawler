@@ -9,9 +9,9 @@ namespace StockCrawler.Dao
         /// Update stock company's basic information. If it doesn't exist, it will insert it.
         /// </summary>
         /// <param name="data">Collection of stock company's basic information</param>
-        void UpdateStockBasicInfo(IEnumerable<GetStockBasicInfoResult> data);
-        void UpdateStockBasicInfo(GetStockBasicInfoResult data);
-        void UpdateStockCashflowReport(GetStockReportCashFlowResult info);
+        void InsertOrUpdateStockBasicInfo(IEnumerable<GetStockBasicInfoResult> data);
+        void InsertOrUpdateStockBasicInfo(GetStockBasicInfoResult data);
+        void InsertOrUpdateStockCashflowReport(GetStockReportCashFlowResult info);
 
         ///// <summary>
         ///// Retrieve the average close price of the specified stock since the specified date.
@@ -42,9 +42,9 @@ namespace StockCrawler.Dao
         ///// <returns>The price datarow on the specified date.</returns>
         //StockDataSet.StockPriceHistoryRow GetStockPriceDataRowByDate(string sNO, DateTime specifiedDT);
         //StockDataSet.StockPriceHistoryDataTable GetStockPriceHistoryData(string sno, DateTime startDT, DateTime endDT);
-        IList<GetStocksResult> GetStocks();
-        void InsertOrUpdateStockPriceHistory(IList<GetStockPriceHistoryResult> list);
-        void RenewStockList(IList<GetStocksResult> list);
+        IEnumerable<GetStocksResult> GetStocks();
+        void InsertOrUpdateStockPriceHistory(IEnumerable<GetStockPriceHistoryResult> list);
+        void RenewStockList(IEnumerable<GetStocksResult> list);
         /// <summary>
         /// Update stock name by stock no
         /// </summary>
@@ -52,9 +52,9 @@ namespace StockCrawler.Dao
         /// <param name="stockName">stock name</param>
         void UpdateStockName(string stockNo, string stockName);
         void DeleteStockPriceHistoryData(string stockNo, DateTime? tradeDate = null);
-        void UpdateStockIncomeReport(GetStockReportIncomeResult info);
-        void UpdateStockBalanceReport(GetStockReportBalanceResult info);
-        void UpdateStockMonthlyNetProfitTaxedReport(GetStockReportMonthlyNetProfitTaxedResult info);
+        void InsertOrUpdateStockIncomeReport(GetStockReportIncomeResult info);
+        void InsertOrUpdateStockBalanceReport(GetStockReportBalanceResult info);
+        void InsertOrUpdateStockMonthlyNetProfitTaxedReport(GetStockReportMonthlyNetProfitTaxedResult info);
         /// <summary>
         /// 取得股價週期平均值
         /// </summary>
@@ -70,6 +70,7 @@ namespace StockCrawler.Dao
         /// <param name="endDate">結束日期</param>
         /// <param name="period">週期天數</param>
         /// <returns>每日收盤資料列表</returns>
-        IList<GetStockPeriodPriceResult> GetStockPeriodPrice(string stockNo, DateTime endDate, short period);
+        IEnumerable<GetStockPeriodPriceResult> GetStockPeriodPrice(string stockNo, DateTime bgnDate, DateTime endDate);
+        void InsertOrUpdateStockAveragePrice(IEnumerable<(string StockNo, DateTime StockDT, short Period, decimal AveragePrice)> avgPriceList);
     }
 }

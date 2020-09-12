@@ -13,14 +13,14 @@ GO
 -- =============================================
 CREATE OR ALTER PROCEDURE [dbo].[GetStockPeriodPrice]
 @pStockNo VARCHAR(10),
-@pEndDate DATE,
-@pPeriod SMALLINT
+@pBeginDate DATE,
+@pEndDate DATE
 AS
 BEGIN
 	SET NOCOUNT ON
-	SELECT TOP (@pPeriod) *
+	SELECT *
 	FROM StockPriceHistory(NOLOCK)
-	WHERE StockNo = @pStockNo AND StockDT <= @pEndDate
+	WHERE StockNo = @pStockNo AND StockDT BETWEEN @pBeginDate AND @pEndDate
 	ORDER BY StockDT DESC
 END
 GO

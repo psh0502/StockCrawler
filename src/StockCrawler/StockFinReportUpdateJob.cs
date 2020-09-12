@@ -94,7 +94,7 @@ namespace StockCrawler.Services
             var info = collector.GetStockReportMonthlyNetProfitTaxed(stockNo, year, month);
             if (null != info)
             {
-                db.UpdateStockMonthlyNetProfitTaxedReport(info);
+                db.InsertOrUpdateStockMonthlyNetProfitTaxedReport(info);
                 Logger.InfoFormat("[{0}] get its monthly net profit report(year={1}/month={2})", stockNo, year, month);
                 return true;
             }
@@ -109,7 +109,7 @@ namespace StockCrawler.Services
             var info = collector.GetStockReportIncome(stockNo, year, season);
             if (null != info)
             {
-                db.UpdateStockIncomeReport(info);
+                db.InsertOrUpdateStockIncomeReport(info);
                 Logger.InfoFormat("[{0}] get its income report(year={1}/season={2})", stockNo, year, season);
                 return true;
             }
@@ -124,7 +124,7 @@ namespace StockCrawler.Services
             var info = collector.GetStockReportCashFlow(stockNo, year, season);
             if (null != info)
             {
-                db.UpdateStockCashflowReport(info);
+                db.InsertOrUpdateStockCashflowReport(info);
                 Logger.InfoFormat("[{0}] get its cashflow report(year={1}/season={2})", stockNo, year, season);
                 return true;
             }
@@ -139,7 +139,7 @@ namespace StockCrawler.Services
             var info = collector.GetStockReportBalance(stockNo, year, season);
             if (null != info)
             {
-                db.UpdateStockBalanceReport(info);
+                db.InsertOrUpdateStockBalanceReport(info);
                 Logger.InfoFormat("[{0}] get its balance report(year={1}/season={2})", stockNo, year, season);
                 return true;
             }

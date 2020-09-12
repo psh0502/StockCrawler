@@ -1,9 +1,12 @@
 ﻿using Common.Logging;
+using StockCrawler.Dao;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace StockCrawler.Services
@@ -63,7 +66,6 @@ namespace StockCrawler.Services
             }
             return downloaded_data.Trim();
         }
-
         public static string GetMyIpAddress()
         {
             return DownloadStringData(new Uri("http://www.comeondata.com/App/api/IpLocApi/GetMyIpInfo"), Encoding.UTF8, out _).Replace("\"", string.Empty);
@@ -73,6 +75,93 @@ namespace StockCrawler.Services
             //doc.LoadHtml(html);
             //var text = doc.DocumentNode.SelectSingleNode("/html/body/b/span").InnerText.Trim();
             //return text;
+        }
+
+        /// <summary>
+        /// 根據本日收盤資料, 計算 均線(MA 移動線)和不同周期的 K 棒
+        /// </summary>
+        /// <param name="list">今日收盤價</param>
+        public static void CalculateMAAndPeriodK(List<GetStockPriceHistoryResult> list)
+        {
+            using (var db = StockDataServiceProvider.GetServiceInstance())
+            {
+                // 寫入日價
+                db.InsertOrUpdateStockPriceHistory(list);
+                var K5_list = new List<GetStockPriceHistoryResult>();
+                var K20_list = new List<GetStockPriceHistoryResult>();
+                var avgPriceList = new List<(string StockNo, DateTime StockDT, short Period, decimal AveragePrice)>();
+                foreach (var d in list)
+                {
+                    if (d.StockDT.DayOfWeek == DayOfWeek.Friday)
+                    {
+                        // 週 K
+                        DateTime bgnDate = d.StockDT.AddDays(-4);
+                        var data = db.GetStockPeriodPrice(d.StockNo, bgnDate, d.StockDT).ToList();
+                        K5_list.Add(new GetStockPriceHistoryResult()
+                        {
+                            StockNo = d.StockNo,
+                            StockDT = bgnDate,
+                            OpenPrice = data.OrderBy(x => x.StockDT).First().OpenPrice,
+                            ClosePrice = data.OrderByDescending(x => x.StockDT).First().ClosePrice,
+                            HighPrice = data.Max(x => x.HighPrice),
+                            LowPrice = data.Min(x => x.LowPrice),
+                            Volume = data.Sum(x => x.Volume),
+                            Period = 5,
+                            AdjClosePrice = 0
+                        });
+                    }
+
+                    if (IsLastDayOfMonth(d.StockDT))
+                    {
+                        // 月 K
+                        DateTime bgnDate = new DateTime(d.StockDT.Year, d.StockDT.Month, 1);
+                        var data = db.GetStockPeriodPrice(d.StockNo, bgnDate, d.StockDT).ToList();
+                        K20_list.Add(new GetStockPriceHistoryResult()
+                        {
+                            StockNo = d.StockNo,
+                            StockDT = bgnDate,
+                            OpenPrice = data.OrderBy(x => x.StockDT).First().OpenPrice,
+                            ClosePrice = data.OrderByDescending(x => x.StockDT).First().ClosePrice,
+                            HighPrice = data.Max(x => x.HighPrice),
+                            LowPrice = data.Min(x => x.LowPrice),
+                            Volume = data.Sum(x => x.Volume),
+                            Period = 20,
+                            AdjClosePrice = 0
+                        }); ;
+                    }
+                    {
+                        // 週線
+                        var data = db.GetStockPriceAVG(d.StockNo, d.StockDT, 5);
+                        avgPriceList.Add((d.StockNo, d.StockDT, 5, data));
+                        // 雙週線
+                        data = db.GetStockPriceAVG(d.StockNo, d.StockDT, 10);
+                        avgPriceList.Add((d.StockNo, d.StockDT, 10, data));
+                        // 月線
+                        data = db.GetStockPriceAVG(d.StockNo, d.StockDT, 20);
+                        avgPriceList.Add((d.StockNo, d.StockDT, 20, data));
+                        // 季線
+                        data = db.GetStockPriceAVG(d.StockNo, d.StockDT, 60);
+                        avgPriceList.Add((d.StockNo, d.StockDT, 60, data));
+                    }
+                }
+                // 寫入 K 線棒
+                if (K5_list.Any())
+                    db.InsertOrUpdateStockPriceHistory(K5_list);
+                if (K20_list.Any())
+                    db.InsertOrUpdateStockPriceHistory(K20_list);
+                // 寫入均價
+                if (avgPriceList.Any())
+                    db.InsertOrUpdateStockAveragePrice(avgPriceList);
+            }
+        }
+        /// <summary>
+        /// 是否為每月的最後一天
+        /// </summary>
+        /// <param name="stockDT">要判斷的日期</param>
+        /// <returns>是否為最後一天</returns>
+        private static bool IsLastDayOfMonth(DateTime stockDT)
+        {
+            return stockDT.AddDays(1).Day == 1;
         }
     }
 }

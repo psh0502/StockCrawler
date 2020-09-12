@@ -6,41 +6,27 @@ namespace StockCrawler.Dao
 {
     internal class StockDataServiceMSSQL : IStockDataService
     {
-        public IList<GetStocksResult> GetStocks()
+        public IEnumerable<GetStocksResult> GetStocks()
         {
-            List<GetStocksResult> dt = new List<GetStocksResult>();
             using (var db = GetMSSQLStockDataContext())
-            {
-                foreach (var d in db.GetStocks())
-                {
-                    var dr = new GetStocksResult
-                    {
-                        Enable = d.Enable,
-                        StockName = d.StockName,
-                        StockNo = d.StockNo
-                    };
-
-                    dt.Add(dr);
-                }
-            }
-            return dt;
+                return db.GetStocks().ToList();
         }
-        public void InsertOrUpdateStockPriceHistory(IList<GetStockPriceHistoryResult> list)
+        public void InsertOrUpdateStockPriceHistory(IEnumerable<GetStockPriceHistoryResult> list)
         {
             using (var db = GetMSSQLStockDataContext())
-                foreach (var dr in list)
+                foreach (var d in list)
                     db.InsertOrUpdateStockPriceHistory(
-                        dr.StockNo,
-                        dr.StockDT,
-                        dr.Period,
-                        dr.OpenPrice,
-                        dr.HighPrice,
-                        dr.LowPrice,
-                        dr.ClosePrice,
-                        dr.Volume,
-                        dr.AdjClosePrice);
+                        d.StockNo,
+                        d.StockDT,
+                        d.Period,
+                        d.OpenPrice,
+                        d.HighPrice,
+                        d.LowPrice,
+                        d.ClosePrice,
+                        d.Volume,
+                        d.AdjClosePrice);
         }
-        public void RenewStockList(IList<GetStocksResult> list)
+        public void RenewStockList(IEnumerable<GetStocksResult> list)
         {
             using (var db = GetMSSQLStockDataContext())
             {
@@ -66,12 +52,12 @@ namespace StockCrawler.Dao
             using (var db = GetMSSQLStockDataContext())
                 db.InsertOrUpdateStock(stockNo, stockName);
         }
-        public void UpdateStockBasicInfo(IEnumerable<GetStockBasicInfoResult> data)
+        public void InsertOrUpdateStockBasicInfo(IEnumerable<GetStockBasicInfoResult> data)
         {
             foreach (var d in data)
-                UpdateStockBasicInfo(d);
+                InsertOrUpdateStockBasicInfo(d);
         }
-        public void UpdateStockBasicInfo(GetStockBasicInfoResult info)
+        public void InsertOrUpdateStockBasicInfo(GetStockBasicInfoResult info)
         {
             using (var db = GetMSSQLStockDataContext())
                 db.InsertOrUpdateStockBasicInfo(
@@ -89,7 +75,7 @@ namespace StockCrawler.Dao
                     info.Url,
                     info.Business);
         }
-        public void UpdateStockCashflowReport(GetStockReportCashFlowResult info)
+        public void InsertOrUpdateStockCashflowReport(GetStockReportCashFlowResult info)
         {
             using (var db = GetMSSQLStockDataContext())
                 db.InsertOrUpdateStockReportCashFlow(
@@ -105,7 +91,7 @@ namespace StockCrawler.Dao
                     info.FreeCashflow,
                     info.NetCashflow);
         }
-        public void UpdateStockIncomeReport(GetStockReportIncomeResult info)
+        public void InsertOrUpdateStockIncomeReport(GetStockReportIncomeResult info)
         {
             using (var db = GetMSSQLStockDataContext())
                 db.InsertOrUpdateStockReportIncome(
@@ -125,7 +111,7 @@ namespace StockCrawler.Dao
                     info.SEPS,
                     info.ReleaseStockCount);
         }
-        public void UpdateStockBalanceReport(GetStockReportBalanceResult info)
+        public void InsertOrUpdateStockBalanceReport(GetStockReportBalanceResult info)
         {
             using (var db = GetMSSQLStockDataContext())
             {
@@ -156,9 +142,9 @@ namespace StockCrawler.Dao
                     info.NetWorth);
             }
         }
-        public void UpdateStockMonthlyNetProfitTaxedReport(GetStockReportMonthlyNetProfitTaxedResult info)
+        public void InsertOrUpdateStockMonthlyNetProfitTaxedReport(GetStockReportMonthlyNetProfitTaxedResult info)
         {
-            using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
+            using (var db = GetMSSQLStockDataContext())
                 db.InsertOrUpdateStockReportMonthlyNetProfitTaxed(
                     info.StockNo,
                     info.Year,
@@ -187,10 +173,20 @@ namespace StockCrawler.Dao
 
             return oAvgClosePrice ?? 0;
         }
-        public IList<GetStockPeriodPriceResult> GetStockPeriodPrice(string stockNo, DateTime endDate, short period)
+        public IEnumerable<GetStockPeriodPriceResult> GetStockPeriodPrice(string stockNo, DateTime bgnDate, DateTime endDate)
         {
             using (var db = GetMSSQLStockDataContext())
-                return db.GetStockPeriodPrice(stockNo, endDate, period).ToList();
+                return db.GetStockPeriodPrice(stockNo, bgnDate, endDate).ToList();
+        }
+        public void InsertOrUpdateStockAveragePrice(IEnumerable<(string StockNo, DateTime StockDT, short Period, decimal AveragePrice)> avgPriceList)
+        {
+            using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
+                foreach (var info in avgPriceList)
+                    db.InsertOrUpdateStockPriceAVG(
+                        info.StockNo,
+                        info.StockDT,
+                        info.Period,
+                        info.AveragePrice);
         }
     }
 }

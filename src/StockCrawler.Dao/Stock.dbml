@@ -47,8 +47,8 @@
   </Function>
   <Function Name="dbo.GetStockPeriodPrice" Method="GetStockPeriodPrice">
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pBeginDate" Type="System.DateTime" DbType="Date" />
     <Parameter Name="pEndDate" Type="System.DateTime" DbType="Date" />
-    <Parameter Name="pPeriod" Type="System.Int16" DbType="SmallInt" />
     <ElementType Name="GetStockPeriodPriceResult">
       <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="StockDT" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
@@ -234,6 +234,13 @@
     <Parameter Name="pCEO" Type="System.String" DbType="NVarChar(50)" />
     <Parameter Name="pUrl" Type="System.String" DbType="VarChar(100)" />
     <Parameter Name="pBusiness" Type="System.String" DbType="NVarChar(1000)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.InsertOrUpdateStockPriceAVG" Method="InsertOrUpdateStockPriceAVG">
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pStockDT" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="pPeriod" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="pClosePrice" Type="System.Decimal" DbType="Money" />
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.InsertOrUpdateStockPriceHistory" Method="InsertOrUpdateStockPriceHistory">

@@ -37,7 +37,7 @@ namespace StockCrawler.Services
                         {
                             var info = collector.GetStockBasicInfo(d.StockNo);
                             if (null != info)
-                                db.UpdateStockBasicInfo(info);
+                                db.InsertOrUpdateStockBasicInfo(info);
                             else
                                 Logger.InfoFormat("[{0}] has no basic info", d.StockNo);
                         }catch(Exception e)
