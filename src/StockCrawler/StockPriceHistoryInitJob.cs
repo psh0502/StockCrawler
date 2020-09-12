@@ -120,11 +120,7 @@ namespace StockCrawler.Services
                     }
                 }
                 if (list.Any())
-                    using (var db = StockDataServiceProvider.GetServiceInstance())
-                    {
-                        db.InsertOrUpdateStockPriceHistory(list);
-                        list.Clear();
-                    }
+                    CalculateMAAndPeriodK(list);
             }
             catch (WebException wex)
             {
@@ -135,6 +131,73 @@ namespace StockCrawler.Services
             {
                 Logger.Fatal(string.Format("Got unrecoverable error!(StockNo={0})", stockNo), ex);
                 throw;
+            }
+        }
+        /// <summary>
+        /// 根據本日收盤資料, 計算 均線(MA 移動線)和不同周期的 K 棒
+        /// </summary>
+        /// <param name="list">今日收盤價</param>
+        private static void CalculateMAAndPeriodK(List<GetStockPriceHistoryResult> list)
+        {
+            using (var db = StockDataServiceProvider.GetServiceInstance())
+            {
+                db.InsertOrUpdateStockPriceHistory(list);
+                var K5_list = new List<GetStockPriceHistoryResult>();
+                var K20_list = new List<GetStockPriceHistoryResult>();
+                var avgPriceList = new List<(DateTime StockDT, short Period, decimal AveragePrice)>();
+                foreach (var d in list)
+                {
+                    if (d.StockDT.DayOfWeek == DayOfWeek.Friday)
+                    {
+                        // 週 K
+                        const short period = 5;
+                        var data = db.GetStockPeriodPrice(d.StockNo, d.StockDT, period).ToList();
+                        K5_list.Add(new GetStockPriceHistoryResult()
+                        {
+                            StockNo = d.StockNo,
+                            StockDT = d.StockDT,
+                            OpenPrice = data.OrderBy(x => x.StockDT).First().OpenPrice,
+                            ClosePrice = data.OrderByDescending(x => x.StockDT).First().ClosePrice,
+                            HighPrice = data.Max(x => x.HighPrice),
+                            LowPrice = data.Min(x => x.LowPrice),
+                            Volume = data.Sum(x => x.Volume),
+                            Period = period
+                        }); ;
+                    }
+                    if (d.StockDT.AddDays(1).Day == 1) // StockDT 是否為每月的最後一天
+                    {
+                        // 月 K
+                        const short period = 20;
+                        var data = db.GetStockPeriodPrice(d.StockNo, d.StockDT, period).ToList();
+                        K20_list.Add(new GetStockPriceHistoryResult()
+                        {
+                            StockNo = d.StockNo,
+                            StockDT = d.StockDT,
+                            OpenPrice = data.OrderBy(x => x.StockDT).First().OpenPrice,
+                            ClosePrice = data.OrderByDescending(x => x.StockDT).First().ClosePrice,
+                            HighPrice = data.Max(x => x.HighPrice),
+                            LowPrice = data.Min(x => x.LowPrice),
+                            Volume = data.Sum(x => x.Volume),
+                            Period = period
+                        }); ;
+                    }
+                    {
+                        // 週線
+                        var data = db.GetStockPriceAVG(d.StockNo, d.StockDT, 5);
+                        avgPriceList.Add((d.StockDT, 5, data));
+                        // 雙週線
+                        data = db.GetStockPriceAVG(d.StockNo, d.StockDT, 10);
+                        avgPriceList.Add((d.StockDT, 10, data));
+                        // 月線
+                        data = db.GetStockPriceAVG(d.StockNo, d.StockDT, 20);
+                        avgPriceList.Add((d.StockDT, 20, data));
+                        // 季線
+                        data = db.GetStockPriceAVG(d.StockNo, d.StockDT, 60);
+                        avgPriceList.Add((d.StockDT, 60, data));
+                    }
+                }
+                // TODO: 寫入 K 線棒
+                // TODO: 寫入均價
             }
         }
     }

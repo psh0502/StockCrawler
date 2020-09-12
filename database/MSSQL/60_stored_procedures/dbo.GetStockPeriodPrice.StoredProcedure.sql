@@ -18,7 +18,7 @@ CREATE OR ALTER PROCEDURE [dbo].[GetStockPeriodPrice]
 AS
 BEGIN
 	SET NOCOUNT ON
-	SELECT TOP (@pPeriod) OpenPrice, ClosePrice, HighPrice, LowPrice, Volume
+	SELECT TOP (@pPeriod) *
 	FROM StockPriceHistory(NOLOCK)
 	WHERE StockNo = @pStockNo AND StockDT <= @pEndDate
 	ORDER BY StockDT DESC

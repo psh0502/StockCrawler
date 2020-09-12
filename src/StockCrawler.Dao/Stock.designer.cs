@@ -514,18 +514,76 @@ namespace StockCrawler.Dao
 	public partial class GetStockPeriodPriceResult
 	{
 		
-		private decimal _OpenPrice;
+		private string _StockNo;
 		
-		private decimal _ClosePrice;
+		private System.DateTime _StockDT;
+		
+		private short _Period;
+		
+		private decimal _OpenPrice;
 		
 		private decimal _HighPrice;
 		
 		private decimal _LowPrice;
 		
+		private decimal _ClosePrice;
+		
+		private decimal _AdjClosePrice;
+		
 		private long _Volume;
+		
+		private System.DateTime _CreatedAt;
 		
 		public GetStockPeriodPriceResult()
 		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockNo", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string StockNo
+		{
+			get
+			{
+				return this._StockNo;
+			}
+			set
+			{
+				if ((this._StockNo != value))
+				{
+					this._StockNo = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockDT", DbType="Date NOT NULL")]
+		public System.DateTime StockDT
+		{
+			get
+			{
+				return this._StockDT;
+			}
+			set
+			{
+				if ((this._StockDT != value))
+				{
+					this._StockDT = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Period", DbType="SmallInt NOT NULL")]
+		public short Period
+		{
+			get
+			{
+				return this._Period;
+			}
+			set
+			{
+				if ((this._Period != value))
+				{
+					this._Period = value;
+				}
+			}
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OpenPrice", DbType="Decimal(10,4) NOT NULL")]
@@ -540,22 +598,6 @@ namespace StockCrawler.Dao
 				if ((this._OpenPrice != value))
 				{
 					this._OpenPrice = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ClosePrice", DbType="Decimal(10,4) NOT NULL")]
-		public decimal ClosePrice
-		{
-			get
-			{
-				return this._ClosePrice;
-			}
-			set
-			{
-				if ((this._ClosePrice != value))
-				{
-					this._ClosePrice = value;
 				}
 			}
 		}
@@ -592,6 +634,38 @@ namespace StockCrawler.Dao
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ClosePrice", DbType="Decimal(10,4) NOT NULL")]
+		public decimal ClosePrice
+		{
+			get
+			{
+				return this._ClosePrice;
+			}
+			set
+			{
+				if ((this._ClosePrice != value))
+				{
+					this._ClosePrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AdjClosePrice", DbType="Decimal(10,4) NOT NULL")]
+		public decimal AdjClosePrice
+		{
+			get
+			{
+				return this._AdjClosePrice;
+			}
+			set
+			{
+				if ((this._AdjClosePrice != value))
+				{
+					this._AdjClosePrice = value;
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Volume", DbType="BigInt NOT NULL")]
 		public long Volume
 		{
@@ -604,6 +678,22 @@ namespace StockCrawler.Dao
 				if ((this._Volume != value))
 				{
 					this._Volume = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedAt", DbType="DateTime NOT NULL")]
+		public System.DateTime CreatedAt
+		{
+			get
+			{
+				return this._CreatedAt;
+			}
+			set
+			{
+				if ((this._CreatedAt != value))
+				{
+					this._CreatedAt = value;
 				}
 			}
 		}
