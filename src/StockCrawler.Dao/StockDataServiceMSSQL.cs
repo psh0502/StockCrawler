@@ -139,7 +139,8 @@ namespace StockCrawler.Dao
                     info.LongLiabilities,
                     info.OtherLiabilities,
                     info.TotalLiability,
-                    info.NetWorth);
+                    info.NetWorth,
+                    info.NAV);
             }
         }
         public void InsertOrUpdateStockMonthlyNetProfitTaxedReport(GetStockReportMonthlyNetProfitTaxedResult info)

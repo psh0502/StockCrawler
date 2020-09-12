@@ -201,9 +201,10 @@ namespace StockCrawler.Dao
 					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pLongLiabilities, 
 					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pOtherLiabilities, 
 					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pTotalLiability, 
-					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pNetWorth)
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pNetWorth, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pNAV)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pYear, pSeason, pCashAndEquivalents, pShortInvestments, pBillsReceivable, pStock, pOtherCurrentAssets, pCurrentAssets, pLongInvestment, pFixedAssets, pOtherAssets, pTotalAssets, pShortLoan, pShortBillsPayable, pAccountsAndBillsPayable, pAdvenceReceipt, pLongLiabilitiesWithinOneYear, pOtherCurrentLiabilities, pCurrentLiabilities, pLongLiabilities, pOtherLiabilities, pTotalLiability, pNetWorth);
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pYear, pSeason, pCashAndEquivalents, pShortInvestments, pBillsReceivable, pStock, pOtherCurrentAssets, pCurrentAssets, pLongInvestment, pFixedAssets, pOtherAssets, pTotalAssets, pShortLoan, pShortBillsPayable, pAccountsAndBillsPayable, pAdvenceReceipt, pLongLiabilitiesWithinOneYear, pOtherCurrentLiabilities, pCurrentLiabilities, pLongLiabilities, pOtherLiabilities, pTotalLiability, pNetWorth, pNAV);
 			return ((int)(result.ReturnValue));
 		}
 		

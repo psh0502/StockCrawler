@@ -123,7 +123,7 @@ namespace StockCrawler.UnitTest.Jobs
                 Assert.AreEqual(1677028531, d1.NetWorth);     // 淨值(權益總額)
                 #endregion
 
-                Assert.AreEqual(64.6742M, d1.NAV, "每股淨值");
+                Assert.AreEqual(64.6743M, d1.NAV, "每股淨值");
             }
         }
         [TestMethod]

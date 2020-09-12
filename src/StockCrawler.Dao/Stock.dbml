@@ -280,6 +280,7 @@
     <Parameter Name="pOtherLiabilities" Type="System.Decimal" DbType="Money" />
     <Parameter Name="pTotalLiability" Type="System.Decimal" DbType="Money" />
     <Parameter Name="pNetWorth" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pNAV" Type="System.Decimal" DbType="Money" />
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.InsertOrUpdateStockReportCashFlow" Method="InsertOrUpdateStockReportCashFlow">

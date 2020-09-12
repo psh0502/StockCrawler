@@ -8,6 +8,7 @@ GO
 -- Create date: 2020-08-19
 -- Description: Patch company balance report
 -- Revision:
+-- 2020-9-12, Tom: add NAV
 -- =============================================
 CREATE OR ALTER PROCEDURE [dbo].[InsertOrUpdateStockReportBalance]
 @pStockNo VARCHAR(10), 
@@ -33,7 +34,8 @@ CREATE OR ALTER PROCEDURE [dbo].[InsertOrUpdateStockReportBalance]
 @pLongLiabilities MONEY,
 @pOtherLiabilities MONEY,
 @pTotalLiability MONEY,
-@pNetWorth MONEY
+@pNetWorth MONEY,
+@pNAV MONEY
 AS
 BEGIN
 	IF EXISTS(SELECT [StockNo] FROM [StockReportBalance](NOLOCK) WHERE [StockNo] = @pStockNo AND [Year] = @pYear AND [Season] = @pSeason)
@@ -60,6 +62,7 @@ BEGIN
            ,[OtherLiabilities]			   = @pOtherLiabilities 
            ,[TotalLiability]			   = @pTotalLiability 
            ,[NetWorth]					   = @pNetWorth
+		   ,[NAV]						   = @pNAV
 		   ,[LastModifiedAt] = GETDATE() 
 		WHERE [StockNo] = @pStockNo AND [Year] = @pYear AND [Season] = @pSeason
 
@@ -88,7 +91,8 @@ BEGIN
            ,[LongLiabilities]
            ,[OtherLiabilities]
            ,[TotalLiability]
-           ,[NetWorth])
+           ,[NetWorth]
+		   ,[NAV])
 		VALUES
            (@pStockNo
            ,@pYear
@@ -113,6 +117,7 @@ BEGIN
            ,@pLongLiabilities
            ,@pOtherLiabilities
            ,@pTotalLiability
-           ,@pNetWorth)
+           ,@pNetWorth
+		   ,@pNAV)
 END
 GO
