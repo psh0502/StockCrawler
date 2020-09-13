@@ -13,6 +13,7 @@ namespace StockCrawler.UnitTest
         {
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
             {
+                db.ExecuteCommand("TRUNCATE TABLE StockAveragePrice");
                 db.ExecuteCommand("TRUNCATE TABLE StockPriceHistory");
                 db.ExecuteCommand("TRUNCATE TABLE StockBasicInfo");
                 db.ExecuteCommand("TRUNCATE TABLE StockReportCashFlow");

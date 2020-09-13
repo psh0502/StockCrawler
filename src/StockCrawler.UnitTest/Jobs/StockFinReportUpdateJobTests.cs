@@ -17,16 +17,16 @@ namespace StockCrawler.UnitTest.Jobs
             SqlTool.ConnectionString = ConnectionStringHelper.StockConnectionString;
             SqlTool.ExecuteSql(@"INSERT [dbo].[StockBasicInfo]
                     ([StockNo],[Category],[CompanyName],[CompanyID]
-                    ,[BuildDate],[PublishDate],[Capital],[MarketValue]
+                    ,[BuildDate],[PublishDate],[Capital]
                     ,[ReleaseStockCount],[Chairman],[CEO], [Url]
                     ,[Business])
                 VALUES
                     ('2330', N'半導體業', N'台灣積體電路製造股份有限公司', '22099131'
-                    , '1987-02-21', '1994-09-05', 259303804580.00, 11000000000000
+                    , '1987-02-21', '1994-09-05', 259303804580.00
                     , '25930380458', N'劉德音', N'總裁: 魏哲家', 'http://www.tsmc.com'
                     , N'依客戶之訂單與其提供之產品設計說明，以從事製造與銷售積體電路以及其他晶圓半導體裝置。提供前述產品之封裝與測試服務、積體電路之電腦輔助設計技術服務。提供製造光罩及其設計服務。')
                 ");
-            SqlTool.ExecuteSqlFile(@"..\..\..\StockCrawler.UnitTest\Sql\DailyPriceTestData_10704_10903.sql");
+            SqlTool.ExecuteSqlFile(@"..\..\..\StockCrawler.UnitTest\TestData\DailyPriceTestData_10704_10903.sql");
             Services.SystemTime.SetFakeTime(new DateTime(2020, 4, 6));
             StockFinReportUpdateJob.Logger = new UnitTestLogger();
             StockFinReportUpdateJob target = new StockFinReportUpdateJob
@@ -101,7 +101,7 @@ namespace StockCrawler.UnitTest.Jobs
                 Assert.AreEqual(1254253, d1.ShortInvestments);    // 短期投資
                 Assert.AreEqual(146420632, d1.BillsReceivable);   // 應收帳款及票據
                 Assert.AreEqual(78277834, d1.Stock);  // 存貨
-                                                      //Assert.AreEqual(145740092, data.OtherCurrentAssets);    // 其餘流動資產
+                //Assert.AreEqual(145740092, data.OtherCurrentAssets);    // 其餘流動資產
                 Assert.AreEqual(802470040, d1.CurrentAssets);     // 流動資產
                 Assert.AreEqual(19381760, d1.LongInvestment);     // 長期投資
                 Assert.AreEqual(1438215285, d1.FixedAssets);      // 固定資產

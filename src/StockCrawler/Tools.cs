@@ -81,7 +81,7 @@ namespace StockCrawler.Services
         /// 根據本日收盤資料, 計算 均線(MA 移動線)和不同周期的 K 棒
         /// </summary>
         /// <param name="list">今日收盤價</param>
-        public static void CalculateMAAndPeriodK(List<GetStockPriceHistoryResult> list)
+        public static void CalculateMAAndPeriodK(IEnumerable<GetStockPriceHistoryResult> list)
         {
             using (var db = StockDataServiceProvider.GetServiceInstance())
             {
@@ -90,44 +90,57 @@ namespace StockCrawler.Services
                 var K5_list = new List<GetStockPriceHistoryResult>();
                 var K20_list = new List<GetStockPriceHistoryResult>();
                 var avgPriceList = new List<(string StockNo, DateTime StockDT, short Period, decimal AveragePrice)>();
+                DateTime target_weekend_date = DateTime.MinValue;
+                DateTime target_monthend_date = DateTime.MinValue;
                 foreach (var d in list)
                 {
-                    if (d.StockDT.DayOfWeek == DayOfWeek.Friday)
+                    if (target_weekend_date == DateTime.MinValue) 
+                        target_weekend_date = d.StockDT.AddDays(5 - (int)d.StockDT.DayOfWeek);
+
+                    if (d.StockDT >= target_weekend_date)
                     {
                         // 週 K
-                        DateTime bgnDate = d.StockDT.AddDays(-4);
-                        var data = db.GetStockPeriodPrice(d.StockNo, bgnDate, d.StockDT).ToList();
-                        K5_list.Add(new GetStockPriceHistoryResult()
-                        {
-                            StockNo = d.StockNo,
-                            StockDT = bgnDate,
-                            OpenPrice = data.OrderBy(x => x.StockDT).First().OpenPrice,
-                            ClosePrice = data.OrderByDescending(x => x.StockDT).First().ClosePrice,
-                            HighPrice = data.Max(x => x.HighPrice),
-                            LowPrice = data.Min(x => x.LowPrice),
-                            Volume = data.Sum(x => x.Volume),
-                            Period = 5,
-                            AdjClosePrice = 0
-                        });
+                        DateTime bgnDate = target_weekend_date.AddDays(-4);
+                        var data = db.GetStockPeriodPrice(d.StockNo, bgnDate, target_weekend_date).ToList();
+                        if (data.Any())
+                            K5_list.Add(new GetStockPriceHistoryResult()
+                            {
+                                StockNo = d.StockNo,
+                                StockDT = bgnDate,
+                                OpenPrice = data.OrderBy(x => x.StockDT).First().OpenPrice,
+                                ClosePrice = data.OrderByDescending(x => x.StockDT).First().ClosePrice,
+                                HighPrice = data.Max(x => x.HighPrice),
+                                LowPrice = data.Min(x => x.LowPrice),
+                                Volume = data.Sum(x => x.Volume),
+                                Period = 5,
+                                AdjClosePrice = 0
+                            });
+
+                        target_weekend_date = target_weekend_date.AddDays(7);
                     }
 
-                    if (IsLastDayOfMonth(d.StockDT))
+                    if (target_monthend_date == DateTime.MinValue)
+                        target_monthend_date = new DateTime(d.StockDT.Year, d.StockDT.Month, 1).AddMonths(1).AddDays(-1);
+
+                    if (d.StockDT >= target_monthend_date)
                     {
                         // 月 K
-                        DateTime bgnDate = new DateTime(d.StockDT.Year, d.StockDT.Month, 1);
-                        var data = db.GetStockPeriodPrice(d.StockNo, bgnDate, d.StockDT).ToList();
-                        K20_list.Add(new GetStockPriceHistoryResult()
-                        {
-                            StockNo = d.StockNo,
-                            StockDT = bgnDate,
-                            OpenPrice = data.OrderBy(x => x.StockDT).First().OpenPrice,
-                            ClosePrice = data.OrderByDescending(x => x.StockDT).First().ClosePrice,
-                            HighPrice = data.Max(x => x.HighPrice),
-                            LowPrice = data.Min(x => x.LowPrice),
-                            Volume = data.Sum(x => x.Volume),
-                            Period = 20,
-                            AdjClosePrice = 0
-                        }); ;
+                        DateTime bgnDate = new DateTime(target_monthend_date.Year, target_monthend_date.Month, 1);
+                        var data = db.GetStockPeriodPrice(d.StockNo, bgnDate, target_monthend_date).ToList();
+                        if (data.Any())
+                            K20_list.Add(new GetStockPriceHistoryResult()
+                            {
+                                StockNo = d.StockNo,
+                                StockDT = bgnDate,
+                                OpenPrice = data.OrderBy(x => x.StockDT).First().OpenPrice,
+                                ClosePrice = data.OrderByDescending(x => x.StockDT).First().ClosePrice,
+                                HighPrice = data.Max(x => x.HighPrice),
+                                LowPrice = data.Min(x => x.LowPrice),
+                                Volume = data.Sum(x => x.Volume),
+                                Period = 20,
+                                AdjClosePrice = 0
+                            });
+                        target_monthend_date = bgnDate.AddMonths(1).AddDays(-1);
                     }
                     {
                         // 週線
@@ -153,15 +166,6 @@ namespace StockCrawler.Services
                 if (avgPriceList.Any())
                     db.InsertOrUpdateStockAveragePrice(avgPriceList);
             }
-        }
-        /// <summary>
-        /// 是否為每月的最後一天
-        /// </summary>
-        /// <param name="stockDT">要判斷的日期</param>
-        /// <returns>是否為最後一天</returns>
-        private static bool IsLastDayOfMonth(DateTime stockDT)
-        {
-            return stockDT.AddDays(1).Day == 1;
         }
     }
 }

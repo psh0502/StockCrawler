@@ -119,8 +119,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collectors\TwseStockBasicInfoCollectorTest.cs" />
+    <Compile Include="Collectors\YahooStockHistoryPriceCollectorTest.cs" />
     <Compile Include="Collectors\TwseStockDailyInfoCollectorTest.cs" />
     <Compile Include="Collectors\GoodInfoCollectorTest.cs" />
+    <Compile Include="Mocks\StockHistoryPriceCollectorMock.cs" />
     <Compile Include="Mocks\StockReportCollectorMock.cs" />
     <Compile Include="Mocks\StockDailyInfoCollectorMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -136,8 +138,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AuthoringTests.txt" />
-    <Content Include="Sql\FinanceTestData_10704_10903.sql" />
-    <Content Include="Sql\DailyPriceTestData_10704_10903.sql" />
+    <Content Include="TestData\FinanceTestData_10704_10903.sql" />
+    <Content Include="TestData\DailyPriceTestData_10704_10903.sql" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StockCrawler.Dao\StockCrawler.Dao.csproj">
@@ -155,6 +157,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="TestData\yahoo_history_2330.csv" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

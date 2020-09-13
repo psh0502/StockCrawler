@@ -54,7 +54,7 @@ namespace StockCrawler.UnitTest.Jobs
                     short period = 5;
                     int? pageCount = null;
                     var data = db.GetStockPriceHistory(stockNo, new DateTime(2020, 3, 1), new DateTime(2020, 3, 31), period, 100, 1, 10, ref pageCount).ToList();
-                    Assert.AreEqual(4, data.Count);
+                    Assert.AreEqual(5, data.Count);
                     Assert.AreEqual(1, pageCount);
                     var d1 = data.First();
                     Assert.AreEqual(new DateTime(2020, 3, 30), d1.StockDT);
@@ -63,7 +63,7 @@ namespace StockCrawler.UnitTest.Jobs
                     Assert.AreEqual(263.5M, d1.OpenPrice, "週開盤價");
                     Assert.AreEqual(276.5M, d1.HighPrice, "週最高價");
                     Assert.AreEqual(262.5M, d1.LowPrice, "週最低價");
-                    Assert.AreEqual(142157, d1.Volume, "週成交量");
+                    Assert.AreEqual(142511, d1.Volume, "週成交量");
                 }
                 {
                     short period = 20;
@@ -83,11 +83,11 @@ namespace StockCrawler.UnitTest.Jobs
                 {
                     short period = 5;
                     int? pageCount = null;
-                    var data = db.GetStockPriceHistory(stockNo, new DateTime(2020, 4, 1), today, period, 100, 1, 10, ref pageCount).ToList();
-                    Assert.AreEqual(1, data.Count);
+                    var data = db.GetStockPriceHistory(stockNo, new DateTime(2020, 3, 1), new DateTime(2020, 4, 1), period, 100, 1, 10, ref pageCount).ToList();
+                    Assert.AreEqual(4, data.Count);
                     Assert.AreEqual(1, pageCount);
                     var d1 = data.First();
-                    Assert.AreEqual(new DateTime(2020, 3, 27), d1.StockDT);
+                    Assert.AreEqual(new DateTime(2020, 3, 23), d1.StockDT);
                     Assert.AreEqual(stockNo, d1.StockNo);
                     Assert.AreEqual(273M, d1.ClosePrice, "週收盤價");
                     Assert.AreEqual(257M, d1.OpenPrice, "週開盤價");

@@ -2,6 +2,7 @@
 using StockCrawler.Services.StockBasicInfo;
 using StockCrawler.Services.StockDailyPrice;
 using StockCrawler.Services.StockFinanceReport;
+using StockCrawler.Services.StockHistoryPrice;
 using Unity;
 
 namespace StockCrawler.Services
@@ -26,5 +27,10 @@ namespace StockCrawler.Services
         {
             return _container.Resolve<IStockReportCollector>();
         }
+        public static IStockHistoryPriceCollector GetStockHistoryPriceCollector()
+        {
+            return _container.Resolve<IStockHistoryPriceCollector>();
+        }
+
     }
 }

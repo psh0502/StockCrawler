@@ -6,9 +6,8 @@ namespace StockCrawler.Services.StockDailyPrice
     public interface IStockDailyInfoCollector
     {
         StockDailyPriceInfo GetStockDailyPriceInfo(string stockNo);
-        IList<StockDailyPriceInfo> GetStockDailyPriceInfo();
+        IEnumerable<StockDailyPriceInfo> GetStockDailyPriceInfo();
     }
-
     public class StockDailyPriceInfo
     {
         public string StockNo { get; set; }

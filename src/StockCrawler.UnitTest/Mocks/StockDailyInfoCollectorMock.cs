@@ -5,7 +5,7 @@ namespace StockCrawler.UnitTest.Mocks
 {
     internal class StockDailyInfoCollectorMock : TwseStockDailyInfoCollector
     {
-        public override IList<StockDailyPriceInfo> GetStockDailyPriceInfo()
+        public override IEnumerable<StockDailyPriceInfo> GetStockDailyPriceInfo()
         {
             return new List<StockDailyPriceInfo>() { new StockDailyPriceInfo() { StockNo = "2330", StockName = "台積電" } };
         }

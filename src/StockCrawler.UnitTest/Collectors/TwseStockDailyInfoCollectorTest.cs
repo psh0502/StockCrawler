@@ -18,7 +18,7 @@ namespace StockCrawler.UnitTest.Collectors
 
             var r = collector.GetStockDailyPriceInfo();
 
-            Assert.AreEqual(1118, r.Count);
+            Assert.AreEqual(1118, r.Count());
             Assert.IsTrue(r.Where(d => d.StockNo == "2330").Any());
             Assert.AreEqual("台積電", r.Where(d => d.StockNo == "2330").First().StockName);
         }
