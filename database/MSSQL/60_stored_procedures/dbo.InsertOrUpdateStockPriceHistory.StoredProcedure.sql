@@ -55,10 +55,5 @@ BEGIN
 			@pClosePrice,
 			@pVolume,
 			@pAdjClosePrice)
-
-	IF (@pPeriod = @DAILY_PERIOD)
-		UPDATE [StockBasicInfo] 
-		SET MarketValue = ReleaseStockCount * @pClosePrice 
-		WHERE StockNo = @pStockNo
 END
 GO

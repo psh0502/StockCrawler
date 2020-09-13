@@ -15,7 +15,9 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 	DECLARE @TRUE BIT = 1
-	SELECT a.StockName, b.*
+	DECLARE @vLatestPrice MONEY
+	SET @vLatestPrice = (SELECT TOP 1 ClosePrice FROM StockPriceHistory WHERE StockNo = @pStockNo AND [Period] = 1 ORDER BY StockDT DESC)
+	SELECT a.StockName, b.*, MarketValue = b.ReleaseStockCount * @vLatestPrice
 	FROM [Stock] a(NOLOCK)
 		INNER JOIN [StockBasicInfo] b(NOLOCK) ON a.StockNo = b.StockNo
     WHERE

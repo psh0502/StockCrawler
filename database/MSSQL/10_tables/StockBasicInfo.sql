@@ -20,7 +20,6 @@ CREATE TABLE [dbo].[StockBasicInfo](
 	[BuildDate][date] NOT NULL,
 	[PublishDate][date] NOT NULL,
 	[Capital][money] NOT NULL,
-	[MarketValue][money] NOT NULL,
 	[ReleaseStockCount][bigint] NOT NULL,
 	[Chairman][nvarchar](50) NOT NULL,
 	[CEO][nvarchar](50) NOT NULL,

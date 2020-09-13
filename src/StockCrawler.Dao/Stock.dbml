@@ -35,7 +35,6 @@
       <Column Name="BuildDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
       <Column Name="PublishDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
       <Column Name="Capital" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="MarketValue" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
       <Column Name="ReleaseStockCount" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
       <Column Name="Chairman" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="CEO" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
@@ -43,6 +42,7 @@
       <Column Name="Business" Type="System.String" DbType="NVarChar(1000) NOT NULL" CanBeNull="false" />
       <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="MarketValue" Type="System.Decimal" DbType="Money" CanBeNull="true" />
     </ElementType>
   </Function>
   <Function Name="dbo.GetStockPeriodPrice" Method="GetStockPeriodPrice">
@@ -228,7 +228,6 @@
     <Parameter Name="pBuildDate" Type="System.DateTime" DbType="Date" />
     <Parameter Name="pPublishDate" Type="System.DateTime" DbType="Date" />
     <Parameter Name="pCapital" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pMarketValue" Type="System.Decimal" DbType="Money" />
     <Parameter Name="pReleaseStockCount" Type="System.Int64" DbType="BigInt" />
     <Parameter Name="pChairman" Type="System.String" DbType="NVarChar(50)" />
     <Parameter Name="pCEO" Type="System.String" DbType="NVarChar(50)" />

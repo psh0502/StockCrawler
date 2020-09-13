@@ -17,7 +17,6 @@ CREATE OR ALTER PROCEDURE [dbo].[InsertOrUpdateStockBasicInfo]
 @pBuildDate DATE,
 @pPublishDate DATE,
 @pCapital MONEY,
-@pMarketValue MONEY,
 @pReleaseStockCount BIGINT,
 @pChairman NVARCHAR(50),
 @pCEO NVARCHAR(50),
@@ -34,7 +33,6 @@ BEGIN
 			,[BuildDate] = ISNULL(@pBuildDate, [BuildDate])
 			,[PublishDate] = ISNULL(@pPublishDate, [PublishDate])
 			,[Capital] = ISNULL(@pCapital, [Capital])
-			,[MarketValue] = ISNULL(@pMarketValue, [MarketValue])
 			,[ReleaseStockCount] = ISNULL(@pReleaseStockCount, [ReleaseStockCount])
 			,[Chairman] = ISNULL(@pChairman, [Chairman])
 			,[CEO] = ISNULL(@pCEO, [CEO])
@@ -52,7 +50,6 @@ BEGIN
 			,[BuildDate]
 			,[PublishDate]
 			,[Capital]
-			,[MarketValue]
 			,[ReleaseStockCount]
 			,[Chairman]
 			,[CEO]
@@ -66,7 +63,6 @@ BEGIN
 			,@pBuildDate
 			,@pPublishDate
 			,@pCapital
-			,@pMarketValue
 			,@pReleaseStockCount
 			,@pChairman
 			,@pCEO

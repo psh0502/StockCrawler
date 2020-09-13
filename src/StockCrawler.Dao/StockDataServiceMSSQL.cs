@@ -68,7 +68,6 @@ namespace StockCrawler.Dao
                     info.BuildDate,
                     info.PublishDate,
                     info.Capital,
-                    (info.MarketValue == 0) ? null : (decimal?)info.MarketValue,
                     info.ReleaseStockCount,
                     info.Chairman,
                     info.CEO,

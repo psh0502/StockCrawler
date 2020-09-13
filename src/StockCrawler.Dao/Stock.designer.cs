@@ -156,9 +156,9 @@ namespace StockCrawler.Dao
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertOrUpdateStockBasicInfo")]
-		public int InsertOrUpdateStockBasicInfo([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pCategory, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(100)")] string pCompanyName, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pCompanyID, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pBuildDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pPublishDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pCapital, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pMarketValue, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="BigInt")] System.Nullable<long> pReleaseStockCount, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pChairman, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pCEO, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(100)")] string pUrl, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(1000)")] string pBusiness)
+		public int InsertOrUpdateStockBasicInfo([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pCategory, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(100)")] string pCompanyName, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pCompanyID, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pBuildDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pPublishDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pCapital, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="BigInt")] System.Nullable<long> pReleaseStockCount, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pChairman, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pCEO, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(100)")] string pUrl, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(1000)")] string pBusiness)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pCategory, pCompanyName, pCompanyID, pBuildDate, pPublishDate, pCapital, pMarketValue, pReleaseStockCount, pChairman, pCEO, pUrl, pBusiness);
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pCategory, pCompanyName, pCompanyID, pBuildDate, pPublishDate, pCapital, pReleaseStockCount, pChairman, pCEO, pUrl, pBusiness);
 			return ((int)(result.ReturnValue));
 		}
 		
@@ -242,8 +242,6 @@ namespace StockCrawler.Dao
 		
 		private decimal _Capital;
 		
-		private decimal _MarketValue;
-		
 		private long _ReleaseStockCount;
 		
 		private string _Chairman;
@@ -257,6 +255,8 @@ namespace StockCrawler.Dao
 		private System.DateTime _CreatedAt;
 		
 		private System.DateTime _LastModifiedAt;
+		
+		private System.Nullable<decimal> _MarketValue;
 		
 		public GetStockBasicInfoResult()
 		{
@@ -390,22 +390,6 @@ namespace StockCrawler.Dao
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MarketValue", DbType="Money NOT NULL")]
-		public decimal MarketValue
-		{
-			get
-			{
-				return this._MarketValue;
-			}
-			set
-			{
-				if ((this._MarketValue != value))
-				{
-					this._MarketValue = value;
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReleaseStockCount", DbType="BigInt NOT NULL")]
 		public long ReleaseStockCount
 		{
@@ -514,6 +498,22 @@ namespace StockCrawler.Dao
 				if ((this._LastModifiedAt != value))
 				{
 					this._LastModifiedAt = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MarketValue", DbType="Money")]
+		public System.Nullable<decimal> MarketValue
+		{
+			get
+			{
+				return this._MarketValue;
+			}
+			set
+			{
+				if ((this._MarketValue != value))
+				{
+					this._MarketValue = value;
 				}
 			}
 		}
