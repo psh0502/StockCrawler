@@ -1,6 +1,8 @@
 ﻿using Common.Logging;
 using HtmlAgilityPack;
 using StockCrawler.Dao;
+using System;
+using System.Linq;
 
 namespace StockCrawler.Services.StockFinanceReport
 {
@@ -22,6 +24,48 @@ namespace StockCrawler.Services.StockFinanceReport
             }
             return result;
         }
+        public virtual GetStockReportIncomeResult GetStockReportIncome(string stockNo, short year, short season)
+        {
+            var url = "https://mops.twse.com.tw/mops/web/ajax_t164sb04";
+            var tableNode = GetTwseDataBack(url, stockNo, year, season);
+            var result = TransformNodeToIncomeRow(tableNode);
+            result.StockNo = stockNo;
+            result.Year = year;
+            result.Season = season;
+            if (season > 1)
+            {
+                var result_last_season = TransformNodeToIncomeRow(GetTwseDataBack(url, stockNo, year, (short)(season - 1)));
+                result.SEPS -= result_last_season.EPS;
+            }
+            return result;
+        }
+        public virtual GetStockReportBalanceResult GetStockReportBalance(string stockNo, short year, short season)
+        {
+            var url = "https://mops.twse.com.tw/mops/web/ajax_t164sb03";
+            var tableNode = GetTwseDataBack(url, stockNo, year, season);
+            var result = TransformNodeToBalanceRow(tableNode);
+            result.StockNo = stockNo;
+            result.Year = year;
+            result.Season = season;
+            return result;
+        }
+        public virtual GetStockReportMonthlyNetProfitTaxedResult GetStockReportMonthlyNetProfitTaxed(string stockNo, short year, short month)
+        {
+            var url = "https://mops.twse.com.tw/mops/web/ajax_t05st10_ifrs";
+            var tableNode = GetTwseDataBack(url, stockNo, year, month: month, xpath: _xpath_02);
+            var result = TransformNodeToMonlyNetProfitTaxedRow(tableNode);
+            result.StockNo = stockNo;
+            result.Year = year;
+            result.Month = month;
+            DateTime bgnDate = new DateTime(year + 1911, month, 1);
+            using (var db = StockDataServiceProvider.GetServiceInstance())
+            {
+                var monthly_price = db.GetStockAveragePrice(stockNo, bgnDate, bgnDate.AddMonths(1).AddDays(-1), (short)20).OrderByDescending(x=>x.StockDT).First().ClosePrice;
+//                var last_4_eps_sum = db.get
+            }
+            // TODO: 月均價 / 近4季EPS總和
+            return result;
+        }
         private static GetStockReportCashFlowResult TransformNodeToCashflowRow(HtmlNode bodyNode)
         {
             var result = new GetStockReportCashFlowResult()
@@ -40,7 +84,7 @@ namespace StockCrawler.Services.StockFinanceReport
         }
         private static GetStockReportIncomeResult TransformNodeToIncomeRow(HtmlNode bodyNode)
         {
-            return new GetStockReportIncomeResult()
+            var result = new GetStockReportIncomeResult()
             {
                 Revenue = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "營業收入合計")),
                 GrossProfit = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "營業毛利")),
@@ -51,26 +95,9 @@ namespace StockCrawler.Services.StockFinanceReport
                 BusinessInterest = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "營業利益")),
                 NetProfitTaxFree = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "稅前淨利")),
                 NetProfitTaxed = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "本期淨利")),
+                EPS = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "　基本每股盈餘")),
             };
-        }
-        public virtual GetStockReportIncomeResult GetStockReportIncome(string stockNo, short year, short season)
-        {
-            var url = "https://mops.twse.com.tw/mops/web/ajax_t164sb04";
-            var tableNode = GetTwseDataBack(url, stockNo, year, season);
-            var result = TransformNodeToIncomeRow(tableNode);
-            result.StockNo = stockNo;
-            result.Year = year;
-            result.Season = season;
-            return result;
-        }
-        public virtual GetStockReportBalanceResult GetStockReportBalance(string stockNo, short year, short season)
-        {
-            var url = "https://mops.twse.com.tw/mops/web/ajax_t164sb03";
-            var tableNode = GetTwseDataBack(url, stockNo, year, season);
-            var result = TransformNodeToBalanceRow(tableNode);
-            result.StockNo = stockNo;
-            result.Year = year;
-            result.Season = season;
+            result.SEPS = result.EPS;
             return result;
         }
         private static GetStockReportBalanceResult TransformNodeToBalanceRow(HtmlNode bodyNode)
@@ -112,16 +139,6 @@ namespace StockCrawler.Services.StockFinanceReport
                 TotalLiability = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "負債總額")),
                 NetWorth = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "權益總額")),
             };
-        }
-        public virtual GetStockReportMonthlyNetProfitTaxedResult GetStockReportMonthlyNetProfitTaxed(string stockNo, short year, short month)
-        {
-            var url = "https://mops.twse.com.tw/mops/web/ajax_t05st10_ifrs";
-            var tableNode = GetTwseDataBack(url, stockNo, year, month: month, xpath: _xpath_02);
-            var result = TransformNodeToMonlyNetProfitTaxedRow(tableNode);
-            result.StockNo = stockNo;
-            result.Year = year;
-            result.Month = month;
-            return result;
         }
         private GetStockReportMonthlyNetProfitTaxedResult TransformNodeToMonlyNetProfitTaxedRow(HtmlNode bodyNode)
         {

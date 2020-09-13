@@ -62,7 +62,7 @@ namespace StockCrawler.UnitTest.Jobs
         {
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
             {
-                var data = db.GetStockReportIncome("2330", (short)(Services.SystemTime.Today.AddYears(-1).Year - 1911), 1).ToList();
+                var data = db.GetStockReportIncome("2330", (short)(Services.SystemTime.Today.AddYears(-1).Year - 1911), 4).ToList();
                 Assert.AreEqual(1, data.Count, "資料筆數");
                 var d1 = data.First();
 
@@ -79,8 +79,7 @@ namespace StockCrawler.UnitTest.Jobs
                 Assert.AreEqual(389845336, d1.NetProfitTaxFree);
                 Assert.AreEqual(345343809, d1.NetProfitTaxed);
                 Assert.AreEqual(13.32M, d1.EPS, "每股盈餘(EPS)");
-                Assert.AreEqual(4.48M, d1.SEPS, "單季每股盈餘(EPS)");
-                Assert.AreEqual(25930380458, d1.ReleaseStockCount, "發行股數量");
+                Assert.AreEqual(9.42M, d1.SEPS, "單季每股盈餘(EPS)");
             }
         }
         [TestMethod]

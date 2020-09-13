@@ -83,6 +83,13 @@ namespace StockCrawler.Dao
 			return ((int)(result.ReturnValue));
 		}
 		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetStockAveragePrice")]
+		public ISingleResult<GetStockAveragePriceResult> GetStockAveragePrice([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pDateBegin, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pDateEnd, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pPeriod)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pDateBegin, pDateEnd, pPeriod);
+			return ((ISingleResult<GetStockAveragePriceResult>)(result.ReturnValue));
+		}
+		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetStockBasicInfo")]
 		public ISingleResult<GetStockBasicInfoResult> GetStockBasicInfo([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo)
 		{
@@ -216,10 +223,126 @@ namespace StockCrawler.Dao
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertOrUpdateStockReportIncome")]
-		public int InsertOrUpdateStockReportIncome([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pYear, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pSeason, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pRevenue, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pGrossProfit, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pSalesExpense, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pManagementCost, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pRDExpense, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pOperatingExpenses, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pBusinessInterest, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pNetProfitTaxFree, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pNetProfitTaxed, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pEPS, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pSEPS, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="BigInt")] System.Nullable<long> pRelaseStockCount)
+		public int InsertOrUpdateStockReportIncome([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pYear, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pSeason, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pRevenue, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pGrossProfit, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pSalesExpense, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pManagementCost, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pRDExpense, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pOperatingExpenses, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pBusinessInterest, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pNetProfitTaxFree, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pNetProfitTaxed, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pEPS, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pSEPS)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pYear, pSeason, pRevenue, pGrossProfit, pSalesExpense, pManagementCost, pRDExpense, pOperatingExpenses, pBusinessInterest, pNetProfitTaxFree, pNetProfitTaxed, pEPS, pSEPS, pRelaseStockCount);
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pYear, pSeason, pRevenue, pGrossProfit, pSalesExpense, pManagementCost, pRDExpense, pOperatingExpenses, pBusinessInterest, pNetProfitTaxFree, pNetProfitTaxed, pEPS, pSEPS);
 			return ((int)(result.ReturnValue));
+		}
+	}
+	
+	public partial class GetStockAveragePriceResult
+	{
+		
+		private string _StockName;
+		
+		private string _StockNo;
+		
+		private System.DateTime _StockDT;
+		
+		private short _Period;
+		
+		private decimal _ClosePrice;
+		
+		private System.DateTime _CreatedAt;
+		
+		public GetStockAveragePriceResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string StockName
+		{
+			get
+			{
+				return this._StockName;
+			}
+			set
+			{
+				if ((this._StockName != value))
+				{
+					this._StockName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockNo", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string StockNo
+		{
+			get
+			{
+				return this._StockNo;
+			}
+			set
+			{
+				if ((this._StockNo != value))
+				{
+					this._StockNo = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockDT", DbType="Date NOT NULL")]
+		public System.DateTime StockDT
+		{
+			get
+			{
+				return this._StockDT;
+			}
+			set
+			{
+				if ((this._StockDT != value))
+				{
+					this._StockDT = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Period", DbType="SmallInt NOT NULL")]
+		public short Period
+		{
+			get
+			{
+				return this._Period;
+			}
+			set
+			{
+				if ((this._Period != value))
+				{
+					this._Period = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ClosePrice", DbType="Decimal(10,4) NOT NULL")]
+		public decimal ClosePrice
+		{
+			get
+			{
+				return this._ClosePrice;
+			}
+			set
+			{
+				if ((this._ClosePrice != value))
+				{
+					this._ClosePrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedAt", DbType="DateTime NOT NULL")]
+		public System.DateTime CreatedAt
+		{
+			get
+			{
+				return this._CreatedAt;
+			}
+			set
+			{
+				if ((this._CreatedAt != value))
+				{
+					this._CreatedAt = value;
+				}
+			}
 		}
 	}
 	
@@ -920,16 +1043,6 @@ namespace StockCrawler.Dao
 		
 		private string _StockNo;
 		
-		private string _StockName1;
-		
-		private bool _Enable;
-		
-		private System.DateTime _CreatedAt;
-		
-		private System.DateTime _LastModifiedAt;
-		
-		private string _StockNo1;
-		
 		private short _Year;
 		
 		private short _Season;
@@ -978,9 +1091,9 @@ namespace StockCrawler.Dao
 		
 		private decimal _NAV;
 		
-		private System.DateTime _CreatedAt1;
+		private System.DateTime _CreatedAt;
 		
-		private System.DateTime _LastModifiedAt1;
+		private System.DateTime _LastModifiedAt;
 		
 		public GetStockReportBalanceResult()
 		{
@@ -1014,86 +1127,6 @@ namespace StockCrawler.Dao
 				if ((this._StockNo != value))
 				{
 					this._StockNo = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockName1", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string StockName1
-		{
-			get
-			{
-				return this._StockName1;
-			}
-			set
-			{
-				if ((this._StockName1 != value))
-				{
-					this._StockName1 = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Enable", DbType="Bit NOT NULL")]
-		public bool Enable
-		{
-			get
-			{
-				return this._Enable;
-			}
-			set
-			{
-				if ((this._Enable != value))
-				{
-					this._Enable = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedAt", DbType="DateTime NOT NULL")]
-		public System.DateTime CreatedAt
-		{
-			get
-			{
-				return this._CreatedAt;
-			}
-			set
-			{
-				if ((this._CreatedAt != value))
-				{
-					this._CreatedAt = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastModifiedAt", DbType="DateTime NOT NULL")]
-		public System.DateTime LastModifiedAt
-		{
-			get
-			{
-				return this._LastModifiedAt;
-			}
-			set
-			{
-				if ((this._LastModifiedAt != value))
-				{
-					this._LastModifiedAt = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockNo1", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
-		public string StockNo1
-		{
-			get
-			{
-				return this._StockNo1;
-			}
-			set
-			{
-				if ((this._StockNo1 != value))
-				{
-					this._StockNo1 = value;
 				}
 			}
 		}
@@ -1482,34 +1515,34 @@ namespace StockCrawler.Dao
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedAt1", DbType="DateTime NOT NULL")]
-		public System.DateTime CreatedAt1
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedAt", DbType="DateTime NOT NULL")]
+		public System.DateTime CreatedAt
 		{
 			get
 			{
-				return this._CreatedAt1;
+				return this._CreatedAt;
 			}
 			set
 			{
-				if ((this._CreatedAt1 != value))
+				if ((this._CreatedAt != value))
 				{
-					this._CreatedAt1 = value;
+					this._CreatedAt = value;
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastModifiedAt1", DbType="DateTime NOT NULL")]
-		public System.DateTime LastModifiedAt1
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastModifiedAt", DbType="DateTime NOT NULL")]
+		public System.DateTime LastModifiedAt
 		{
 			get
 			{
-				return this._LastModifiedAt1;
+				return this._LastModifiedAt;
 			}
 			set
 			{
-				if ((this._LastModifiedAt1 != value))
+				if ((this._LastModifiedAt != value))
 				{
-					this._LastModifiedAt1 = value;
+					this._LastModifiedAt = value;
 				}
 			}
 		}
@@ -1808,8 +1841,6 @@ namespace StockCrawler.Dao
 		
 		private decimal _SEPS;
 		
-		private long _ReleaseStockCount;
-		
 		private System.DateTime _CreatedAt;
 		
 		private System.DateTime _LastModifiedAt;
@@ -2058,22 +2089,6 @@ namespace StockCrawler.Dao
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReleaseStockCount", DbType="BigInt NOT NULL")]
-		public long ReleaseStockCount
-		{
-			get
-			{
-				return this._ReleaseStockCount;
-			}
-			set
-			{
-				if ((this._ReleaseStockCount != value))
-				{
-					this._ReleaseStockCount = value;
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedAt", DbType="DateTime NOT NULL")]
 		public System.DateTime CreatedAt
 		{
@@ -2114,16 +2129,6 @@ namespace StockCrawler.Dao
 		
 		private string _StockNo;
 		
-		private string _StockName1;
-		
-		private bool _Enable;
-		
-		private System.DateTime _CreatedAt;
-		
-		private System.DateTime _LastModifiedAt;
-		
-		private string _StockNo1;
-		
 		private short _Year;
 		
 		private short _Month;
@@ -2148,9 +2153,9 @@ namespace StockCrawler.Dao
 		
 		private decimal _PE;
 		
-		private System.DateTime _CreatedAt1;
+		private System.DateTime _CreatedAt;
 		
-		private System.DateTime _LastModifiedAt1;
+		private System.DateTime _LastModifiedAt;
 		
 		public GetStockReportMonthlyNetProfitTaxedResult()
 		{
@@ -2184,86 +2189,6 @@ namespace StockCrawler.Dao
 				if ((this._StockNo != value))
 				{
 					this._StockNo = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockName1", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string StockName1
-		{
-			get
-			{
-				return this._StockName1;
-			}
-			set
-			{
-				if ((this._StockName1 != value))
-				{
-					this._StockName1 = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Enable", DbType="Bit NOT NULL")]
-		public bool Enable
-		{
-			get
-			{
-				return this._Enable;
-			}
-			set
-			{
-				if ((this._Enable != value))
-				{
-					this._Enable = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedAt", DbType="DateTime NOT NULL")]
-		public System.DateTime CreatedAt
-		{
-			get
-			{
-				return this._CreatedAt;
-			}
-			set
-			{
-				if ((this._CreatedAt != value))
-				{
-					this._CreatedAt = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastModifiedAt", DbType="DateTime NOT NULL")]
-		public System.DateTime LastModifiedAt
-		{
-			get
-			{
-				return this._LastModifiedAt;
-			}
-			set
-			{
-				if ((this._LastModifiedAt != value))
-				{
-					this._LastModifiedAt = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockNo1", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
-		public string StockNo1
-		{
-			get
-			{
-				return this._StockNo1;
-			}
-			set
-			{
-				if ((this._StockNo1 != value))
-				{
-					this._StockNo1 = value;
 				}
 			}
 		}
@@ -2460,34 +2385,34 @@ namespace StockCrawler.Dao
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedAt1", DbType="DateTime NOT NULL")]
-		public System.DateTime CreatedAt1
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedAt", DbType="DateTime NOT NULL")]
+		public System.DateTime CreatedAt
 		{
 			get
 			{
-				return this._CreatedAt1;
+				return this._CreatedAt;
 			}
 			set
 			{
-				if ((this._CreatedAt1 != value))
+				if ((this._CreatedAt != value))
 				{
-					this._CreatedAt1 = value;
+					this._CreatedAt = value;
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastModifiedAt1", DbType="DateTime NOT NULL")]
-		public System.DateTime LastModifiedAt1
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastModifiedAt", DbType="DateTime NOT NULL")]
+		public System.DateTime LastModifiedAt
 		{
 			get
 			{
-				return this._LastModifiedAt1;
+				return this._LastModifiedAt;
 			}
 			set
 			{
-				if ((this._LastModifiedAt1 != value))
+				if ((this._LastModifiedAt != value))
 				{
-					this._LastModifiedAt1 = value;
+					this._LastModifiedAt = value;
 				}
 			}
 		}

@@ -24,7 +24,6 @@ CREATE TABLE [dbo].[StockReportIncome](
 	[NetProfitTaxed][MONEY] NOT NULL, -- 稅後淨利
 	[EPS][MONEY] NOT NULL, -- 每股盈餘
 	[SEPS][MONEY] NOT NULL, -- 本季每股盈餘
-	[ReleaseStockCount] BIGINT NOT NULL, -- 發行股數
 	[CreatedAt] [datetime] NOT NULL,
 	[LastModifiedAt] [datetime] NOT NULL,
  CONSTRAINT [PK_StockReportIncome] PRIMARY KEY CLUSTERED 

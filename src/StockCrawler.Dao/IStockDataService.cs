@@ -71,6 +71,7 @@ namespace StockCrawler.Dao
         /// <param name="period">週期天數</param>
         /// <returns>每日收盤資料列表</returns>
         IEnumerable<GetStockPeriodPriceResult> GetStockPeriodPrice(string stockNo, DateTime bgnDate, DateTime endDate);
+        IEnumerable<GetStockAveragePriceResult> GetStockAveragePrice(string stockNo, DateTime bgnDate, DateTime endDate, short period);
         void InsertOrUpdateStockAveragePrice(IEnumerable<(string StockNo, DateTime StockDT, short Period, decimal AveragePrice)> avgPriceList);
     }
 }

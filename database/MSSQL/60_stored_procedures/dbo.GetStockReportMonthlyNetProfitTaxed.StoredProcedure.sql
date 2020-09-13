@@ -17,7 +17,7 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 	DECLARE @TRUE BIT = 1
-	SELECT a.StockName, *
+	SELECT a.StockName, b.*
 	FROM [dbo].[Stock] a(NOLOCK) 
 		INNER JOIN [dbo].[StockReportMonthlyNetProfitTaxed](NOLOCK) b ON a.StockNo = b.StockNo
 	WHERE

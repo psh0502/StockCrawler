@@ -24,6 +24,20 @@
   <Function Name="dbo.DisableAllStocks" Method="DisableAllStocks">
     <Return Type="System.Int32" />
   </Function>
+  <Function Name="dbo.GetStockAveragePrice" Method="GetStockAveragePrice">
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pDateBegin" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="pDateEnd" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="pPeriod" Type="System.Int16" DbType="SmallInt" />
+    <ElementType Name="GetStockAveragePriceResult">
+      <Column Name="StockName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="StockDT" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Period" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="ClosePrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
   <Function Name="dbo.GetStockBasicInfo" Method="GetStockBasicInfo">
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
     <ElementType Name="GetStockBasicInfoResult">
@@ -99,11 +113,6 @@
     <ElementType Name="GetStockReportBalanceResult">
       <Column Name="StockName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="StockName1" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="Enable" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="StockNo1" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="Year" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
       <Column Name="Season" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
       <Column Name="CashAndEquivalents" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
@@ -128,8 +137,8 @@
       <Column Name="TotalLiability" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
       <Column Name="NetWorth" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
       <Column Name="NAV" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="CreatedAt1" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="LastModifiedAt1" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
   <Function Name="dbo.GetStockReportCashFlow" Method="GetStockReportCashFlow">
@@ -173,7 +182,6 @@
       <Column Name="NetProfitTaxed" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
       <Column Name="EPS" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
       <Column Name="SEPS" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="ReleaseStockCount" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
       <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </ElementType>
@@ -185,11 +193,6 @@
     <ElementType Name="GetStockReportMonthlyNetProfitTaxedResult">
       <Column Name="StockName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="StockName1" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="Enable" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="StockNo1" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="Year" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
       <Column Name="Month" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
       <Column Name="NetProfitTaxed" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
@@ -202,8 +205,8 @@
       <Column Name="TillThisMonthDeltaPercent" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
       <Column Name="Remark" Type="System.String" DbType="NVarChar(1000) NOT NULL" CanBeNull="false" />
       <Column Name="PE" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="CreatedAt1" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="LastModifiedAt1" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
   <Function Name="dbo.GetStocks" Method="GetStocks">
@@ -311,7 +314,6 @@
     <Parameter Name="pNetProfitTaxed" Type="System.Decimal" DbType="Money" />
     <Parameter Name="pEPS" Type="System.Decimal" DbType="Money" />
     <Parameter Name="pSEPS" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pRelaseStockCount" Type="System.Int64" DbType="BigInt" />
     <Return Type="System.Int32" />
   </Function>
 </Database>

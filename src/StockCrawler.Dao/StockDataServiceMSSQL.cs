@@ -107,8 +107,7 @@ namespace StockCrawler.Dao
                     info.NetProfitTaxFree,
                     info.NetProfitTaxed,
                     info.EPS,
-                    info.SEPS,
-                    info.ReleaseStockCount);
+                    info.SEPS);
         }
         public void InsertOrUpdateStockBalanceReport(GetStockReportBalanceResult info)
         {
@@ -187,6 +186,12 @@ namespace StockCrawler.Dao
                         info.StockDT,
                         info.Period,
                         info.AveragePrice);
+        }
+
+        public IEnumerable<GetStockAveragePriceResult> GetStockAveragePrice(string stockNo, DateTime bgnDate, DateTime endDate, short period)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                return db.GetStockAveragePrice(stockNo, bgnDate, endDate, period).ToList();
         }
     }
 }
