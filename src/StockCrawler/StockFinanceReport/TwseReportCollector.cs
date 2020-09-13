@@ -1,8 +1,6 @@
 ﻿using Common.Logging;
 using HtmlAgilityPack;
 using StockCrawler.Dao;
-using System;
-using System.Linq;
 
 namespace StockCrawler.Services.StockFinanceReport
 {
@@ -57,13 +55,6 @@ namespace StockCrawler.Services.StockFinanceReport
             result.StockNo = stockNo;
             result.Year = year;
             result.Month = month;
-            DateTime bgnDate = new DateTime(year + 1911, month, 1);
-            using (var db = StockDataServiceProvider.GetServiceInstance())
-            {
-                var monthly_price = db.GetStockAveragePrice(stockNo, bgnDate, bgnDate.AddMonths(1).AddDays(-1), (short)20).OrderByDescending(x=>x.StockDT).First().ClosePrice;
-//                var last_4_eps_sum = db.get
-            }
-            // TODO: 月均價 / 近4季EPS總和
             return result;
         }
         private static GetStockReportCashFlowResult TransformNodeToCashflowRow(HtmlNode bodyNode)

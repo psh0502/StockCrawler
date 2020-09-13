@@ -43,6 +43,7 @@ namespace StockCrawler.Dao
         //StockDataSet.StockPriceHistoryRow GetStockPriceDataRowByDate(string sNO, DateTime specifiedDT);
         //StockDataSet.StockPriceHistoryDataTable GetStockPriceHistoryData(string sno, DateTime startDT, DateTime endDT);
         IEnumerable<GetStocksResult> GetStocks();
+        GetStockReportIncomeResult GetStockReportIncome(string stockNo, short year, short season);
         void InsertOrUpdateStockPriceHistory(IEnumerable<GetStockPriceHistoryResult> list);
         void RenewStockList(IEnumerable<GetStocksResult> list);
         /// <summary>
@@ -62,7 +63,7 @@ namespace StockCrawler.Dao
         /// <param name="endDate">結束日期</param>
         /// <param name="period">週期天數, 週線: 5, 雙週線: 10, 月線: 20, 季線: 60</param>
         /// <returns>平均收盤價</returns>
-        decimal GetStockPriceAVG(string stockNo, DateTime endDate, short period);
+        decimal CaculateStockClosingAveragePrice(string stockNo, DateTime endDate, short period);
         /// <summary>
         /// 取得指定期間的股價明細
         /// </summary>

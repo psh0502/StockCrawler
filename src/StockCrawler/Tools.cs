@@ -11,7 +11,7 @@ using System.Text;
 
 namespace StockCrawler.Services
 {
-    public class Tools
+    public static class Tools
     {
         internal static ILog _logger = LogManager.GetLogger(typeof(Tools));
         public static string DownloadStringData(Uri url, Encoding encode, out IList<Cookie> respCookies, string contentType = null, IList<Cookie> cookies = null, string method = "GET", NameValueCollection formdata = null, string refer = null)
@@ -150,16 +150,16 @@ namespace StockCrawler.Services
                     }
                     {
                         // 週線
-                        var data = db.GetStockPriceAVG(d.StockNo, d.StockDT, 5);
+                        var data = db.CaculateStockClosingAveragePrice(d.StockNo, d.StockDT, 5);
                         avgPriceList.Add((d.StockNo, d.StockDT, 5, data));
                         // 雙週線
-                        data = db.GetStockPriceAVG(d.StockNo, d.StockDT, 10);
+                        data = db.CaculateStockClosingAveragePrice(d.StockNo, d.StockDT, 10);
                         avgPriceList.Add((d.StockNo, d.StockDT, 10, data));
                         // 月線
-                        data = db.GetStockPriceAVG(d.StockNo, d.StockDT, 20);
+                        data = db.CaculateStockClosingAveragePrice(d.StockNo, d.StockDT, 20);
                         avgPriceList.Add((d.StockNo, d.StockDT, 20, data));
                         // 季線
-                        data = db.GetStockPriceAVG(d.StockNo, d.StockDT, 60);
+                        data = db.CaculateStockClosingAveragePrice(d.StockNo, d.StockDT, 60);
                         avgPriceList.Add((d.StockNo, d.StockDT, 60, data));
                     }
                 }
@@ -172,6 +172,22 @@ namespace StockCrawler.Services
                 if (avgPriceList.Any())
                     db.InsertOrUpdateStockAveragePrice(avgPriceList);
             }
+        }
+        public static short GetTaiwanYear()
+        {
+            return GetTaiwanYear(SystemTime.Today.Year);
+        }
+        public static short GetTaiwanYear(int westernYear)
+        {
+            return (short)(westernYear - 1911);
+        }
+        public static short GetSeason()
+        {
+            return GetSeason(SystemTime.Today.Month);
+        }
+        public static short GetSeason(int month)
+        {
+            return (short)(month / 3 + 1);
         }
     }
 }

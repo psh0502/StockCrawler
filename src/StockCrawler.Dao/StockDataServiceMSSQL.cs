@@ -31,8 +31,8 @@ namespace StockCrawler.Dao
             using (var db = GetMSSQLStockDataContext())
             {
                 db.DisableAllStocks();
-                foreach (var dr in list)
-                    db.InsertOrUpdateStock(dr.StockNo, dr.StockName);
+                foreach (var d in list)
+                    db.InsertOrUpdateStock(d.StockNo, d.StockName);
             }
         }
         private static StockDataContext GetMSSQLStockDataContext()
@@ -159,7 +159,7 @@ namespace StockCrawler.Dao
                     info.Remark,
                     info.PE);
         }
-        public decimal GetStockPriceAVG(string stockNo, DateTime endDate, short period)
+        public decimal CaculateStockClosingAveragePrice(string stockNo, DateTime endDate, short period)
         {
             decimal? oAvgClosePrice = null;
 
@@ -187,11 +187,15 @@ namespace StockCrawler.Dao
                         info.Period,
                         info.AveragePrice);
         }
-
         public IEnumerable<GetStockAveragePriceResult> GetStockAveragePrice(string stockNo, DateTime bgnDate, DateTime endDate, short period)
         {
             using (var db = GetMSSQLStockDataContext())
                 return db.GetStockAveragePrice(stockNo, bgnDate, endDate, period).ToList();
+        }
+        public GetStockReportIncomeResult GetStockReportIncome(string stockNo, short year, short season)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                return db.GetStockReportIncome(stockNo, year, season).SingleOrDefault();
         }
     }
 }

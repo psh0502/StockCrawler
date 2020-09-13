@@ -3,6 +3,7 @@ using Quartz;
 using StockCrawler.Dao;
 using StockCrawler.Services.StockFinanceReport;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
@@ -94,6 +95,11 @@ namespace StockCrawler.Services
             var info = collector.GetStockReportMonthlyNetProfitTaxed(stockNo, year, month);
             if (null != info)
             {
+                DateTime bgnDate = new DateTime(year + 1911, month, 1);
+                var monthly_price = db.GetStockAveragePrice(stockNo, bgnDate, bgnDate.AddMonths(1).AddDays(-1), (short)20).OrderByDescending(x => x.StockDT).First().ClosePrice;
+                var last_4_eps_sum = GetLast4SeasonsEPSSum(db, stockNo, year, month);
+                // 月均價 / 近4季EPS總和
+                info.PE = monthly_price / last_4_eps_sum;
                 db.InsertOrUpdateStockMonthlyNetProfitTaxedReport(info);
                 Logger.InfoFormat("[{0}] get its monthly net profit report(year={1}/month={2})", stockNo, year, month);
                 return true;
@@ -104,6 +110,30 @@ namespace StockCrawler.Services
                 return false;
             }
         }
+        private static decimal GetLast4SeasonsEPSSum(IStockDataService db, string stockNo, short year, short month)
+        {
+            List<decimal> eps = new List<decimal>();
+            short season = (short)(Tools.GetSeason(month) - 1);
+            int no_data = 0;
+            do
+            {
+                if (season == 0)
+                {
+                    year--;
+                    season = 4;
+                }
+                var seps = db.GetStockReportIncome(stockNo, year, season)?.SEPS;
+                if (seps.HasValue)
+                    eps.Add(seps.Value);
+                else 
+                    no_data++;
+
+                season--;
+            } while (eps.Count < 4 && no_data < 10);
+            decimal sum = eps.Sum();
+            return sum;
+        }
+
         private static bool GetIncomeIntoDatabase(IStockDataService db, IStockReportCollector collector, string stockNo, short year, short season)
         {
             var info = collector.GetStockReportIncome(stockNo, year, season);
@@ -148,15 +178,6 @@ namespace StockCrawler.Services
                 Logger.InfoFormat("[{0}] has no balance report(year={1}/season={2})", stockNo, year, season);
                 return false;
             }
-        }
-        private static short GetTaiwanYear()
-        {
-            return (short)(SystemTime.Today.Year - 1911);
-        }
-        private static short GetSeason()
-        {
-            var month = SystemTime.Today.Month;
-            return (short)(month / 3 + 1);
         }
         #endregion
     }

@@ -49,20 +49,22 @@ namespace StockCrawler.UnitTest.Collectors
         {
             IStockReportCollector collector = new TwseReportCollector();
             TwseReportCollector._logger = new UnitTestLogger();
-            var data = collector.GetStockReportIncome("2330", 109, 1);
+            var data = collector.GetStockReportIncome("2330", 108, 4);
             Assert.IsNotNull(data);
             Assert.AreEqual("2330", data.StockNo);
-            Assert.AreEqual(109, data.Year);
-            Assert.AreEqual(1, data.Season);
-            Assert.AreEqual(310597183, data.Revenue);
-            Assert.AreEqual(160784181, data.GrossProfit);
-            Assert.AreEqual(1451102, data.SalesExpense);
-            Assert.AreEqual(5903061, data.ManagementCost);
-            Assert.AreEqual(24968883, data.RDExpense);
-            Assert.AreEqual(32323046, data.OperatingExpenses);
-            Assert.AreEqual(128521637, data.BusinessInterest);
-            Assert.AreEqual(132147178, data.NetProfitTaxFree);
-            Assert.AreEqual(117062893, data.NetProfitTaxed);
+            Assert.AreEqual(108, data.Year);
+            Assert.AreEqual(4, data.Season);
+            Assert.AreEqual(1069985448, data.Revenue);
+            Assert.AreEqual(492698501, data.GrossProfit);
+            Assert.AreEqual(6348626, data.SalesExpense);
+            Assert.AreEqual(21737210, data.ManagementCost);
+            Assert.AreEqual(91418746, data.RDExpense);
+            Assert.AreEqual(119504582, data.OperatingExpenses);
+            Assert.AreEqual(372701090, data.BusinessInterest);
+            Assert.AreEqual(389845336, data.NetProfitTaxFree);
+            Assert.AreEqual(345343809, data.NetProfitTaxed);
+            Assert.AreEqual(13.32M, data.EPS, "每股盈餘(EPS)");
+            Assert.AreEqual(9.42M, data.SEPS, "單季每股盈餘(EPS)");
         }
         [TestMethod]
         public void GetStockReportBalanceTest_109Q1()
