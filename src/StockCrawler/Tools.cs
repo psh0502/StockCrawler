@@ -94,9 +94,11 @@ namespace StockCrawler.Services
                 DateTime target_monthend_date = DateTime.MinValue;
                 foreach (var d in list)
                 {
-                    if (target_weekend_date == DateTime.MinValue) 
+                    if (target_weekend_date == DateTime.MinValue)
+                    {
                         target_weekend_date = d.StockDT.AddDays(5 - (int)d.StockDT.DayOfWeek);
-
+                        _logger.Debug($"target_weekend_date:{target_weekend_date:yyyy-MM-dd}");
+                    }
                     if (d.StockDT >= target_weekend_date)
                     {
                         // 週 K
@@ -117,11 +119,14 @@ namespace StockCrawler.Services
                             });
 
                         target_weekend_date = target_weekend_date.AddDays(7);
+                        _logger.Debug($"target_weekend_date:{target_weekend_date:yyyy-MM-dd}");
                     }
 
                     if (target_monthend_date == DateTime.MinValue)
+                    {
                         target_monthend_date = new DateTime(d.StockDT.Year, d.StockDT.Month, 1).AddMonths(1).AddDays(-1);
-
+                        _logger.Debug($"target_monthend_date:{target_monthend_date:yyyy-MM-dd}");
+                    }
                     if (d.StockDT >= target_monthend_date)
                     {
                         // 月 K
@@ -140,7 +145,8 @@ namespace StockCrawler.Services
                                 Period = 20,
                                 AdjClosePrice = 0
                             });
-                        target_monthend_date = bgnDate.AddMonths(1).AddDays(-1);
+                        target_monthend_date = bgnDate.AddMonths(2).AddDays(-1);
+                        _logger.Debug($"target_monthend_date:{target_monthend_date:yyyy-MM-dd}");
                     }
                     {
                         // 週線

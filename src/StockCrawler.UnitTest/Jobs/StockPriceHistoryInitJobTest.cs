@@ -83,7 +83,7 @@ namespace StockCrawler.UnitTest.Jobs
                 {
                     short period = 5;
                     int? pageCount = null;
-                    var data = db.GetStockPriceHistory(stockNo, new DateTime(2020, 3, 1), new DateTime(2020, 4, 1), period, 100, 1, 10, ref pageCount).ToList();
+                    var data = db.GetStockPriceHistory(stockNo, new DateTime(2020, 3, 1), new DateTime(2020, 3, 28), period, 100, 1, 10, ref pageCount).ToList();
                     Assert.AreEqual(4, data.Count);
                     Assert.AreEqual(1, pageCount);
                     var d1 = data.First();

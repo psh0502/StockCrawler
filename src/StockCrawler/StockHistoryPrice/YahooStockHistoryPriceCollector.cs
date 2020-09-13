@@ -18,7 +18,6 @@ namespace StockCrawler.Services.StockHistoryPrice
             try
             {
                 var csv_data = DownloadYahooStockCSV(stockNo, bgnDate, endDate);
-                _logger.Debug(csv_data);
                 var csv_lines = CsvReader.ParseLines(csv_data).Skip(1);
 
                 var list = new List<GetStockPriceHistoryResult>();
