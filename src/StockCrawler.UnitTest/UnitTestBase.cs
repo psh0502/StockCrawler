@@ -11,18 +11,19 @@ namespace StockCrawler.UnitTest
         [TestInitialize]
         public virtual void Init()
         {
+            SqlTool.ConnectionString = ConnectionStringHelper.StockConnectionString;
+            SqlTool.ExecuteSql("TRUNCATE TABLE StockAveragePrice");
+            SqlTool.ExecuteSql("TRUNCATE TABLE StockPriceHistory");
+            SqlTool.ExecuteSql("TRUNCATE TABLE StockBasicInfo");
+            SqlTool.ExecuteSql("TRUNCATE TABLE StockReportCashFlow");
+            SqlTool.ExecuteSql("TRUNCATE TABLE StockReportIncome");
+            SqlTool.ExecuteSql("TRUNCATE TABLE StockReportBalance");
+            SqlTool.ExecuteSql("TRUNCATE TABLE StockReportMonthlyNetProfitTaxed");
+            SqlTool.ExecuteSql("DELETE Stock");
+
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
-            {
-                db.ExecuteCommand("TRUNCATE TABLE StockAveragePrice");
-                db.ExecuteCommand("TRUNCATE TABLE StockPriceHistory");
-                db.ExecuteCommand("TRUNCATE TABLE StockBasicInfo");
-                db.ExecuteCommand("TRUNCATE TABLE StockReportCashFlow");
-                db.ExecuteCommand("TRUNCATE TABLE StockReportIncome");
-                db.ExecuteCommand("TRUNCATE TABLE StockReportBalance");
-                db.ExecuteCommand("TRUNCATE TABLE StockReportMonthlyNetProfitTaxed");
-                db.ExecuteCommand("DELETE Stock");
                 db.InsertOrUpdateStock("2330", "台積電");
-            }
+
             Tools._logger = new UnitTestLogger();
             TwseCollectorBase._logger = new UnitTestLogger();
         }

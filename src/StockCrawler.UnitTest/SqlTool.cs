@@ -30,6 +30,7 @@ namespace StockCrawler.UnitTest
                 sql = sr.ReadToEnd();
 
             sql = sql.Replace("GO\r\n", string.Empty);
+            if (sql.EndsWith("GO")) sql = sql.Substring(0, sql.Length - 2);
 
             ExecuteSql(sql);
         }

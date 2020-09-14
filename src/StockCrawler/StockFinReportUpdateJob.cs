@@ -96,10 +96,12 @@ namespace StockCrawler.Services
             if (null != info)
             {
                 DateTime bgnDate = new DateTime(year + 1911, month, 1);
-                var monthly_price = db.GetStockAveragePrice(stockNo, bgnDate, bgnDate.AddMonths(1).AddDays(-1), (short)20).OrderByDescending(x => x.StockDT).First().ClosePrice;
+                var monthly_price = db.GetStockAveragePrice(stockNo, bgnDate, bgnDate.AddMonths(1).AddDays(-1), 20).OrderByDescending(x => x.StockDT).First().ClosePrice;
                 var last_4_eps_sum = GetLast4SeasonsEPSSum(db, stockNo, year, month);
-                // 月均價 / 近4季EPS總和
-                info.PE = monthly_price / last_4_eps_sum;
+                Logger.Debug("monthly_price: " + monthly_price);
+                Logger.Debug("last_4_eps_sum: " + last_4_eps_sum);
+                // 本益比 = 月均價 / 近4季EPS總和
+                info.PE = (last_4_eps_sum == 0) ? 0 : monthly_price / last_4_eps_sum;
                 db.InsertOrUpdateStockMonthlyNetProfitTaxedReport(info);
                 Logger.InfoFormat("[{0}] get its monthly net profit report(year={1}/month={2})", stockNo, year, month);
                 return true;
@@ -133,7 +135,6 @@ namespace StockCrawler.Services
             decimal sum = eps.Sum();
             return sum;
         }
-
         private static bool GetIncomeIntoDatabase(IStockDataService db, IStockReportCollector collector, string stockNo, short year, short season)
         {
             var info = collector.GetStockReportIncome(stockNo, year, season);

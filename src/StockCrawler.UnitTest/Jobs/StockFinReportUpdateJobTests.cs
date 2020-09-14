@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Common.Logging;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Quartz;
 using StockCrawler.Dao;
 using StockCrawler.Services;
@@ -10,11 +11,25 @@ namespace StockCrawler.UnitTest.Jobs
     [TestClass]
     public class StockFinReportUpdateJobTests : UnitTestBase
     {
-        [TestInitialize]
-        public override void Init()
+        [ClassInitialize]
+        public static void ClassInitInit(TestContext param)
         {
-            base.Init();
+            Tools._logger = new UnitTestLogger();
+            TwseCollectorBase._logger = new UnitTestLogger();
+
             SqlTool.ConnectionString = ConnectionStringHelper.StockConnectionString;
+            SqlTool.ExecuteSql("TRUNCATE TABLE StockAveragePrice");
+            SqlTool.ExecuteSql("TRUNCATE TABLE StockPriceHistory");
+            SqlTool.ExecuteSql("TRUNCATE TABLE StockBasicInfo");
+            SqlTool.ExecuteSql("TRUNCATE TABLE StockReportCashFlow");
+            SqlTool.ExecuteSql("TRUNCATE TABLE StockReportIncome");
+            SqlTool.ExecuteSql("TRUNCATE TABLE StockReportBalance");
+            SqlTool.ExecuteSql("TRUNCATE TABLE StockReportMonthlyNetProfitTaxed");
+            SqlTool.ExecuteSql("DELETE Stock");
+
+            using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
+                db.InsertOrUpdateStock("2330", "台積電");
+
             SqlTool.ExecuteSql(@"INSERT [dbo].[StockBasicInfo]
                     ([StockNo],[Category],[CompanyName],[CompanyID]
                     ,[BuildDate],[PublishDate],[Capital]
@@ -26,7 +41,8 @@ namespace StockCrawler.UnitTest.Jobs
                     , '25930380458', N'劉德音', N'總裁: 魏哲家', 'http://www.tsmc.com'
                     , N'依客戶之訂單與其提供之產品設計說明，以從事製造與銷售積體電路以及其他晶圓半導體裝置。提供前述產品之封裝與測試服務、積體電路之電腦輔助設計技術服務。提供製造光罩及其設計服務。')
                 ");
-            SqlTool.ExecuteSqlFile(@"..\..\..\StockCrawler.UnitTest\TestData\DailyPriceTestData_10704_10903.sql");
+            SqlTool.ExecuteSqlFile(@"..\..\..\StockCrawler.UnitTest\TestData\DailyPriceTestingData.sql");
+            SqlTool.ExecuteSqlFile(@"..\..\..\StockCrawler.UnitTest\TestData\DailyAveragePriceTestingData.sql");
             Services.SystemTime.SetFakeTime(new DateTime(2020, 4, 6));
             StockFinReportUpdateJob.Logger = new UnitTestLogger();
             StockFinReportUpdateJob target = new StockFinReportUpdateJob
@@ -36,6 +52,7 @@ namespace StockCrawler.UnitTest.Jobs
             IJobExecutionContext context = null;
             target.Execute(context);
         }
+        public override void Init() { }
         [TestMethod]
         public void 現金流量表_CashflowTest()
         {
