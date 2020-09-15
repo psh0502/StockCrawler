@@ -139,8 +139,9 @@
   <ItemGroup>
     <Content Include="AuthoringTests.txt" />
     <Content Include="TestData\DailyAveragePriceTestingData.sql" />
+    <Content Include="TestData\DailyPriceTestingData_1090326.sql" />
     <Content Include="TestData\FinanceTestData.sql" />
-    <Content Include="TestData\DailyPriceTestingData.sql" />
+    <Content Include="TestData\DailyPriceTestingData_1090406.sql" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StockCrawler.Dao\StockCrawler.Dao.csproj">

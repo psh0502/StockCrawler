@@ -9,6 +9,7 @@ SELECT '(''' + [StockNo] + ''', '''
 + CONVERT(VARCHAR, [AdjClosePrice]) + ', ' 
 + CONVERT(VARCHAR, [Volume]) + '),'
 FROM [dbo].[StockPriceHistory](NOLOCK)
+GO
 */
 
 INSERT StockPriceHistory(StockNo, StockDT, [Period], OpenPrice, HighPrice, LowPrice, ClosePrice, AdjClosePrice, Volume)

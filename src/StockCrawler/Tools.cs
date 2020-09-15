@@ -101,7 +101,7 @@ namespace StockCrawler.Services
                     {
                         // 週 K
                         DateTime bgnDate = target_weekend_date.AddDays(-4);
-                        var data = db.GetStockPeriodPrice(d.StockNo, bgnDate, target_weekend_date).ToList();
+                        var data = db.GetStockPeriodPrice(d.StockNo, bgnDate, target_weekend_date).Where(x => x.Period == 1).ToList();
                         if (data.Any())
                             K5_list.Add(new GetStockPriceHistoryResult()
                             {
@@ -129,7 +129,7 @@ namespace StockCrawler.Services
                     {
                         // 月 K
                         DateTime bgnDate = new DateTime(target_monthend_date.Year, target_monthend_date.Month, 1);
-                        var data = db.GetStockPeriodPrice(d.StockNo, bgnDate, target_monthend_date).ToList();
+                        var data = db.GetStockPeriodPrice(d.StockNo, bgnDate, target_monthend_date).Where(x => x.Period == 1).ToList();
                         if (data.Any())
                             K20_list.Add(new GetStockPriceHistoryResult()
                             {

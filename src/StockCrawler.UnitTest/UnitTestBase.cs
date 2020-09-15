@@ -9,7 +9,7 @@ namespace StockCrawler.UnitTest
     {
         protected static readonly ILog _logger = new UnitTestLogger();
         [TestInitialize]
-        public virtual void Init()
+        public virtual void InitBeforeTest()
         {
             SqlTool.ConnectionString = ConnectionStringHelper.StockConnectionString;
             SqlTool.ExecuteSql("TRUNCATE TABLE StockAveragePrice");
