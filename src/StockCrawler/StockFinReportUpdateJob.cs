@@ -70,7 +70,7 @@ namespace StockCrawler.Services
                             year = BeginYear;
                             month = 1;
                         }
-                        if (month <= 0) { month = 1; year -= 1; }
+                        if (month <= 0) { month = 12; year -= 1; }
                         for (; year <= now_year; year++)
                         {
                             for (; month <= 12 && !(year == now_year && month == now_month); month++)
@@ -98,8 +98,8 @@ namespace StockCrawler.Services
                 DateTime bgnDate = new DateTime(year + 1911, month, 1);
                 var monthly_price = db.GetStockAveragePrice(stockNo, bgnDate, bgnDate.AddMonths(1).AddDays(-1), 20).OrderByDescending(x => x.StockDT).First().ClosePrice;
                 var last_4_eps_sum = GetLast4SeasonsEPSSum(db, stockNo, year, month);
-                Logger.Debug("monthly_price: " + monthly_price);
-                Logger.Debug("last_4_eps_sum: " + last_4_eps_sum);
+                Logger.DebugFormat("[{1}{2}]monthly_price: {0}", monthly_price, year, month);
+                Logger.DebugFormat("[{1}{2}]last_4_eps_sum: {0}", last_4_eps_sum, year, month);
                 // 本益比 = 月均價 / 近4季EPS總和
                 info.PE = (last_4_eps_sum == 0) ? 0 : monthly_price / last_4_eps_sum;
                 db.InsertOrUpdateStockMonthlyNetProfitTaxedReport(info);
@@ -138,6 +138,13 @@ namespace StockCrawler.Services
         private static bool GetIncomeIntoDatabase(IStockDataService db, IStockReportCollector collector, string stockNo, short year, short season)
         {
             var info = collector.GetStockReportIncome(stockNo, year, season);
+            info.SEPS = info.EPS;
+            if (season > 1)
+            {
+                var result_last_season = collector.GetStockReportIncome(stockNo, year, (short)(season - 1));
+                info.SEPS -= result_last_season.EPS;
+            }
+
             if (null != info)
             {
                 db.InsertOrUpdateStockIncomeReport(info);
@@ -170,6 +177,10 @@ namespace StockCrawler.Services
             var info = collector.GetStockReportBalance(stockNo, year, season);
             if (null != info)
             {
+                var basicInfo = db.GetStockBasicInfo(stockNo);
+                if (null != basicInfo)
+                    info.NAV = info.NetWorth * 1000 / basicInfo.ReleaseStockCount;
+
                 db.InsertOrUpdateStockBalanceReport(info);
                 Logger.InfoFormat("[{0}] get its balance report(year={1}/season={2})", stockNo, year, season);
                 return true;

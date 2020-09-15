@@ -197,5 +197,10 @@ namespace StockCrawler.Dao
             using (var db = GetMSSQLStockDataContext())
                 return db.GetStockReportIncome(stockNo, year, season).SingleOrDefault();
         }
+        public GetStockBasicInfoResult GetStockBasicInfo(string stockNo)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                return db.GetStockBasicInfo(stockNo).SingleOrDefault();
+        }
     }
 }

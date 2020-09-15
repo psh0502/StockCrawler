@@ -1,6 +1,7 @@
 ﻿using Common.Logging;
 using HtmlAgilityPack;
 using StockCrawler.Dao;
+using System.Threading;
 
 namespace StockCrawler.Services.StockFinanceReport
 {
@@ -29,12 +30,8 @@ namespace StockCrawler.Services.StockFinanceReport
             var result = TransformNodeToIncomeRow(tableNode);
             result.StockNo = stockNo;
             result.Year = year;
-            result.Season = season;
-            if (season > 1)
-            {
-                var result_last_season = TransformNodeToIncomeRow(GetTwseDataBack(url, stockNo, year, (short)(season - 1)));
-                result.SEPS -= result_last_season.EPS;
-            }
+            result.Season = season; 
+
             return result;
         }
         public virtual GetStockReportBalanceResult GetStockReportBalance(string stockNo, short year, short season)
@@ -49,13 +46,25 @@ namespace StockCrawler.Services.StockFinanceReport
         }
         public virtual GetStockReportMonthlyNetProfitTaxedResult GetStockReportMonthlyNetProfitTaxed(string stockNo, short year, short month)
         {
-            var url = "https://mops.twse.com.tw/mops/web/ajax_t05st10_ifrs";
-            var tableNode = GetTwseDataBack(url, stockNo, year, month: month, xpath: _xpath_02);
-            var result = TransformNodeToMonlyNetProfitTaxedRow(tableNode);
-            result.StockNo = stockNo;
-            result.Year = year;
-            result.Month = month;
-            return result;
+            for (int i = 0; i < 3; i++)
+            {
+                try
+                {
+                    var url = "https://mops.twse.com.tw/mops/web/ajax_t05st10_ifrs";
+                    var tableNode = GetTwseDataBack(url, stockNo, year, month: month, xpath: _xpath_02);
+                    var result = TransformNodeToMonlyNetProfitTaxedRow(tableNode);
+                    result.StockNo = stockNo;
+                    result.Year = year;
+                    result.Month = month;
+                    return result;
+                }
+                catch (WebsiteGetPissOffException ex)
+                {
+                    _logger.Info(ex.Message);
+                    Thread.Sleep(10 * 1000);
+                }
+            }
+            return null;
         }
         private static GetStockReportCashFlowResult TransformNodeToCashflowRow(HtmlNode bodyNode)
         {
@@ -75,7 +84,7 @@ namespace StockCrawler.Services.StockFinanceReport
         }
         private static GetStockReportIncomeResult TransformNodeToIncomeRow(HtmlNode bodyNode)
         {
-            var result = new GetStockReportIncomeResult()
+            return new GetStockReportIncomeResult()
             {
                 Revenue = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "營業收入合計")),
                 GrossProfit = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "營業毛利")),
@@ -88,8 +97,6 @@ namespace StockCrawler.Services.StockFinanceReport
                 NetProfitTaxed = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "本期淨利")),
                 EPS = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "　基本每股盈餘")),
             };
-            result.SEPS = result.EPS;
-            return result;
         }
         private static GetStockReportBalanceResult TransformNodeToBalanceRow(HtmlNode bodyNode)
         {

@@ -1,5 +1,4 @@
-﻿using Common.Logging;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Quartz;
 using StockCrawler.Dao;
 using StockCrawler.Services;
@@ -11,11 +10,13 @@ namespace StockCrawler.UnitTest.Jobs
     [TestClass]
     public class StockFinReportUpdateJobTests : UnitTestBase
     {
+        private static bool IsExecuted = false;
         [ClassInitialize]
         public static void ClassInitInit(TestContext param)
         {
             Tools._logger = new UnitTestLogger();
             TwseCollectorBase._logger = new UnitTestLogger();
+            Services.SystemTime.SetFakeTime(new DateTime(2020, 4, 6));
 
             SqlTool.ConnectionString = ConnectionStringHelper.StockConnectionString;
             SqlTool.ExecuteSql("TRUNCATE TABLE StockAveragePrice");
@@ -38,21 +39,18 @@ namespace StockCrawler.UnitTest.Jobs
                 VALUES
                     ('2330', N'半導體業', N'台灣積體電路製造股份有限公司', '22099131'
                     , '1987-02-21', '1994-09-05', 259303804580.00
-                    , '25930380458', N'劉德音', N'總裁: 魏哲家', 'http://www.tsmc.com'
+                    , 25930380458, N'劉德音', N'總裁: 魏哲家', 'http://www.tsmc.com'
                     , N'依客戶之訂單與其提供之產品設計說明，以從事製造與銷售積體電路以及其他晶圓半導體裝置。提供前述產品之封裝與測試服務、積體電路之電腦輔助設計技術服務。提供製造光罩及其設計服務。')
                 ");
             SqlTool.ExecuteSqlFile(@"..\..\..\StockCrawler.UnitTest\TestData\DailyPriceTestingData.sql");
             SqlTool.ExecuteSqlFile(@"..\..\..\StockCrawler.UnitTest\TestData\DailyAveragePriceTestingData.sql");
-            Services.SystemTime.SetFakeTime(new DateTime(2020, 4, 6));
-            StockFinReportUpdateJob.Logger = new UnitTestLogger();
-            StockFinReportUpdateJob target = new StockFinReportUpdateJob
-            {
-                BeginYear = 108
-            };
-            IJobExecutionContext context = null;
-            target.Execute(context);
         }
-        public override void Init() { }
+        [TestInitialize]
+        public override void Init()
+        {
+            if (!IsExecuted)
+                ExecuteTest();
+        }
         [TestMethod]
         public void 現金流量表_CashflowTest()
         {
@@ -143,11 +141,11 @@ namespace StockCrawler.UnitTest.Jobs
             }
         }
         [TestMethod]
-        public void 月營業收報表_MonthlyNetProfitTaxedTest()
+        public void 月營業收報表_MonthlyNetProfitTaxedTest_10903()
         {
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
             {
-                var data = db.GetStockReportMonthlyNetProfitTaxed("2330", (short)(Services.SystemTime.Today.Year - 1911), 3).ToList();
+                var data = db.GetStockReportMonthlyNetProfitTaxed("2330", 109, 3).ToList();
                 Assert.AreEqual(1, data.Count, "資料筆數");
                 var d1 = data.First();
 
@@ -163,7 +161,46 @@ namespace StockCrawler.UnitTest.Jobs
                 Assert.AreEqual(91892714, d1.TillThisMonthDelta);
                 Assert.AreEqual((decimal)(42.02 / 100), d1.TillThisMonthDeltaPercent);
                 Assert.AreEqual(string.Empty, d1.Remark);
-                Assert.AreEqual(21.51M, d1.PE, "本益比");
+                Assert.AreEqual(21.2969M, d1.PE, "本益比");
+            }
+        }
+        [TestMethod]
+        public void 月營業收報表_MonthlyNetProfitTaxedTest_10812()
+        {
+            using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
+            {
+                var data = db.GetStockReportMonthlyNetProfitTaxed("2330", 108, 12).ToList();
+                Assert.AreEqual(1, data.Count, "資料筆數");
+                var d1 = data.First();
+
+                Assert.AreEqual("2330", d1.StockNo);
+                Assert.AreEqual(108, d1.Year);
+                Assert.AreEqual(12, d1.Month);
+                Assert.AreEqual(103313138M, d1.NetProfitTaxed);
+                Assert.AreEqual(89830598M, d1.LastYearNetProfitTaxed);
+                Assert.AreEqual(13482540M, d1.Delta);
+                Assert.AreEqual(0.1501M, d1.DeltaPercent);
+                Assert.AreEqual(1069985448M, d1.ThisYearTillThisMonth);
+                Assert.AreEqual(1031473557M, d1.LastYearTillThisMonth);
+                Assert.AreEqual(38511891M, d1.TillThisMonthDelta);
+                Assert.AreEqual(0.0373M, d1.TillThisMonthDeltaPercent);
+                Assert.AreEqual(string.Empty, d1.Remark);
+                Assert.AreEqual(23.4821M, d1.PE, "本益比");
+            }
+        }
+        [TestMethod]
+        public void ExecuteTest()
+        {
+            if (!IsExecuted)
+            {
+                StockFinReportUpdateJob.Logger = new UnitTestLogger();
+                StockFinReportUpdateJob target = new StockFinReportUpdateJob
+                {
+                    BeginYear = 107
+                };
+                IJobExecutionContext context = null;
+                target.Execute(context);
+                IsExecuted = true;
             }
         }
     }

@@ -64,7 +64,6 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual(389845336, data.NetProfitTaxFree);
             Assert.AreEqual(345343809, data.NetProfitTaxed);
             Assert.AreEqual(13.32M, data.EPS, "每股盈餘(EPS)");
-            Assert.AreEqual(9.42M, data.SEPS, "單季每股盈餘(EPS)");
         }
         [TestMethod]
         public void GetStockReportBalanceTest_109Q1()

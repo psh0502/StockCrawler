@@ -39,7 +39,6 @@ namespace StockCrawler.Services
                 using (var reqStream = req.GetRequestStream())
                     reqStream.Write(byteArray, 0, byteArray.Length);
             }
-            _logger.Debug($"req.ContentLength={req.ContentLength}");
             using (var res1 = req.GetResponse())
             {
                 string cookies_string = res1.Headers["Set-Cookie"];
@@ -48,7 +47,6 @@ namespace StockCrawler.Services
                     var cookie_str = cookies_string.Split(';');
                     foreach (var c in cookie_str)
                     {
-                        _logger.Debug($"c={c}");
                         var ck = c.Split('=');
                         if (ck.Length > 1)
                             respCookies.Add(new Cookie
@@ -187,7 +185,7 @@ namespace StockCrawler.Services
         }
         public static short GetSeason(int month)
         {
-            return (short)(month / 3 + 1);
+            return (short)(month / 3 + (month % 3 == 0 ? 0 : 1));
         }
     }
 }

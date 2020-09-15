@@ -139,7 +139,7 @@
   <ItemGroup>
     <Content Include="AuthoringTests.txt" />
     <Content Include="TestData\DailyAveragePriceTestingData.sql" />
-    <Content Include="TestData\FinanceTestData_10704_10903.sql" />
+    <Content Include="TestData\FinanceTestData.sql" />
     <Content Include="TestData\DailyPriceTestingData.sql" />
   </ItemGroup>
   <ItemGroup>

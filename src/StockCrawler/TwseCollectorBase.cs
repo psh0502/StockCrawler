@@ -51,6 +51,17 @@ namespace StockCrawler.Services
             else
                 throw new InvalidCastException(typeof(T).Name + " is not defined in GetNodeTextTo.");
         }
+        /// <summary>
+        /// 取得 TWSE HTML 的資料節點
+        /// </summary>
+        /// <param name="url">網址</param>
+        /// <param name="stockNo">股票代碼</param>
+        /// <param name="year">中華民國年度</param>
+        /// <param name="season">季度</param>
+        /// <param name="month">月份</param>
+        /// <param name="xpath">搜尋資料的 xpath 提示</param>
+        /// <returns>含有資料的 html 節點</returns>
+        /// <exception cref="WebsiteGetPissOffException">網站讀取過於頻繁, 需要稍等後再讀取</exception>
         protected static HtmlNode GetTwseDataBack(string url, string stockNo, short year = -1, short season = -1, short month = -1, string xpath = _xpath_01)
         {
             var formData = HttpUtility.ParseQueryString(string.Empty);
@@ -68,11 +79,8 @@ namespace StockCrawler.Services
             _logger.Debug("formData=" + formData.ToString());
 
             var html = Tools.DownloadStringData(new Uri(url), Encoding.UTF8, out _, "application/x-www-form-urlencoded", null, "POST", formData);
-            if (html.Contains("Overrun"))
-            {
-                _logger.InfoFormat("The target[{0}] is pissed off....wait a second...", stockNo);
-                Thread.Sleep(10 * 1000);
-            }
+            if (html.Contains("Overrun") || html.Contains("請稍後再試"))
+                throw new WebsiteGetPissOffException(string.Format("The target[{0}] is pissed off....wait a second...", stockNo));
 
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(html);

@@ -27,7 +27,7 @@ namespace StockCrawler.UnitTest.Jobs
                     , N'依客戶之訂單與其提供之產品設計說明，以從事製造與銷售積體電路以及其他晶圓半導體裝置。提供前述產品之封裝與測試服務、積體電路之電腦輔助設計技術服務。提供製造光罩及其設計服務。')
                 ");
             SqlTool.ConnectionString = ConnectionStringHelper.StockConnectionString;
-            SqlTool.ExecuteSqlFile(@"..\..\..\StockCrawler.UnitTest\TestData\DailyPriceTestData_10704_10903.sql");
+            SqlTool.ExecuteSqlFile(@"..\..\..\StockCrawler.UnitTest\TestData\DailyPriceTestingData.sql");
         }
         [TestMethod]
         public void ExecuteTest()
