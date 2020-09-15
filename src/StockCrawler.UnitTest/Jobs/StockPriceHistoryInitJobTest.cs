@@ -63,22 +63,22 @@ namespace StockCrawler.UnitTest.Jobs
                     Assert.AreEqual(263.5M, d1.OpenPrice, "週開盤價");
                     Assert.AreEqual(276.5M, d1.HighPrice, "週最高價");
                     Assert.AreEqual(262.5M, d1.LowPrice, "週最低價");
-                    Assert.AreEqual(142511, d1.Volume, "週成交量");
+                    Assert.AreEqual(151819, d1.Volume, "週成交量");
                 }
                 {
                     short period = 20;
                     int? pageCount = null;
-                    var data = db.GetStockPriceHistory(stockNo, new DateTime(2019, 12, 1), new DateTime(2019, 12, 31), period, 100, 1, 10, ref pageCount).ToList();
+                    var data = db.GetStockPriceHistory("2330", new DateTime(2020, 3, 1), new DateTime(2020, 3, 31), period, 100, 1, 10, ref pageCount).ToList();
                     Assert.AreEqual(1, data.Count);
                     Assert.AreEqual(1, pageCount);
                     var d1 = data.First();
-                    Assert.AreEqual(new DateTime(2019, 12, 1), d1.StockDT);
-                    Assert.AreEqual(stockNo, d1.StockNo);
-                    Assert.AreEqual(331M, d1.ClosePrice, "月收盤價");
-                    Assert.AreEqual(307M, d1.OpenPrice, "月開盤價");
-                    Assert.AreEqual(345M, d1.HighPrice, "月最高價");
-                    Assert.AreEqual(304M, d1.LowPrice, "月最低價");
-                    Assert.AreEqual(659082, d1.Volume, "月成交量");
+                    Assert.AreEqual("2330", d1.StockNo);
+                    Assert.AreEqual(new DateTime(2020, 3, 1), d1.StockDT);
+                    Assert.AreEqual(274M, d1.ClosePrice);
+                    Assert.AreEqual(308M, d1.OpenPrice);
+                    Assert.AreEqual(326M, d1.HighPrice);
+                    Assert.AreEqual(235.50M, d1.LowPrice);
+                    Assert.AreEqual(1875940, d1.Volume);
                 }
                 {
                     short period = 5;
@@ -93,7 +93,7 @@ namespace StockCrawler.UnitTest.Jobs
                     Assert.AreEqual(257M, d1.OpenPrice, "週開盤價");
                     Assert.AreEqual(286M, d1.HighPrice, "週最高價");
                     Assert.AreEqual(252M, d1.LowPrice, "週最低價");
-                    Assert.AreEqual(359462, d1.Volume, "週成交量");
+                    Assert.AreEqual(360030, d1.Volume, "週成交量");
                 }
             }
         }
