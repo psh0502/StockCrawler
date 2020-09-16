@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace StockCrawler.Services.StockHistoryPrice
+namespace StockCrawler.Services.Collectors
 {
     public interface IStockHistoryPriceCollector
     {

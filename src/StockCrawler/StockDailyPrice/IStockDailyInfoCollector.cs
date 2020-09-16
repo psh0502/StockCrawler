@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace StockCrawler.Services.StockDailyPrice
+namespace StockCrawler.Services.Collectors
 {
     public interface IStockDailyInfoCollector
     {

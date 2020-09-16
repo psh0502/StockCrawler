@@ -1,5 +1,5 @@
 ﻿using StockCrawler.Dao;
-using StockCrawler.Services.StockFinanceReport;
+using StockCrawler.Services.Collectors;
 using System.Collections.Generic;
 using System.Linq;
 

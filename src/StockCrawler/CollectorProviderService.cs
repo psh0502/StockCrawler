@@ -1,8 +1,5 @@
 ﻿using Microsoft.Practices.Unity.Configuration;
-using StockCrawler.Services.StockBasicInfo;
-using StockCrawler.Services.StockDailyPrice;
-using StockCrawler.Services.StockFinanceReport;
-using StockCrawler.Services.StockHistoryPrice;
+using StockCrawler.Services.Collectors;
 using Unity;
 
 namespace StockCrawler.Services

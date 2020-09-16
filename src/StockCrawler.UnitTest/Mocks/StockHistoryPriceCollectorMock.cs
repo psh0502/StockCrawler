@@ -1,4 +1,4 @@
-﻿using StockCrawler.Services.StockHistoryPrice;
+﻿using StockCrawler.Services.Collectors;
 using System;
 using System.IO;
 

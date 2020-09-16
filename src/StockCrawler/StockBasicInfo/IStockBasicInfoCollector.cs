@@ -1,6 +1,6 @@
 ﻿using StockCrawler.Dao;
 
-namespace StockCrawler.Services.StockBasicInfo
+namespace StockCrawler.Services.Collectors
 {
     public interface IStockBasicInfoCollector
     {

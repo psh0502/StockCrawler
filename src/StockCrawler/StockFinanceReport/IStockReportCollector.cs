@@ -1,6 +1,6 @@
 ﻿using StockCrawler.Dao;
 
-namespace StockCrawler.Services.StockFinanceReport
+namespace StockCrawler.Services.Collectors
 {
     /// <summary>
     /// 收集股票財務資訊的收集器介面

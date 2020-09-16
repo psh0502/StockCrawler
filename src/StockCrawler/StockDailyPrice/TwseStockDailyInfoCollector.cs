@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 
-namespace StockCrawler.Services.StockDailyPrice
+namespace StockCrawler.Services.Collectors
 {
     internal class TwseStockDailyInfoCollector : IStockDailyInfoCollector
     {

@@ -3,7 +3,7 @@ using HtmlAgilityPack;
 using StockCrawler.Dao;
 using System.Threading;
 
-namespace StockCrawler.Services.StockFinanceReport
+namespace StockCrawler.Services.Collectors
 {
     internal class TwseReportCollector : TwseCollectorBase, IStockReportCollector
     {

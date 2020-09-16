@@ -8,7 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 
-namespace StockCrawler.Services.StockHistoryPrice
+namespace StockCrawler.Services.Collectors
 {
     internal class YaooStockHistoryPriceCollector : IStockHistoryPriceCollector
     {

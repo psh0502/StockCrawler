@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Web;
 
-namespace StockCrawler.Services
+namespace StockCrawler.Services.Collectors
 {
     internal abstract class GoodInfoCollectorBase
     {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StockCrawler.Services.StockFinanceReport;
+using StockCrawler.Services.Collectors;
 
 namespace StockCrawler.UnitTest.Collectors
 {

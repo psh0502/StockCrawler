@@ -1,4 +1,4 @@
-﻿using StockCrawler.Services.StockDailyPrice;
+﻿using StockCrawler.Services.Collectors;
 using System.Collections.Generic;
 
 namespace StockCrawler.UnitTest.Mocks
