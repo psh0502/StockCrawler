@@ -6,7 +6,6 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace StockCrawler.Services
