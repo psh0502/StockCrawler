@@ -134,6 +134,7 @@
     <Compile Include="StockBasicInfoUpdateJob.cs" />
     <Compile Include="StockFinanceReport\IStockReportCollector.cs" />
     <Compile Include="StockFinanceReport\TwseReportCollector.cs" />
+    <Compile Include="StockHistoryPrice\TwseStockHistoryPriceCollector.cs" />
     <Compile Include="StockHistoryPrice\YahooStockHistoryPriceCollector.cs" />
     <Compile Include="StockHistoryPrice\IStockHistoryPriceCollector.cs" />
     <Compile Include="StockPriceUpdateJob.cs" />

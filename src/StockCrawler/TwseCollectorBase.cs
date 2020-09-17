@@ -1,8 +1,8 @@
 ﻿using Common.Logging;
 using HtmlAgilityPack;
 using System;
+using System.Configuration;
 using System.Text;
-using System.Threading;
 using System.Web;
 
 namespace StockCrawler.Services
@@ -13,6 +13,7 @@ namespace StockCrawler.Services
         protected static readonly string UTF8SpacingChar = Encoding.UTF8.GetString(new byte[] { 0xC2, 0xA0 });
         protected const string _xpath_01 = "/html/body/center/table[2]";
         protected const string _xpath_02 = "/html/body/table[4]";
+        protected static readonly int _breakInternval = int.Parse(ConfigurationManager.AppSettings["CollectorBreakInternval"] ?? "0");
 
         protected static HtmlNode SearchValueNode(HtmlNode bodyNode, string keyword, int beginIndex = 5, string xpath1 = "./tr[{0}]/td[1]", string xpath2 = "./tr[{0}]/td[2]")
         {

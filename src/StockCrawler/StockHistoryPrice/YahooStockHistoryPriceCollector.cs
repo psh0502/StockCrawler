@@ -10,9 +10,9 @@ using System.Text;
 
 namespace StockCrawler.Services.Collectors
 {
-    internal class YaooStockHistoryPriceCollector : IStockHistoryPriceCollector
+    internal class YahooStockHistoryPriceCollector : IStockHistoryPriceCollector
     {
-        internal static ILog _logger = LogManager.GetLogger(typeof(YaooStockHistoryPriceCollector));
+        internal static ILog _logger = LogManager.GetLogger(typeof(YahooStockHistoryPriceCollector));
         public virtual IEnumerable<GetStockPriceHistoryResult> GetStockDailyPriceInfo(string stockNo, DateTime bgnDate, DateTime endDate)
         {
             try

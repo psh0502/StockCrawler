@@ -4,7 +4,7 @@ using System.IO;
 
 namespace StockCrawler.UnitTest.Mocks
 {
-    internal class StockHistoryPriceCollectorMock : YaooStockHistoryPriceCollector
+    internal class StockHistoryPriceCollectorMock : YahooStockHistoryPriceCollector
     {
         public StockHistoryPriceCollectorMock():base() {
             _logger = new UnitTestLogger();
