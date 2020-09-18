@@ -2,6 +2,7 @@
 using Quartz;
 using StockCrawler.Dao;
 using StockCrawler.Services;
+using StockCrawler.Services.Collectors;
 using System;
 using System.Linq;
 
@@ -26,6 +27,7 @@ namespace StockCrawler.UnitTest.Jobs
         [TestMethod]
         public void StockPriceUpdateTest()
         {
+            TwseStockDailyInfoCollector._logger = new UnitTestLogger();
             Services.SystemTime.SetFakeTime(new DateTime(2020, 3, 27));
             StockPriceUpdateJob.Logger = new UnitTestLogger();
             StockPriceUpdateJob target = new StockPriceUpdateJob();

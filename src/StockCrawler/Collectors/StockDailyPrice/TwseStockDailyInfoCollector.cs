@@ -61,20 +61,30 @@ namespace StockCrawler.Services.Collectors
                     }
                     // Generalize number fields data
                     for (int i = 2; i < data.Length; i++)
+                    {
                         if (!string.IsNullOrEmpty(data[i]))
-                            data[i] = data[i].Replace("--", "0").Replace(",", string.Empty);
+                            data[i] = data[i]
+                                .Replace("--", "0")
+                                .Replace(",", string.Empty)
+                                .Replace("+", string.Empty)
+                                .Replace("X", string.Empty)
+                                .Trim();
+
+                        _logger.DebugFormat("data[{0}]: {1}", i, data[i]);
+                    }
 
                     daily_info.Add(new GetStockPeriodPriceResult()
                     {
                         StockNo = data[0].Replace("=\"", string.Empty).Replace("\"", string.Empty),
                         StockName = data[1],
+                        Period = 1,
                         Volume = long.Parse(data[2]) / 1000,
                         StockDT = day,
                         OpenPrice = decimal.Parse(data[5]),
                         HighPrice = decimal.Parse(data[6]),
                         LowPrice = decimal.Parse(data[7]),
                         ClosePrice = decimal.Parse(data[8]),
-                        DeltaPrice = decimal.Parse(data[9].Replace("+", string.Empty)),
+                        DeltaPrice = data[9] == "-" || string.IsNullOrEmpty(data[9]) ? 0 : decimal.Parse(data[9]),
                     });
                 }
                 else
