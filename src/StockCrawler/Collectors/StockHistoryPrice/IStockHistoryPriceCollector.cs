@@ -6,6 +6,6 @@ namespace StockCrawler.Services.Collectors
 {
     public interface IStockHistoryPriceCollector
     {
-        IEnumerable<GetStockPriceHistoryResult> GetStockDailyPriceInfo(string stockNo, DateTime bgnDate, DateTime endDate);
+        IEnumerable<GetStockPeriodPriceResult> GetStockDailyPriceInfo(string stockNo, DateTime bgnDate, DateTime endDate);
     }
 }

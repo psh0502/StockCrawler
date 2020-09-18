@@ -11,7 +11,7 @@ namespace StockCrawler.Dao
             using (var db = GetMSSQLStockDataContext())
                 return db.GetStocks().ToList();
         }
-        public void InsertOrUpdateStockPriceHistory(IEnumerable<GetStockPriceHistoryResult> list)
+        public void InsertOrUpdateStockPrice(IEnumerable<GetStockPeriodPriceResult> list)
         {
             using (var db = GetMSSQLStockDataContext())
                 foreach (var d in list)
@@ -23,8 +23,8 @@ namespace StockCrawler.Dao
                         d.HighPrice,
                         d.LowPrice,
                         d.ClosePrice,
-                        d.Volume,
-                        d.AdjClosePrice);
+                        d.DeltaPrice,
+                        d.Volume);
         }
         public void RenewStockList(IEnumerable<GetStocksResult> list)
         {
@@ -164,7 +164,7 @@ namespace StockCrawler.Dao
             decimal? oAvgClosePrice = null;
 
             using (var db = GetMSSQLStockDataContext())
-                db.GetStockPriceAVG(
+                db.CalculateStockPriceAverage(
                     stockNo,
                     endDate,
                     period,
@@ -172,16 +172,16 @@ namespace StockCrawler.Dao
 
             return oAvgClosePrice ?? 0;
         }
-        public IEnumerable<GetStockPeriodPriceResult> GetStockPeriodPrice(string stockNo, DateTime bgnDate, DateTime endDate)
+        public IEnumerable<GetStockPeriodPriceResult> GetStockPeriodPrice(string stockNo, short period, DateTime bgnDate, DateTime endDate)
         {
             using (var db = GetMSSQLStockDataContext())
-                return db.GetStockPeriodPrice(stockNo, bgnDate, endDate).ToList();
+                return db.GetStockPeriodPrice(stockNo, period, bgnDate, endDate).ToList();
         }
         public void InsertOrUpdateStockAveragePrice(IEnumerable<(string StockNo, DateTime StockDT, short Period, decimal AveragePrice)> avgPriceList)
         {
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
                 foreach (var info in avgPriceList)
-                    db.InsertOrUpdateStockPriceAVG(
+                    db.InsertOrUpdateStockAveragePrice(
                         info.StockNo,
                         info.StockDT,
                         info.Period,

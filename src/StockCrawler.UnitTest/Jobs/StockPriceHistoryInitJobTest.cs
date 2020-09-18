@@ -38,7 +38,7 @@ namespace StockCrawler.UnitTest.Jobs
                 {
                     short period = 1;
                     int? pageCount = null;
-                    var data = db.GetStockPriceHistory(stockNo, today.AddYears(-1), today, period, 100, 1, 10, ref pageCount).ToList();
+                    var data = db.GetStockPriceHistoryPaging(stockNo, today.AddYears(-1), today, period, 100, 1, 10, ref pageCount).ToList();
                     Assert.AreEqual(10, data.Count);
                     Assert.AreEqual(10, pageCount);
                     var d1 = data.First();
@@ -53,7 +53,7 @@ namespace StockCrawler.UnitTest.Jobs
                 {
                     short period = 5;
                     int? pageCount = null;
-                    var data = db.GetStockPriceHistory(stockNo, new DateTime(2020, 3, 1), new DateTime(2020, 3, 31), period, 100, 1, 10, ref pageCount).ToList();
+                    var data = db.GetStockPriceHistoryPaging(stockNo, new DateTime(2020, 3, 1), new DateTime(2020, 3, 31), period, 100, 1, 10, ref pageCount).ToList();
                     Assert.AreEqual(5, data.Count);
                     Assert.AreEqual(1, pageCount);
                     var d1 = data.First();
@@ -68,7 +68,7 @@ namespace StockCrawler.UnitTest.Jobs
                 {
                     short period = 20;
                     int? pageCount = null;
-                    var data = db.GetStockPriceHistory("2330", new DateTime(2020, 3, 1), new DateTime(2020, 3, 31), period, 100, 1, 10, ref pageCount).ToList();
+                    var data = db.GetStockPriceHistoryPaging("2330", new DateTime(2020, 3, 1), new DateTime(2020, 3, 31), period, 100, 1, 10, ref pageCount).ToList();
                     Assert.AreEqual(1, data.Count);
                     Assert.AreEqual(1, pageCount);
                     var d1 = data.First();
@@ -83,7 +83,7 @@ namespace StockCrawler.UnitTest.Jobs
                 {
                     short period = 5;
                     int? pageCount = null;
-                    var data = db.GetStockPriceHistory(stockNo, new DateTime(2020, 3, 1), new DateTime(2020, 3, 28), period, 100, 1, 10, ref pageCount).ToList();
+                    var data = db.GetStockPriceHistoryPaging(stockNo, new DateTime(2020, 3, 1), new DateTime(2020, 3, 28), period, 100, 1, 10, ref pageCount).ToList();
                     Assert.AreEqual(4, data.Count);
                     Assert.AreEqual(1, pageCount);
                     var d1 = data.First();

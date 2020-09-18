@@ -17,8 +17,8 @@ CREATE TABLE [dbo].[StockPriceHistory](
 	[HighPrice] [decimal](10, 4) NOT NULL DEFAULT (0),
 	[LowPrice] [decimal](10, 4) NOT NULL DEFAULT (0),
 	[ClosePrice] [decimal](10, 4) NOT NULL DEFAULT (0),
-	[AdjClosePrice] [decimal](10, 4) NOT NULL DEFAULT (0),
-	[Volume] [bigint] NOT NULL DEFAULT (0),
+	[DeltaPrice] [decimal](10, 4) NOT NULL DEFAULT (0), -- 漲跌價差
+	[Volume] [bigint] NOT NULL DEFAULT (0), -- 成交股數
 	[CreatedAt] [datetime] NOT NULL DEFAULT (GETDATE()),
  CONSTRAINT [PK_StockPriceHistory] PRIMARY KEY CLUSTERED 
 (

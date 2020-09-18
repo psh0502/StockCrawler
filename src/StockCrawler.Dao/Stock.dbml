@@ -1,8 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Stock" Class="StockDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Stock;Integrated Security=True" SettingsObjectName="StockCrawler.Dao.Properties.Settings" SettingsPropertyName="StockConnectionString1" Provider="System.Data.SqlClient" />
-  <Function Name="dbo.DeleteStockPriceHistoryData" Method="DeleteStockPriceHistoryData">
+  <Function Name="dbo.CalculateStockPriceAverage" Method="CalculateStockPriceAverage">
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
-    <Parameter Name="pTradeDate" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="pDateEnd" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="pPeriod" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="oAvgClosePrice" Type="System.Decimal" DbType="Money" Direction="InOut" />
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.InsertOrUpdateStockReportMonthlyNetProfitTaxed" Method="InsertOrUpdateStockReportMonthlyNetProfitTaxed">
@@ -19,6 +21,11 @@
     <Parameter Name="pTillThisMonthDeltaPercent" Type="System.Decimal" DbType="Decimal(18,4)" />
     <Parameter Name="pRemark" Type="System.String" DbType="NVarChar(1000)" />
     <Parameter Name="pPE" Type="System.Decimal" DbType="Money" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.DeleteStockPriceHistoryData" Method="DeleteStockPriceHistoryData">
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pTradeDate" Type="System.DateTime" DbType="Date" />
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.DisableAllStocks" Method="DisableAllStocks">
@@ -61,9 +68,11 @@
   </Function>
   <Function Name="dbo.GetStockPeriodPrice" Method="GetStockPeriodPrice">
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pPeriod" Type="System.Int16" DbType="SmallInt" />
     <Parameter Name="pBeginDate" Type="System.DateTime" DbType="Date" />
     <Parameter Name="pEndDate" Type="System.DateTime" DbType="Date" />
     <ElementType Name="GetStockPeriodPriceResult">
+      <Column Name="StockName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="StockDT" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
       <Column Name="Period" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
@@ -71,19 +80,12 @@
       <Column Name="HighPrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
       <Column Name="LowPrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
       <Column Name="ClosePrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
-      <Column Name="AdjClosePrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
+      <Column Name="DeltaPrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
       <Column Name="Volume" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
       <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
-  <Function Name="dbo.GetStockPriceAVG" Method="GetStockPriceAVG">
-    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
-    <Parameter Name="pDateEnd" Type="System.DateTime" DbType="Date" />
-    <Parameter Name="pPeriod" Type="System.Int16" DbType="SmallInt" />
-    <Parameter Name="oAvgClosePrice" Type="System.Decimal" DbType="Money" Direction="InOut" />
-    <Return Type="System.Int32" />
-  </Function>
-  <Function Name="dbo.GetStockPriceHistory" Method="GetStockPriceHistory">
+  <Function Name="dbo.GetStockPriceHistoryPaging" Method="GetStockPriceHistoryPaging">
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
     <Parameter Name="pDateBegin" Type="System.DateTime" DbType="Date" />
     <Parameter Name="pDateEnd" Type="System.DateTime" DbType="Date" />
@@ -92,7 +94,7 @@
     <Parameter Name="pCurrentPage" Type="System.Int32" DbType="Int" />
     <Parameter Name="pPageSize" Type="System.Int32" DbType="Int" />
     <Parameter Name="oPageCount" Type="System.Int32" DbType="Int" Direction="InOut" />
-    <ElementType Name="GetStockPriceHistoryResult">
+    <ElementType Name="GetStockPriceHistoryPagingResult">
       <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="StockDT" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
       <Column Name="Period" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
@@ -100,7 +102,7 @@
       <Column Name="HighPrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
       <Column Name="LowPrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
       <Column Name="ClosePrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
-      <Column Name="AdjClosePrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
+      <Column Name="DeltaPrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
       <Column Name="Volume" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
       <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="RNO" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
@@ -223,6 +225,13 @@
     <Parameter Name="pStockName" Type="System.String" DbType="NVarChar(50)" />
     <Return Type="System.Int32" />
   </Function>
+  <Function Name="dbo.InsertOrUpdateStockAveragePrice" Method="InsertOrUpdateStockAveragePrice">
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pStockDT" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="pPeriod" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="pClosePrice" Type="System.Decimal" DbType="Money" />
+    <Return Type="System.Int32" />
+  </Function>
   <Function Name="dbo.InsertOrUpdateStockBasicInfo" Method="InsertOrUpdateStockBasicInfo">
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
     <Parameter Name="pCategory" Type="System.String" DbType="NVarChar(50)" />
@@ -238,13 +247,6 @@
     <Parameter Name="pBusiness" Type="System.String" DbType="NVarChar(1000)" />
     <Return Type="System.Int32" />
   </Function>
-  <Function Name="dbo.InsertOrUpdateStockPriceAVG" Method="InsertOrUpdateStockPriceAVG">
-    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
-    <Parameter Name="pStockDT" Type="System.DateTime" DbType="Date" />
-    <Parameter Name="pPeriod" Type="System.Int16" DbType="SmallInt" />
-    <Parameter Name="pClosePrice" Type="System.Decimal" DbType="Money" />
-    <Return Type="System.Int32" />
-  </Function>
   <Function Name="dbo.InsertOrUpdateStockPriceHistory" Method="InsertOrUpdateStockPriceHistory">
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(20)" />
     <Parameter Name="pStockDT" Type="System.DateTime" DbType="Date" />
@@ -253,8 +255,8 @@
     <Parameter Name="pHighPrice" Type="System.Decimal" DbType="Decimal(10,4)" />
     <Parameter Name="pLowPrice" Type="System.Decimal" DbType="Decimal(10,4)" />
     <Parameter Name="pClosePrice" Type="System.Decimal" DbType="Decimal(10,4)" />
+    <Parameter Name="pDeltaPrice" Type="System.Decimal" DbType="Decimal(10,4)" />
     <Parameter Name="pVolume" Type="System.Int64" DbType="BigInt" />
-    <Parameter Name="pAdjClosePrice" Type="System.Decimal" DbType="Decimal(10,4)" />
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.InsertOrUpdateStockReportBalance" Method="InsertOrUpdateStockReportBalance">

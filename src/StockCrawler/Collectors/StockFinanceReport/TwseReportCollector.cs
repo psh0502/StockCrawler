@@ -1,6 +1,7 @@
 ﻿using Common.Logging;
 using HtmlAgilityPack;
 using StockCrawler.Dao;
+using StockCrawler.Services.Exceptions;
 using System.Threading;
 
 namespace StockCrawler.Services.Collectors

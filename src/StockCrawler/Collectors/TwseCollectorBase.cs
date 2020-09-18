@@ -1,5 +1,6 @@
 ﻿using Common.Logging;
 using HtmlAgilityPack;
+using StockCrawler.Services.Exceptions;
 using System;
 using System.Configuration;
 using System.Text;

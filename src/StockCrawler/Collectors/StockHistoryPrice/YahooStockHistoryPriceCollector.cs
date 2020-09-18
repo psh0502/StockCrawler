@@ -13,14 +13,14 @@ namespace StockCrawler.Services.Collectors
     internal class YahooStockHistoryPriceCollector : IStockHistoryPriceCollector
     {
         internal static ILog _logger = LogManager.GetLogger(typeof(YahooStockHistoryPriceCollector));
-        public virtual IEnumerable<GetStockPriceHistoryResult> GetStockDailyPriceInfo(string stockNo, DateTime bgnDate, DateTime endDate)
+        public virtual IEnumerable<GetStockPeriodPriceResult> GetStockDailyPriceInfo(string stockNo, DateTime bgnDate, DateTime endDate)
         {
             try
             {
                 var csv_data = DownloadYahooStockCSV(stockNo, bgnDate, endDate);
                 var csv_lines = CsvReader.ParseLines(csv_data).Skip(1);
 
-                var list = new List<GetStockPriceHistoryResult>();
+                var list = new List<GetStockPeriodPriceResult>();
                 foreach (var ln in csv_lines)
                 {
                     string[] data = CsvReader.ParseFields(ln).ToArray();
@@ -28,7 +28,7 @@ namespace StockCrawler.Services.Collectors
                     {
                         if (data.Length == 7)
                         {
-                            list.Add(new GetStockPriceHistoryResult()
+                            list.Add(new GetStockPeriodPriceResult()
                             {
                                 StockDT = DateTime.Parse(data[0]),
                                 Period = 1,
@@ -36,7 +36,6 @@ namespace StockCrawler.Services.Collectors
                                 HighPrice = decimal.Parse(data[2]),
                                 LowPrice = decimal.Parse(data[3]),
                                 ClosePrice = decimal.Parse(data[4]),
-                                AdjClosePrice = decimal.Parse(data[5]),
                                 Volume = long.Parse(data[6]) / 1000,
                                 StockNo = stockNo
                             });

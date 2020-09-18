@@ -17,8 +17,8 @@ CREATE OR ALTER PROCEDURE [dbo].[InsertOrUpdateStockPriceHistory]
 @pHighPrice DECIMAL(10, 4),
 @pLowPrice DECIMAL(10, 4),
 @pClosePrice DECIMAL(10, 4),
-@pVolume BIGINT,
-@pAdjClosePrice DECIMAL(10, 4)
+@pDeltaPrice DECIMAL(10, 4),
+@pVolume BIGINT
 AS
 BEGIN
 	DECLARE @DAILY_PERIOD SMALLINT = 1
@@ -30,8 +30,8 @@ BEGIN
 			,[HighPrice] = ISNULL(@pHighPrice, [HighPrice])
 			,[LowPrice] = ISNULL(@pLowPrice, [LowPrice])
 			,[ClosePrice] = ISNULL(@pClosePrice, [ClosePrice])
+			,[DeltaPrice] = ISNULL(@pDeltaPrice, [DeltaPrice])
 			,[Volume] = ISNULL(@pVolume, [Volume])
-			,[AdjClosePrice] = ISNULL(@pAdjClosePrice, [AdjClosePrice])
 		WHERE [StockNo] = @pStockNo AND [StockDT] = @pStockDT AND [Period] = @pPeriod
 
 	ELSE
@@ -43,8 +43,8 @@ BEGIN
 			[HighPrice],
 			[LowPrice],
 			[ClosePrice],
-			[Volume],
-			[AdjClosePrice]) 
+			[DeltaPrice],
+			[Volume]) 
 		VALUES(
 			@pStockNo, 
 			@pStockDT, 
@@ -53,7 +53,7 @@ BEGIN
 			@pHighPrice,
 			@pLowPrice,
 			@pClosePrice,
-			@pVolume,
-			@pAdjClosePrice)
+			@pDeltaPrice,
+			@pVolume)
 END
 GO

@@ -26,33 +26,21 @@ namespace StockCrawler.Services
             Logger.InfoFormat("Invoke [{0}]...", MethodBase.GetCurrentMethod().Name);
             try
             {
-                var list = new List<GetStockPriceHistoryResult>();
+                var list = new List<GetStockPeriodPriceResult>();
                 using (var db = StockDataServiceProvider.GetServiceInstance())
                 {
                     var collector = CollectorProviderService.GetStockDailyPriceCollector();
                     foreach (var d in db.GetStocks())
                     {
                         Logger.DebugFormat("Retrieving daily price of [{0}] stock.", d.StockNo);
-                        StockDailyPriceInfo info = collector.GetStockDailyPriceInfo(d.StockNo);
+                        var info = collector.GetStockDailyPriceInfo(d.StockNo);
                         if (null != info)
                         {
                             Logger.Debug(info);
                             db.UpdateStockName(info.StockNo, info.StockName);
                             if (info.Volume > 0)
                             {
-                                list.Add(new GetStockPriceHistoryResult
-                                {
-                                    StockNo = info.StockNo,
-                                    StockDT = info.LastTradeDT.Date,
-                                    Period = info.Period,
-                                    OpenPrice = info.OpenPrice,
-                                    HighPrice = info.HighPrice,
-                                    LowPrice = info.LowPrice,
-                                    ClosePrice = info.ClosePrice,
-                                    Volume = info.Volume,
-                                    AdjClosePrice = info.ClosePrice
-                                });
-
+                                list.Add(info);
                                 Logger.InfoFormat("Finish the {0} stock daily price retrieving task.", d.StockNo);
                             }
                             else

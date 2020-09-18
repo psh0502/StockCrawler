@@ -78,14 +78,14 @@ namespace StockCrawler.Services
         /// 根據本日收盤資料, 計算 均線(MA 移動線)和不同周期的 K 棒
         /// </summary>
         /// <param name="list">今日收盤價</param>
-        public static void CalculateMAAndPeriodK(IEnumerable<GetStockPriceHistoryResult> list)
+        public static void CalculateMAAndPeriodK(IEnumerable<GetStockPeriodPriceResult> list)
         {
             using (var db = StockDataServiceProvider.GetServiceInstance())
             {
                 // 寫入日價
-                db.InsertOrUpdateStockPriceHistory(list);
-                var K5_list = new List<GetStockPriceHistoryResult>();
-                var K20_list = new List<GetStockPriceHistoryResult>();
+                db.InsertOrUpdateStockPrice(list);
+                var K5_list = new List<GetStockPeriodPriceResult>();
+                var K20_list = new List<GetStockPeriodPriceResult>();
                 var avgPriceList = new List<(string StockNo, DateTime StockDT, short Period, decimal AveragePrice)>();
                 DateTime target_weekend_date = DateTime.MinValue;
                 DateTime target_monthend_date = DateTime.MinValue;
@@ -100,9 +100,9 @@ namespace StockCrawler.Services
                     {
                         // 週 K
                         DateTime bgnDate = target_weekend_date.AddDays(-4);
-                        var data = db.GetStockPeriodPrice(d.StockNo, bgnDate, target_weekend_date).Where(x => x.Period == 1).ToList();
+                        var data = db.GetStockPeriodPrice(d.StockNo, 1, bgnDate, target_weekend_date).ToList();
                         if (data.Any())
-                            K5_list.Add(new GetStockPriceHistoryResult()
+                            K5_list.Add(new GetStockPeriodPriceResult()
                             {
                                 StockNo = d.StockNo,
                                 StockDT = bgnDate,
@@ -112,7 +112,6 @@ namespace StockCrawler.Services
                                 LowPrice = data.Min(x => x.LowPrice),
                                 Volume = data.Sum(x => x.Volume),
                                 Period = 5,
-                                AdjClosePrice = 0
                             });
 
                         target_weekend_date = target_weekend_date.AddDays(7);
@@ -128,9 +127,9 @@ namespace StockCrawler.Services
                     {
                         // 月 K
                         DateTime bgnDate = new DateTime(target_monthend_date.Year, target_monthend_date.Month, 1);
-                        var data = db.GetStockPeriodPrice(d.StockNo, bgnDate, target_monthend_date).Where(x => x.Period == 1).ToList();
+                        var data = db.GetStockPeriodPrice(d.StockNo, 1, bgnDate, target_monthend_date).ToList();
                         if (data.Any())
-                            K20_list.Add(new GetStockPriceHistoryResult()
+                            K20_list.Add(new GetStockPeriodPriceResult()
                             {
                                 StockNo = d.StockNo,
                                 StockDT = bgnDate,
@@ -140,7 +139,6 @@ namespace StockCrawler.Services
                                 LowPrice = data.Min(x => x.LowPrice),
                                 Volume = data.Sum(x => x.Volume),
                                 Period = 20,
-                                AdjClosePrice = 0
                             });
                         target_monthend_date = bgnDate.AddMonths(2).AddDays(-1);
                         _logger.Debug($"target_monthend_date:{target_monthend_date:yyyy-MM-dd}");
@@ -162,9 +160,9 @@ namespace StockCrawler.Services
                 }
                 // 寫入 K 線棒
                 if (K5_list.Any())
-                    db.InsertOrUpdateStockPriceHistory(K5_list);
+                    db.InsertOrUpdateStockPrice(K5_list);
                 if (K20_list.Any())
-                    db.InsertOrUpdateStockPriceHistory(K20_list);
+                    db.InsertOrUpdateStockPrice(K20_list);
                 // 寫入均價
                 if (avgPriceList.Any())
                     db.InsertOrUpdateStockAveragePrice(avgPriceList);
