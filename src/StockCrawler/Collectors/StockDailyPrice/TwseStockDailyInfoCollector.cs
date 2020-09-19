@@ -1,18 +1,19 @@
 ﻿using Common.Logging;
 using ServiceStack.Text;
+using StockCrawler.Dao;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
 
-namespace StockCrawler.Services.StockDailyPrice
+namespace StockCrawler.Services.Collectors
 {
     internal class TwseStockDailyInfoCollector : IStockDailyInfoCollector
     {
         internal static ILog _logger = LogManager.GetLogger(typeof(TwseStockDailyInfoCollector));
-        private Dictionary<string, StockDailyPriceInfo> _stockInfoDictCache = null;
-        public virtual StockDailyPriceInfo GetStockDailyPriceInfo(string stockNo)
+        private Dictionary<string, GetStockPeriodPriceResult> _stockInfoDictCache = null;
+        public virtual GetStockPeriodPriceResult GetStockDailyPriceInfo(string stockNo)
         {
             InitStockDailyPriceCache();
             return (_stockInfoDictCache.ContainsKey(stockNo)) ? _stockInfoDictCache[stockNo] : null;
@@ -25,7 +26,7 @@ namespace StockCrawler.Services.StockDailyPrice
                     if (null == _stockInfoDictCache)
                     {
                         _logger.Info("Initialize all stock information cache.");
-                        _stockInfoDictCache = new Dictionary<string, StockDailyPriceInfo>();
+                        _stockInfoDictCache = new Dictionary<string, GetStockPeriodPriceResult>();
                         foreach (var info in GetAllStockDailyPriceInfo(SystemTime.Today))
                         {
                             _stockInfoDictCache[info.StockNo] = info;
@@ -34,7 +35,7 @@ namespace StockCrawler.Services.StockDailyPrice
                     }
         }
 
-        private static StockDailyPriceInfo[] GetAllStockDailyPriceInfo(DateTime day)
+        private static GetStockPeriodPriceResult[] GetAllStockDailyPriceInfo(DateTime day)
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             var csv_data = Tools.DownloadStringData(new Uri($"https://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={day:yyyyMMdd}&type=ALLBUT0999"), Encoding.Default, out IList<Cookie> _);
@@ -45,7 +46,7 @@ namespace StockCrawler.Services.StockDailyPrice
             _logger.Info(csv_data.Substring(0, 1000));
             // Usage of CsvReader: https://blog.darkthread.net/post-2017-05-13-servicestack-text-csvserializer.aspx
             var csv_lines = CsvReader.ParseLines(csv_data);
-            var daily_info = new List<StockDailyPriceInfo>();
+            var daily_info = new List<GetStockPeriodPriceResult>();
             bool found_stock_list = false;
             foreach (var ln in csv_lines)
             {
@@ -60,19 +61,30 @@ namespace StockCrawler.Services.StockDailyPrice
                     }
                     // Generalize number fields data
                     for (int i = 2; i < data.Length; i++)
+                    {
                         if (!string.IsNullOrEmpty(data[i]))
-                            data[i] = data[i].Replace("--", "0").Replace(",", string.Empty);
+                            data[i] = data[i]
+                                .Replace("--", "0")
+                                .Replace(",", string.Empty)
+                                .Replace("+", string.Empty)
+                                .Replace("X", string.Empty)
+                                .Trim();
 
-                    daily_info.Add(new StockDailyPriceInfo()
+                        _logger.DebugFormat("data[{0}]: {1}", i, data[i]);
+                    }
+
+                    daily_info.Add(new GetStockPeriodPriceResult()
                     {
                         StockNo = data[0].Replace("=\"", string.Empty).Replace("\"", string.Empty),
                         StockName = data[1],
+                        Period = 1,
                         Volume = long.Parse(data[2]) / 1000,
-                        LastTradeDT = day,
+                        StockDT = day,
                         OpenPrice = decimal.Parse(data[5]),
                         HighPrice = decimal.Parse(data[6]),
                         LowPrice = decimal.Parse(data[7]),
-                        ClosePrice = decimal.Parse(data[8])
+                        ClosePrice = decimal.Parse(data[8]),
+                        DeltaPrice = data[9] == "-" || string.IsNullOrEmpty(data[9]) ? 0 : decimal.Parse(data[9]),
                     });
                 }
                 else
@@ -84,7 +96,7 @@ namespace StockCrawler.Services.StockDailyPrice
             return daily_info.ToArray();
         }
 
-        public virtual IEnumerable<StockDailyPriceInfo> GetStockDailyPriceInfo()
+        public virtual IEnumerable<GetStockPeriodPriceResult> GetStockDailyPriceInfo()
         {
             InitStockDailyPriceCache();
             return _stockInfoDictCache.Select(d => d.Value).ToList();

@@ -1,4 +1,4 @@
-/****** Object:  StoredProcedure [dbo].[GetStockPriceHistory] ******/
+/****** Object:  StoredProcedure [dbo].[GetStockPriceHistoryPaging] ******/
 SET ANSI_NULLS ON
 GO
 
@@ -8,10 +8,10 @@ GO
 -- =============================================
 -- Author:		Tom Tang
 -- Create date: 2017-07-15
--- Description:	Get stock history records
+-- Description:	Get stock history records in paging
 -- Revision:
 -- =============================================
-CREATE OR ALTER PROCEDURE [dbo].[GetStockPriceHistory]
+CREATE OR ALTER PROCEDURE [dbo].[GetStockPriceHistoryPaging]
 @pStockNo VARCHAR(10),
 @pDateBegin DATE,
 @pDateEnd DATE,

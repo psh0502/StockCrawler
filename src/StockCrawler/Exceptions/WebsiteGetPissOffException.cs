@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StockCrawler.Services
+namespace StockCrawler.Services.Exceptions
 {
     /// <summary>
     /// 表示網站主發火了, 因為查詢過於頻繁

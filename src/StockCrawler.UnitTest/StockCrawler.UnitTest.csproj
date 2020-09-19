@@ -119,6 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collectors\TwseStockBasicInfoCollectorTest.cs" />
+    <Compile Include="Collectors\TwseStockHistoryPriceCollectorTest.cs" />
     <Compile Include="Collectors\YahooStockHistoryPriceCollectorTest.cs" />
     <Compile Include="Collectors\TwseStockDailyInfoCollectorTest.cs" />
     <Compile Include="Collectors\GoodInfoCollectorTest.cs" />

@@ -4,7 +4,7 @@ using StockCrawler.Dao;
 using System;
 using System.Web;
 
-namespace StockCrawler.Services.StockBasicInfo
+namespace StockCrawler.Services.Collectors
 {
     internal class TwseStockBasicInfoCollector : TwseCollectorBase, IStockBasicInfoCollector
     {

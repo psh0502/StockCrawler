@@ -1,4 +1,4 @@
-/****** Object:  StoredProcedure [dbo].[InsertOrUpdateStockPriceAVG] ******/
+/****** Object:  StoredProcedure [dbo].[InsertOrUpdateStockAveragePrice] ******/
 SET ANSI_NULLS ON
 GO
 
@@ -11,7 +11,7 @@ GO
 -- Description:	insert or update stock close average price
 -- Revision:
 -- =============================================
-CREATE OR ALTER PROCEDURE [dbo].[InsertOrUpdateStockPriceAVG]
+CREATE OR ALTER PROCEDURE [dbo].[InsertOrUpdateStockAveragePrice]
 @pStockNo VARCHAR(10),
 @pStockDT DATE,
 @pPeriod SMALLINT,

@@ -1,10 +1,10 @@
-﻿using StockCrawler.Services.StockHistoryPrice;
+﻿using StockCrawler.Services.Collectors;
 using System;
 using System.IO;
 
 namespace StockCrawler.UnitTest.Mocks
 {
-    internal class StockHistoryPriceCollectorMock : YaooStockHistoryPriceCollector
+    internal class StockHistoryPriceCollectorMock : YahooStockHistoryPriceCollector
     {
         public StockHistoryPriceCollectorMock():base() {
             _logger = new UnitTestLogger();

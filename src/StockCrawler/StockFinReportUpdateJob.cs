@@ -1,7 +1,7 @@
 ﻿using Common.Logging;
 using Quartz;
 using StockCrawler.Dao;
-using StockCrawler.Services.StockFinanceReport;
+using StockCrawler.Services.Collectors;
 using System;
 using System.Collections.Generic;
 using System.Data;

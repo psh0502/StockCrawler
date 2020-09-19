@@ -62,10 +62,11 @@ namespace StockCrawler.Dao
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.DeleteStockPriceHistoryData")]
-		public int DeleteStockPriceHistoryData([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pTradeDate)
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.CalculateStockPriceAverage")]
+		public int CalculateStockPriceAverage([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pDateEnd, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pPeriod, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] ref System.Nullable<decimal> oAvgClosePrice)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pTradeDate);
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pDateEnd, pPeriod, oAvgClosePrice);
+			oAvgClosePrice = ((System.Nullable<decimal>)(result.GetParameterValue(3)));
 			return ((int)(result.ReturnValue));
 		}
 		
@@ -73,6 +74,13 @@ namespace StockCrawler.Dao
 		public int InsertOrUpdateStockReportMonthlyNetProfitTaxed([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pYear, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pMonth, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pNetProfitTaxed, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pLastYearNetProfitTaxed, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pDelta, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(18,4)")] System.Nullable<decimal> pDeltaPercent, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pThisYearTillThisMonth, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pLastYearTillThisMonth, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pTillThisMonthDelta, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(18,4)")] System.Nullable<decimal> pTillThisMonthDeltaPercent, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(1000)")] string pRemark, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pPE)
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pYear, pMonth, pNetProfitTaxed, pLastYearNetProfitTaxed, pDelta, pDeltaPercent, pThisYearTillThisMonth, pLastYearTillThisMonth, pTillThisMonthDelta, pTillThisMonthDeltaPercent, pRemark, pPE);
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.DeleteStockPriceHistoryData")]
+		public int DeleteStockPriceHistoryData([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pTradeDate)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pTradeDate);
 			return ((int)(result.ReturnValue));
 		}
 		
@@ -98,26 +106,18 @@ namespace StockCrawler.Dao
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetStockPeriodPrice")]
-		public ISingleResult<GetStockPeriodPriceResult> GetStockPeriodPrice([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pBeginDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pEndDate)
+		public ISingleResult<GetStockPeriodPriceResult> GetStockPeriodPrice([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pPeriod, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pBeginDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pEndDate)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pBeginDate, pEndDate);
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pPeriod, pBeginDate, pEndDate);
 			return ((ISingleResult<GetStockPeriodPriceResult>)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetStockPriceAVG")]
-		public int GetStockPriceAVG([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pDateEnd, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pPeriod, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] ref System.Nullable<decimal> oAvgClosePrice)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pDateEnd, pPeriod, oAvgClosePrice);
-			oAvgClosePrice = ((System.Nullable<decimal>)(result.GetParameterValue(3)));
-			return ((int)(result.ReturnValue));
-		}
-		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetStockPriceHistory")]
-		public ISingleResult<GetStockPriceHistoryResult> GetStockPriceHistory([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pDateBegin, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pDateEnd, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pPeriod, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> pTop, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> pCurrentPage, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> pPageSize, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] ref System.Nullable<int> oPageCount)
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetStockPriceHistoryPaging")]
+		public ISingleResult<GetStockPriceHistoryPagingResult> GetStockPriceHistoryPaging([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pDateBegin, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pDateEnd, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pPeriod, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> pTop, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> pCurrentPage, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> pPageSize, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] ref System.Nullable<int> oPageCount)
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pDateBegin, pDateEnd, pPeriod, pTop, pCurrentPage, pPageSize, oPageCount);
 			oPageCount = ((System.Nullable<int>)(result.GetParameterValue(7)));
-			return ((ISingleResult<GetStockPriceHistoryResult>)(result.ReturnValue));
+			return ((ISingleResult<GetStockPriceHistoryPagingResult>)(result.ReturnValue));
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetStockReportBalance")]
@@ -162,6 +162,13 @@ namespace StockCrawler.Dao
 			return ((int)(result.ReturnValue));
 		}
 		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertOrUpdateStockAveragePrice")]
+		public int InsertOrUpdateStockAveragePrice([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pStockDT, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pPeriod, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pClosePrice)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pStockDT, pPeriod, pClosePrice);
+			return ((int)(result.ReturnValue));
+		}
+		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertOrUpdateStockBasicInfo")]
 		public int InsertOrUpdateStockBasicInfo([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pCategory, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(100)")] string pCompanyName, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pCompanyID, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pBuildDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pPublishDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pCapital, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="BigInt")] System.Nullable<long> pReleaseStockCount, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pChairman, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pCEO, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(100)")] string pUrl, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(1000)")] string pBusiness)
 		{
@@ -169,17 +176,10 @@ namespace StockCrawler.Dao
 			return ((int)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertOrUpdateStockPriceAVG")]
-		public int InsertOrUpdateStockPriceAVG([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pStockDT, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pPeriod, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pClosePrice)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pStockDT, pPeriod, pClosePrice);
-			return ((int)(result.ReturnValue));
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertOrUpdateStockPriceHistory")]
-		public int InsertOrUpdateStockPriceHistory([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(20)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pStockDT, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pPeriod, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pOpenPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pHighPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pLowPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pClosePrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="BigInt")] System.Nullable<long> pVolume, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pAdjClosePrice)
+		public int InsertOrUpdateStockPriceHistory([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(20)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pStockDT, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pPeriod, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pOpenPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pHighPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pLowPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pClosePrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pDeltaPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="BigInt")] System.Nullable<long> pVolume)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pStockDT, pPeriod, pOpenPrice, pHighPrice, pLowPrice, pClosePrice, pVolume, pAdjClosePrice);
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pStockDT, pPeriod, pOpenPrice, pHighPrice, pLowPrice, pClosePrice, pDeltaPrice, pVolume);
 			return ((int)(result.ReturnValue));
 		}
 		
@@ -645,6 +645,8 @@ namespace StockCrawler.Dao
 	public partial class GetStockPeriodPriceResult
 	{
 		
+		private string _StockName;
+		
 		private string _StockNo;
 		
 		private System.DateTime _StockDT;
@@ -659,7 +661,7 @@ namespace StockCrawler.Dao
 		
 		private decimal _ClosePrice;
 		
-		private decimal _AdjClosePrice;
+		private decimal _DeltaPrice;
 		
 		private long _Volume;
 		
@@ -667,6 +669,22 @@ namespace StockCrawler.Dao
 		
 		public GetStockPeriodPriceResult()
 		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string StockName
+		{
+			get
+			{
+				return this._StockName;
+			}
+			set
+			{
+				if ((this._StockName != value))
+				{
+					this._StockName = value;
+				}
+			}
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockNo", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
@@ -781,18 +799,18 @@ namespace StockCrawler.Dao
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AdjClosePrice", DbType="Decimal(10,4) NOT NULL")]
-		public decimal AdjClosePrice
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DeltaPrice", DbType="Decimal(10,4) NOT NULL")]
+		public decimal DeltaPrice
 		{
 			get
 			{
-				return this._AdjClosePrice;
+				return this._DeltaPrice;
 			}
 			set
 			{
-				if ((this._AdjClosePrice != value))
+				if ((this._DeltaPrice != value))
 				{
-					this._AdjClosePrice = value;
+					this._DeltaPrice = value;
 				}
 			}
 		}
@@ -830,7 +848,7 @@ namespace StockCrawler.Dao
 		}
 	}
 	
-	public partial class GetStockPriceHistoryResult
+	public partial class GetStockPriceHistoryPagingResult
 	{
 		
 		private string _StockNo;
@@ -847,7 +865,7 @@ namespace StockCrawler.Dao
 		
 		private decimal _ClosePrice;
 		
-		private decimal _AdjClosePrice;
+		private decimal _DeltaPrice;
 		
 		private long _Volume;
 		
@@ -855,7 +873,7 @@ namespace StockCrawler.Dao
 		
 		private System.Nullable<long> _RNO;
 		
-		public GetStockPriceHistoryResult()
+		public GetStockPriceHistoryPagingResult()
 		{
 		}
 		
@@ -971,18 +989,18 @@ namespace StockCrawler.Dao
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AdjClosePrice", DbType="Decimal(10,4) NOT NULL")]
-		public decimal AdjClosePrice
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DeltaPrice", DbType="Decimal(10,4) NOT NULL")]
+		public decimal DeltaPrice
 		{
 			get
 			{
-				return this._AdjClosePrice;
+				return this._DeltaPrice;
 			}
 			set
 			{
-				if ((this._AdjClosePrice != value))
+				if ((this._DeltaPrice != value))
 				{
-					this._AdjClosePrice = value;
+					this._DeltaPrice = value;
 				}
 			}
 		}

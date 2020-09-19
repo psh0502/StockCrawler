@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StockCrawler.Services;
-using StockCrawler.Services.StockDailyPrice;
+using StockCrawler.Services.Collectors;
 using System;
 using System.Linq;
 

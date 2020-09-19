@@ -4,7 +4,7 @@ using System;
 using System.Threading;
 using System.Web;
 
-namespace StockCrawler.Services.StockBasicInfo
+namespace StockCrawler.Services.Collectors
 {
     internal class GoodInfoStockBasicInfoCollector : GoodInfoCollectorBase, IStockBasicInfoCollector
     {

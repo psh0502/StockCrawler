@@ -1,4 +1,4 @@
-/****** Object:  StoredProcedure [dbo].[GetStockPriceAVG] ******/
+/****** Object:  StoredProcedure [dbo].[CalculateStockPriceAverage] ******/
 SET ANSI_NULLS ON
 GO
 
@@ -11,7 +11,7 @@ GO
 -- Description:	Get stock close average price by specified record
 -- Revision:
 -- =============================================
-CREATE OR ALTER PROCEDURE [dbo].[GetStockPriceAVG]
+CREATE OR ALTER PROCEDURE [dbo].[CalculateStockPriceAverage]
 @pStockNo VARCHAR(10),
 @pDateEnd DATE,
 @pPeriod SMALLINT,

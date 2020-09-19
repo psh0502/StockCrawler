@@ -125,25 +125,26 @@
   <ItemGroup>
     <Compile Include="CollectorProviderService.cs" />
     <Compile Include="JobBase.cs" />
-    <Compile Include="StockBasicInfo\TwseStockBasicInfoCollector.cs" />
+    <Compile Include="Collectors\StockBasicInfo\TwseStockBasicInfoCollector.cs" />
     <Compile Include="StockFinReportUpdateJob.cs" />
-    <Compile Include="StockBasicInfo\GoodInfoStockBasicInfoCollector.cs" />
-    <Compile Include="StockBasicInfo\IStockBasicInfoCollector.cs" />
-    <Compile Include="StockDailyPrice\IStockDailyInfoCollector.cs" />
-    <Compile Include="StockDailyPrice\TwseStockDailyInfoCollector.cs" />
+    <Compile Include="Collectors\StockBasicInfo\GoodInfoStockBasicInfoCollector.cs" />
+    <Compile Include="Collectors\StockBasicInfo\IStockBasicInfoCollector.cs" />
+    <Compile Include="Collectors\StockDailyPrice\IStockDailyInfoCollector.cs" />
+    <Compile Include="Collectors\StockDailyPrice\TwseStockDailyInfoCollector.cs" />
     <Compile Include="StockBasicInfoUpdateJob.cs" />
-    <Compile Include="StockFinanceReport\IStockReportCollector.cs" />
-    <Compile Include="StockFinanceReport\TwseReportCollector.cs" />
-    <Compile Include="StockHistoryPrice\YahooStockHistoryPriceCollector.cs" />
-    <Compile Include="StockHistoryPrice\IStockHistoryPriceCollector.cs" />
+    <Compile Include="Collectors\StockFinanceReport\IStockReportCollector.cs" />
+    <Compile Include="Collectors\StockFinanceReport\TwseReportCollector.cs" />
+    <Compile Include="Collectors\StockHistoryPrice\TwseStockHistoryPriceCollector.cs" />
+    <Compile Include="Collectors\StockHistoryPrice\YahooStockHistoryPriceCollector.cs" />
+    <Compile Include="Collectors\StockHistoryPrice\IStockHistoryPriceCollector.cs" />
     <Compile Include="StockPriceUpdateJob.cs" />
     <Compile Include="StockPriceHistoryInitJob.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemTime.cs" />
     <Compile Include="Tools.cs" />
-    <Compile Include="GoodInfoCollectorBase.cs" />
-    <Compile Include="TwseCollectorBase.cs" />
-    <Compile Include="WebsiteGetPissOffException.cs" />
+    <Compile Include="Collectors\GoodInfoCollectorBase.cs" />
+    <Compile Include="Collectors\TwseCollectorBase.cs" />
+    <Compile Include="Exceptions\WebsiteGetPissOffException.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
