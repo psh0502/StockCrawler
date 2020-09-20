@@ -13,7 +13,7 @@ namespace StockCrawler.Services.Collectors
     internal class YahooStockHistoryPriceCollector : IStockHistoryPriceCollector
     {
         internal static ILog _logger = LogManager.GetLogger(typeof(YahooStockHistoryPriceCollector));
-        public virtual IEnumerable<GetStockPeriodPriceResult> GetStockDailyPriceInfo(string stockNo, DateTime bgnDate, DateTime endDate)
+        public virtual IEnumerable<GetStockPeriodPriceResult> GetStockHistoryPriceInfo(string stockNo, DateTime bgnDate, DateTime endDate)
         {
             try
             {

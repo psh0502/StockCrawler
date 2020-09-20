@@ -31,7 +31,7 @@ namespace StockCrawler.Services
                 {
                     db.DeleteStockPriceHistoryData(d.StockNo, null);
                     var list = CollectorProviderService.GetStockHistoryPriceCollector()
-                        .GetStockDailyPriceInfo(d.StockNo, SystemTime.Today.AddYears(-5), SystemTime.Today.AddDays(1));
+                        .GetStockHistoryPriceInfo(d.StockNo, SystemTime.Today.AddYears(-5), SystemTime.Today.AddDays(1));
 
                     if (list.Any())
                         Tools.CalculateMAAndPeriodK(list);
