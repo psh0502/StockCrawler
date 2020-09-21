@@ -65,7 +65,6 @@ namespace StockCrawler.Services.Collectors
                                 .Trim();
 
                     var tmp = data[0].Split('/').Select(int.Parse).ToList();
-                    _logger.Debug("ln: " + ln);
                     daily_info.Add(new GetStockPeriodPriceResult()
                     {
                         StockNo = stockNo,
