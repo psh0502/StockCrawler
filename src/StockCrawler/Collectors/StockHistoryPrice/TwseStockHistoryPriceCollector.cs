@@ -32,8 +32,19 @@ namespace StockCrawler.Services.Collectors
         }
         private static GetStockPeriodPriceResult[] GetStockHistoryPriceInfo(string stockNo, int year, int month)
         {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            var csv_data = Tools.DownloadStringData(new Uri($"https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=csv&date={year}{month:00}01&stockNo={stockNo}"), Encoding.Default, out IList<Cookie> _);
+            string csv_data = null;
+            while (true)
+                try
+                {
+                    csv_data = Tools.DownloadStringData(new Uri($"https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=csv&date={year}{month:00}01&stockNo={stockNo}"), Encoding.Default, out IList<Cookie> _);
+                    break;
+                }
+                catch (WebException)
+                {
+                    _logger.WarnFormat("Target website refuses our connection. Wait till it get peace. stockNo={0}, year={1}, month={2}", stockNo, year, month);
+                    Thread.Sleep(12 * 60 * 60 * 1000);
+                }
+
             if (string.IsNullOrEmpty(csv_data))
             {
                 _logger.WarnFormat("Download stock[{0}] has no data by date[{1}]", stockNo, new DateTime(year, month, 1).ToString("yyyy-MM"));
