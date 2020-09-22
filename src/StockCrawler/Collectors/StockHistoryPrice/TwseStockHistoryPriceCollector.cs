@@ -42,7 +42,7 @@ namespace StockCrawler.Services.Collectors
                 catch (WebException)
                 {
                     _logger.WarnFormat("Target website refuses our connection. Wait till it get peace. stockNo={0}, year={1}, month={2}", stockNo, year, month);
-                    Thread.Sleep(12 * 60 * 60 * 1000);
+                    Thread.Sleep(2 * 60 * 60 * 1000);
                 }
 
             if (string.IsNullOrEmpty(csv_data))
