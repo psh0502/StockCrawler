@@ -21,8 +21,7 @@ CREATE OR ALTER PROCEDURE [dbo].[InsertOrUpdateStockReportMonthlyNetProfitTaxed]
 @pLastYearTillThisMonth MONEY,
 @pTillThisMonthDelta MONEY,
 @pTillThisMonthDeltaPercent DECIMAL(18, 4),
-@pRemark NVARCHAR(1000),
-@pPE MONEY
+@pRemark NVARCHAR(1000)
 AS
 BEGIN
 	IF EXISTS(SELECT [StockNo] FROM [StockReportMonthlyNetProfitTaxed](NOLOCK) WHERE [StockNo] = @pStockNo AND [Year] = @pYear AND [Month] = @pMonth)
@@ -37,7 +36,6 @@ BEGIN
 			,[TillThisMonthDelta] = @pTillThisMonthDelta
 			,[TillThisMonthDeltaPercent] = @pTillThisMonthDeltaPercent
 			,[Remark] = @pRemark
-			,[PE] = @pPE
 			,[LastModifiedAt] = GETDATE()
 		WHERE [StockNo] = @pStockNo AND [Year] = @pYear AND [Month] = @pMonth
 
@@ -54,8 +52,7 @@ BEGIN
            ,[LastYearTillThisMonth]
            ,[TillThisMonthDelta]
            ,[TillThisMonthDeltaPercent]
-           ,[Remark]
-		   ,[PE])
+           ,[Remark])
 		VALUES
            (@pStockNo
            ,@pYear
@@ -68,7 +65,6 @@ BEGIN
            ,@pLastYearTillThisMonth
            ,@pTillThisMonthDelta
            ,@pTillThisMonthDeltaPercent
-           ,@pRemark
-		   ,@pPE)
+           ,@pRemark)
 END
 GO

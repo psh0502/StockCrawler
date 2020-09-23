@@ -10,7 +10,10 @@ namespace StockCrawler.UnitTest.Collectors
         [TestMethod]
         public void CollectorTestMethod_2330()
         {
-            var collector = new GoodInfoStockBasicInfoCollector();
+            var collector = new GoodInfoStockBasicInfoCollector
+            {
+                _logger = new UnitTestLogger()
+            };
             var r = collector.GetStockBasicInfo("2330");
 
             Assert.AreEqual("2330", r.StockNo);
@@ -30,7 +33,10 @@ namespace StockCrawler.UnitTest.Collectors
         [TestMethod]
         public void CollectorTestMethod_2888()
         {
-            var collector = new GoodInfoStockBasicInfoCollector();
+            var collector = new GoodInfoStockBasicInfoCollector
+            {
+                _logger = new UnitTestLogger()
+            };
             var r = collector.GetStockBasicInfo("2888");
 
             Assert.AreEqual("2888", r.StockNo);

@@ -24,6 +24,8 @@ namespace StockCrawler.Dao
                         d.LowPrice,
                         d.ClosePrice,
                         d.DeltaPrice,
+                        d.DeltaPrice / d.OpenPrice,
+                        d.PE,
                         d.Volume);
         }
         public void RenewStockList(IEnumerable<GetStocksResult> list)
@@ -156,8 +158,7 @@ namespace StockCrawler.Dao
                     info.LastYearTillThisMonth,
                     info.TillThisMonthDelta,
                     info.TillThisMonthDeltaPercent,
-                    info.Remark,
-                    info.PE);
+                    info.Remark);
         }
         public decimal CaculateStockClosingAveragePrice(string stockNo, DateTime endDate, short period)
         {

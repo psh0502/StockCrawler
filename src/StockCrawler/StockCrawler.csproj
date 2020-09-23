@@ -124,6 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CollectorProviderService.cs" />
+    <Compile Include="Collectors\StockHistoryPrice\TwseStockHistoryPriceCollector2.cs" />
     <Compile Include="JobBase.cs" />
     <Compile Include="Collectors\StockBasicInfo\TwseStockBasicInfoCollector.cs" />
     <Compile Include="StockFinReportUpdateJob.cs" />

@@ -1,7 +1,6 @@
 ﻿using Common.Logging;
 using Quartz;
 using StockCrawler.Dao;
-using StockCrawler.Services.Collectors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +12,6 @@ namespace StockCrawler.Services
     {
         internal static ILog Logger { get; set; } = LogManager.GetLogger(typeof(StockPriceUpdateJob));
 
-        public StockPriceUpdateJob()
-            : base()
-        {
-            if (null == Logger)
-                Logger = LogManager.GetLogger(typeof(StockPriceUpdateJob));
-        }
         #region IJob Members
 
         public void Execute(IJobExecutionContext context)

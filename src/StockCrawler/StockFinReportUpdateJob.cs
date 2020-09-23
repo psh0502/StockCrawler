@@ -3,7 +3,6 @@ using Quartz;
 using StockCrawler.Dao;
 using StockCrawler.Services.Collectors;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
@@ -13,13 +12,7 @@ namespace StockCrawler.Services
 {
     public class StockFinReportUpdateJob : JobBase, IJob
     {
-        internal static ILog Logger { get; set; } = LogManager.GetLogger(typeof(StockBasicInfoUpdateJob));
-        public StockFinReportUpdateJob()
-            : base()
-        {
-            if (null == Logger)
-                Logger = LogManager.GetLogger(typeof(StockBasicInfoUpdateJob));
-        }
+        internal static ILog Logger { get; set; } = LogManager.GetLogger(typeof(StockFinReportUpdateJob));
         public short BeginYear { get; set; } = -1;
 
         #region IJob Members
@@ -95,13 +88,6 @@ namespace StockCrawler.Services
             var info = collector.GetStockReportMonthlyNetProfitTaxed(stockNo, year, month);
             if (null != info)
             {
-                DateTime bgnDate = new DateTime(year + 1911, month, 1);
-                var monthly_price = db.GetStockAveragePrice(stockNo, bgnDate, bgnDate.AddMonths(1).AddDays(-1), 20).OrderByDescending(x => x.StockDT).First().ClosePrice;
-                var last_4_eps_sum = GetLast4SeasonsEPSSum(db, stockNo, year, month);
-                Logger.DebugFormat("[{1}{2}]monthly_price: {0}", monthly_price, year, month);
-                Logger.DebugFormat("[{1}{2}]last_4_eps_sum: {0}", last_4_eps_sum, year, month);
-                // 本益比 = 月均價 / 近4季EPS總和
-                info.PE = (last_4_eps_sum == 0) ? 0 : monthly_price / last_4_eps_sum;
                 db.InsertOrUpdateStockMonthlyNetProfitTaxedReport(info);
                 Logger.InfoFormat("[{0}] get its monthly net profit report(year={1}/month={2})", stockNo, year, month);
                 return true;
@@ -111,29 +97,6 @@ namespace StockCrawler.Services
                 Logger.InfoFormat("[{0}] has no monthly net profit report(year={1}/month={2})", stockNo, year, month);
                 return false;
             }
-        }
-        private static decimal GetLast4SeasonsEPSSum(IStockDataService db, string stockNo, short year, short month)
-        {
-            List<decimal> eps = new List<decimal>();
-            short season = (short)(Tools.GetSeason(month) - 1);
-            int no_data = 0;
-            do
-            {
-                if (season == 0)
-                {
-                    year--;
-                    season = 4;
-                }
-                var seps = db.GetStockReportIncome(stockNo, year, season)?.SEPS;
-                if (seps.HasValue)
-                    eps.Add(seps.Value);
-                else 
-                    no_data++;
-
-                season--;
-            } while (eps.Count < 4 && no_data < 10);
-            decimal sum = eps.Sum();
-            return sum;
         }
         private static bool GetIncomeIntoDatabase(IStockDataService db, IStockReportCollector collector, string stockNo, short year, short season)
         {

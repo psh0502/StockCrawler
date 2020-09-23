@@ -71,9 +71,9 @@ namespace StockCrawler.Dao
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertOrUpdateStockReportMonthlyNetProfitTaxed")]
-		public int InsertOrUpdateStockReportMonthlyNetProfitTaxed([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pYear, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pMonth, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pNetProfitTaxed, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pLastYearNetProfitTaxed, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pDelta, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(18,4)")] System.Nullable<decimal> pDeltaPercent, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pThisYearTillThisMonth, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pLastYearTillThisMonth, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pTillThisMonthDelta, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(18,4)")] System.Nullable<decimal> pTillThisMonthDeltaPercent, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(1000)")] string pRemark, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pPE)
+		public int InsertOrUpdateStockReportMonthlyNetProfitTaxed([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pYear, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pMonth, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pNetProfitTaxed, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pLastYearNetProfitTaxed, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pDelta, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(18,4)")] System.Nullable<decimal> pDeltaPercent, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pThisYearTillThisMonth, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pLastYearTillThisMonth, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pTillThisMonthDelta, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(18,4)")] System.Nullable<decimal> pTillThisMonthDeltaPercent, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(1000)")] string pRemark)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pYear, pMonth, pNetProfitTaxed, pLastYearNetProfitTaxed, pDelta, pDeltaPercent, pThisYearTillThisMonth, pLastYearTillThisMonth, pTillThisMonthDelta, pTillThisMonthDeltaPercent, pRemark, pPE);
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pYear, pMonth, pNetProfitTaxed, pLastYearNetProfitTaxed, pDelta, pDeltaPercent, pThisYearTillThisMonth, pLastYearTillThisMonth, pTillThisMonthDelta, pTillThisMonthDeltaPercent, pRemark);
 			return ((int)(result.ReturnValue));
 		}
 		
@@ -177,9 +177,9 @@ namespace StockCrawler.Dao
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertOrUpdateStockPriceHistory")]
-		public int InsertOrUpdateStockPriceHistory([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(20)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pStockDT, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pPeriod, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pOpenPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pHighPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pLowPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pClosePrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pDeltaPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="BigInt")] System.Nullable<long> pVolume)
+		public int InsertOrUpdateStockPriceHistory([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(20)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pStockDT, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pPeriod, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pOpenPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pHighPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pLowPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pClosePrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pDeltaPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pDeltaPercent, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,4)")] System.Nullable<decimal> pPE, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="BigInt")] System.Nullable<long> pVolume)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pStockDT, pPeriod, pOpenPrice, pHighPrice, pLowPrice, pClosePrice, pDeltaPrice, pVolume);
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pStockDT, pPeriod, pOpenPrice, pHighPrice, pLowPrice, pClosePrice, pDeltaPrice, pDeltaPercent, pPE, pVolume);
 			return ((int)(result.ReturnValue));
 		}
 		
@@ -663,6 +663,10 @@ namespace StockCrawler.Dao
 		
 		private decimal _DeltaPrice;
 		
+		private decimal _DeltaPercent;
+		
+		private decimal _PE;
+		
 		private long _Volume;
 		
 		private System.DateTime _CreatedAt;
@@ -815,6 +819,38 @@ namespace StockCrawler.Dao
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DeltaPercent", DbType="Decimal(10,4) NOT NULL")]
+		public decimal DeltaPercent
+		{
+			get
+			{
+				return this._DeltaPercent;
+			}
+			set
+			{
+				if ((this._DeltaPercent != value))
+				{
+					this._DeltaPercent = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PE", DbType="Decimal(10,4) NOT NULL")]
+		public decimal PE
+		{
+			get
+			{
+				return this._PE;
+			}
+			set
+			{
+				if ((this._PE != value))
+				{
+					this._PE = value;
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Volume", DbType="BigInt NOT NULL")]
 		public long Volume
 		{
@@ -866,6 +902,10 @@ namespace StockCrawler.Dao
 		private decimal _ClosePrice;
 		
 		private decimal _DeltaPrice;
+		
+		private decimal _DeltaPercent;
+		
+		private decimal _PE;
 		
 		private long _Volume;
 		
@@ -1001,6 +1041,38 @@ namespace StockCrawler.Dao
 				if ((this._DeltaPrice != value))
 				{
 					this._DeltaPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DeltaPercent", DbType="Decimal(10,4) NOT NULL")]
+		public decimal DeltaPercent
+		{
+			get
+			{
+				return this._DeltaPercent;
+			}
+			set
+			{
+				if ((this._DeltaPercent != value))
+				{
+					this._DeltaPercent = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PE", DbType="Decimal(10,4) NOT NULL")]
+		public decimal PE
+		{
+			get
+			{
+				return this._PE;
+			}
+			set
+			{
+				if ((this._PE != value))
+				{
+					this._PE = value;
 				}
 			}
 		}
@@ -2169,8 +2241,6 @@ namespace StockCrawler.Dao
 		
 		private string _Remark;
 		
-		private decimal _PE;
-		
 		private System.DateTime _CreatedAt;
 		
 		private System.DateTime _LastModifiedAt;
@@ -2383,22 +2453,6 @@ namespace StockCrawler.Dao
 				if ((this._Remark != value))
 				{
 					this._Remark = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PE", DbType="Money NOT NULL")]
-		public decimal PE
-		{
-			get
-			{
-				return this._PE;
-			}
-			set
-			{
-				if ((this._PE != value))
-				{
-					this._PE = value;
 				}
 			}
 		}

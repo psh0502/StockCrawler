@@ -1,5 +1,4 @@
-﻿using Common.Logging;
-using HtmlAgilityPack;
+﻿using HtmlAgilityPack;
 using StockCrawler.Dao;
 using System;
 using System.Web;
@@ -8,8 +7,6 @@ namespace StockCrawler.Services.Collectors
 {
     internal class TwseStockBasicInfoCollector : TwseCollectorBase, IStockBasicInfoCollector
     {
-        internal new static ILog _logger = LogManager.GetLogger(typeof(TwseStockBasicInfoCollector));
-
         public virtual GetStockBasicInfoResult GetStockBasicInfo(string stockNo)
         {
             var url = "https://mops.twse.com.tw/mops/web/ajax_t05st03";
@@ -33,7 +30,7 @@ namespace StockCrawler.Services.Collectors
                     Chairman = GetNodeTextTo<string>(SearchValueNode(tableNode, "董事長", beginIndex: 1, xpath1: "./tr[{0}]/th[1]", xpath2: "./tr[{0}]/td[1]")),
                     CEO = GetNodeTextTo<string>(SearchValueNode(tableNode, "總經理", beginIndex: 1, xpath1: "./tr[{0}]/th[2]", xpath2: "./tr[{0}]/td[2]")),
                     CompanyID = GetNodeTextTo<string>(SearchValueNode(tableNode, "營利事業統一編號", beginIndex: 1, xpath1: "./tr[{0}]/th[2]", xpath2: "./tr[{0}]/td[2]")),
-                    Url = null,
+                    Url = GetNodeTextTo<string>(SearchValueNode(tableNode, "公司網址", beginIndex: 1, xpath1: "./tr[{0}]/th[1]", xpath2: "./tr[{0}]/td[1]")),
                     Business = GetNodeTextTo<string>(SearchValueNode(tableNode, "主要經營業務", beginIndex: 1, xpath1: "./tr[{0}]/th[1]", xpath2: "./tr[{0}]/td[1]"))
                 };
                 var texts = SearchValueNode(tableNode, "公司成立日期", beginIndex: 1, xpath1: "./tr[{0}]/th[1]", xpath2: "./tr[{0}]/td[1]").InnerText.Split('/');

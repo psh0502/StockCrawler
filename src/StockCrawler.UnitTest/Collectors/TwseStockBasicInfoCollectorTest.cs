@@ -10,8 +10,10 @@ namespace StockCrawler.UnitTest.Collectors
         [TestMethod]
         public void CollectorTestMethod_2330()
         {
-            var collector = new TwseStockBasicInfoCollector();
-            TwseStockBasicInfoCollector._logger = new UnitTestLogger();
+            var collector = new TwseStockBasicInfoCollector
+            {
+                _logger = new UnitTestLogger()
+            };
             var r = collector.GetStockBasicInfo("2330");
 
             Assert.AreEqual("2330", r.StockNo);
@@ -25,13 +27,16 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual("依客戶之訂單與其提供之產品設計說明，以從事製造與銷售積體電路以及其他晶圓半導體裝置。提供前述產品之封裝與測試服務、積體電路之電腦輔助設計技術服務。提供製造光罩及其設計服務。", r.Business);
             Assert.AreEqual("22099131", r.CompanyID);
             Assert.AreEqual("台灣積體電路製造股份有限公司", r.CompanyName);
+            Assert.AreEqual("Http://www.tsmc.com", r.Url);
             Assert.AreEqual(25930380458, r.ReleaseStockCount);
         }
         [TestMethod]
         public void CollectorTestMethod_2888()
         {
-            var collector = new TwseStockBasicInfoCollector();
-            TwseStockBasicInfoCollector._logger = new UnitTestLogger();
+            var collector = new TwseStockBasicInfoCollector
+            {
+                _logger = new UnitTestLogger()
+            };
             var r = collector.GetStockBasicInfo("2888");
 
             Assert.AreEqual("2888", r.StockNo);
@@ -44,6 +49,7 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual("H801011金融控股公司業", r.Business);
             Assert.AreEqual("80328219", r.CompanyID);
             Assert.AreEqual("新光金融控股股份有限公司", r.CompanyName);
+            Assert.AreEqual("https://www.skfh.com.tw", r.Url);
             Assert.AreEqual(13020394063, r.ReleaseStockCount);
         }
     }

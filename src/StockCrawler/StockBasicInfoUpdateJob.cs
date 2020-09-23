@@ -13,12 +13,6 @@ namespace StockCrawler.Services
     {
         internal static ILog Logger { get; set; } = LogManager.GetLogger(typeof(StockBasicInfoUpdateJob));
 
-        public StockBasicInfoUpdateJob()
-            : base()
-        {
-            if (null == Logger)
-                Logger = LogManager.GetLogger(typeof(StockBasicInfoUpdateJob));
-        }
         public string BeginStockNo { get; set; }
 
         #region IJob Members
@@ -44,7 +38,7 @@ namespace StockCrawler.Services
                         {
                             Logger.WarnFormat("[{0}] has no basic info", d.StockNo, e);
                         }
-                        Thread.Sleep(10 * 1000);
+                        Thread.Sleep(_breakInternval);
                     }
                 }
             }

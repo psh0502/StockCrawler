@@ -1,5 +1,4 @@
-﻿using Common.Logging;
-using ServiceStack.Text;
+﻿using ServiceStack.Text;
 using StockCrawler.Dao;
 using System;
 using System.Collections.Generic;
@@ -9,9 +8,8 @@ using System.Text;
 
 namespace StockCrawler.Services.Collectors
 {
-    internal class TwseStockDailyInfoCollector : IStockDailyInfoCollector
+    internal class TwseStockDailyInfoCollector : TwseCollectorBase, IStockDailyInfoCollector
     {
-        internal static ILog _logger = LogManager.GetLogger(typeof(TwseStockDailyInfoCollector));
         private Dictionary<string, GetStockPeriodPriceResult> _stockInfoDictCache = null;
         public virtual GetStockPeriodPriceResult GetStockDailyPriceInfo(string stockNo)
         {
@@ -35,22 +33,39 @@ namespace StockCrawler.Services.Collectors
                     }
         }
 
-        private static GetStockPeriodPriceResult[] GetAllStockDailyPriceInfo(DateTime day)
+        protected virtual GetStockPeriodPriceResult[] GetAllStockDailyPriceInfo(DateTime day)
         {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            var csv_data = Tools.DownloadStringData(new Uri($"https://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={day:yyyyMMdd}&type=ALLBUT0999"), Encoding.Default, out IList<Cookie> _);
-            if (string.IsNullOrEmpty(csv_data)) {
-                _logger.WarnFormat("Download has no data by date[{0}]", day.ToString("yyyyMMdd"));
-                return null; 
-            }
-            _logger.Info(csv_data.Substring(0, 1000));
+            var csv_data = DownloadData(day);
+            if (string.IsNullOrEmpty(csv_data)) return null;
+
+            _logger.InfoFormat("Day={1}, csv={0}", csv_data.Substring(0, 1000), day.ToShortDateString());
             // Usage of CsvReader: https://blog.darkthread.net/post-2017-05-13-servicestack-text-csvserializer.aspx
             var csv_lines = CsvReader.ParseLines(csv_data);
             var daily_info = new List<GetStockPeriodPriceResult>();
             bool found_stock_list = false;
             foreach (var ln in csv_lines)
             {
-                //證券代號	證券名稱	成交股數	成交筆數	成交金額	開盤價	最高價	最低價	收盤價	漲跌(+/-)	漲跌價差	最後揭示買價	最後揭示買量	最後揭示賣價	最後揭示賣量	本益比
+                #region csv index comment
+                /*
+                0. 證券代號
+                1. 證券名稱
+                2. 成交股數
+                3. 成交筆數
+                4. 成交金額
+                5. 開盤價
+                6. 最高價
+                7. 最低價
+                8. 收盤價
+                9. 漲跌(+/-)
+                10. 漲跌價差
+                11. 最後揭示買價
+                12. 最後揭示買量
+                13. 最後揭示賣價
+                14. 最後揭示賣量
+                15. 本益比
+                */
+                #endregion
+
                 string[] data = CsvReader.ParseFields(ln).ToArray();
                 if (found_stock_list)
                 {
@@ -66,26 +81,27 @@ namespace StockCrawler.Services.Collectors
                             data[i] = data[i]
                                 .Replace("--", "0")
                                 .Replace(",", string.Empty)
-                                .Replace("+", string.Empty)
                                 .Replace("X", string.Empty)
                                 .Trim();
-
-                        _logger.DebugFormat("data[{0}]: {1}", i, data[i]);
                     }
-
-                    daily_info.Add(new GetStockPeriodPriceResult()
+                    var tmp = new GetStockPeriodPriceResult()
                     {
                         StockNo = data[0].Replace("=\"", string.Empty).Replace("\"", string.Empty),
                         StockName = data[1],
                         Period = 1,
-                        Volume = long.Parse(data[2]) / 1000,
+                        Volume = long.Parse(data[2]),
                         StockDT = day,
                         OpenPrice = decimal.Parse(data[5]),
                         HighPrice = decimal.Parse(data[6]),
                         LowPrice = decimal.Parse(data[7]),
                         ClosePrice = decimal.Parse(data[8]),
-                        DeltaPrice = data[9] == "-" || string.IsNullOrEmpty(data[9]) ? 0 : decimal.Parse(data[9]),
-                    });
+                        DeltaPrice = decimal.Parse(data[9] + data[10]),
+                        PE = decimal.Parse(data[15]),
+                    };
+                    //_logger.DebugFormat("StockNo={0}\r\nStockDT={1}\r\nOpenPrice={2}\r\nHighPrice={3}\r\nLowPrice={4}\r\nClosePrice={5}\r\nVolume={6}\r\nDeltaPrice={7}\r\nPE={8}",
+                    //    tmp.StockNo, tmp.StockDT.ToShortDateString(), tmp.OpenPrice, tmp.HighPrice, tmp.LowPrice, tmp.ClosePrice, tmp.Volume, tmp.DeltaPrice, tmp.PE);
+                    tmp.DeltaPercent = tmp.DeltaPrice / (tmp.OpenPrice == 0 ? 1 : tmp.OpenPrice);
+                    daily_info.Add(tmp);
                 }
                 else
                 {
@@ -94,6 +110,17 @@ namespace StockCrawler.Services.Collectors
                 }
             }
             return daily_info.ToArray();
+        }
+
+        protected virtual string DownloadData(DateTime day)
+        {
+            var csv_data = Tools.DownloadStringData(new Uri($"https://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={day:yyyyMMdd}&type=ALLBUT0999"), Encoding.Default, out IList<Cookie> _);
+            if (string.IsNullOrEmpty(csv_data))
+            {
+                _logger.WarnFormat("Download has no data by date[{0}]", day.ToString("yyyyMMdd"));
+                return null;
+            }
+            return csv_data;
         }
 
         public virtual IEnumerable<GetStockPeriodPriceResult> GetStockDailyPriceInfo()

@@ -12,14 +12,14 @@ namespace StockCrawler.Services.Collectors
 {
     internal class TwseStockHistoryPriceCollector : TwseCollectorBase, IStockHistoryPriceCollector
     {
-        public virtual IEnumerable<GetStockPeriodPriceResult> GetStockDailyPriceInfo(string stockNo, DateTime bgnDate, DateTime endDate)
+        public virtual IEnumerable<GetStockPeriodPriceResult> GetStockHistoryPriceInfo(string stockNo, DateTime bgnDate, DateTime endDate)
         {
             List<GetStockPeriodPriceResult> result = new List<GetStockPeriodPriceResult>();
             for (int year = bgnDate.Year; year <= endDate.Year; year++)
-                for (int month = 1; month <= 12; month++)
+                for (int month = (year == bgnDate.Year ? bgnDate.Month : 1); month <= 12; month++)
                 {
                     if (new DateTime(year, month, 1) > endDate) break;
-                    var r = GetStockDailyPriceInfo(stockNo, year, month);
+                    var r = GetStockHistoryPriceInfo(stockNo, year, month);
                     if (null != r)
                         result.AddRange(r);
                     else
@@ -30,10 +30,21 @@ namespace StockCrawler.Services.Collectors
 
             return result;
         }
-        private static GetStockPeriodPriceResult[] GetStockDailyPriceInfo(string stockNo, int year, int month)
+        private GetStockPeriodPriceResult[] GetStockHistoryPriceInfo(string stockNo, int year, int month)
         {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            var csv_data = Tools.DownloadStringData(new Uri($"https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=csv&date={year}{month:00}01&stockNo={stockNo}"), Encoding.Default, out IList<Cookie> _);
+            string csv_data = null;
+            while (true)
+                try
+                {
+                    csv_data = Tools.DownloadStringData(new Uri($"https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=csv&date={year}{month:00}01&stockNo={stockNo}"), Encoding.Default, out IList<Cookie> _);
+                    break;
+                }
+                catch (WebException)
+                {
+                    _logger.WarnFormat("Target website refuses our connection. Wait till it get peace. stockNo={0}, year={1}, month={2}", stockNo, year, month);
+                    Thread.Sleep((int)new TimeSpan(1,0,0).TotalMilliseconds);
+                }
+
             if (string.IsNullOrEmpty(csv_data))
             {
                 _logger.WarnFormat("Download stock[{0}] has no data by date[{1}]", stockNo, new DateTime(year, month, 1).ToString("yyyy-MM"));
@@ -57,20 +68,23 @@ namespace StockCrawler.Services.Collectors
                     // Generalize number fields data
                     for (int i = 0; i < data.Length; i++)
                         if (!string.IsNullOrEmpty(data[i]))
-                            data[i] = data[i].Replace("--", "0").Replace(",", string.Empty);
+                            data[i] = data[i]
+                                .Replace("--", "0")
+                                .Replace(",", string.Empty)
+                                .Replace("X", string.Empty)
+                                .Trim();
 
                     var tmp = data[0].Split('/').Select(int.Parse).ToList();
-                    _logger.Debug("ln: " + ln);
                     daily_info.Add(new GetStockPeriodPriceResult()
                     {
                         StockNo = stockNo,
-                        Volume = long.Parse(data[1]) / 1000,
+                        Volume = long.Parse(data[1]),
                         StockDT = new DateTime(tmp[0] + 1911, tmp[1], tmp[2]),
                         OpenPrice = decimal.Parse(data[3]),
                         HighPrice = decimal.Parse(data[4]),
                         LowPrice = decimal.Parse(data[5]),
                         ClosePrice = decimal.Parse(data[6]),
-                        DeltaPrice = decimal.Parse(data[7].Replace("+", string.Empty)),
+                        DeltaPrice = data[7] == "-" || string.IsNullOrEmpty(data[7]) ? 0 : decimal.Parse(data[7]),
                     });
                 }
                 else
