@@ -1,5 +1,4 @@
-﻿using Common.Logging;
-using HtmlAgilityPack;
+﻿using HtmlAgilityPack;
 using StockCrawler.Dao;
 using StockCrawler.Services.Exceptions;
 using System.Threading;
@@ -8,8 +7,6 @@ namespace StockCrawler.Services.Collectors
 {
     internal class TwseReportCollector : TwseCollectorBase, IStockReportCollector
     {
-        internal new static ILog _logger = LogManager.GetLogger(typeof(TwseReportCollector));
-
         public virtual GetStockReportCashFlowResult GetStockReportCashFlow(string stockNo, short year, short season)
         {
             var url = "https://mops.twse.com.tw/mops/web/ajax_t164sb05";
@@ -67,7 +64,7 @@ namespace StockCrawler.Services.Collectors
             }
             return null;
         }
-        private static GetStockReportCashFlowResult TransformNodeToCashflowRow(HtmlNode bodyNode)
+        private GetStockReportCashFlowResult TransformNodeToCashflowRow(HtmlNode bodyNode)
         {
             var result = new GetStockReportCashFlowResult()
             {
@@ -83,7 +80,7 @@ namespace StockCrawler.Services.Collectors
 
             return result;
         }
-        private static GetStockReportIncomeResult TransformNodeToIncomeRow(HtmlNode bodyNode)
+        private GetStockReportIncomeResult TransformNodeToIncomeRow(HtmlNode bodyNode)
         {
             return new GetStockReportIncomeResult()
             {
@@ -99,7 +96,7 @@ namespace StockCrawler.Services.Collectors
                 EPS = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "　基本每股盈餘")),
             };
         }
-        private static GetStockReportBalanceResult TransformNodeToBalanceRow(HtmlNode bodyNode)
+        private GetStockReportBalanceResult TransformNodeToBalanceRow(HtmlNode bodyNode)
         {
             return new GetStockReportBalanceResult()
             {

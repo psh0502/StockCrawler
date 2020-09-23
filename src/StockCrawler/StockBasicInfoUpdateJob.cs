@@ -13,12 +13,6 @@ namespace StockCrawler.Services
     {
         internal static ILog Logger { get; set; } = LogManager.GetLogger(typeof(StockBasicInfoUpdateJob));
 
-        public StockBasicInfoUpdateJob()
-            : base()
-        {
-            if (null == Logger)
-                Logger = LogManager.GetLogger(typeof(StockBasicInfoUpdateJob));
-        }
         public string BeginStockNo { get; set; }
 
         #region IJob Members

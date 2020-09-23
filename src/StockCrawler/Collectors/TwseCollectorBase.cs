@@ -11,7 +11,7 @@ namespace StockCrawler.Services
 {
     internal abstract class TwseCollectorBase
     {
-        internal static ILog _logger = LogManager.GetLogger(typeof(TwseCollectorBase));
+        internal ILog _logger = LogManager.GetLogger(typeof(TwseCollectorBase));
         protected static readonly string UTF8SpacingChar = Encoding.UTF8.GetString(new byte[] { 0xC2, 0xA0 });
         protected const string _xpath_01 = "/html/body/center/table[2]";
         protected const string _xpath_02 = "/html/body/table[4]";
@@ -20,8 +20,12 @@ namespace StockCrawler.Services
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
         }
+        public TwseCollectorBase()
+        {
+            _logger = LogManager.GetLogger(GetType());
+        }
 
-        protected static HtmlNode SearchValueNode(HtmlNode bodyNode, string keyword, int beginIndex = 5, string xpath1 = "./tr[{0}]/td[1]", string xpath2 = "./tr[{0}]/td[2]")
+        protected HtmlNode SearchValueNode(HtmlNode bodyNode, string keyword, int beginIndex = 5, string xpath1 = "./tr[{0}]/td[1]", string xpath2 = "./tr[{0}]/td[2]")
         {
             if (null == bodyNode) throw new ArgumentException("The parameter can't be null", "bodyNode");
             int index = beginIndex;
@@ -69,7 +73,7 @@ namespace StockCrawler.Services
         /// <param name="xpath">搜尋資料的 xpath 提示</param>
         /// <returns>含有資料的 html 節點</returns>
         /// <exception cref="WebsiteGetPissOffException">網站讀取過於頻繁, 需要稍等後再讀取</exception>
-        protected static HtmlNode GetTwseDataBack(string url, string stockNo, short year = -1, short season = -1, short month = -1, string xpath = _xpath_01)
+        protected HtmlNode GetTwseDataBack(string url, string stockNo, short year = -1, short season = -1, short month = -1, string xpath = _xpath_01)
         {
             var formData = HttpUtility.ParseQueryString(string.Empty);
             formData.Add("step", "1");

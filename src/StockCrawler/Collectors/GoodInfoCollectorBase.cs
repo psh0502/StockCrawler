@@ -11,9 +11,13 @@ namespace StockCrawler.Services.Collectors
 {
     internal abstract class GoodInfoCollectorBase
     {
-        internal static ILog _logger = LogManager.GetLogger(typeof(GoodInfoCollectorBase));
+        internal ILog _logger = null;
         protected static readonly string UTF8SpacingChar = Encoding.UTF8.GetString(new byte[] { 0xC2, 0xA0 });
         protected readonly DateTime now = SystemTime.Now;
+        public GoodInfoCollectorBase()
+        {
+            _logger = LogManager.GetLogger(GetType());
+        }
 
         protected static T GetNodeTextTo<T>(HtmlNode node)
         {

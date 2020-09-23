@@ -25,7 +25,6 @@ namespace StockCrawler.UnitTest
                 db.InsertOrUpdateStock("2330", "台積電");
 
             Tools._logger = new UnitTestLogger();
-            TwseCollectorBase._logger = new UnitTestLogger();
         }
     }
 }

@@ -18,6 +18,8 @@ CREATE TABLE [dbo].[StockPriceHistory](
 	[LowPrice] [decimal](10, 4) NOT NULL DEFAULT (0),
 	[ClosePrice] [decimal](10, 4) NOT NULL DEFAULT (0),
 	[DeltaPrice] [decimal](10, 4) NOT NULL DEFAULT (0), -- 漲跌價差
+	[DeltaPercent] [decimal](10, 4) NOT NULL DEFAULT (0), -- 漲跌百分比
+	[PE] [decimal](10, 4) NOT NULL DEFAULT(0), -- 本益比
 	[Volume] [bigint] NOT NULL DEFAULT (0), -- 成交股數
 	[CreatedAt] [datetime] NOT NULL DEFAULT (GETDATE()),
  CONSTRAINT [PK_StockPriceHistory] PRIMARY KEY CLUSTERED 

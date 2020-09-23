@@ -8,6 +8,7 @@ GO
 -- Create date: 2017-07-05
 -- Description: insert stock daily trade information
 -- Revision:
+-- 2020-09-23, Tom: Add PE and DeltaPercent
 -- =============================================
 CREATE OR ALTER PROCEDURE [dbo].[InsertOrUpdateStockPriceHistory]
 @pStockNo VARCHAR(20), 
@@ -18,6 +19,8 @@ CREATE OR ALTER PROCEDURE [dbo].[InsertOrUpdateStockPriceHistory]
 @pLowPrice DECIMAL(10, 4),
 @pClosePrice DECIMAL(10, 4),
 @pDeltaPrice DECIMAL(10, 4),
+@pDeltaPercent DECIMAL(10, 4),
+@pPE DECIMAL(10, 4),
 @pVolume BIGINT
 AS
 BEGIN
@@ -31,6 +34,8 @@ BEGIN
 			,[LowPrice] = ISNULL(@pLowPrice, [LowPrice])
 			,[ClosePrice] = ISNULL(@pClosePrice, [ClosePrice])
 			,[DeltaPrice] = ISNULL(@pDeltaPrice, [DeltaPrice])
+			,[DeltaPercent] = ISNULL(@pDeltaPercent, [DeltaPercent])
+			,[PE] = ISNULL(@pPE, [PE])
 			,[Volume] = ISNULL(@pVolume, [Volume])
 		WHERE [StockNo] = @pStockNo AND [StockDT] = @pStockDT AND [Period] = @pPeriod
 
@@ -44,6 +49,8 @@ BEGIN
 			[LowPrice],
 			[ClosePrice],
 			[DeltaPrice],
+			[DeltaPercent],
+			[PE],
 			[Volume]) 
 		VALUES(
 			@pStockNo, 
@@ -54,6 +61,8 @@ BEGIN
 			@pLowPrice,
 			@pClosePrice,
 			@pDeltaPrice,
+			@pDeltaPercent,
+			@pPE,
 			@pVolume)
 END
 GO

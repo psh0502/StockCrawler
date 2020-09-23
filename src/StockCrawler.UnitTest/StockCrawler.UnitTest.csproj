@@ -119,10 +119,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collectors\TwseStockBasicInfoCollectorTest.cs" />
+    <Compile Include="Collectors\TwseStockHistoryPriceCollector2Test.cs" />
     <Compile Include="Collectors\TwseStockHistoryPriceCollectorTest.cs" />
     <Compile Include="Collectors\YahooStockHistoryPriceCollectorTest.cs" />
     <Compile Include="Collectors\TwseStockDailyInfoCollectorTest.cs" />
     <Compile Include="Collectors\GoodInfoCollectorTest.cs" />
+    <Compile Include="Mocks\StockBasicInfoCollectorMock.cs" />
+    <Compile Include="Mocks\StockHistoryPriceCollectorMock2.cs" />
     <Compile Include="Mocks\StockHistoryPriceCollectorMock.cs" />
     <Compile Include="Mocks\StockReportCollectorMock.cs" />
     <Compile Include="Mocks\StockDailyInfoCollectorMock.cs" />
@@ -139,10 +142,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AuthoringTests.txt" />
-    <Content Include="TestData\DailyAveragePriceTestingData.sql" />
-    <Content Include="TestData\DailyPriceTestingData_1090326.sql" />
-    <Content Include="TestData\FinanceTestData.sql" />
-    <Content Include="TestData\DailyPriceTestingData_1090406.sql" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StockCrawler.Dao\StockCrawler.Dao.csproj">
@@ -160,6 +159,8 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="TestData\MI_INDEX_ALLBUT0999_20200406.csv" />
+    <None Include="TestData\STOCK_DAY_2330_202004.csv" />
     <None Include="TestData\yahoo_history_2330.csv" />
   </ItemGroup>
   <ItemGroup />

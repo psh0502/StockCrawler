@@ -9,8 +9,10 @@ namespace StockCrawler.UnitTest.Collectors
         [TestMethod]
         public void GetStockReportCashFlowTest_109Q1()
         {
-            IStockReportCollector collector = new TwseReportCollector();
-            TwseReportCollector._logger = new UnitTestLogger();
+            var collector = new TwseReportCollector
+            {
+                _logger = new UnitTestLogger()
+            };
             var data = collector.GetStockReportCashFlow("2330", 109, 1);
             Assert.IsNotNull(data);
             Assert.AreEqual("2330", data.StockNo);
@@ -28,8 +30,10 @@ namespace StockCrawler.UnitTest.Collectors
         [TestMethod]
         public void GetStockReportCashFlowTest_108Q4()
         {
-            IStockReportCollector collector = new TwseReportCollector();
-            TwseReportCollector._logger = new UnitTestLogger();
+            TwseReportCollector collector = new TwseReportCollector
+            {
+                _logger = new UnitTestLogger()
+            };
             var data = collector.GetStockReportCashFlow("2330", 108, 4);
             Assert.IsNotNull(data);
             Assert.AreEqual("2330", data.StockNo);
@@ -47,8 +51,10 @@ namespace StockCrawler.UnitTest.Collectors
         [TestMethod]
         public void GetStockReportIncomeTest_109Q1()
         {
-            IStockReportCollector collector = new TwseReportCollector();
-            TwseReportCollector._logger = new UnitTestLogger();
+            TwseReportCollector collector = new TwseReportCollector
+            {
+                _logger = new UnitTestLogger()
+            };
             var data = collector.GetStockReportIncome("2330", 108, 4);
             Assert.IsNotNull(data);
             Assert.AreEqual("2330", data.StockNo);
@@ -68,8 +74,10 @@ namespace StockCrawler.UnitTest.Collectors
         [TestMethod]
         public void GetStockReportBalanceTest_109Q1()
         {
-            IStockReportCollector collector = new TwseReportCollector();
-            TwseReportCollector._logger = new UnitTestLogger();
+            TwseReportCollector collector = new TwseReportCollector
+            {
+                _logger = new UnitTestLogger()
+            };
             var data = collector.GetStockReportBalance("2330", 109, 1);
             Assert.IsNotNull(data);
             Assert.AreEqual("2330", data.StockNo);
@@ -106,8 +114,10 @@ namespace StockCrawler.UnitTest.Collectors
         [TestMethod]
         public void GetStockReportMonthlyNetProfitTaxed_10907()
         {
-            IStockReportCollector collector = new TwseReportCollector();
-            TwseReportCollector._logger = new UnitTestLogger();
+            TwseReportCollector collector = new TwseReportCollector
+            {
+                _logger = new UnitTestLogger()
+            };
             var data = collector.GetStockReportMonthlyNetProfitTaxed("2330", 109, 7);
             Assert.IsNotNull(data);
             Assert.AreEqual("2330", data.StockNo);

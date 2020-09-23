@@ -20,7 +20,6 @@
     <Parameter Name="pTillThisMonthDelta" Type="System.Decimal" DbType="Money" />
     <Parameter Name="pTillThisMonthDeltaPercent" Type="System.Decimal" DbType="Decimal(18,4)" />
     <Parameter Name="pRemark" Type="System.String" DbType="NVarChar(1000)" />
-    <Parameter Name="pPE" Type="System.Decimal" DbType="Money" />
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.DeleteStockPriceHistoryData" Method="DeleteStockPriceHistoryData">
@@ -81,6 +80,8 @@
       <Column Name="LowPrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
       <Column Name="ClosePrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
       <Column Name="DeltaPrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
+      <Column Name="DeltaPercent" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
+      <Column Name="PE" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
       <Column Name="Volume" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
       <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </ElementType>
@@ -103,6 +104,8 @@
       <Column Name="LowPrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
       <Column Name="ClosePrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
       <Column Name="DeltaPrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
+      <Column Name="DeltaPercent" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
+      <Column Name="PE" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
       <Column Name="Volume" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
       <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="RNO" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
@@ -206,7 +209,6 @@
       <Column Name="TillThisMonthDelta" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
       <Column Name="TillThisMonthDeltaPercent" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
       <Column Name="Remark" Type="System.String" DbType="NVarChar(1000) NOT NULL" CanBeNull="false" />
-      <Column Name="PE" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
       <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </ElementType>
@@ -256,6 +258,8 @@
     <Parameter Name="pLowPrice" Type="System.Decimal" DbType="Decimal(10,4)" />
     <Parameter Name="pClosePrice" Type="System.Decimal" DbType="Decimal(10,4)" />
     <Parameter Name="pDeltaPrice" Type="System.Decimal" DbType="Decimal(10,4)" />
+    <Parameter Name="pDeltaPercent" Type="System.Decimal" DbType="Decimal(10,4)" />
+    <Parameter Name="pPE" Type="System.Decimal" DbType="Decimal(10,4)" />
     <Parameter Name="pVolume" Type="System.Int64" DbType="BigInt" />
     <Return Type="System.Int32" />
   </Function>

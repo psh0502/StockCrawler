@@ -12,7 +12,7 @@ namespace StockCrawler.Services.Collectors
 {
     internal class YahooStockHistoryPriceCollector : IStockHistoryPriceCollector
     {
-        internal static ILog _logger = LogManager.GetLogger(typeof(YahooStockHistoryPriceCollector));
+        internal ILog _logger = LogManager.GetLogger(typeof(YahooStockHistoryPriceCollector));
         public virtual IEnumerable<GetStockPeriodPriceResult> GetStockHistoryPriceInfo(string stockNo, DateTime bgnDate, DateTime endDate)
         {
             try
@@ -21,6 +21,8 @@ namespace StockCrawler.Services.Collectors
                 var csv_lines = CsvReader.ParseLines(csv_data).Skip(1);
 
                 var list = new List<GetStockPeriodPriceResult>();
+
+                var last_data = new GetStockPeriodPriceResult() { ClosePrice = 1 };
                 foreach (var ln in csv_lines)
                 {
                     string[] data = CsvReader.ParseFields(ln).ToArray();
@@ -28,7 +30,7 @@ namespace StockCrawler.Services.Collectors
                     {
                         if (data.Length == 7)
                         {
-                            list.Add(new GetStockPeriodPriceResult()
+                            var tmp = new GetStockPeriodPriceResult()
                             {
                                 StockDT = DateTime.Parse(data[0]),
                                 Period = 1,
@@ -36,9 +38,14 @@ namespace StockCrawler.Services.Collectors
                                 HighPrice = decimal.Parse(data[2]),
                                 LowPrice = decimal.Parse(data[3]),
                                 ClosePrice = decimal.Parse(data[4]),
-                                Volume = long.Parse(data[6]) / 1000,
+                                DeltaPrice = decimal.Parse(data[4]) - last_data.ClosePrice,
+                                PE = 0,
+                                Volume = long.Parse(data[6]),
                                 StockNo = stockNo
-                            });
+                            };
+                            tmp.DeltaPercent = tmp.DeltaPrice / last_data.ClosePrice;
+                            list.Add(tmp);
+                            last_data = tmp;
                         }
                     }
                     catch (ConstraintException ex)

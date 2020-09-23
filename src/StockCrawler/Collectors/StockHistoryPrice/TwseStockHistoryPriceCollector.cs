@@ -16,7 +16,7 @@ namespace StockCrawler.Services.Collectors
         {
             List<GetStockPeriodPriceResult> result = new List<GetStockPeriodPriceResult>();
             for (int year = bgnDate.Year; year <= endDate.Year; year++)
-                for (int month = 1; month <= 12; month++)
+                for (int month = (year == bgnDate.Year ? bgnDate.Month : 1); month <= 12; month++)
                 {
                     if (new DateTime(year, month, 1) > endDate) break;
                     var r = GetStockHistoryPriceInfo(stockNo, year, month);
@@ -30,7 +30,7 @@ namespace StockCrawler.Services.Collectors
 
             return result;
         }
-        private static GetStockPeriodPriceResult[] GetStockHistoryPriceInfo(string stockNo, int year, int month)
+        private GetStockPeriodPriceResult[] GetStockHistoryPriceInfo(string stockNo, int year, int month)
         {
             string csv_data = null;
             while (true)
@@ -71,7 +71,6 @@ namespace StockCrawler.Services.Collectors
                             data[i] = data[i]
                                 .Replace("--", "0")
                                 .Replace(",", string.Empty)
-                                .Replace("+", string.Empty)
                                 .Replace("X", string.Empty)
                                 .Trim();
 
@@ -79,7 +78,7 @@ namespace StockCrawler.Services.Collectors
                     daily_info.Add(new GetStockPeriodPriceResult()
                     {
                         StockNo = stockNo,
-                        Volume = long.Parse(data[1]) / 1000,
+                        Volume = long.Parse(data[1]),
                         StockDT = new DateTime(tmp[0] + 1911, tmp[1], tmp[2]),
                         OpenPrice = decimal.Parse(data[3]),
                         HighPrice = decimal.Parse(data[4]),
