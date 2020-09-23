@@ -34,7 +34,7 @@ namespace StockCrawler.Services.Collectors
                     catch (WebException)
                     {
                         _logger.WarnFormat("Target website refuses our connection. Wait till it get peace. stockNo={0}, processing_date={1}", stockNo, processing_date.ToString("yyyy-MM-dd"));
-                        Thread.Sleep(2 * 60 * 60 * 1000);
+                        Thread.Sleep((int)new TimeSpan(1, 0, 0).TotalMilliseconds);
                     }
 
                 Thread.Sleep(_breakInternval);

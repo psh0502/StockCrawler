@@ -114,7 +114,6 @@ namespace StockCrawler.Services.Collectors
 
         protected virtual string DownloadData(DateTime day)
         {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             var csv_data = Tools.DownloadStringData(new Uri($"https://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={day:yyyyMMdd}&type=ALLBUT0999"), Encoding.Default, out IList<Cookie> _);
             if (string.IsNullOrEmpty(csv_data))
             {
