@@ -38,7 +38,7 @@ namespace StockCrawler.Services
                         {
                             Logger.WarnFormat("[{0}] has no basic info", d.StockNo, e);
                         }
-                        Thread.Sleep(10 * 1000);
+                        Thread.Sleep(_breakInternval);
                     }
                 }
             }

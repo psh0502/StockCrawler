@@ -50,10 +50,10 @@ namespace StockCrawler.UnitTest.Jobs
                     Assert.AreEqual(273.00M, d1.OpenPrice, "日開盤價");
                     Assert.AreEqual(275.50M, d1.HighPrice, "日最高價");
                     Assert.AreEqual(270.00M, d1.LowPrice, "日最低價");
-                    Assert.AreEqual(56392, d1.Volume, "日成交量");
-                    Assert.AreEqual(0, d1.DeltaPrice);
-                    Assert.AreEqual(0, d1.DeltaPercent);
-                    Assert.AreEqual(0, d1.PE);
+                    Assert.AreEqual(59712754, d1.Volume, "日成交量");
+                    Assert.AreEqual(4, d1.DeltaPrice);
+                    Assert.AreEqual(0.0146M, d1.DeltaPercent);
+                    Assert.AreEqual(20.68M, d1.PE);
                 }
                 {
                     short period = 5;
@@ -71,9 +71,6 @@ namespace StockCrawler.UnitTest.Jobs
                     Assert.AreEqual(276.5M, d1.HighPrice, "週最高價");
                     Assert.AreEqual(262.5M, d1.LowPrice, "週最低價");
                     Assert.AreEqual(151819, d1.Volume, "週成交量");
-                    Assert.AreEqual(0, d1.DeltaPrice);
-                    Assert.AreEqual(0, d1.DeltaPercent);
-                    Assert.AreEqual(0, d1.PE);
                 }
                 {
                     short period = 20;
@@ -91,9 +88,6 @@ namespace StockCrawler.UnitTest.Jobs
                     Assert.AreEqual(326M, d1.HighPrice);
                     Assert.AreEqual(235.50M, d1.LowPrice);
                     Assert.AreEqual(1875940, d1.Volume);
-                    Assert.AreEqual(0, d1.DeltaPrice);
-                    Assert.AreEqual(0, d1.DeltaPercent);
-                    Assert.AreEqual(0, d1.PE);
                 }
                 {
                     short period = 5;
@@ -111,9 +105,6 @@ namespace StockCrawler.UnitTest.Jobs
                     Assert.AreEqual(286M, d1.HighPrice, "週最高價");
                     Assert.AreEqual(252M, d1.LowPrice, "週最低價");
                     Assert.AreEqual(360030, d1.Volume, "週成交量");
-                    Assert.AreEqual(0, d1.DeltaPrice);
-                    Assert.AreEqual(0, d1.DeltaPercent);
-                    Assert.AreEqual(0, d1.PE);
                 }
             }
         }

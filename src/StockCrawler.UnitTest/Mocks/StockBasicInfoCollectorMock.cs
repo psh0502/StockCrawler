@@ -17,7 +17,7 @@ namespace StockCrawler.UnitTest.Mocks
                         StockName = "台積電",
                         BuildDate = new DateTime(1987, 2, 21),
                         PublishDate = new DateTime(1994, 9, 5),
-                        Capital = 2593M * 100000000,
+                        Capital = 259303804580M,
                         Chairman = "劉德音",
                         CEO = "總裁: 魏哲家",
                         Url = "http://www.tsmc.com",

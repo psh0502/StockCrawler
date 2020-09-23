@@ -12,7 +12,7 @@ namespace StockCrawler.Services.Collectors
         public virtual IEnumerable<GetStockPeriodPriceResult> GetStockHistoryPriceInfo(string stockNo, DateTime bgnDate, DateTime endDate)
         {
             if (_dataset.ContainsKey(stockNo)) return _dataset[stockNo];
-            _dataset[stockNo] = new List<GetStockPeriodPriceResult>();
+
             for (DateTime processing_date = bgnDate;
                 processing_date <= endDate;
                 processing_date = processing_date.AddDays(1))
@@ -23,7 +23,12 @@ namespace StockCrawler.Services.Collectors
                         var r = GetAllStockDailyPriceInfo(processing_date);
                         if (null != r)
                             foreach (var d in r)
+                            {
+                                if (!_dataset.ContainsKey(d.StockNo))
+                                    _dataset[d.StockNo] = new List<GetStockPeriodPriceResult>();
+
                                 _dataset[d.StockNo].Add(d);
+                            }
                         break;
                     }
                     catch (WebException)

@@ -189,7 +189,7 @@ namespace StockCrawler.UnitTest.Jobs
             if (!IsExecuted)
             {
                 StockFinReportUpdateJob.Logger = new UnitTestLogger();
-                StockFinReportUpdateJob target = new StockFinReportUpdateJob
+                var target = new StockFinReportUpdateJob
                 {
                     BeginYear = 107
                 };

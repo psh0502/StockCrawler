@@ -36,6 +36,8 @@ namespace StockCrawler.Services.Collectors
         protected virtual GetStockPeriodPriceResult[] GetAllStockDailyPriceInfo(DateTime day)
         {
             var csv_data = DownloadData(day);
+            if (string.IsNullOrEmpty(csv_data)) return null;
+
             _logger.InfoFormat("Day={1}, csv={0}", csv_data.Substring(0, 1000), day.ToShortDateString());
             // Usage of CsvReader: https://blog.darkthread.net/post-2017-05-13-servicestack-text-csvserializer.aspx
             var csv_lines = CsvReader.ParseLines(csv_data);
