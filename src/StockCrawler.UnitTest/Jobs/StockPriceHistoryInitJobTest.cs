@@ -89,7 +89,7 @@ namespace StockCrawler.UnitTest.Jobs
                 Assert.AreEqual(263.5M, d1.OpenPrice, "週開盤價");
                 Assert.AreEqual(276.5M, d1.HighPrice, "週最高價");
                 Assert.AreEqual(262.5M, d1.LowPrice, "週最低價");
-                Assert.AreEqual(151819, d1.Volume, "週成交量");
+                Assert.AreEqual(154877913, d1.Volume, "週成交量");
             }
         }
         [TestMethod]
@@ -116,7 +116,7 @@ namespace StockCrawler.UnitTest.Jobs
                 Assert.AreEqual(257M, d1.OpenPrice, "週開盤價");
                 Assert.AreEqual(286M, d1.HighPrice, "週最高價");
                 Assert.AreEqual(252M, d1.LowPrice, "週最低價");
-                Assert.AreEqual(360030, d1.Volume, "週成交量");
+                Assert.AreEqual(363365780, d1.Volume, "週成交量");
             }
         }
         [TestMethod]
@@ -143,7 +143,7 @@ namespace StockCrawler.UnitTest.Jobs
                 Assert.AreEqual(308M, d1.OpenPrice);
                 Assert.AreEqual(326M, d1.HighPrice);
                 Assert.AreEqual(235.50M, d1.LowPrice);
-                Assert.AreEqual(1875940, d1.Volume);
+                Assert.AreEqual(1906813004, d1.Volume);
             }
         }
     }

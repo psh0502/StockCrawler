@@ -3,7 +3,6 @@ using StockCrawler.Services.Collectors;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace StockCrawler.UnitTest.Mocks
 {
@@ -15,17 +14,26 @@ namespace StockCrawler.UnitTest.Mocks
         }
         public override IEnumerable<GetStockPeriodPriceResult> GetStockDailyPriceInfo()
         {
-            return new List<GetStockPeriodPriceResult>() {
-                new GetStockPeriodPriceResult() {
-                    StockNo = "2330", 
-                    StockName = "台積電" } 
+            return new List<GetStockPeriodPriceResult>() 
+            {
+                new GetStockPeriodPriceResult() 
+                {
+                    StockNo = "2330",
+                    StockName = "台積電" 
+                }
             };
         }
         protected override string DownloadData(DateTime day)
         {
-            _logger.Info("Mock DownloadTwseStockCSV!!!");
-            using (var sr = new StreamReader(@"..\..\..\StockCrawler.UnitTest\TestData\MI_INDEX_ALLBUT0999_20200406.csv", Encoding.Default))
-                return sr.ReadToEnd();
+            _logger.Info($"Mock DownloadTwseStockCSV!!!day={day:yyyyMMdd}");
+            var file = new FileInfo($@"..\..\..\StockCrawler.UnitTest\TestData\TWSE\MI_INDEX_ALLBUT0999_{day:yyyyMMdd}.csv");
+            if (file.Exists)
+            {
+                using (var sr = file.OpenText())
+                    return sr.ReadToEnd();
+            }
+            else
+                return null;
         }
     }
 }

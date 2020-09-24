@@ -10,23 +10,6 @@ namespace StockCrawler.UnitTest.Jobs
     [TestClass]
     public class StockBasicInfoUpdateJobTests : UnitTestBase
     {
-        [TestInitialize]
-        public override void InitBeforeTest()
-        {
-            base.InitBeforeTest();
-            using(var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
-                db.ExecuteCommand(@"INSERT [dbo].[StockBasicInfo]
-                    ([StockNo],[Category],[CompanyName],[CompanyID]
-                    ,[BuildDate],[PublishDate],[Capital]
-                    ,[ReleaseStockCount],[Chairman],[CEO], [Url]
-                    ,[Business])
-                VALUES
-                    ('2330', N'半導體業', N'台灣積體電路製造股份有限公司', '22099131'
-                    , '1987-02-21', '1994-09-05', 259303804580.00
-                    , '25930380458', N'劉德音', N'總裁: 魏哲家', 'http://www.tsmc.com'
-                    , N'依客戶之訂單與其提供之產品設計說明，以從事製造與銷售積體電路以及其他晶圓半導體裝置。提供前述產品之封裝與測試服務、積體電路之電腦輔助設計技術服務。提供製造光罩及其設計服務。')
-                ");
-        }
         [TestMethod]
         public void ExecuteTest()
         {

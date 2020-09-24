@@ -1,7 +1,6 @@
 ﻿using StockCrawler.Services.Collectors;
 using System;
 using System.IO;
-using System.Text;
 
 namespace StockCrawler.UnitTest.Mocks
 {
@@ -13,10 +12,11 @@ namespace StockCrawler.UnitTest.Mocks
         }
         protected override string DownloadData(DateTime day)
         {
-            if (day == new DateTime(2020, 4, 6))
+            _logger.Info($"Mock DownloadTwseStockCSV!!!day={day:yyyyMMdd}");
+            var file = new FileInfo($@"..\..\..\StockCrawler.UnitTest\TestData\TWSE\MI_INDEX_ALLBUT0999_{day:yyyyMMdd}.csv");
+            if (file.Exists)
             {
-                _logger.Info("Mock DownloadTwseStockCSV!!!");
-                using (var sr = new StreamReader(@"..\..\..\StockCrawler.UnitTest\TestData\MI_INDEX_ALLBUT0999_20200406.csv", Encoding.Default))
+                using (var sr = file.OpenText())
                     return sr.ReadToEnd();
             }
             else

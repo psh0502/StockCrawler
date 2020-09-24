@@ -25,7 +25,11 @@ namespace StockCrawler.Services
                 {
                     db.DeleteStockPriceHistoryData(d.StockNo, null);
                     var list = CollectorProviderService.GetStockHistoryPriceCollector()
+#if(DEBUG)
+                        .GetStockHistoryPriceInfo(d.StockNo, SystemTime.Today.AddYears(-1), SystemTime.Today.AddDays(1));
+#else
                         .GetStockHistoryPriceInfo(d.StockNo, SystemTime.Today.AddYears(-5), SystemTime.Today.AddDays(1));
+#endif
 
                     if (list.Any())
                         Tools.CalculateMAAndPeriodK(list);
@@ -34,7 +38,7 @@ namespace StockCrawler.Services
                 }
             }
         }
-        #endregion
+#endregion
 
         private void DownloadTwseLatestInfo()
         {
