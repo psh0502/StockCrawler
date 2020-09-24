@@ -19,8 +19,8 @@ namespace StockCrawler.UnitTest.Collectors
             };
             SystemTime.SetFakeTime(new DateTime(2020, 4, 6));
             {
-                var r = collector.GetStockHistoryPriceInfo("2330", SystemTime.Today.AddDays(-1), SystemTime.Today);
-                Assert.AreEqual(1, r.Count());
+                var r = collector.GetStockHistoryPriceInfo("2330", new DateTime(2020, 1, 1), SystemTime.Today);
+                Assert.AreEqual(85, r.Count());
                 Assert.IsTrue(r.Where(d => d.StockNo == "2330").Any());
                 var d1 = r.Where(x => x.StockDT == new DateTime(2020, 4, 6)).First();
                 _logger.DebugFormat("StockNo={0}\r\nStockDT={1}\r\nOpenPrice={2}\r\nHighPrice={3}\r\nLowPrice={4}\r\nClosePrice={5}\r\nVolume={6}\r\nDeltaPrice={7}\r\nDeltaPercent={8}%\r\nPE={9}",

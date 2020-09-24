@@ -2,6 +2,7 @@
 using StockCrawler.Dao;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -121,6 +122,12 @@ namespace StockCrawler.Services.Collectors
                 _logger.WarnFormat("Download has no data by date[{0}]", day.ToString("yyyyMMdd"));
                 return null;
             }
+#if (DEBUG)
+            var file = new FileInfo($"D:\\tmp\\MI_INDEX_ALLBUT0999_{day:yyyyMMdd}.csv");
+            if (file.Exists) file.Delete();
+            using (var sw = file.CreateText())
+                sw.Write(csv_data);
+#endif
             return csv_data;
         }
 

@@ -6,6 +6,9 @@ using System.Threading;
 
 namespace StockCrawler.Services.Collectors
 {
+    /// <summary>
+    /// 透過每日收盤的數據回朔過去歷史股價
+    /// </summary>
     internal class TwseStockHistoryPriceCollector2 : TwseStockDailyInfoCollector, IStockHistoryPriceCollector
     {
         private readonly Dictionary<string, List<GetStockPeriodPriceResult>> _dataset = new Dictionary<string, List<GetStockPeriodPriceResult>>();
@@ -17,7 +20,7 @@ namespace StockCrawler.Services.Collectors
                 processing_date <= endDate;
                 processing_date = processing_date.AddDays(1))
             {
-                while (true)
+                while (true) // retry till it get
                     try
                     {
                         var r = GetAllStockDailyPriceInfo(processing_date);
