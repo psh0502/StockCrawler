@@ -99,8 +99,9 @@ namespace StockCrawler.Services.Collectors
                         PE = decimal.Parse(data[15]),
                     };
                     //_logger.DebugFormat("StockNo={0}\r\nStockDT={1}\r\nOpenPrice={2}\r\nHighPrice={3}\r\nLowPrice={4}\r\nClosePrice={5}\r\nVolume={6}\r\nDeltaPrice={7}\r\nPE={8}",
-                    //    tmp.StockNo, tmp.StockDT.ToShortDateString(), tmp.OpenPrice, tmp.HighPrice, tmp.LowPrice, tmp.ClosePrice, tmp.Volume, tmp.DeltaPrice, tmp.PE);
-                    tmp.DeltaPercent = tmp.DeltaPrice / (tmp.OpenPrice == 0 ? 1 : tmp.OpenPrice);
+                    // tmp.StockNo, tmp.StockDT.ToShortDateString(), tmp.OpenPrice, tmp.HighPrice, tmp.LowPrice, tmp.ClosePrice, tmp.Volume, tmp.DeltaPrice, tmp.PE);
+                    // 取小數點下四位就好
+                    tmp.DeltaPercent = decimal.Parse((tmp.DeltaPrice / (tmp.OpenPrice == 0 ? 1 : tmp.OpenPrice)).ToString("0.####"));
                     daily_info.Add(tmp);
                 }
                 else

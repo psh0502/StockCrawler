@@ -14,7 +14,7 @@ namespace StockCrawler.Services
         protected static readonly string UTF8SpacingChar = Encoding.UTF8.GetString(new byte[] { 0xC2, 0xA0 });
         protected const string _xpath_01 = "/html/body/center/table[2]";
         protected const string _xpath_02 = "/html/body/table[4]";
-        protected static readonly int _breakInternval = int.Parse(ConfigurationManager.AppSettings["CollectorBreakInternval"] ?? "0");
+        internal static int _breakInternval = int.Parse(ConfigurationManager.AppSettings["CollectorBreakInternval"] ?? "0");
         public TwseCollectorBase()
         {
             _logger = LogManager.GetLogger(GetType());

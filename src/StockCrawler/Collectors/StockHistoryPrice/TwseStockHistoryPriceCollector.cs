@@ -75,7 +75,7 @@ namespace StockCrawler.Services.Collectors
                                 .Trim();
 
                     var tmp = data[0].Split('/').Select(int.Parse).ToList();
-                    daily_info.Add(new GetStockPeriodPriceResult()
+                    var d = new GetStockPeriodPriceResult()
                     {
                         StockNo = stockNo,
                         Volume = long.Parse(data[1]),
@@ -85,7 +85,9 @@ namespace StockCrawler.Services.Collectors
                         LowPrice = decimal.Parse(data[5]),
                         ClosePrice = decimal.Parse(data[6]),
                         DeltaPrice = data[7] == "-" || string.IsNullOrEmpty(data[7]) ? 0 : decimal.Parse(data[7]),
-                    });
+                    };
+                    d.DeltaPercent = decimal.Parse((d.DeltaPrice / (d.OpenPrice == 0 ? 1 : d.OpenPrice)).ToString("0.####"));
+                    daily_info.Add(d);
                 }
                 else
                 {

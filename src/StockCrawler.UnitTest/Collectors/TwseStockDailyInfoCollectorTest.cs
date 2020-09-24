@@ -12,6 +12,7 @@ namespace StockCrawler.UnitTest.Collectors
         [TestMethod]
         public void GetStockDailyPriceInfoTest()
         {
+            TwseCollectorBase._breakInternval = 5 * 1000;
             var collector = new TwseStockDailyInfoCollector
             {
                 _logger = new UnitTestLogger()
@@ -32,9 +33,9 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual(286M, d1.HighPrice);
             Assert.AreEqual(273M, d1.LowPrice);
             Assert.AreEqual(69320306, d1.Volume);
-            Assert.AreEqual(0, d1.DeltaPrice);
-            Assert.AreEqual(0, d1.DeltaPercent);
-            Assert.AreEqual(0, d1.PE);
+            Assert.AreEqual(-7M, d1.DeltaPrice);
+            Assert.AreEqual(-0.0246M, d1.DeltaPercent);
+            Assert.AreEqual(20.5M, d1.PE);
         }
     }
 }

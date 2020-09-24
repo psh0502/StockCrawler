@@ -43,7 +43,7 @@ namespace StockCrawler.Services.Collectors
                                 Volume = long.Parse(data[6]),
                                 StockNo = stockNo
                             };
-                            tmp.DeltaPercent = tmp.DeltaPrice / last_data.ClosePrice;
+                            tmp.DeltaPercent = decimal.Parse((tmp.DeltaPrice / last_data.ClosePrice).ToString("0.####"));
                             list.Add(tmp);
                             last_data = tmp;
                         }
