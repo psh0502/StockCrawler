@@ -120,6 +120,33 @@ namespace StockCrawler.UnitTest.Jobs
             }
         }
         [TestMethod]
+        public void PriceAverageDataBy5DaysTest_3()
+        {
+            using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
+            {
+                short period = 5;
+                int? pageCount = null;
+                var data = db.GetStockPriceHistoryPaging(
+                    stockNo,
+                    new DateTime(2020, 4, 1),
+                    new DateTime(2020, 4, 6),
+                    period, 100, 1, 10, ref pageCount).ToList();
+
+                Assert.AreEqual(1, data.Count);
+                Assert.AreEqual(1, pageCount);
+                var d1 = data.First();
+                _logger.DebugFormat("StockNo={0}\r\nStockDT={1}\r\nOpenPrice={2}\r\nHighPrice={3}\r\nLowPrice={4}\r\nClosePrice={5}\r\nVolume={6}\r\nDeltaPrice={7}\r\nDeltaPercent={8}%\r\nPE={9}",
+                    d1.StockNo, d1.StockDT.ToShortDateString(), d1.OpenPrice, d1.HighPrice, d1.LowPrice, d1.ClosePrice, d1.Volume, d1.DeltaPrice, (d1.DeltaPercent * 100).ToString("#0.##"), d1.PE);
+                Assert.AreEqual(new DateTime(2020, 4, 3), d1.StockDT);
+                Assert.AreEqual(stockNo, d1.StockNo);
+                Assert.AreEqual(273M, d1.ClosePrice, "週收盤價");
+                Assert.AreEqual(257M, d1.OpenPrice, "週開盤價");
+                Assert.AreEqual(286M, d1.HighPrice, "週最高價");
+                Assert.AreEqual(252M, d1.LowPrice, "週最低價");
+                Assert.AreEqual(363365780, d1.Volume, "週成交量");
+            }
+        }
+        [TestMethod]
         public void PriceAverageDataBy20DaysTest()
         {
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))

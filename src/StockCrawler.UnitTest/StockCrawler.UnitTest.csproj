@@ -217,7 +217,7 @@
     <None Include="TestData\TWSE\MI_INDEX_ALLBUT0999_20200331.csv" />
     <None Include="TestData\TWSE\MI_INDEX_ALLBUT0999_20200401.csv" />
     <None Include="TestData\TWSE\MI_INDEX_ALLBUT0999_20200406.csv" />
-    <None Include="TestData\STOCK_DAY_2330_202004.csv" />
+    <None Include="TestData\TWSE\STOCK_DAY_2330_202004.csv" />
     <None Include="TestData\yahoo_history_2330.csv" />
   </ItemGroup>
   <ItemGroup />

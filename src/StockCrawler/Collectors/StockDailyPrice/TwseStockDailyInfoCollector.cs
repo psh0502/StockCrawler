@@ -17,7 +17,6 @@ namespace StockCrawler.Services.Collectors
             InitStockDailyPriceCache();
             return (_stockInfoDictCache.ContainsKey(stockNo)) ? _stockInfoDictCache[stockNo] : null;
         }
-
         private void InitStockDailyPriceCache()
         {
             if (null == _stockInfoDictCache)
@@ -26,17 +25,22 @@ namespace StockCrawler.Services.Collectors
                     {
                         _logger.Info("Initialize all stock information cache.");
                         _stockInfoDictCache = new Dictionary<string, GetStockPeriodPriceResult>();
-                        foreach (var info in GetAllStockDailyPriceInfo(SystemTime.Today))
+                        if (!Tools.IsWeekend(SystemTime.Today))
                         {
-                            _stockInfoDictCache[info.StockNo] = info;
-                            _logger.DebugFormat("[{0}] {1}", info.StockNo, info.ClosePrice);
+                            var data = GetAllStockDailyPriceInfo(SystemTime.Today);
+                            if (null != data)
+                                foreach (var info in data)
+                                {
+                                    _stockInfoDictCache[info.StockNo] = info;
+                                    _logger.DebugFormat("[{0}] {1}", info.StockNo, info.ClosePrice);
+                                }
+
                         }
                     }
         }
-
         protected virtual GetStockPeriodPriceResult[] GetAllStockDailyPriceInfo(DateTime day)
         {
-            if (day.DayOfWeek == DayOfWeek.Saturday || day.DayOfWeek == DayOfWeek.Sunday) return null;
+            if (Tools.IsWeekend(day)) return null;
 
             var csv_data = DownloadData(day);
             if (string.IsNullOrEmpty(csv_data)) return null;
@@ -101,10 +105,8 @@ namespace StockCrawler.Services.Collectors
                         DeltaPrice = decimal.Parse(data[9] + data[10]),
                         PE = decimal.Parse(data[15]),
                     };
-                    //_logger.DebugFormat("StockNo={0}\r\nStockDT={1}\r\nOpenPrice={2}\r\nHighPrice={3}\r\nLowPrice={4}\r\nClosePrice={5}\r\nVolume={6}\r\nDeltaPrice={7}\r\nPE={8}",
-                    // tmp.StockNo, tmp.StockDT.ToShortDateString(), tmp.OpenPrice, tmp.HighPrice, tmp.LowPrice, tmp.ClosePrice, tmp.Volume, tmp.DeltaPrice, tmp.PE);
                     // 取小數點下四位就好
-                    tmp.DeltaPercent = decimal.Parse((tmp.DeltaPrice / (tmp.OpenPrice == 0 ? 1 : tmp.OpenPrice)).ToString("0.####"));
+                    tmp.DeltaPercent = decimal.Parse((tmp.OpenPrice == 0) ? "0" : (tmp.DeltaPrice / tmp.OpenPrice).ToString("0.####"));
                     daily_info.Add(tmp);
                 }
                 else
@@ -115,7 +117,6 @@ namespace StockCrawler.Services.Collectors
             }
             return daily_info.ToArray();
         }
-
         protected virtual string DownloadData(DateTime day)
         {
             var csv_data = Tools.DownloadStringData(new Uri($"https://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={day:yyyyMMdd}&type=ALLBUT0999"), Encoding.Default, out IList<Cookie> _);
@@ -125,14 +126,13 @@ namespace StockCrawler.Services.Collectors
                 return null;
             }
 #if (DEBUG)
-            var file = new FileInfo($"D:\\tmp\\MI_INDEX_ALLBUT0999_{day:yyyyMMdd}.csv");
-            if (file.Exists) file.Delete();
-            using (var sw = file.CreateText())
-                sw.Write(csv_data);
+            //var file = new FileInfo($"D:\\tmp\\MI_INDEX_ALLBUT0999_{day:yyyyMMdd}.csv");
+            //if (file.Exists) file.Delete();
+            //using (var sw = file.CreateText())
+            //    sw.Write(csv_data);
 #endif
             return csv_data;
         }
-
         public virtual IEnumerable<GetStockPeriodPriceResult> GetStockDailyPriceInfo()
         {
             InitStockDailyPriceCache();

@@ -26,9 +26,9 @@ namespace StockCrawler.Services
                     db.DeleteStockPriceHistoryData(d.StockNo, null);
                     var list = CollectorProviderService.GetStockHistoryPriceCollector()
 #if(DEBUG)
-                        .GetStockHistoryPriceInfo(d.StockNo, SystemTime.Today.AddYears(-1), SystemTime.Today.AddDays(1));
+                        .GetStockHistoryPriceInfo(d.StockNo, SystemTime.Today.AddYears(-1), SystemTime.Today);
 #else
-                        .GetStockHistoryPriceInfo(d.StockNo, SystemTime.Today.AddYears(-5), SystemTime.Today.AddDays(1));
+                        .GetStockHistoryPriceInfo(d.StockNo, SystemTime.Today.AddYears(-5), SystemTime.Today);
 #endif
 
                     if (list.Any())
