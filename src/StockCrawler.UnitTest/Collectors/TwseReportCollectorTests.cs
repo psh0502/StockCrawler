@@ -13,9 +13,9 @@ namespace StockCrawler.UnitTest.Collectors
             {
                 _logger = new UnitTestLogger()
             };
-            var data = collector.GetStockReportCashFlow("2330", 109, 1);
+            var data = collector.GetStockReportCashFlow(TEST_STOCK_NO_1, 109, 1);
             Assert.IsNotNull(data);
-            Assert.AreEqual("2330", data.StockNo);
+            Assert.AreEqual(TEST_STOCK_NO_1, data.StockNo);
             Assert.AreEqual(109, data.Year);
             Assert.AreEqual(1, data.Season);
             Assert.AreEqual(67083741, data.Depreciation, "折舊");
@@ -34,9 +34,9 @@ namespace StockCrawler.UnitTest.Collectors
             {
                 _logger = new UnitTestLogger()
             };
-            var data = collector.GetStockReportCashFlow("2330", 108, 4);
+            var data = collector.GetStockReportCashFlow(TEST_STOCK_NO_1, 108, 4);
             Assert.IsNotNull(data);
-            Assert.AreEqual("2330", data.StockNo);
+            Assert.AreEqual(TEST_STOCK_NO_1, data.StockNo);
             Assert.AreEqual(108, data.Year);
             Assert.AreEqual(4, data.Season);
             Assert.AreEqual(281411832, data.Depreciation, "折舊");
@@ -55,9 +55,9 @@ namespace StockCrawler.UnitTest.Collectors
             {
                 _logger = new UnitTestLogger()
             };
-            var data = collector.GetStockReportIncome("2330", 108, 4);
+            var data = collector.GetStockReportIncome(TEST_STOCK_NO_1, 108, 4);
             Assert.IsNotNull(data);
-            Assert.AreEqual("2330", data.StockNo);
+            Assert.AreEqual(TEST_STOCK_NO_1, data.StockNo);
             Assert.AreEqual(108, data.Year);
             Assert.AreEqual(4, data.Season);
             Assert.AreEqual(1069985448, data.Revenue);
@@ -78,9 +78,9 @@ namespace StockCrawler.UnitTest.Collectors
             {
                 _logger = new UnitTestLogger()
             };
-            var data = collector.GetStockReportBalance("2330", 109, 1);
+            var data = collector.GetStockReportBalance(TEST_STOCK_NO_1, 109, 1);
             Assert.IsNotNull(data);
-            Assert.AreEqual("2330", data.StockNo);
+            Assert.AreEqual(TEST_STOCK_NO_1, data.StockNo);
             Assert.AreEqual(109, data.Year);
             Assert.AreEqual(1, data.Season);
 
@@ -118,9 +118,9 @@ namespace StockCrawler.UnitTest.Collectors
             {
                 _logger = new UnitTestLogger()
             };
-            var data = collector.GetStockReportMonthlyNetProfitTaxed("2330", 109, 7);
+            var data = collector.GetStockReportMonthlyNetProfitTaxed(TEST_STOCK_NO_1, 109, 7);
             Assert.IsNotNull(data);
-            Assert.AreEqual("2330", data.StockNo);
+            Assert.AreEqual(TEST_STOCK_NO_1, data.StockNo);
             Assert.AreEqual(109, data.Year);
             Assert.AreEqual(7, data.Month);
             Assert.AreEqual(105963468, data.NetProfitTaxed);    // 本月

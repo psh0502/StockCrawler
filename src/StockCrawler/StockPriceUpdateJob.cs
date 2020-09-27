@@ -43,7 +43,10 @@ namespace StockCrawler.Services
                         }
                     }
                     if (list.Any())
-                        Tools.CalculateMAAndPeriodK(list);
+                        // 寫入日價
+                        db.InsertOrUpdateStockPrice(list);
+
+                    Tools.CalculateMAAndPeriodK(SystemTime.Today);
                 }
             }
             catch (Exception ex)

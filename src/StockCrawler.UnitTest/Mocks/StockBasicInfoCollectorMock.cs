@@ -6,14 +6,15 @@ namespace StockCrawler.UnitTest.Mocks
 {
     internal class StockBasicInfoCollectorMock : IStockBasicInfoCollector
     {
+        private const string TEST_STOCK_NO_1 = "2330";
         public GetStockBasicInfoResult GetStockBasicInfo(string stockNo)
         {
             switch (stockNo)
             {
-                case "2330":
+                case TEST_STOCK_NO_1:
                     return new GetStockBasicInfoResult()
                     {
-                        StockNo = "2330",
+                        StockNo = TEST_STOCK_NO_1,
                         StockName = "台積電",
                         BuildDate = new DateTime(1987, 2, 21),
                         PublishDate = new DateTime(1994, 9, 5),

@@ -8,6 +8,10 @@ namespace StockCrawler.UnitTest
 {
     public class UnitTestBase
     {
+        /// <summary>
+        /// 測試用股票代碼 1, 台積電
+        /// </summary>
+        protected const string TEST_STOCK_NO_1 = "2330";
         protected static readonly ILog _logger = new UnitTestLogger();
         [ClassInitialize]
         public static void ClassInitInit(TestContext param)

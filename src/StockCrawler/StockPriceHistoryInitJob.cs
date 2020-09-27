@@ -1,6 +1,7 @@
 ﻿using Common.Logging;
 using Quartz;
 using StockCrawler.Dao;
+using System;
 using System.Data;
 using System.Linq;
 using System.Reflection;
@@ -24,15 +25,23 @@ namespace StockCrawler.Services
                 foreach (var d in db.GetStocks().Where(d => string.IsNullOrEmpty(ProcessingStockNo) || d.StockNo == ProcessingStockNo))
                 {
                     db.DeleteStockPriceHistoryData(d.StockNo, null);
-                    var list = CollectorProviderService.GetStockHistoryPriceCollector()
 #if(DEBUG)
-                        .GetStockHistoryPriceInfo(d.StockNo, SystemTime.Today.AddYears(-1), SystemTime.Today);
+                    var bgnDate = SystemTime.Today.AddYears(-1);
 #else
-                        .GetStockHistoryPriceInfo(d.StockNo, SystemTime.Today.AddYears(-5), SystemTime.Today);
+                    var bgnDate = SystemTime.Today.AddYears(-5);
 #endif
+                    var endDate = SystemTime.Today;
+
+                    var list = CollectorProviderService.GetStockHistoryPriceCollector()
+                        .GetStockHistoryPriceInfo(d.StockNo, bgnDate, endDate);
 
                     if (list.Any())
-                        Tools.CalculateMAAndPeriodK(list);
+                    {
+                        // 寫入日價
+                        db.InsertOrUpdateStockPrice(list);
+                        for (var date = bgnDate; date <= endDate; date = date.AddDays(1))
+                            Tools.CalculateMAAndPeriodK(date);
+                    }
 
                     Logger.InfoFormat("Finish the {0} stock history task.", d.StockNo);
                 }

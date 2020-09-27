@@ -8,6 +8,7 @@ namespace StockCrawler.UnitTest.Mocks
 {
     internal class StockDailyInfoCollectorMock : TwseStockDailyInfoCollector
     {
+        private const string TEST_STOCK_NO_1 = "2330";
         public StockDailyInfoCollectorMock() : base()
         {
             _logger = new UnitTestLogger();
@@ -18,7 +19,7 @@ namespace StockCrawler.UnitTest.Mocks
             {
                 new GetStockPeriodPriceResult() 
                 {
-                    StockNo = "2330",
+                    StockNo = TEST_STOCK_NO_1,
                     StockName = "台積電" 
                 }
             };

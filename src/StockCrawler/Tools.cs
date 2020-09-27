@@ -82,25 +82,23 @@ namespace StockCrawler.Services
         /// 根據本日收盤資料, 計算 均線(MA 移動線)和不同周期的 K 棒
         /// </summary>
         /// <param name="list">今日收盤價</param>
-        public static void CalculateMAAndPeriodK(IEnumerable<GetStockPeriodPriceResult> list)
+        public static void CalculateMAAndPeriodK(DateTime date)
         {
+            var K5_list = new List<GetStockPeriodPriceResult>();
+            var K20_list = new List<GetStockPeriodPriceResult>();
+            var avgPriceList = new List<(string StockNo, DateTime StockDT, short Period, decimal AveragePrice)>();
+            DateTime target_weekend_date = DateTime.MinValue;
+            DateTime target_monthend_date = DateTime.MinValue;
             using (var db = StockDataServiceProvider.GetServiceInstance())
             {
-                // 寫入日價
-                db.InsertOrUpdateStockPrice(list);
-                var K5_list = new List<GetStockPeriodPriceResult>();
-                var K20_list = new List<GetStockPeriodPriceResult>();
-                var avgPriceList = new List<(string StockNo, DateTime StockDT, short Period, decimal AveragePrice)>();
-                DateTime target_weekend_date = DateTime.MinValue;
-                DateTime target_monthend_date = DateTime.MinValue;
-                foreach (var d in list)
+                foreach (var d in db.GetStocks().ToList())
                 {
                     if (target_weekend_date == DateTime.MinValue)
                     {
-                        target_weekend_date = d.StockDT.AddDays(5 - (int)d.StockDT.DayOfWeek);
+                        target_weekend_date = date.AddDays(5 - (int)date.DayOfWeek);
                         _logger.Debug($"target_weekend_date:{target_weekend_date:yyyy-MM-dd}");
                     }
-                    if (d.StockDT >= target_weekend_date)
+                    if (date >= target_weekend_date)
                     {
                         // 週 K
                         DateTime bgnDate = target_weekend_date.AddDays(-4);
@@ -124,10 +122,10 @@ namespace StockCrawler.Services
 
                     if (target_monthend_date == DateTime.MinValue)
                     {
-                        target_monthend_date = new DateTime(d.StockDT.Year, d.StockDT.Month, 1).AddMonths(1).AddDays(-1);
+                        target_monthend_date = new DateTime(date.Year, date.Month, 1).AddMonths(1).AddDays(-1);
                         _logger.Debug($"target_monthend_date:{target_monthend_date:yyyy-MM-dd}");
                     }
-                    if (d.StockDT >= target_monthend_date)
+                    if (date >= target_monthend_date)
                     {
                         // 月 K
                         DateTime bgnDate = new DateTime(target_monthend_date.Year, target_monthend_date.Month, 1);
@@ -149,17 +147,17 @@ namespace StockCrawler.Services
                     }
                     {
                         // 週線
-                        var data = db.CaculateStockClosingAveragePrice(d.StockNo, d.StockDT, 5);
-                        avgPriceList.Add((d.StockNo, d.StockDT, 5, data));
+                        var data = db.CaculateStockClosingAveragePrice(d.StockNo, date, 5);
+                        avgPriceList.Add((d.StockNo, date, 5, data));
                         // 雙週線
-                        data = db.CaculateStockClosingAveragePrice(d.StockNo, d.StockDT, 10);
-                        avgPriceList.Add((d.StockNo, d.StockDT, 10, data));
+                        data = db.CaculateStockClosingAveragePrice(d.StockNo, date, 10);
+                        avgPriceList.Add((d.StockNo, date, 10, data));
                         // 月線
-                        data = db.CaculateStockClosingAveragePrice(d.StockNo, d.StockDT, 20);
-                        avgPriceList.Add((d.StockNo, d.StockDT, 20, data));
+                        data = db.CaculateStockClosingAveragePrice(d.StockNo, date, 20);
+                        avgPriceList.Add((d.StockNo, date, 20, data));
                         // 季線
-                        data = db.CaculateStockClosingAveragePrice(d.StockNo, d.StockDT, 60);
-                        avgPriceList.Add((d.StockNo, d.StockDT, 60, data));
+                        data = db.CaculateStockClosingAveragePrice(d.StockNo, date, 60);
+                        avgPriceList.Add((d.StockNo, date, 60, data));
                     }
                 }
                 // 寫入 K 線棒
