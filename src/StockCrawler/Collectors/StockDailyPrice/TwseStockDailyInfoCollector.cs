@@ -36,6 +36,8 @@ namespace StockCrawler.Services.Collectors
 
         protected virtual GetStockPeriodPriceResult[] GetAllStockDailyPriceInfo(DateTime day)
         {
+            if (day.DayOfWeek == DayOfWeek.Saturday || day.DayOfWeek == DayOfWeek.Sunday) return null;
+
             var csv_data = DownloadData(day);
             if (string.IsNullOrEmpty(csv_data)) return null;
 
