@@ -3,26 +3,20 @@ using StockCrawler.Services.Collectors;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace StockCrawler.UnitTest.Mocks
 {
     internal class StockDailyInfoCollectorMock : TwseStockDailyInfoCollector
     {
-        private const string TEST_STOCK_NO_1 = "2330";
         public StockDailyInfoCollectorMock() : base()
         {
             _logger = new UnitTestLogger();
         }
         public override IEnumerable<GetStockPeriodPriceResult> GetStockDailyPriceInfo()
         {
-            return new List<GetStockPeriodPriceResult>() 
-            {
-                new GetStockPeriodPriceResult() 
-                {
-                    StockNo = TEST_STOCK_NO_1,
-                    StockName = "台積電" 
-                }
-            };
+            using (var db = StockDataServiceProvider.GetServiceInstance())
+                return db.GetStocks().Select(d => new GetStockPeriodPriceResult() { StockNo = d.StockNo, StockName = d.StockName });
         }
         protected override string DownloadData(DateTime day)
         {

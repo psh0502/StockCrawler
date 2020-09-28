@@ -29,7 +29,6 @@ namespace StockCrawler.Services
                         var info = collector.GetStockDailyPriceInfo(d.StockNo);
                         if (null != info)
                         {
-                            Logger.Debug(info);
                             db.UpdateStockName(info.StockNo, info.StockName);
                             if (info.Volume > 0)
                             {

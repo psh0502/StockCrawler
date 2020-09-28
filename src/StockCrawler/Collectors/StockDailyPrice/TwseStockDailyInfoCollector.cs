@@ -2,7 +2,6 @@
 using StockCrawler.Dao;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -50,30 +49,13 @@ namespace StockCrawler.Services.Collectors
             var csv_lines = CsvReader.ParseLines(csv_data);
             var daily_info = new List<GetStockPeriodPriceResult>();
             bool found_stock_list = false;
-            foreach (var ln in csv_lines)
+            for (int i = 1; i < csv_lines.Count; i++)
             {
-                #region csv index comment
-                /*
-                0. 證券代號
-                1. 證券名稱
-                2. 成交股數
-                3. 成交筆數
-                4. 成交金額
-                5. 開盤價
-                6. 最高價
-                7. 最低價
-                8. 收盤價
-                9. 漲跌(+/-)
-                10. 漲跌價差
-                11. 最後揭示買價
-                12. 最後揭示買量
-                13. 最後揭示賣價
-                14. 最後揭示賣量
-                15. 本益比
-                */
-                #endregion
+                var ln = csv_lines[i];
 
                 string[] data = CsvReader.ParseFields(ln).ToArray();
+                GerneralizeNumberFieldData(data);
+
                 if (found_stock_list)
                 {
                     if ("備註:" == data[0].Trim())
@@ -81,41 +63,104 @@ namespace StockCrawler.Services.Collectors
                         found_stock_list = false;
                         break;
                     }
-                    // Generalize number fields data
-                    for (int i = 2; i < data.Length; i++)
-                    {
-                        if (!string.IsNullOrEmpty(data[i]))
-                            data[i] = data[i]
-                                .Replace("--", "0")
-                                .Replace(",", string.Empty)
-                                .Replace("X", string.Empty)
-                                .Trim();
-                    }
-                    var tmp = new GetStockPeriodPriceResult()
-                    {
-                        StockNo = data[0].Replace("=\"", string.Empty).Replace("\"", string.Empty),
-                        StockName = data[1],
-                        Period = 1,
-                        Volume = long.Parse(data[2]),
-                        StockDT = day,
-                        OpenPrice = decimal.Parse(data[5]),
-                        HighPrice = decimal.Parse(data[6]),
-                        LowPrice = decimal.Parse(data[7]),
-                        ClosePrice = decimal.Parse(data[8]),
-                        DeltaPrice = decimal.Parse(data[9] + data[10]),
-                        PE = decimal.Parse(data[15]),
-                    };
-                    // 取小數點下四位就好
-                    tmp.DeltaPercent = decimal.Parse((tmp.OpenPrice == 0) ? "0" : (tmp.DeltaPrice / tmp.OpenPrice).ToString("0.####"));
-                    daily_info.Add(tmp);
+                    daily_info.Add(GetParsedStockDailyInfo(day, data));
                 }
                 else
                 {
-                    if ("證券代號" == data[0])
-                        found_stock_list = true;
+                    found_stock_list = ("證券代號" == data[0]);
+                    if (!found_stock_list && data.Length == 7 && i < 100)
+                        foreach (var s in GetCategoryStockList())
+                            if (data[0].Contains(s.StockName))
+                                daily_info.Add(GetParsedCategoryMarketIndexData(day, data, s));
                 }
             }
             return daily_info.ToArray();
+        }
+        private static void GerneralizeNumberFieldData(string[] data)
+        {
+            // Generalize number fields data
+            for (int i = 0; i < data.Length; i++)
+                if (!string.IsNullOrEmpty(data[i]))
+                    data[i] = data[i]
+                        .Replace("--", "0")
+                        .Replace(",", string.Empty)
+                        .Replace("X", string.Empty)
+                        .Trim();
+        }
+        private static GetStockPeriodPriceResult GetParsedStockDailyInfo(DateTime day, string[] data)
+        {
+            #region csv index comment
+            /*
+            0. 證券代號
+            1. 證券名稱
+            2. 成交股數
+            3. 成交筆數
+            4. 成交金額
+            5. 開盤價
+            6. 最高價
+            7. 最低價
+            8. 收盤價
+            9. 漲跌(+/-)
+            10. 漲跌價差
+            11. 最後揭示買價
+            12. 最後揭示買量
+            13. 最後揭示賣價
+            14. 最後揭示賣量
+            15. 本益比
+            */
+            #endregion
+            var tmp = new GetStockPeriodPriceResult()
+            {
+                StockNo = data[0].Replace("=\"", string.Empty).Replace("\"", string.Empty),
+                StockName = data[1],
+                Period = 1,
+                Volume = long.Parse(data[2]),
+                StockDT = day,
+                OpenPrice = decimal.Parse(data[5]),
+                HighPrice = decimal.Parse(data[6]),
+                LowPrice = decimal.Parse(data[7]),
+                ClosePrice = decimal.Parse(data[8]),
+                DeltaPrice = decimal.Parse(data[9] + data[10]),
+                PE = decimal.Parse(data[15]),
+            };
+            // 取小數點下四位就好
+            tmp.DeltaPercent = (tmp.OpenPrice == 0) ? 0 : decimal.Parse((tmp.DeltaPrice / tmp.OpenPrice).ToString("0.####"));
+            return tmp;
+        }
+        /// <summary>
+        /// 解析每日大盤與類股指數資訊
+        /// </summary>
+        /// <param name="day">日期</param>
+        /// <param name="data"></param>
+        /// <param name="s"></param>
+        /// <returns>類股指數資訊</returns>
+        private static GetStockPeriodPriceResult GetParsedCategoryMarketIndexData(DateTime day, string[] data, GetStocksResult s)
+        {
+            return new GetStockPeriodPriceResult()
+            {
+                StockNo = s.StockNo,
+                StockName = s.StockName,
+                Period = 1,
+                Volume = 1,
+                StockDT = day,
+                OpenPrice = decimal.Parse(data[1]),
+                HighPrice = decimal.Parse(data[1]),
+                LowPrice = decimal.Parse(data[1]),
+                ClosePrice = decimal.Parse(data[1]),
+                DeltaPrice = decimal.Parse(data[2] + data[3]),
+                DeltaPercent = decimal.Parse(data[4]) / 100
+            };
+        }
+        /// <summary>
+        /// 取出大盤和類股指數清單
+        /// </summary>
+        /// <returns>大盤和類股指數清單</returns>
+        protected virtual IList<GetStocksResult> GetCategoryStockList()
+        {
+            using(var db = StockDataServiceProvider.GetServiceInstance())
+                return db.GetStocks()
+                    .Where(d => int.TryParse(d.StockNo, out int _) && int.Parse(d.StockNo) < 50)
+                    .ToList();
         }
         protected virtual string DownloadData(DateTime day)
         {
