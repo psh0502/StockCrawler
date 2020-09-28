@@ -46,7 +46,7 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual(9698.92M, d1.HighPrice);
             Assert.AreEqual(9698.92M, d1.LowPrice);
             Assert.AreEqual(9698.92M, d1.ClosePrice);
-            Assert.AreEqual(0, d1.Volume);
+            Assert.AreEqual(1, d1.Volume);
             Assert.AreEqual(-37.44M, d1.DeltaPrice);
             Assert.AreEqual(-0.0038M, d1.DeltaPercent);
         }
