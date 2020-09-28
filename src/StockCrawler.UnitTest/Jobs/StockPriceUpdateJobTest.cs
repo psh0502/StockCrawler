@@ -30,8 +30,8 @@ namespace StockCrawler.UnitTest.Jobs
             {
                 {
                     var data = db.GetStocks().ToList();
-                    Assert.AreEqual(1, data.Count);
-                    Assert.AreEqual(TEST_STOCK_NO_1, data.First().StockNo);
+                    Assert.AreEqual(45, data.Count);
+                    Assert.AreEqual(TEST_STOCK_NO_1, data.Last().StockNo);
                 }
                 {
                     int? pageCount = null;

@@ -29,6 +29,7 @@ namespace StockCrawler.UnitTest
             SqlTool.ExecuteSql("TRUNCATE TABLE StockReportBalance");
             SqlTool.ExecuteSql("TRUNCATE TABLE StockReportMonthlyNetProfitTaxed");
             SqlTool.ExecuteSql("DELETE Stock");
+            SqlTool.ExecuteSqlFile(@"..\..\..\..\database\MSSQL\20_initial_data\Stock.data.sql");
 
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
                 db.InsertOrUpdateStock("2330", "台積電");

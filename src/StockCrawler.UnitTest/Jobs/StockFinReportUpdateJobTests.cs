@@ -2,7 +2,6 @@
 using Quartz;
 using StockCrawler.Dao;
 using StockCrawler.Services;
-using System;
 using System.Linq;
 
 namespace StockCrawler.UnitTest.Jobs
