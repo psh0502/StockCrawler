@@ -32,9 +32,8 @@ StockCrawlerRunner.exe <mode>
      Update the latest company basic information in database.
  <mode>: -b <stockNo> Update the latest company basic info by the specified stock No
      Update the latest company basic information in database.
- <mode>: -f
-     Update the latest company finance report in database.
-
+ <mode>: -f <taiwan year>
+     Update the company finance report since the specified Taiwan year.
 ```
 
 ## Note
