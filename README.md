@@ -46,6 +46,28 @@ It supports MSSQL currently, so you need modify the following setting to connect
 </connectionStrings>
 ```
 BTW, since we adopt Unity DI framework, you can implement your IStockDataService interface to support other database.
-Wish to see someone to do that.
+Wish to see someone do that.
 
+Here is the injection setting in XXX.exe.config
+```
+<configuration>
+  <configSections>
+    <section name="unity" type="Microsoft.Practices.Unity.Configuration.UnityConfigurationSection, Unity.Configuration"/>
+  </configSections>
+  <unity xmlns="http://schemas.microsoft.com/practices/2010/unity">
+    <namespace name="StockCrawler.Dao" />
+    <namespace name="StockCrawler.Services.Collectors" />
+    <assembly name="StockCrawler.Dao" />
+    <assembly name="StockCrawler.Services" />
+
+    <container>
+      <register type="IStockDataService" mapTo="StockDataServiceMSSQL" />
+      <register type="IStockHistoryPriceCollector" mapTo="YaooStockHistoryPriceCollector" />
+      <register type="IStockBasicInfoCollector" mapTo="TwseStockBasicInfoCollector" />
+      <register type="IStockDailyInfoCollector" mapTo="TwseStockDailyInfoCollector" />
+      <register type="IStockReportCollector" mapTo="TwseReportCollector" />
+    </container>
+  </unity>
+</configuration>
+```
 Have fun~~
