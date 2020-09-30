@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		StockCrawler.vsmdi = StockCrawler.vsmdi
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockCrawler", "StockCrawler\StockCrawler.csproj", "{D93A54DA-7267-4BB9-9FE2-ADD4808816CF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockCrawler.Services", "StockCrawler.Services\StockCrawler.Services.csproj", "{D93A54DA-7267-4BB9-9FE2-ADD4808816CF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockCrawler.UnitTest", "StockCrawler.UnitTest\StockCrawler.UnitTest.csproj", "{E33C4E87-663D-4C97-B792-140589A1ACD2}"
 EndProject

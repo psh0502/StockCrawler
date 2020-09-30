@@ -49,8 +49,6 @@ namespace StockCrawlerRunner
                             else
                                 job = new StockFinReportUpdateJob();
                             break;
-                        case "-s":
-                            break;
                         default:
                             ShowHelp();
                             break;
@@ -102,8 +100,6 @@ namespace StockCrawlerRunner
             Console.WriteLine("     Update the latest company finance report.");
             Console.WriteLine(" <mode>: -f <taiwan year>");
             Console.WriteLine("     Update the company finance report since the specified Taiwan year.");
-            Console.WriteLine(" <mode>: -s");
-            Console.WriteLine("     Depend on the company finance data to settle the other information.");
         }
     }
 }
