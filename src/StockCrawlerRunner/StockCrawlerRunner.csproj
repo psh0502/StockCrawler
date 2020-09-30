@@ -94,7 +94,7 @@
       <Project>{a65fa381-30ef-4399-bc8c-4f3a451abff2}</Project>
       <Name>StockCrawler.Dao</Name>
     </ProjectReference>
-    <ProjectReference Include="..\StockCrawler\StockCrawler.Services.csproj">
+    <ProjectReference Include="..\StockCrawler.Services\StockCrawler.Services.csproj">
       <Project>{d93a54da-7267-4bb9-9fe2-add4808816cf}</Project>
       <Name>StockCrawler.Services</Name>
     </ProjectReference>
