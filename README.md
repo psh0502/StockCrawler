@@ -49,7 +49,8 @@ BTW, since we adopt Unity DI framework, you can implement your IStockDataService
 Wish to see someone do that.
 
 Here is the injection setting in XXX.exe.config
-```
+
+```xml
 <configuration>
   <configSections>
     <section name="unity" type="Microsoft.Practices.Unity.Configuration.UnityConfigurationSection, Unity.Configuration"/>
