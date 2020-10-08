@@ -23,10 +23,11 @@ namespace StockCrawler.Services.Collectors
                 while (true) // retry till it get
                     try
                     {
-                        var r = GetAllStockDailyPriceInfo(processing_date);
+                        var r = GetAllStockDailyPriceInfo(processing_date, out long totalVolume);
                         if (null != r)
                             foreach (var d in r)
                             {
+                                if (d.StockNo == "0000") d.Volume = totalVolume;
                                 if (!_dataset.ContainsKey(d.StockNo))
                                     _dataset[d.StockNo] = new List<GetStockPeriodPriceResult>();
 

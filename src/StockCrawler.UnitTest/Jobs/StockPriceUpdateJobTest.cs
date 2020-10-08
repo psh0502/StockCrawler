@@ -15,6 +15,12 @@ namespace StockCrawler.UnitTest.Jobs
     [TestClass]
     public class StockPriceUpdateJobTest : UnitTestBase
     {
+        [TestInitialize]
+        public override void InitBeforeTest()
+        {
+            base.InitBeforeTest();
+            SqlTool.ExecuteSqlFile(@"..\..\..\..\database\MSSQL\20_initial_data\Stock.data.sql");
+        }
         /// <summary>
         ///A test for Execute StockPriceUpdate
         ///</summary>
@@ -31,8 +37,8 @@ namespace StockCrawler.UnitTest.Jobs
             {
                 {
                     var data = db.GetStocks().ToList();
-                    Assert.AreEqual(45, data.Count);
-                    Assert.AreEqual(TEST_STOCK_NO_1, data.Last().StockNo);
+                    Assert.AreEqual(46, data.Count);
+                    Assert.AreEqual(TEST_STOCK_NO_1, data[44].StockNo);
                 }
                 {
                     int? pageCount = null;
@@ -61,19 +67,20 @@ namespace StockCrawler.UnitTest.Jobs
                         d1.StockNo, d1.StockDT.ToShortDateString(), d1.OpenPrice, d1.HighPrice, d1.LowPrice, d1.ClosePrice, d1.Volume, d1.DeltaPrice, (d1.DeltaPercent * 100).ToString("#0.##"), d1.PE);
                     Assert.AreEqual("0000", d1.StockNo);
                     Assert.AreEqual(new DateTime(2020, 4, 6), d1.StockDT);
-                    Assert.AreEqual(9818.74M, d1.OpenPrice);
+                    Assert.AreEqual(9663.6300M, d1.OpenPrice);
                     Assert.AreEqual(9818.74M, d1.HighPrice);
-                    Assert.AreEqual(9818.74M, d1.LowPrice);
+                    Assert.AreEqual(9663.6300M, d1.LowPrice);
                     Assert.AreEqual(9818.74M, d1.ClosePrice);
-                    Assert.AreEqual(1, d1.Volume);
+                    Assert.AreEqual(4521499478, d1.Volume);
                     Assert.AreEqual(155.11M, d1.DeltaPrice);
-                    Assert.AreEqual(0.0157M, d1.DeltaPercent);
+                    Assert.AreEqual(0.0160M, d1.DeltaPercent);
                 }
             }
         }
         [TestMethod]
-        public void StockPriceUpdateForSatdayOrSundayNoDataOn0331Test()
+        public void StockPriceUpdateForSaturdayOrSundayNoDataOn0331Test()
         {
+            base.InitBeforeTest();
             int? pageCount = null;
             Services.SystemTime.SetFakeTime(new DateTime(2020, 3, 30));
             {
@@ -116,8 +123,9 @@ namespace StockCrawler.UnitTest.Jobs
             }
         }
         [TestMethod]
-        public void StockPriceUpdateForSatdayOrSundayNoDataOn0405Test()
+        public void StockPriceUpdateForSaturdayOrSundayNoDataOn0405Test()
         {
+            base.InitBeforeTest();
             int? pageCount = null;
             Services.SystemTime.SetFakeTime(new DateTime(2020, 4, 2));
             {

@@ -10,6 +10,12 @@ namespace StockCrawler.UnitTest.Jobs
     [TestClass]
     public class StockBasicInfoUpdateJobTests : UnitTestBase
     {
+        [TestInitialize]
+        public override void InitBeforeTest()
+        {
+            base.InitBeforeTest();
+            SqlTool.ExecuteSqlFile(@"..\..\..\..\database\MSSQL\20_initial_data\Stock.data.sql");
+        }
         [TestMethod]
         public void ExecuteTest()
         {
@@ -21,8 +27,8 @@ namespace StockCrawler.UnitTest.Jobs
             {
                 {
                     var data = db.GetStocks().ToList();
-                    Assert.AreEqual(45, data.Count);
-                    Assert.AreEqual(TEST_STOCK_NO_1, data.Last().StockNo);
+                    Assert.AreEqual(46, data.Count);
+                    Assert.AreEqual(TEST_STOCK_NO_1, data[44].StockNo);
                 }
                 {
                     var data = db.GetStockBasicInfo(TEST_STOCK_NO_1).First();

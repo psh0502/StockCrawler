@@ -10,6 +10,12 @@ namespace StockCrawler.UnitTest.Collectors
     [TestClass]
     public class TwseStockDailyInfoCollectorTest : UnitTestBase
     {
+        [TestInitialize]
+        public override void InitBeforeTest()
+        {
+            base.InitBeforeTest();
+            SqlTool.ExecuteSqlFile(@"..\..\..\..\database\MSSQL\20_initial_data\Stock.data.sql");
+        }
         [TestMethod]
         public void GetStockDailyPriceInfoTest()
         {
@@ -43,11 +49,11 @@ namespace StockCrawler.UnitTest.Collectors
                 d1.StockNo, d1.StockDT.ToShortDateString(), d1.OpenPrice, d1.HighPrice, d1.LowPrice, d1.ClosePrice, d1.Volume, d1.DeltaPrice, (d1.DeltaPercent * 100).ToString("#0.##"), d1.PE);
             Assert.AreEqual("加權股價指數", d1.StockName);
             Assert.AreEqual(new DateTime(2020, 3, 27), d1.StockDT);
-            Assert.AreEqual(9698.92M, d1.OpenPrice);
-            Assert.AreEqual(9698.92M, d1.HighPrice);
+            Assert.AreEqual(9736.36M, d1.OpenPrice);
+            Assert.AreEqual(9736.36M, d1.HighPrice);
             Assert.AreEqual(9698.92M, d1.LowPrice);
             Assert.AreEqual(9698.92M, d1.ClosePrice);
-            Assert.AreEqual(1, d1.Volume);
+            Assert.AreEqual(4977844822, d1.Volume);
             Assert.AreEqual(-37.44M, d1.DeltaPrice);
             Assert.AreEqual(-0.0038M, d1.DeltaPercent);
         }

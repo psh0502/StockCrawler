@@ -27,10 +27,11 @@ namespace StockCrawler.Services.Collectors
                         _stockInfoDictCache = new Dictionary<string, GetStockPeriodPriceResult>();
                         if (!Tools.IsWeekend(SystemTime.Today))
                         {
-                            var data = GetAllStockDailyPriceInfo(SystemTime.Today);
+                            var data = GetAllStockDailyPriceInfo(SystemTime.Today, out long totalVolume);
                             if (null != data)
                                 foreach (var info in data)
                                 {
+                                    if (info.StockNo == "0000") info.Volume = totalVolume;
                                     _stockInfoDictCache[info.StockNo] = info;
                                     _logger.DebugFormat("[{0}] {1}", info.StockNo, info.ClosePrice);
                                 }
@@ -38,8 +39,9 @@ namespace StockCrawler.Services.Collectors
                         }
                     }
         }
-        protected virtual GetStockPeriodPriceResult[] GetAllStockDailyPriceInfo(DateTime day)
+        protected virtual GetStockPeriodPriceResult[] GetAllStockDailyPriceInfo(DateTime day, out long totalVolume)
         {
+            totalVolume = 0;
             if (Tools.IsWeekend(day)) return null;
 
             var csv_data = DownloadData(day);
@@ -62,8 +64,9 @@ namespace StockCrawler.Services.Collectors
                     if ("備註:" == data[0].Trim())
                     {
                         break;
-                    }
-                    daily_info.Add(GetParsedStockDailyInfo(day, data));
+                    }var d = GetParsedStockDailyInfo(day, data);
+                    daily_info.Add(d);
+                    totalVolume += d.Volume;
                 }
                 else
                 {
@@ -87,7 +90,7 @@ namespace StockCrawler.Services.Collectors
                         .Replace("X", string.Empty)
                         .Trim();
         }
-        private static GetStockPeriodPriceResult GetParsedStockDailyInfo(DateTime day, string[] data)
+        private GetStockPeriodPriceResult GetParsedStockDailyInfo(DateTime day, string[] data)
         {
             #region csv index comment
             /*
@@ -136,7 +139,7 @@ namespace StockCrawler.Services.Collectors
         /// <returns>類股指數資訊</returns>
         private static GetStockPeriodPriceResult GetParsedCategoryMarketIndexData(DateTime day, string[] data, GetStocksResult s)
         {
-            return new GetStockPeriodPriceResult()
+            var d = new GetStockPeriodPriceResult()
             {
                 StockNo = s.StockNo,
                 StockName = s.StockName,
@@ -150,6 +153,11 @@ namespace StockCrawler.Services.Collectors
                 DeltaPrice = decimal.Parse(data[2] + data[3]),
                 DeltaPercent = decimal.Parse(data[4]) / 100
             };
+            d.OpenPrice = d.ClosePrice - d.DeltaPrice;
+            d.HighPrice = Math.Max(d.ClosePrice, d.OpenPrice);
+            d.LowPrice = Math.Min(d.ClosePrice, d.OpenPrice);
+
+            return d;
         }
         /// <summary>
         /// 取出大盤和類股指數清單
