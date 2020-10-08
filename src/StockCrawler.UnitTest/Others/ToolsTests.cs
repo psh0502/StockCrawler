@@ -1,16 +1,18 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StockCrawler.Services;
 
+#if (DEBUG)
 namespace StockCrawler.UnitTest.Others
 {
-    [TestClass()]
+    [TestClass]
     public class ToolsTests : UnitTestBase
     {
-        [TestMethod()]
+        [TestMethod]
         public void GetMyIpAddressTest()
         {
             var result = Tools.GetMyIpAddress();
-            Assert.AreEqual("220.135.20.48", result);
+            Assert.AreEqual("127.0.0.1", result);
         }
     }
 }
+#endif

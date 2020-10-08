@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StockCrawler.Services.Collectors;
 using System;
+#if (DEBUG)
 
 namespace StockCrawler.UnitTest.Collectors
 {
@@ -54,3 +55,4 @@ namespace StockCrawler.UnitTest.Collectors
         }
     }
 }
+#endif

@@ -4,7 +4,7 @@ using StockCrawler.Dao;
 using StockCrawler.Services;
 using System;
 using System.Linq;
-
+#if (DEBUG)
 namespace StockCrawler.UnitTest.Jobs
 {
     [TestClass]
@@ -45,3 +45,4 @@ namespace StockCrawler.UnitTest.Jobs
         }
     }
 }
+#endif

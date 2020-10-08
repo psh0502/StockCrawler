@@ -11,7 +11,7 @@ namespace StockCrawler.Services
     public class StockPriceHistoryInitJob : JobBase, IJob
     {
         internal static ILog Logger { get; set; } = LogManager.GetLogger(typeof(StockPriceHistoryInitJob));
-        internal string ProcessingStockNo { get; set; }
+        public string ProcessingStockNo { get; set; }
 
         #region IJob Members
         public Task Execute(IJobExecutionContext context)

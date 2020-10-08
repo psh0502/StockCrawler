@@ -4,6 +4,7 @@ using StockCrawler.Dao;
 using StockCrawler.Services;
 using System.Linq;
 
+#if (DEBUG)
 namespace StockCrawler.UnitTest.Jobs
 {
     [TestClass]
@@ -75,7 +76,7 @@ namespace StockCrawler.UnitTest.Jobs
                 Assert.AreEqual(109, d1.Year);
                 Assert.AreEqual(1, d1.Season);
 
-                #region 資產
+#region 資產
                 Assert.AreEqual(430777229, d1.CashAndEquivalents);    // 現金及約當現金
                 Assert.AreEqual(1254253, d1.ShortInvestments);    // 短期投資
                 Assert.AreEqual(146420632, d1.BillsReceivable);   // 應收帳款及票據
@@ -86,9 +87,9 @@ namespace StockCrawler.UnitTest.Jobs
                 Assert.AreEqual(1438215285, d1.FixedAssets);      // 固定資產
                 Assert.AreEqual(83228611, d1.OtherAssets);        // 其餘資產
                 Assert.AreEqual(2343295696, d1.TotalAssets);      // 總資產
-                #endregion
+#endregion
 
-                #region 負債
+#region 負債
                 Assert.AreEqual(139310384, d1.ShortLoan); // 短期借款
                 Assert.AreEqual(2992858, d1.ShortBillsPayable);   // 應付短期票券
                 Assert.AreEqual(39774214, d1.AccountsAndBillsPayable); //應付帳款及票據
@@ -100,7 +101,7 @@ namespace StockCrawler.UnitTest.Jobs
                 Assert.AreEqual(30323958, d1.OtherLiabilities);   // 其餘負債
                 Assert.AreEqual(666267165, d1.TotalLiability);  // 總負債
                 Assert.AreEqual(1677028531, d1.NetWorth);     // 淨值(權益總額)
-                #endregion
+#endregion
 
                 Assert.AreEqual(64.6743M, d1.NAV, "每股淨值");
             }
@@ -168,3 +169,4 @@ namespace StockCrawler.UnitTest.Jobs
         }
     }
 }
+#endif

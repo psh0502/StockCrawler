@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StockCrawler.Services.Collectors;
-
+#if (DEBUG)
 namespace StockCrawler.UnitTest.Collectors
 {
     [TestClass]
@@ -84,7 +84,7 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual(109, data.Year);
             Assert.AreEqual(1, data.Season);
 
-            #region 資產
+#region 資產
             Assert.AreEqual(430777229, data.CashAndEquivalents);    // 現金及約當現金
             Assert.AreEqual(1254253, data.ShortInvestments);    // 短期投資
             Assert.AreEqual(146420632, data.BillsReceivable);   // 應收帳款及票據
@@ -95,9 +95,9 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual(1438215285, data.FixedAssets);      // 固定資產
             Assert.AreEqual(83228611, data.OtherAssets);        // 其餘資產
             Assert.AreEqual(2343295696, data.TotalAssets);      // 總資產
-            #endregion
+#endregion
 
-            #region 負債
+#region 負債
             Assert.AreEqual(139310384, data.ShortLoan); // 短期借款
             Assert.AreEqual(2992858, data.ShortBillsPayable);   // 應付短期票券
             Assert.AreEqual(39774214, data.AccountsAndBillsPayable); //應付帳款及票據
@@ -109,7 +109,7 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual(30323958, data.OtherLiabilities);   // 其餘負債
             Assert.AreEqual(666267165, data.TotalLiability);  // 總負債
             Assert.AreEqual(1677028531, data.NetWorth);     // 淨值(權益總額)
-            #endregion
+#endregion
         }
         [TestMethod]
         public void GetStockReportMonthlyNetProfitTaxed_10907()
@@ -135,3 +135,4 @@ namespace StockCrawler.UnitTest.Collectors
         }
     }
 }
+#endif

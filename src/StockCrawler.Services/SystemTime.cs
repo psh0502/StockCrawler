@@ -5,7 +5,7 @@ namespace StockCrawler.Services
     /// <summary>
     /// 單元測試用, 取代系統內建時間 class
     /// </summary>
-    internal static class SystemTime
+    public static class SystemTime
     {
         private static DateTime FakeTime = DateTime.MinValue;
 

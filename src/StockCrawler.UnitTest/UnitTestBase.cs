@@ -4,6 +4,7 @@ using StockCrawler.Dao;
 using StockCrawler.Services;
 using System;
 
+#if (DEBUG)
 namespace StockCrawler.UnitTest
 {
     public class UnitTestBase
@@ -56,3 +57,4 @@ namespace StockCrawler.UnitTest
         }
     }
 }
+#endif

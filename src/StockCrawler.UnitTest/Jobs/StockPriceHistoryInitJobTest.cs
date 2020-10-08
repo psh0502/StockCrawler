@@ -5,6 +5,7 @@ using StockCrawler.Services;
 using System;
 using System.Linq;
 
+#if (DEBUG)
 namespace StockCrawler.UnitTest.Jobs
 {
     /// <summary>
@@ -205,3 +206,4 @@ namespace StockCrawler.UnitTest.Jobs
         }
     }
 }
+#endif

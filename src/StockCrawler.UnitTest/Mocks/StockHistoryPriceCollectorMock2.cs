@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 
+#if (DEBUG)
 namespace StockCrawler.UnitTest.Mocks
 {
     internal class StockHistoryPriceCollectorMock2 : TwseStockHistoryPriceCollector2, IStockHistoryPriceCollector
@@ -24,3 +25,4 @@ namespace StockCrawler.UnitTest.Mocks
         }
     }
 }
+#endif

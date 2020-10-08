@@ -32,13 +32,12 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 #if(DEBUG)
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("2020.0802.0.0")]
+[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]
 [assembly: AssemblyDescription("Debug build")]
+[assembly: InternalsVisibleTo("StockCrawler.UnitTest")]
 #else
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("2020.0802.1.0")]
+[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]
 [assembly: AssemblyDescription("Release build")]
 #endif
-[assembly: InternalsVisibleTo("StockCrawler.UnitTest")]
-[assembly: InternalsVisibleTo("StockCrawlerRunner")]

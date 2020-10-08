@@ -3,7 +3,7 @@ using StockCrawler.Services;
 using StockCrawler.Services.Collectors;
 using System;
 using System.Linq;
-
+#if (DEBUG)
 namespace StockCrawler.UnitTest.Collectors
 {
     [TestClass]
@@ -57,3 +57,4 @@ namespace StockCrawler.UnitTest.Collectors
         }
     }
 }
+#endif

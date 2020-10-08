@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
+#if (DEBUG)
 namespace StockCrawler.UnitTest.Mocks
 {
     internal class StockDailyInfoCollectorMock : TwseStockDailyInfoCollector
@@ -32,3 +33,4 @@ namespace StockCrawler.UnitTest.Mocks
         }
     }
 }
+#endif
