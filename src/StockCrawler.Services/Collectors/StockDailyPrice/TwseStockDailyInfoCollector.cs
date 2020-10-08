@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 
 namespace StockCrawler.Services.Collectors
 {
@@ -60,7 +61,6 @@ namespace StockCrawler.Services.Collectors
                 {
                     if ("備註:" == data[0].Trim())
                     {
-                        found_stock_list = false;
                         break;
                     }
                     daily_info.Add(GetParsedStockDailyInfo(day, data));
@@ -141,7 +141,7 @@ namespace StockCrawler.Services.Collectors
                 StockNo = s.StockNo,
                 StockName = s.StockName,
                 Period = 1,
-                Volume = 1,
+                Volume = 0,
                 StockDT = day,
                 OpenPrice = decimal.Parse(data[1]),
                 HighPrice = decimal.Parse(data[1]),
@@ -164,19 +164,28 @@ namespace StockCrawler.Services.Collectors
         }
         protected virtual string DownloadData(DateTime day)
         {
-            var csv_data = Tools.DownloadStringData(new Uri($"https://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={day:yyyyMMdd}&type=ALLBUT0999"), Encoding.Default, out IList<Cookie> _);
-            if (string.IsNullOrEmpty(csv_data))
-            {
-                _logger.WarnFormat("Download has no data by date[{0}]", day.ToString("yyyyMMdd"));
-                return null;
-            }
+            while (true) // retry till it get
+                try
+                {
+                    var csv_data = Tools.DownloadStringData(new Uri($"https://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={day:yyyyMMdd}&type=ALLBUT0999"), Encoding.Default, out IList<Cookie> _);
+                    if (string.IsNullOrEmpty(csv_data))
+                    {
+                        _logger.WarnFormat("Download has no data by date[{0}]", day.ToString("yyyyMMdd"));
+                        return null;
+                    }
 #if (DEBUG)
             //var file = new FileInfo($"D:\\tmp\\MI_INDEX_ALLBUT0999_{day:yyyyMMdd}.csv");
             //if (file.Exists) file.Delete();
             //using (var sw = file.CreateText())
             //    sw.Write(csv_data);
 #endif
-            return csv_data;
+                    return csv_data;
+                }
+                catch (WebException)
+                {
+                    _logger.WarnFormat("Target website refuses our connection. Wait till it get peace. day={0}", day.ToString("yyyy-MM-dd"));
+                    Thread.Sleep((int)new TimeSpan(1, 0, 0).TotalMilliseconds);
+                }
         }
         public virtual IEnumerable<GetStockPeriodPriceResult> GetStockDailyPriceInfo()
         {

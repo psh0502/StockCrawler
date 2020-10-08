@@ -24,6 +24,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{BE736E
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockOracle", "web\StockOracle\StockOracle.csproj", "{150DBADB-DD60-4842-B212-986491F1A239}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{5C5B452A-B75A-48B3-B7DC-29842B565348}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "app", "app", "{86A597DF-C529-4DA6-9C7C-A86C3C4CF031}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "web", "web", "{40B48EC8-6E88-4A99-BD35-581446EEE840}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{D861285A-562B-4E36-9A86-7D628961C38D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,9 +56,20 @@ Global
 		{C2EDC58F-2F48-4654-8661-728E68415888}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2EDC58F-2F48-4654-8661-728E68415888}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2EDC58F-2F48-4654-8661-728E68415888}.Release|Any CPU.Build.0 = Release|Any CPU
+		{150DBADB-DD60-4842-B212-986491F1A239}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{150DBADB-DD60-4842-B212-986491F1A239}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{150DBADB-DD60-4842-B212-986491F1A239}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{150DBADB-DD60-4842-B212-986491F1A239}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D93A54DA-7267-4BB9-9FE2-ADD4808816CF} = {5C5B452A-B75A-48B3-B7DC-29842B565348}
+		{E33C4E87-663D-4C97-B792-140589A1ACD2} = {D861285A-562B-4E36-9A86-7D628961C38D}
+		{A65FA381-30EF-4399-BC8C-4F3A451ABFF2} = {5C5B452A-B75A-48B3-B7DC-29842B565348}
+		{C2EDC58F-2F48-4654-8661-728E68415888} = {86A597DF-C529-4DA6-9C7C-A86C3C4CF031}
+		{150DBADB-DD60-4842-B212-986491F1A239} = {40B48EC8-6E88-4A99-BD35-581446EEE840}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {03F355F8-744B-44FE-85C9-12EA75EFA88D}

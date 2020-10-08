@@ -2,6 +2,7 @@
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Net;
 using System.Text;
 using System.Threading;
@@ -14,6 +15,7 @@ namespace StockCrawler.Services.Collectors
         internal ILog _logger = null;
         protected static readonly string UTF8SpacingChar = Encoding.UTF8.GetString(new byte[] { 0xC2, 0xA0 });
         protected readonly DateTime now = SystemTime.Now;
+        internal static int _breakInternval = int.Parse(ConfigurationManager.AppSettings["CollectorBreakInternval"] ?? "0");
         public GoodInfoCollectorBase()
         {
             _logger = LogManager.GetLogger(GetType());
@@ -56,8 +58,8 @@ namespace StockCrawler.Services.Collectors
                 if (string.IsNullOrEmpty(html)) return null;
                 if (html.Contains("您的瀏覽量異常"))
                 {
-                    _logger.InfoFormat("The target[{0}] is pissed off....wait a second...", stockNo);
-                    Thread.Sleep(10 * 1000);
+                    _logger.WarnFormat("The target[{0}] is pissed off....wait a second...", stockNo);
+                    Thread.Sleep((int)new TimeSpan(1, 0, 0).TotalMilliseconds);
                 }
                 else
                     break;

@@ -84,6 +84,7 @@ namespace StockCrawler.Services
         /// <param name="list">今日收盤價</param>
         public static void CalculateMAAndPeriodK(DateTime date)
         {
+            _logger.InfoFormat("Begin caculation MA and K ...{0}", date.ToString("yyyyMMdd"));
             using (var db = StockDataServiceProvider.GetServiceInstance())
             {
                 var K5_list = new List<GetStockPeriodPriceResult>();

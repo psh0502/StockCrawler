@@ -21,7 +21,10 @@ namespace StockCrawler.UnitTest.Jobs
         public override void InitBeforeTest()
         {
             if (!IsExecuted)
+            {
+                base.InitBeforeTest();
                 ExecuteTest();
+            }
         }
         [TestMethod]
         public void ExecuteTest()
@@ -41,7 +44,7 @@ namespace StockCrawler.UnitTest.Jobs
         ///A test for Execute StockPriceHistoryInit
         ///</summary>
         [TestMethod]
-        public void PriceDailyDataInitTest()
+        public void PriceDailyDataInit2330Test()
         {
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
             {
@@ -171,6 +174,33 @@ namespace StockCrawler.UnitTest.Jobs
                 Assert.AreEqual(235.50M, d1.LowPrice);
                 Assert.AreEqual(274M, d1.ClosePrice);
                 Assert.AreEqual(1906813004, d1.Volume);
+            }
+        }
+        [TestMethod]
+        public void PriceDailyDataInit2888Test()
+        {
+            using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
+            {
+                short period = 20;
+                int? pageCount = null;
+                var data = db.GetStockPriceHistoryPaging(
+                    "2888",
+                    new DateTime(2020, 3, 1),
+                    new DateTime(2020, 3, 31),
+                    period, 100, 1, 10, ref pageCount).ToList();
+
+                Assert.AreEqual(1, data.Count);
+                Assert.AreEqual(1, pageCount);
+                var d1 = data.First();
+                _logger.DebugFormat("StockNo={0}\r\nStockDT={1}\r\nOpenPrice={2}\r\nHighPrice={3}\r\nLowPrice={4}\r\nClosePrice={5}\r\nVolume={6}\r\nDeltaPrice={7}\r\nDeltaPercent={8}%\r\nPE={9}",
+                    d1.StockNo, d1.StockDT.ToShortDateString(), d1.OpenPrice, d1.HighPrice, d1.LowPrice, d1.ClosePrice, d1.Volume, d1.DeltaPrice, (d1.DeltaPercent * 100).ToString("#0.##"), d1.PE);
+                Assert.AreEqual("2888", d1.StockNo);
+                Assert.AreEqual(new DateTime(2020, 3, 1), d1.StockDT);
+                Assert.AreEqual(8.96M, d1.OpenPrice);
+                Assert.AreEqual(9.34M, d1.HighPrice);
+                Assert.AreEqual(6.72M, d1.LowPrice);
+                Assert.AreEqual(7.63M, d1.ClosePrice);
+                Assert.AreEqual(1597379387, d1.Volume);
             }
         }
     }

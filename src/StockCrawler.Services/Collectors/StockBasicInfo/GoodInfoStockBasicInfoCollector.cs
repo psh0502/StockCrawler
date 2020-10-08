@@ -40,7 +40,7 @@ namespace StockCrawler.Services.Collectors
                     Url = node.SelectSingleNode("tr[20]/td[2]").InnerText,
                     Business = node.SelectSingleNode("tr[23]/td[2]").InnerText
                 };
-                Thread.Sleep(10 * 1000);
+                Thread.Sleep(_breakInternval);
                 return result;
             }
             catch (Exception ex)

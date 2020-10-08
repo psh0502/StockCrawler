@@ -7,6 +7,7 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace StockCrawler.Services
 {
@@ -17,7 +18,7 @@ namespace StockCrawler.Services
 
         #region IJob Members
 
-        public void Execute(IJobExecutionContext context)
+        public Task Execute(IJobExecutionContext context)
         {
             Logger.InfoFormat("Invoke [{0}]...", MethodBase.GetCurrentMethod().Name);
             try
@@ -81,6 +82,7 @@ namespace StockCrawler.Services
                 Logger.Error("Job executing failed!", ex);
                 throw;
             }
+            return null;
         }
 
         private static bool GetMonthlyNetProfitTaxedIntoDatabase(IStockDataService db, IStockReportCollector collector, string stockNo, short year, short month)

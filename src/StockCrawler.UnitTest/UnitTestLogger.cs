@@ -317,6 +317,9 @@ namespace StockCrawler.UnitTest
         {
             get { throw new NotImplementedException(); }
         }
+
+        public INestedVariablesContext NestedThreadVariablesContext => throw new NotImplementedException();
+
         public void Trace(IFormatProvider formatProvider, Action<FormatMessageHandler> formatMessageCallback, Exception exception)
         {
             throw new NotImplementedException();

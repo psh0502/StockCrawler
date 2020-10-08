@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace StockCrawler.Services
 {
@@ -17,7 +18,7 @@ namespace StockCrawler.Services
 
         #region IJob Members
 
-        public void Execute(IJobExecutionContext context)
+        public Task Execute(IJobExecutionContext context)
         {
             Logger.InfoFormat("Invoke [{0}]...", MethodBase.GetCurrentMethod().Name);
             try
@@ -25,7 +26,9 @@ namespace StockCrawler.Services
                 using (var db = StockDataServiceProvider.GetServiceInstance())
                 {
                     var collector = CollectorProviderService.GetStockBasicInfoCollector();
-                    foreach (var d in db.GetStocks().Where(d => !d.StockNo.StartsWith("0") && (string.IsNullOrEmpty(BeginStockNo) || int.Parse(d.StockNo.Substring(0, 4)) >= int.Parse(BeginStockNo)))) // 排除非公司的基金型股票
+                    foreach (var d in db.GetStocks().Where(d => !d.StockNo.StartsWith("0") && 
+                        int.TryParse(d.StockNo, out int number) &&
+                        (string.IsNullOrEmpty(BeginStockNo) ||  number >= int.Parse(BeginStockNo)))) // 排除非公司的基金型股票
                     {
                         try
                         {
@@ -47,6 +50,7 @@ namespace StockCrawler.Services
                 Logger.Error("Job executing failed!", ex);
                 throw;
             }
+            return null;
         }
         #endregion
     }

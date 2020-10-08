@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace StockCrawler.Services
 {
@@ -14,7 +15,7 @@ namespace StockCrawler.Services
 
         #region IJob Members
 
-        public void Execute(IJobExecutionContext context)
+        public Task Execute(IJobExecutionContext context)
         {
             Logger.InfoFormat("Invoke [{0}]...", MethodBase.GetCurrentMethod().Name);
             try
@@ -30,15 +31,8 @@ namespace StockCrawler.Services
                         if (null != info)
                         {
                             db.UpdateStockName(info.StockNo, info.StockName);
-                            if (info.Volume > 0)
-                            {
-                                list.Add(info);
-                                Logger.InfoFormat("Finish the {0} stock daily price retrieving task.", d.StockNo);
-                            }
-                            else
-                            {
-                                Logger.WarnFormat("The {0} stock has no volumn today, skip it.", d.StockNo);
-                            }
+                            list.Add(info);
+                            Logger.InfoFormat("Finish the {0} stock daily price retrieving task.", d.StockNo);
                         }
                     }
                     if (list.Any())
@@ -53,6 +47,7 @@ namespace StockCrawler.Services
                 Logger.Error("Job executing failed!", ex);
                 throw;
             }
+            return null;
         }
         #endregion
     }
