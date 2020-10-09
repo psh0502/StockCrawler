@@ -14,7 +14,7 @@ namespace StockCrawler.Services.Collectors
     {
         public virtual IEnumerable<GetStockPeriodPriceResult> GetStockHistoryPriceInfo(string stockNo, DateTime bgnDate, DateTime endDate)
         {
-            List<GetStockPeriodPriceResult> result = new List<GetStockPeriodPriceResult>();
+            var result = new List<GetStockPeriodPriceResult>();
             for (int year = bgnDate.Year; year <= endDate.Year; year++)
                 for (int month = (year == bgnDate.Year ? bgnDate.Month : 1); month <= 12; month++)
                 {
@@ -42,7 +42,7 @@ namespace StockCrawler.Services.Collectors
                 catch (WebException)
                 {
                     _logger.WarnFormat("Target website refuses our connection. Wait till it get peace. stockNo={0}, year={1}, month={2}", stockNo, year, month);
-                    Thread.Sleep((int)new TimeSpan(1,0,0).TotalMilliseconds);
+                    Thread.Sleep((int)new TimeSpan(1, 30, 0).TotalMilliseconds);
                 }
 
             if (string.IsNullOrEmpty(csv_data))

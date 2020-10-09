@@ -1,7 +1,5 @@
 ﻿using HtmlAgilityPack;
 using StockCrawler.Dao;
-using StockCrawler.Services.Exceptions;
-using System.Threading;
 
 namespace StockCrawler.Services.Collectors
 {
@@ -51,29 +49,17 @@ namespace StockCrawler.Services.Collectors
         }
         public virtual GetStockReportMonthlyNetProfitTaxedResult GetStockReportMonthlyNetProfitTaxed(string stockNo, short year, short month)
         {
-            for (int i = 0; i < 3; i++)
+            var url = "https://mops.twse.com.tw/mops/web/ajax_t05st10_ifrs";
+            GetStockReportMonthlyNetProfitTaxedResult result = null;
+            var tableNode = GetTwseDataBack(url, stockNo, year, month: month, xpath: _xpath_02);
+            if (null != tableNode)
             {
-                try
-                {
-                    var url = "https://mops.twse.com.tw/mops/web/ajax_t05st10_ifrs";
-                    GetStockReportMonthlyNetProfitTaxedResult result = null;
-                    var tableNode = GetTwseDataBack(url, stockNo, year, month: month, xpath: _xpath_02);
-                    if (null != tableNode)
-                    {
-                        result = TransformNodeToMonlyNetProfitTaxedRow(tableNode);
-                        result.StockNo = stockNo;
-                        result.Year = year;
-                        result.Month = month;
-                    }
-                    return result;
-                }
-                catch (WebsiteGetPissOffException ex)
-                {
-                    _logger.Info(ex.Message);
-                    Thread.Sleep(10 * 1000);
-                }
+                result = TransformNodeToMonlyNetProfitTaxedRow(tableNode);
+                result.StockNo = stockNo;
+                result.Year = year;
+                result.Month = month;
             }
-            return null;
+            return result;
         }
         private GetStockReportCashFlowResult TransformNodeToCashflowRow(HtmlNode bodyNode)
         {

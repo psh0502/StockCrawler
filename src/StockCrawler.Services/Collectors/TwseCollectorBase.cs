@@ -1,9 +1,10 @@
 ﻿using Common.Logging;
 using HtmlAgilityPack;
-using StockCrawler.Services.Exceptions;
 using System;
 using System.Configuration;
+using System.Net;
 using System.Text;
+using System.Threading;
 using System.Web;
 
 namespace StockCrawler.Services
@@ -83,12 +84,23 @@ namespace StockCrawler.Services
             if (season != -1) formData.Add("season", season.ToString("00"));
             if (month != -1) formData.Add("month", month.ToString("00"));
             _logger.Debug("formData=" + formData.ToString());
+            string html;
+            while (true)
+                try
+                {
+                    html = Tools.DownloadStringData(new Uri(url), Encoding.UTF8, out _, "application/x-www-form-urlencoded", null, "POST", formData);
+                    if (html.Contains("Overrun") || html.Contains("請稍後再試"))
+                        throw new WebException(string.Format("The target[{0}] is pissed off...", stockNo));
 
-            var html = Tools.DownloadStringData(new Uri(url), Encoding.UTF8, out _, "application/x-www-form-urlencoded", null, "POST", formData);
-            if (html.Contains("Overrun") || html.Contains("請稍後再試"))
-                throw new WebsiteGetPissOffException(string.Format("The target[{0}] is pissed off....wait a second...", stockNo));
+                    break;
+                }
+                catch (WebException)
+                {
+                    _logger.WarnFormat("Target website refuses our connection. Wait till it get peace. stockNo={0}, year={1}, season={2}, month={3}", stockNo, year, season, month);
+                    Thread.Sleep((int)new TimeSpan(1, 30, 0).TotalMilliseconds);
+                }
 
-            HtmlDocument doc = new HtmlDocument();
+            var doc = new HtmlDocument();
             doc.LoadHtml(html);
             var tableNode = doc.DocumentNode.SelectSingleNode(xpath);
             if (null == tableNode || string.IsNullOrEmpty(tableNode.InnerText.Trim()))

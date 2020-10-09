@@ -148,7 +148,6 @@
     <Compile Include="Tools.cs" />
     <Compile Include="Collectors\GoodInfoCollectorBase.cs" />
     <Compile Include="Collectors\TwseCollectorBase.cs" />
-    <Compile Include="Exceptions\WebsiteGetPissOffException.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
