@@ -24,22 +24,29 @@ namespace StockCrawler.Services.Collectors
         public virtual GetStockReportIncomeResult GetStockReportIncome(string stockNo, short year, short season)
         {
             var url = "https://mops.twse.com.tw/mops/web/ajax_t164sb04";
+            GetStockReportIncomeResult result = null;
             var tableNode = GetTwseDataBack(url, stockNo, year, season);
-            var result = TransformNodeToIncomeRow(tableNode);
-            result.StockNo = stockNo;
-            result.Year = year;
-            result.Season = season; 
-
+            if (null != tableNode)
+            {
+                result = TransformNodeToIncomeRow(tableNode);
+                result.StockNo = stockNo;
+                result.Year = year;
+                result.Season = season;
+            }
             return result;
         }
         public virtual GetStockReportBalanceResult GetStockReportBalance(string stockNo, short year, short season)
         {
             var url = "https://mops.twse.com.tw/mops/web/ajax_t164sb03";
+            GetStockReportBalanceResult result = null;
             var tableNode = GetTwseDataBack(url, stockNo, year, season);
-            var result = TransformNodeToBalanceRow(tableNode);
-            result.StockNo = stockNo;
-            result.Year = year;
-            result.Season = season;
+            if (null != tableNode)
+            {
+                result = TransformNodeToBalanceRow(tableNode);
+                result.StockNo = stockNo;
+                result.Year = year;
+                result.Season = season;
+            }
             return result;
         }
         public virtual GetStockReportMonthlyNetProfitTaxedResult GetStockReportMonthlyNetProfitTaxed(string stockNo, short year, short month)
@@ -49,11 +56,15 @@ namespace StockCrawler.Services.Collectors
                 try
                 {
                     var url = "https://mops.twse.com.tw/mops/web/ajax_t05st10_ifrs";
+                    GetStockReportMonthlyNetProfitTaxedResult result = null;
                     var tableNode = GetTwseDataBack(url, stockNo, year, month: month, xpath: _xpath_02);
-                    var result = TransformNodeToMonlyNetProfitTaxedRow(tableNode);
-                    result.StockNo = stockNo;
-                    result.Year = year;
-                    result.Month = month;
+                    if (null != tableNode)
+                    {
+                        result = TransformNodeToMonlyNetProfitTaxedRow(tableNode);
+                        result.StockNo = stockNo;
+                        result.Year = year;
+                        result.Month = month;
+                    }
                     return result;
                 }
                 catch (WebsiteGetPissOffException ex)

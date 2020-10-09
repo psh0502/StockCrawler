@@ -34,7 +34,7 @@ namespace StockCrawler.Services
                 }
                 index++;
             } while (index < bodyNode.ChildNodes.Count);
-            _logger.WarnFormat("Can't find the keyword[{0} in this html", keyword);
+            _logger.WarnFormat("Can't find the keyword[{0}] in this html", keyword);
             return null;
         }
         protected static T GetNodeTextTo<T>(HtmlNode node)

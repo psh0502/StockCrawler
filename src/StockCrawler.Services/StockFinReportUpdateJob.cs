@@ -49,10 +49,12 @@ namespace StockCrawler.Services
                             // 若循覽已到今年, 則季分不該尋找超過當季的資料
                             for (; season <= 4 && !(year == now_year && season == now_season); season++)
                             {
-                                if (!GetCashflowIntoDatabase(db, collector, d.StockNo, year, season)) break;
-                                if (!GetIncomeIntoDatabase(db, collector, d.StockNo, year, season)) break;
-                                if (!GetBalanceIntoDatabase(db, collector, d.StockNo, year, season)) break;
                                 Thread.Sleep(_breakInternval);
+                                if (!GetCashflowIntoDatabase(db, collector, d.StockNo, year, season)) break;
+                                Thread.Sleep(_breakInternval);
+                                if (!GetIncomeIntoDatabase(db, collector, d.StockNo, year, season)) break;
+                                Thread.Sleep(_breakInternval);
+                                if (!GetBalanceIntoDatabase(db, collector, d.StockNo, year, season)) break;
                             }
                             season = 1;
                         }
