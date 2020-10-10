@@ -25,7 +25,6 @@ namespace StockCrawler.Services
             respCookies = new List<Cookie>();
             string downloaded_data = null;
             // https://blog.darkthread.net/blog/disable-tls-1-0-issues
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             var req = WebRequest.CreateHttp(url);
             req.Method = method;
             if(!string.IsNullOrEmpty(contentType)) req.ContentType = contentType;
