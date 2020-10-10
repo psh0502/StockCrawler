@@ -5,10 +5,10 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("IRONMAN Services")]
+[assembly: AssemblyTitle("StockCrawler Services")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("DOWILL Studio")]
-[assembly: AssemblyProduct("IRONMAN")]
+[assembly: AssemblyCompany("DOWAY Studio")]
+[assembly: AssemblyProduct("StockCrawler")]
 [assembly: AssemblyCopyright("Copyright ©  2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -32,12 +32,12 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 #if(DEBUG)
-[assembly: AssemblyVersion("1.1.1.0")]
-[assembly: AssemblyFileVersion("1.1.1.0")]
+[assembly: AssemblyVersion("1.1.1.1")]
+[assembly: AssemblyFileVersion("1.1.1.1")]
 [assembly: AssemblyDescription("Debug build")]
 [assembly: InternalsVisibleTo("StockCrawler.UnitTest")]
 #else
-[assembly: AssemblyVersion("1.1.1.0")]
-[assembly: AssemblyFileVersion("1.1.1.0")]
+[assembly: AssemblyVersion("1.1.1.1")]
+[assembly: AssemblyFileVersion("1.1.1.1")]
 [assembly: AssemblyDescription("Release build")]
 #endif

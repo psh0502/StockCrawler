@@ -71,7 +71,7 @@ namespace StockCrawler.Services
         public static string GetMyIpAddress()
         {
             var html = DownloadStringData(new Uri("http://myip.com.tw/"), Encoding.UTF8, out _);
-            HtmlDocument doc = new HtmlDocument();
+            var doc = new HtmlDocument();
             doc.LoadHtml(html);
             var text = doc.DocumentNode.SelectSingleNode("/html/body/h1/font").InnerText.Trim();
             return text;
