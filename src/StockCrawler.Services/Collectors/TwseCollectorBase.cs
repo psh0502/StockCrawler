@@ -94,9 +94,9 @@ namespace StockCrawler.Services
 
                     break;
                 }
-                catch (WebException ex)
+                catch (WebException)
                 {
-                    _logger.Warn(string.Format("Target website refuses our connection. Wait till it get peace. stockNo={0}, year={1}, season={2}, month={3}", stockNo, year, season, month), ex);
+                    _logger.WarnFormat("Target website refuses our connection. Wait till it get peace. stockNo={0}, year={1}, season={2}, month={3}", stockNo, year, season, month);
                     Thread.Sleep((int)new TimeSpan(1, 30, 0).TotalMilliseconds);
                 }
 
