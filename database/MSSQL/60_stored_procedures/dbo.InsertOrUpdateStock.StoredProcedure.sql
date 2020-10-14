@@ -11,20 +11,27 @@ GO
 -- =============================================
 CREATE OR ALTER PROCEDURE [dbo].[InsertOrUpdateStock]
 @pStockNo VARCHAR(10), 
-@pStockName NVARCHAR(50)
+@pStockName NVARCHAR(50),
+@pCategoryNo VARCHAR(10)
 AS
 BEGIN
 	DECLARE @TRUE BIT = 1
 	IF EXISTS(SELECT [StockNo] FROM [Stock] WHERE [StockNo] = @pStockNo)
-		UPDATE [Stock] SET [Enable] = @TRUE, StockName = @pStockName WHERE [StockNo] = @pStockNo
+		UPDATE [Stock] 
+		SET [Enable] = @TRUE, 
+			StockName = @pStockName, 
+			CategoryNo = @pCategoryNo 
+		WHERE [StockNo] = @pStockNo
 	ELSE
 		INSERT INTO [Stock](
 			[StockNo],
 			[StockName],
+			[CategoryNo],
 			[Enable])
 		VALUES(
 			@pStockNo,
 			@pStockName,
+			@pCategoryNo,
 			@TRUE);
 END
 GO

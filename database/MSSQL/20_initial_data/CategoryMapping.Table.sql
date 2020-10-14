@@ -1,4 +1,4 @@
-INSERT INTO [dbo].[CategoryNoMapping]([Category], [CategoryNo])
+INSERT INTO [dbo].[CategoryMapping]([Category], [CategoryNo])
 VALUES
 (N'保險業', '0040'),
 (N'光電業', '0031'),

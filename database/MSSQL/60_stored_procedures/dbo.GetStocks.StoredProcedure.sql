@@ -15,7 +15,7 @@ BEGIN
 	SET NOCOUNT ON;
 	DECLARE @TRUE BIT = 1
 	SELECT * 
-	FROM [Stock]
+	FROM [Stock](NOLOCK)
     WHERE [Enable] = @TRUE;
 END
 GO
