@@ -44,6 +44,7 @@ namespace StockCrawler.Dao
         //StockDataSet.StockPriceHistoryDataTable GetStockPriceHistoryData(string sno, DateTime startDT, DateTime endDT);
         GetStockBasicInfoResult GetStockBasicInfo(string stockNo);
         IEnumerable<GetStocksResult> GetStocks();
+        GetStocksResult GetStock(string stockNo);
         GetStockReportIncomeResult GetStockReportIncome(string stockNo, short year, short season);
         void InsertOrUpdateStockPrice(IEnumerable<GetStockPeriodPriceResult> list);
         void RenewStockList(IEnumerable<GetStocksResult> list);

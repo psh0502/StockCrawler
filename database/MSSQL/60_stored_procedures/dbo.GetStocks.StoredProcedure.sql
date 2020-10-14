@@ -10,12 +10,15 @@ GO
 -- Revision:
 -- =============================================
 CREATE OR ALTER PROCEDURE [dbo].[GetStocks]
+@pStockNo VARCHAR(20) = NULL
 AS
 BEGIN
 	SET NOCOUNT ON;
 	DECLARE @TRUE BIT = 1
 	SELECT * 
 	FROM [Stock](NOLOCK)
-    WHERE [Enable] = @TRUE;
+    WHERE 
+		(@pStockNo IS NULL OR @pStockNo = '' OR [StockNo] = @pStockNo)
+		AND [Enable] = @TRUE
 END
 GO

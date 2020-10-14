@@ -9,7 +9,12 @@ namespace StockCrawler.Dao
         public IEnumerable<GetStocksResult> GetStocks()
         {
             using (var db = GetMSSQLStockDataContext())
-                return db.GetStocks().ToList();
+                return db.GetStocks(null).ToList();
+        }
+        public GetStocksResult GetStock(string stockNo)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                return db.GetStocks(stockNo).FirstOrDefault();
         }
         public void InsertOrUpdateStockPrice(IEnumerable<GetStockPeriodPriceResult> list)
         {
@@ -34,7 +39,7 @@ namespace StockCrawler.Dao
             {
                 db.DisableAllStocks();
                 foreach (var d in list)
-                    db.InsertOrUpdateStock(d.StockNo, d.StockName);
+                    db.InsertOrUpdateStock(d.StockNo, d.StockName, d.CategoryNo);
             }
         }
         private static StockDataContext GetMSSQLStockDataContext()
@@ -52,7 +57,7 @@ namespace StockCrawler.Dao
         public void UpdateStockName(string stockNo, string stockName)
         {
             using (var db = GetMSSQLStockDataContext())
-                db.InsertOrUpdateStock(stockNo, stockName);
+                db.InsertOrUpdateStock(stockNo, stockName, null);
         }
         public void InsertOrUpdateStockBasicInfo(IEnumerable<GetStockBasicInfoResult> data)
         {

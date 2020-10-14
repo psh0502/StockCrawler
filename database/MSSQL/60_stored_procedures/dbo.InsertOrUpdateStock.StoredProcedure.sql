@@ -19,8 +19,8 @@ BEGIN
 	IF EXISTS(SELECT [StockNo] FROM [Stock] WHERE [StockNo] = @pStockNo)
 		UPDATE [Stock] 
 		SET [Enable] = @TRUE, 
-			StockName = @pStockName, 
-			CategoryNo = @pCategoryNo 
+			StockName = ISNULL(@pStockName, StockName),
+			CategoryNo = ISNULL(@pCategoryNo, CategoryNo)
 		WHERE [StockNo] = @pStockNo
 	ELSE
 		INSERT INTO [Stock](

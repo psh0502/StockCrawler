@@ -91,6 +91,13 @@ namespace StockCrawler.Dao
 			return ((int)(result.ReturnValue));
 		}
 		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetCategoryMapping")]
+		public ISingleResult<GetCategoryMappingResult> GetCategoryMapping()
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+			return ((ISingleResult<GetCategoryMappingResult>)(result.ReturnValue));
+		}
+		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetStockAveragePrice")]
 		public ISingleResult<GetStockAveragePriceResult> GetStockAveragePrice([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pDateBegin, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pDateEnd, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pPeriod)
 		{
@@ -149,16 +156,16 @@ namespace StockCrawler.Dao
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetStocks")]
-		public ISingleResult<GetStocksResult> GetStocks()
+		public ISingleResult<GetStocksResult> GetStocks([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(20)")] string pStockNo)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo);
 			return ((ISingleResult<GetStocksResult>)(result.ReturnValue));
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertOrUpdateStock")]
-		public int InsertOrUpdateStock([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pStockName)
+		public int InsertOrUpdateStock([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pStockName, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pCategoryNo)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pStockName);
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pStockName, pCategoryNo);
 			return ((int)(result.ReturnValue));
 		}
 		
@@ -227,6 +234,68 @@ namespace StockCrawler.Dao
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pYear, pSeason, pRevenue, pGrossProfit, pSalesExpense, pManagementCost, pRDExpense, pOperatingExpenses, pBusinessInterest, pNetProfitTaxFree, pNetProfitTaxed, pEPS, pSEPS);
 			return ((int)(result.ReturnValue));
+		}
+	}
+	
+	public partial class GetCategoryMappingResult
+	{
+		
+		private string _Category;
+		
+		private string _CategoryNo;
+		
+		private System.DateTime _CreatedAt;
+		
+		public GetCategoryMappingResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Category", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string Category
+		{
+			get
+			{
+				return this._Category;
+			}
+			set
+			{
+				if ((this._Category != value))
+				{
+					this._Category = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CategoryNo", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string CategoryNo
+		{
+			get
+			{
+				return this._CategoryNo;
+			}
+			set
+			{
+				if ((this._CategoryNo != value))
+				{
+					this._CategoryNo = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedAt", DbType="DateTime NOT NULL")]
+		public System.DateTime CreatedAt
+		{
+			get
+			{
+				return this._CreatedAt;
+			}
+			set
+			{
+				if ((this._CreatedAt != value))
+				{
+					this._CreatedAt = value;
+				}
+			}
 		}
 	}
 	
@@ -2497,6 +2566,8 @@ namespace StockCrawler.Dao
 		
 		private string _StockName;
 		
+		private string _CategoryNo;
+		
 		private bool _Enable;
 		
 		private System.DateTime _CreatedAt;
@@ -2535,6 +2606,22 @@ namespace StockCrawler.Dao
 				if ((this._StockName != value))
 				{
 					this._StockName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CategoryNo", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string CategoryNo
+		{
+			get
+			{
+				return this._CategoryNo;
+			}
+			set
+			{
+				if ((this._CategoryNo != value))
+				{
+					this._CategoryNo = value;
 				}
 			}
 		}
