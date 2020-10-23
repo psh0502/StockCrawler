@@ -35,7 +35,7 @@ namespace StockCrawler.Services
                     var list = collector.GetStockHistoryPriceInfo(d.StockNo, bgnDate, endDate);
 
                     if (list.Any())
-                        db.InsertOrUpdateStockPrice(list);
+                        db.InsertOrUpdateStockPrice(list.ToArray());
 
                     Logger.InfoFormat("Finish the {0} stock history task.", d.StockNo);
                 }
@@ -58,7 +58,7 @@ namespace StockCrawler.Services
                 }).ToList();
 
             if (list.Any())
-                StockDataServiceProvider.GetServiceInstance().RenewStockList(list);
+                StockDataServiceProvider.GetServiceInstance().InsertOrUpdateStock(list.ToArray());
         }
     }
 }

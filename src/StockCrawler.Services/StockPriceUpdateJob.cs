@@ -30,17 +30,16 @@ namespace StockCrawler.Services
                         var info = collector.GetStockDailyPriceInfo(d.StockNo);
                         if (null != info)
                         {
-                            db.UpdateStockName(info.StockNo, info.StockName);
+                            db.InsertOrUpdateStock(info.StockNo, info.StockName, null);
                             list.Add(info);
                             Logger.InfoFormat("Finish the {0} stock daily price retrieving task.", d.StockNo);
                         }
                     }
                     if (list.Any())
                         // 寫入日價
-                        db.InsertOrUpdateStockPrice(list);
-
-                    Tools.CalculateMAAndPeriodK(SystemTime.Today);
+                        db.InsertOrUpdateStockPrice(list.ToArray());
                 }
+                Tools.CalculateMAAndPeriodK(SystemTime.Today);
             }
             catch (Exception ex)
             {

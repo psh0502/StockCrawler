@@ -1,25 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace StockCrawler.Dao
 {
     internal class StockDataServiceMSSQL : IStockDataService
     {
-        public IEnumerable<GetStocksResult> GetStocks()
+        public GetCategoryMappingResult[] GetCategoryMapping()
         {
             using (var db = GetMSSQLStockDataContext())
-                return db.GetStocks(null).ToList();
+                return db.GetCategoryMapping().ToArray();
+        }
+        public GetStocksResult[] GetStocks()
+        {
+            using (var db = GetMSSQLStockDataContext())
+                return db.GetStocks(null).ToArray();
         }
         public GetStocksResult GetStock(string stockNo)
         {
             using (var db = GetMSSQLStockDataContext())
-                return db.GetStocks(stockNo).FirstOrDefault();
+                return db.GetStocks(stockNo).SingleOrDefault();
         }
-        public void InsertOrUpdateStockPrice(IEnumerable<GetStockPeriodPriceResult> list)
+        public void InsertOrUpdateStockPrice(GetStockPeriodPriceResult[] data)
         {
             using (var db = GetMSSQLStockDataContext())
-                foreach (var d in list)
+                foreach (var d in data)
                     db.InsertOrUpdateStockPriceHistory(
                         d.StockNo,
                         d.StockDT,
@@ -33,12 +37,12 @@ namespace StockCrawler.Dao
                         d.PE,
                         d.Volume);
         }
-        public void RenewStockList(IEnumerable<GetStocksResult> list)
+        public void InsertOrUpdateStock(GetStocksResult[] data)
         {
             using (var db = GetMSSQLStockDataContext())
             {
                 db.DisableAllStocks();
-                foreach (var d in list)
+                foreach (var d in data)
                     db.InsertOrUpdateStock(d.StockNo, d.StockName, d.CategoryNo);
             }
         }
@@ -54,12 +58,12 @@ namespace StockCrawler.Dao
             using (var db = GetMSSQLStockDataContext())
                 db.DeleteStockPriceHistoryData(stockNo, tradeDate);
         }
-        public void UpdateStockName(string stockNo, string stockName)
+        public void InsertOrUpdateStock(string stockNo, string stockName, string categoryNo)
         {
             using (var db = GetMSSQLStockDataContext())
-                db.InsertOrUpdateStock(stockNo, stockName, null);
+                db.InsertOrUpdateStock(stockNo, stockName, categoryNo);
         }
-        public void InsertOrUpdateStockBasicInfo(IEnumerable<GetStockBasicInfoResult> data)
+        public void InsertOrUpdateStockBasicInfo(GetStockBasicInfoResult[] data)
         {
             foreach (var d in data)
                 InsertOrUpdateStockBasicInfo(d);
@@ -178,25 +182,25 @@ namespace StockCrawler.Dao
 
             return oAvgClosePrice ?? 0;
         }
-        public IEnumerable<GetStockPeriodPriceResult> GetStockPeriodPrice(string stockNo, short period, DateTime bgnDate, DateTime endDate)
+        public GetStockPeriodPriceResult[] GetStockPeriodPrice(string stockNo, short period, DateTime bgnDate, DateTime endDate)
         {
             using (var db = GetMSSQLStockDataContext())
-                return db.GetStockPeriodPrice(stockNo, period, bgnDate, endDate).ToList();
+                return db.GetStockPeriodPrice(stockNo, period, bgnDate, endDate).ToArray();
         }
-        public void InsertOrUpdateStockAveragePrice(IEnumerable<(string StockNo, DateTime StockDT, short Period, decimal AveragePrice)> avgPriceList)
+        public void InsertOrUpdateStockAveragePrice((string stockNo, DateTime stockDT, short period, decimal averagePrice)[] avgPriceList)
         {
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
                 foreach (var info in avgPriceList)
                     db.InsertOrUpdateStockAveragePrice(
-                        info.StockNo,
-                        info.StockDT,
-                        info.Period,
-                        info.AveragePrice);
+                        info.stockNo,
+                        info.stockDT,
+                        info.period,
+                        info.averagePrice);
         }
-        public IEnumerable<GetStockAveragePriceResult> GetStockAveragePrice(string stockNo, DateTime bgnDate, DateTime endDate, short period)
+        public GetStockAveragePriceResult[] GetStockAveragePrice(string stockNo, DateTime bgnDate, DateTime endDate, short period)
         {
             using (var db = GetMSSQLStockDataContext())
-                return db.GetStockAveragePrice(stockNo, bgnDate, endDate, period).ToList();
+                return db.GetStockAveragePrice(stockNo, bgnDate, endDate, period).ToArray();
         }
         public GetStockReportIncomeResult GetStockReportIncome(string stockNo, short year, short season)
         {

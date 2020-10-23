@@ -167,12 +167,12 @@ namespace StockCrawler.Services
                 }
                 // 寫入 K 線棒
                 if (K5_list.Any())
-                    db.InsertOrUpdateStockPrice(K5_list);
+                    db.InsertOrUpdateStockPrice(K5_list.ToArray());
                 if (K20_list.Any())
-                    db.InsertOrUpdateStockPrice(K20_list);
+                    db.InsertOrUpdateStockPrice(K20_list.ToArray());
                 // 寫入均價
                 if (avgPriceList.Any())
-                    db.InsertOrUpdateStockAveragePrice(avgPriceList);
+                    db.InsertOrUpdateStockAveragePrice(avgPriceList.ToArray());
             }
         }
         public static short GetTaiwanYear()
