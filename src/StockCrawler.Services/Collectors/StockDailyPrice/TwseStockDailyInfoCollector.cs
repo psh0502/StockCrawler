@@ -1,4 +1,5 @@
-﻿using ServiceStack.Text;
+﻿using ServiceStack;
+using ServiceStack.Text;
 using StockCrawler.Dao;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,8 @@ namespace StockCrawler.Services.Collectors
     internal class TwseStockDailyInfoCollector : TwseCollectorBase, IStockDailyInfoCollector
     {
         private Dictionary<string, GetStockPeriodPriceResult> _stockInfoDictCache = null;
+        private Dictionary<string, string> _stockCategoryNo = null;
+        private Dictionary<string, long> _categoriedVolume = null;
         public virtual GetStockPeriodPriceResult GetStockDailyPriceInfo(string stockNo)
         {
             InitStockDailyPriceCache();
@@ -19,29 +22,49 @@ namespace StockCrawler.Services.Collectors
         }
         private void InitStockDailyPriceCache()
         {
-            if (null == _stockInfoDictCache)
-                lock (this)
-                    if (null == _stockInfoDictCache)
+            if (!Tools.IsWeekend(SystemTime.Today))
+                if (null == _stockInfoDictCache)
+                    lock (this)
                     {
-                        _logger.Info("Initialize all stock information cache.");
-                        _stockInfoDictCache = new Dictionary<string, GetStockPeriodPriceResult>();
-                        if (!Tools.IsWeekend(SystemTime.Today))
+                        if (null == _categoriedVolume)
                         {
-                            var data = GetAllStockDailyPriceInfo(SystemTime.Today, out long totalVolume);
+                            _categoriedVolume = new Dictionary<string, long>();
+                            _stockCategoryNo = new Dictionary<string, string>();
+                            using (var db = StockDataServiceProvider.GetServiceInstance())
+                            {
+                                var stock_data = db.GetStocks();
+                                foreach (var d in stock_data
+                                    .Where(s =>
+                                        s.StockNo.StartsWith("00")
+                                        && int.TryParse(s.StockNo, out int no)
+                                        && no < 50))
+                                    _categoriedVolume.Add(d.StockNo, 0);
+
+                                foreach (var d in stock_data
+                                    .Where(s => 
+                                        !s.StockNo.StartsWith("00")
+                                        && !string.IsNullOrEmpty(s.CategoryNo)))
+                                    _stockCategoryNo.Add(d.StockNo, d.CategoryNo);
+                            }
+                        }
+
+                        if (null == _stockInfoDictCache)
+                        {
+                            _logger.Info("Initialize all stock information cache.");
+                            _stockInfoDictCache = new Dictionary<string, GetStockPeriodPriceResult>();
+
+                            var data = GetAllStockDailyPriceInfo(SystemTime.Today);
                             if (null != data)
                                 foreach (var info in data)
                                 {
-                                    if (info.StockNo == "0000") info.Volume = totalVolume;
                                     _stockInfoDictCache[info.StockNo] = info;
                                     _logger.DebugFormat("[{0}] {1}", info.StockNo, info.ClosePrice);
                                 }
-
                         }
                     }
         }
-        protected virtual GetStockPeriodPriceResult[] GetAllStockDailyPriceInfo(DateTime day, out long totalVolume)
+        protected virtual GetStockPeriodPriceResult[] GetAllStockDailyPriceInfo(DateTime day)
         {
-            totalVolume = 0;
             if (Tools.IsWeekend(day)) return null;
 
             var csv_data = DownloadData(day);
@@ -50,7 +73,7 @@ namespace StockCrawler.Services.Collectors
             _logger.InfoFormat("Day={1}, csv={0}", csv_data.Substring(0, 1000), day.ToShortDateString());
             // Usage of CsvReader: https://blog.darkthread.net/post-2017-05-13-servicestack-text-csvserializer.aspx
             var csv_lines = CsvReader.ParseLines(csv_data);
-            var daily_info = new List<GetStockPeriodPriceResult>();
+            var daily_info = new Dictionary<string, GetStockPeriodPriceResult>();
             bool found_stock_list = false;
             for (int i = 1; i < csv_lines.Count; i++)
             {
@@ -61,12 +84,13 @@ namespace StockCrawler.Services.Collectors
 
                 if (found_stock_list)
                 {
-                    if ("備註:" == data[0].Trim())
-                    {
-                        break;
-                    }var d = GetParsedStockDailyInfo(day, data);
-                    daily_info.Add(d);
-                    totalVolume += d.Volume;
+                    if ("備註:" == data[0].Trim()) break;
+
+                    var d = GetParsedStockDailyInfo(day, data);
+                    daily_info.Add(d.StockNo, d);
+                    _categoriedVolume["0000"] += d.Volume;
+                    if (_stockCategoryNo.ContainsKey(d.StockNo))
+                        _categoriedVolume[_stockCategoryNo[d.StockNo]] += d.Volume;
                 }
                 else
                 {
@@ -74,10 +98,31 @@ namespace StockCrawler.Services.Collectors
                     if (!found_stock_list && data.Length == 7 && i < 100)
                         foreach (var s in GetCategoryStockList())
                             if (data[0].Contains(s.StockName))
-                                daily_info.Add(GetParsedCategoryMarketIndexData(day, data, s));
+                            {
+                                var marketIndexStock = GetParsedCategoryMarketIndexData(day, data, s);
+                                daily_info.Add(marketIndexStock.StockNo, marketIndexStock);
+                            }
                 }
             }
-            return daily_info.ToArray();
+            if (daily_info.Any())
+            {
+                foreach(var d in _categoriedVolume)
+                    daily_info[d.Key].Volume = d.Value;
+                // 未含金融指數(0009) = 大盤指數(0000) - 金融保險類指數(0040) - 
+                daily_info["0009"].Volume = daily_info["0000"].Volume - daily_info["0040"].Volume;
+                // 未含電子指數(0010) = 
+                daily_info["0010"].Volume = 
+                    daily_info["0000"].Volume // 大盤指數(0000) 
+                    - daily_info["0029"].Volume // 半導體業 - 通信網路業(0032) - 電子零組件業(0033) - 電子通路業(0034) - 其他電子業(0036)
+                    - daily_info["0030"].Volume // 電腦及週邊設備業
+                    - daily_info["0031"].Volume // 光電業
+                    - daily_info["0032"].Volume // 通信網路業
+                    - daily_info["0033"].Volume // 電子零組件業
+                    - daily_info["0034"].Volume // 電子通路業
+                    - daily_info["0035"].Volume // 資訊服務業
+                    - daily_info["0036"].Volume;    // 其他電子業
+            }
+            return daily_info.Values.ToArray();
         }
         private static void GerneralizeNumberFieldData(string[] data)
         {
