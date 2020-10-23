@@ -28,7 +28,7 @@ namespace StockCrawler.UnitTest.Collectors
 
             var r = collector.GetStockDailyPriceInfo();
 
-            Assert.AreEqual(1159, r.Count());
+            Assert.AreEqual(1158, r.Count());
             Assert.IsTrue(r.Where(d => d.StockNo == TEST_STOCK_NO_1).Any());
             var d1 = r.Where(d => d.StockNo == TEST_STOCK_NO_1).First();
             _logger.DebugFormat("StockNo={0}\r\nStockDT={1}\r\nOpenPrice={2}\r\nHighPrice={3}\r\nLowPrice={4}\r\nClosePrice={5}\r\nVolume={6}\r\nDeltaPrice={7}\r\nDeltaPercent={8}%\r\nPE={9}",

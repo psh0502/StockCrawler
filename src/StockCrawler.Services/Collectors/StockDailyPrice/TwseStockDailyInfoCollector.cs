@@ -15,9 +15,12 @@ namespace StockCrawler.Services.Collectors
         private Dictionary<string, GetStockPeriodPriceResult> _stockInfoDictCache = null;
         private Dictionary<string, string> _stockCategoryNo = null;
         private Dictionary<string, long> _categoriedVolume = null;
-        public virtual GetStockPeriodPriceResult GetStockDailyPriceInfo(string stockNo)
+        public TwseStockDailyInfoCollector()
         {
             InitStockDailyPriceCache();
+        }
+        public virtual GetStockPeriodPriceResult GetStockDailyPriceInfo(string stockNo)
+        {
             return (_stockInfoDictCache.ContainsKey(stockNo)) ? _stockInfoDictCache[stockNo] : null;
         }
         private void InitStockDailyPriceCache()
@@ -100,7 +103,7 @@ namespace StockCrawler.Services.Collectors
                             if (data[0].Contains(s.StockName))
                             {
                                 var marketIndexStock = GetParsedCategoryMarketIndexData(day, data, s);
-                                daily_info.Add(marketIndexStock.StockNo, marketIndexStock);
+                                    daily_info[marketIndexStock.StockNo] = marketIndexStock;
                             }
                 }
             }

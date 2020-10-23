@@ -36,9 +36,9 @@ namespace StockCrawler.UnitTest.Jobs
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
             {
                 {
-                    var data = db.GetStocks().ToList();
-                    Assert.AreEqual(46, data.Count);
-                    Assert.AreEqual(TEST_STOCK_NO_1, data[44].StockNo);
+                    var data = db.GetStocks(null).ToList();
+                    Assert.AreEqual(45, data.Count);
+                    Assert.AreEqual(TEST_STOCK_NO_1, data[43].StockNo);
                 }
                 {
                     int? pageCount = null;
@@ -81,6 +81,7 @@ namespace StockCrawler.UnitTest.Jobs
         public void StockPriceUpdateForSaturdayOrSundayNoDataOn0331Test()
         {
             base.InitBeforeTest();
+            SqlTool.ExecuteSqlFile(@"..\..\..\..\database\MSSQL\20_initial_data\Stock.data.sql");
             int? pageCount = null;
             Services.SystemTime.SetFakeTime(new DateTime(2020, 3, 30));
             {
@@ -126,6 +127,7 @@ namespace StockCrawler.UnitTest.Jobs
         public void StockPriceUpdateForSaturdayOrSundayNoDataOn0405Test()
         {
             base.InitBeforeTest();
+            SqlTool.ExecuteSqlFile(@"..\..\..\..\database\MSSQL\20_initial_data\Stock.data.sql");
             int? pageCount = null;
             Services.SystemTime.SetFakeTime(new DateTime(2020, 4, 2));
             {

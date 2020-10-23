@@ -24,6 +24,7 @@ namespace StockCrawler.UnitTest.Jobs
             if (!IsExecuted)
             {
                 base.InitBeforeTest();
+                SqlTool.ExecuteSqlFile(@"..\..\..\..\database\MSSQL\20_initial_data\Stock.data.sql");
                 ExecuteTest();
             }
         }

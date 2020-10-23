@@ -34,8 +34,8 @@ namespace StockCrawler.UnitTest
 
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
             {
-                db.InsertOrUpdateStock("2330", "台積電");
-                db.InsertOrUpdateStock("2888", "新光金");
+                db.InsertOrUpdateStock("2330", "台積電", "0029");
+                db.InsertOrUpdateStock("2888", "新光金", "0040");
             }
 
             SqlTool.ExecuteSql(@"INSERT [dbo].[StockBasicInfo]

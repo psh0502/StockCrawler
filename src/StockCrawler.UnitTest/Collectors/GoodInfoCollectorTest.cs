@@ -44,7 +44,7 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual(new DateTime(2002, 2, 19), r.BuildDate);
             Assert.AreEqual(new DateTime(2002, 2, 19), r.PublishDate);
             Assert.AreEqual(1309.5M * 100000000, r.Capital);
-            Assert.AreEqual("吳東進", r.Chairman);
+            Assert.AreEqual("許澎", r.Chairman);
             Assert.AreEqual("吳欣儒", r.CEO);
             Assert.AreEqual("https://www.skfh.com.tw", r.Url);
             Assert.AreEqual("金控業", r.Category);

@@ -9,6 +9,12 @@ namespace StockCrawler.UnitTest.Collectors
     [TestClass]
     public class TwseStockHistoryPriceCollector2Test : UnitTestBase
     {
+        [TestInitialize]
+        public override void InitBeforeTest()
+        {
+            base.InitBeforeTest();
+            SqlTool.ExecuteSqlFile(@"..\..\..\..\database\MSSQL\20_initial_data\Stock.data.sql");
+        }
         [TestMethod]
         public void GetStockHistoryPriceInfoTest()
         {
