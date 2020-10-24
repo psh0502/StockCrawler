@@ -124,6 +124,8 @@ namespace StockCrawler.Services.Collectors
                     - daily_info["0034"].Volume // 電子通路業
                     - daily_info["0035"].Volume // 資訊服務業
                     - daily_info["0036"].Volume;    // 其他電子業
+                // 未含電子與金融的指數
+                daily_info["0011"].Volume = daily_info["0010"].Volume - daily_info["0040"].Volume;
             }
             return daily_info.Values.ToArray();
         }
