@@ -7,7 +7,7 @@
 - Business finanicial reports.
 
 It grabs history data from serveral available source, e.g **[Yahoo Finance](http://finance.yahoo.com)**, **[TWSE](http://www.twse.com.tw)** and daily closing price from **[TWSE](http://www.twse.com.tw)**.
-* **Yahoo** has incompleted price information, **TWSE** is better resource but costs very much time, even days...*
+***Yahoo** has incompleted price information, **TWSE** is better resource but costs very much time, even days...*
 ## Objective
 
 In 2010, I was going to build a stock trading bot. 
