@@ -44,10 +44,14 @@ namespace StockCrawlerRunner
                                 job = new StockBasicInfoUpdateJob();
                             break;
                         case "-f":
+                            stockNo = null;
+                            short beginYear = -1;
                             if (args.Length > 1)
-                                job = new StockFinReportUpdateJob() { BeginYear = short.Parse(args[1]) };
-                            else
-                                job = new StockFinReportUpdateJob();
+                                beginYear = short.Parse(args[1]);
+                            if (args.Length > 2)
+                                stockNo = args[2];
+
+                            job = new StockFinReportUpdateJob() { BeginYear = beginYear, BeginStockNo = stockNo };
                             break;
                         default:
                             ShowHelp();
@@ -86,7 +90,7 @@ namespace StockCrawlerRunner
             Console.WriteLine("     Initialize all stock history data. It will drop all existing data.");
             Console.WriteLine(" <mode>: -i [Date:yyyy/MM/dd]");
             Console.WriteLine("     Initialize all stock history data by the specified date. It will drop all existing data.");
-            Console.WriteLine(" <mode>: -i <Date:yyyy/MM/dd> [StockNo]");
+            Console.WriteLine(" <mode>: -i <Date:yyyy/MM/dd> [stock number]");
             Console.WriteLine("     Initialize only one specified stock history data. It will drop all old data by this stock.");
             Console.WriteLine(" <mode>: -u");
             Console.WriteLine("     Append the latest price data.");
@@ -94,12 +98,14 @@ namespace StockCrawlerRunner
             Console.WriteLine("     Append the specified date price data.");
             Console.WriteLine(" <mode>: -b");
             Console.WriteLine("     Update the latest company basic information.");
-            Console.WriteLine(" <mode>: -b <stockNo>");
-            Console.WriteLine("     Update the latest company basic information since the specified stockNo.");
+            Console.WriteLine(" <mode>: -b <stock number>");
+            Console.WriteLine("     Update the latest company basic information since the specified stock number.");
             Console.WriteLine(" <mode>: -f");
             Console.WriteLine("     Update the latest company finance report.");
             Console.WriteLine(" <mode>: -f <taiwan year>");
             Console.WriteLine("     Update the company finance report since the specified Taiwan year.");
+            Console.WriteLine(" <mode>: -f <taiwan year> <stock number>");
+            Console.WriteLine("     Update the company finance report since the specified Taiwan year and stock number.");
         }
     }
 }

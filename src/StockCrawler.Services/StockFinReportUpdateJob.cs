@@ -15,6 +15,7 @@ namespace StockCrawler.Services
     {
         internal static ILog Logger { get; set; } = LogManager.GetLogger(typeof(StockFinReportUpdateJob));
         public short BeginYear { get; set; } = -1;
+        public string BeginStockNo { get; set; }
 
         #region IJob Members
 
@@ -26,7 +27,11 @@ namespace StockCrawler.Services
                 using (var db = StockDataServiceProvider.GetServiceInstance())
                 {
                     var collector = CollectorProviderService.GetStockReportCollector();
-                    foreach (var d in db.GetStocks().Where(d => !d.StockNo.StartsWith("0") && (int.TryParse(d.StockNo.Substring(0, 4), out _)))) // 排除非公司的基金型股票
+                    foreach (var d in db.GetStocks()
+                        .Where(d => 
+                        !d.StockNo.StartsWith("0")  // 排除非公司的基金型股票
+                        && int.TryParse(d.StockNo.Substring(0, 4), out int no)
+                        && (string.IsNullOrEmpty(BeginStockNo) || no > int.Parse(BeginStockNo)))) // 若有指定起始股票, 則由起始點開始
                     {
                         short now_year = GetTaiwanYear();
                         short now_season = GetSeason();

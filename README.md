@@ -1,12 +1,19 @@
 # StockCrawler
 
-**StockCrawler** is a simple CLI tool can download stock closing price for Taiwan public market.
+**StockCrawler** is a simple CLI tool can download stock information for Taiwan public market, includes:
 
-It grabs history data from **[Yahoo Finance](http://finance.yahoo.com)** and daily closing price from **[TWSE](http://www.twse.com.tw)**.
+- History price information.
+- Company basic information.
+- Business finanicial reports.
 
+It grabs history data from serveral available source, e.g **[Yahoo Finance](http://finance.yahoo.com)**, **[TWSE](http://www.twse.com.tw)** and daily closing price from **[TWSE](http://www.twse.com.tw)**.
+* **Yahoo** has incompleted price information, **TWSE** is better resource but costs very much time, even days...*
 ## Objective
 
-In 2010, I was going to build a stock trading bot. I need all history stock pricing and keep data up-to-date, therefore I developed this tiny tool.
+In 2010, I was going to build a stock trading bot. 
+I need all history stock data and keep them up-to-date, this is why I created it.
+There are some bucket list I haven't sone yet, so I am keeping going.
+Anyone would like join is welcome.
 
 ## How to use
 
@@ -18,11 +25,11 @@ Here is the instruction:
 StockCrawlerRunner.exe <mode>
  <mode>: -i
      Initialize all stock history data. It will drop all existing data.
- <mode>: -i [StockNo]
+ <mode>: -i [stock number]
      Initialize only one specified stock history data. It will drop all old data by this stock.
  <mode>: -i [Date:yyyy/MM/dd]
      Initialize all stock history data by the specified date. It will drop all existing data.
- <mode>: -i <Date:yyyy/MM/dd> [StockNo]
+ <mode>: -i <Date:yyyy/MM/dd> [stock number]
      Initialize only one specified stock history data. It will drop all old data by this stock.
  <mode>: -u
      Append the latest price data in database.
@@ -30,10 +37,13 @@ StockCrawlerRunner.exe <mode>
      Append the specified date price data in database.
  <mode>: -b
      Update the latest company basic information in database.
- <mode>: -b <stockNo> Update the latest company basic info by the specified stock No
+ <mode>: -b <stock number> Update the latest company basic info by the specified stock number
      Update the latest company basic information in database.
  <mode>: -f <taiwan year>
      Update the company finance report since the specified Taiwan year.
+     Update the company finance report since the specified Taiwan year.");
+ <mode>: -f <taiwan year> <stock number>");
+     Update the company finance report since the specified Taiwan year and stock number.");
 ```
 
 ## Note
@@ -45,10 +55,10 @@ It supports MSSQL currently, so you need modify the following setting to connect
     <add name="StockCrawler.Dao.Properties.Settings.StockConnectionString" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Stock;Integrated Security=True" providerName="System.Data.SqlClient" />
 </connectionStrings>
 ```
-BTW, since we adopt Unity DI framework, you can implement your IStockDataService interface to support other database.
+Since we adopt Unity DI framework, you can implement your IStockDataService interface to support other database.
 Wish to see someone do that.
 
-Here is the injection setting in XXX.exe.config
+Here is the injection setting in *.exe.config
 
 ```xml
 <configuration>
@@ -71,4 +81,7 @@ Here is the injection setting in XXX.exe.config
   </unity>
 </configuration>
 ```
-Have fun~~
+Each main function, these classes were implemeted with IJop interface from **Quartz.net**, means you can host these job in **Quartz.Server**.
+You can schedule your own triggers by **Quartz**.
+
+I prefer to run this tool by **Windows scheduled tasker**, so I made this tiny executable for it to execute.

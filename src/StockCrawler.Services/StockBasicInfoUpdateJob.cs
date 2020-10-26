@@ -26,9 +26,9 @@ namespace StockCrawler.Services
                 using (var db = StockDataServiceProvider.GetServiceInstance())
                 {
                     var collector = CollectorProviderService.GetStockBasicInfoCollector();
-                    foreach (var d in db.GetStocks().Where(d => !d.StockNo.StartsWith("0") && 
-                        int.TryParse(d.StockNo, out int number) &&
-                        (string.IsNullOrEmpty(BeginStockNo) ||  number >= int.Parse(BeginStockNo)))) // 排除非公司的基金型股票
+                    foreach (var d in db.GetStocks().Where(d => !d.StockNo.StartsWith("0") &&  // 排除非公司的基金型股票
+                        int.TryParse(d.StockNo, out int number) &&  // 排除特別股
+                        (string.IsNullOrEmpty(BeginStockNo) ||  number >= int.Parse(BeginStockNo))))
                     {
                         try
                         {
