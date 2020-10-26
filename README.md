@@ -15,7 +15,7 @@ In 2010, I was going to build a stock trading bot.
 
 I need all history stock data and keep them up-to-date, this is why I created it.
 
-There are some bucket list I haven't sone yet, so I am keeping going.
+There are some bucket lists I haven't sone yet, so I am keeping going.
 
 Anyone would like join is welcome.
 
@@ -87,8 +87,8 @@ Here is the injection setting in *.exe.config
   </unity>
 </configuration>
 ```
-Each main function, these classes were implemeted with IJop interface from **Quartz.net**, means you can host these job in **Quartz.Server**.
+Each main function, these classes were implemeted with *IJop* interface from **Quartz.net**, means you can host them in **Quartz.Server**.
 
 You can schedule your own triggers by **Quartz**.
 
-I prefer to run this tool by **Windows scheduled tasker**, so I made this tiny executable for it to execute.
+I prefer to run this tool by **Windows scheduled tasker**, so I made this tiny cli for it to execute.
