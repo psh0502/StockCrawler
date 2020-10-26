@@ -43,11 +43,12 @@ StockCrawlerRunner.exe <mode>
      Update the latest company basic information in database.
  <mode>: -b <stock number> Update the latest company basic info by the specified stock number
      Update the latest company basic information in database.
+ <mode>: -f
+     Update the company finance report in this year.
  <mode>: -f <taiwan year>
      Update the company finance report since the specified Taiwan year.
-     Update the company finance report since the specified Taiwan year.");
- <mode>: -f <taiwan year> <stock number>");
-     Update the company finance report since the specified Taiwan year and stock number.");
+ <mode>: -f <taiwan year> <stock number>
+     Update the company finance report since the specified Taiwan year and stock number.
 ```
 
 ## Note
@@ -60,6 +61,7 @@ It supports MSSQL currently, so you need modify the following setting to connect
 </connectionStrings>
 ```
 Since we adopt Unity DI framework, you can implement your IStockDataService interface to support other database.
+
 Wish to see someone do that.
 
 Here is the injection setting in *.exe.config
@@ -86,6 +88,7 @@ Here is the injection setting in *.exe.config
 </configuration>
 ```
 Each main function, these classes were implemeted with IJop interface from **Quartz.net**, means you can host these job in **Quartz.Server**.
+
 You can schedule your own triggers by **Quartz**.
 
 I prefer to run this tool by **Windows scheduled tasker**, so I made this tiny executable for it to execute.
