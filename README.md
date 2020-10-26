@@ -12,8 +12,11 @@ It grabs history data from serveral available source, e.g **[Yahoo Finance](http
 ## Objective
 
 In 2010, I was going to build a stock trading bot. 
+
 I need all history stock data and keep them up-to-date, this is why I created it.
+
 There are some bucket list I haven't sone yet, so I am keeping going.
+
 Anyone would like join is welcome.
 
 ## How to use
