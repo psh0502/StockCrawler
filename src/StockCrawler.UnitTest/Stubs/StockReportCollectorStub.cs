@@ -3,16 +3,16 @@ using StockCrawler.Services.Collectors;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StockCrawler.UnitTest.Mocks
+namespace StockCrawler.UnitTest.Stubs
 {
-    internal class StockReportCollectorMock : IStockReportCollector
+    internal class StockReportCollectorStub : IStockReportCollector
     {
         private const string TEST_STOCK_NO_1 = "2330";
         private static readonly List<GetStockReportBalanceResult> _StockBalance;
         private static readonly List<GetStockReportCashFlowResult> _StockCashFlow;
         private static readonly List<GetStockReportIncomeResult> _StockIncome;
         private static readonly List<GetStockReportMonthlyNetProfitTaxedResult> _StockMonthlyNetProfit;
-        static StockReportCollectorMock()
+        static StockReportCollectorStub()
         {
             _StockBalance = new List<GetStockReportBalanceResult>
             {

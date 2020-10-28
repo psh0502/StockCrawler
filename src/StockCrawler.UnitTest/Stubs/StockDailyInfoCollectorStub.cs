@@ -6,11 +6,11 @@ using System.IO;
 using System.Linq;
 
 #if (DEBUG)
-namespace StockCrawler.UnitTest.Mocks
+namespace StockCrawler.UnitTest.Stubs
 {
-    internal class StockDailyInfoCollectorMock : TwseStockDailyInfoCollector
+    internal class StockDailyInfoCollectorStub : TwseStockDailyInfoCollector
     {
-        public StockDailyInfoCollectorMock() : base()
+        public StockDailyInfoCollectorStub() : base()
         {
             _logger = new UnitTestLogger();
         }

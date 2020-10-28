@@ -2,9 +2,9 @@
 using StockCrawler.Services.Collectors;
 using System;
 
-namespace StockCrawler.UnitTest.Mocks
+namespace StockCrawler.UnitTest.Stubs
 {
-    internal class StockBasicInfoCollectorMock : IStockBasicInfoCollector
+    internal class StockBasicInfoCollectorStub : IStockBasicInfoCollector
     {
         private const string TEST_STOCK_NO_1 = "2330";
         public GetStockBasicInfoResult GetStockBasicInfo(string stockNo)

@@ -3,11 +3,11 @@ using System;
 using System.IO;
 
 #if (DEBUG)
-namespace StockCrawler.UnitTest.Mocks
+namespace StockCrawler.UnitTest.Stubs
 {
-    internal class StockHistoryPriceCollectorMock2 : TwseStockHistoryPriceCollector2, IStockHistoryPriceCollector
+    internal class StockHistoryPriceCollectorStub2 : TwseStockHistoryPriceCollector2, IStockHistoryPriceCollector
     {
-        public StockHistoryPriceCollectorMock2() : base()
+        public StockHistoryPriceCollectorStub2() : base()
         {
             _logger = new UnitTestLogger();
         }

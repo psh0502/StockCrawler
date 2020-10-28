@@ -130,11 +130,11 @@
     <Compile Include="Collectors\YahooStockHistoryPriceCollectorTest.cs" />
     <Compile Include="Collectors\TwseStockDailyInfoCollectorTest.cs" />
     <Compile Include="Collectors\GoodInfoCollectorTest.cs" />
-    <Compile Include="Mocks\StockBasicInfoCollectorMock.cs" />
-    <Compile Include="Mocks\StockHistoryPriceCollectorMock2.cs" />
-    <Compile Include="Mocks\StockHistoryPriceCollectorMock.cs" />
-    <Compile Include="Mocks\StockReportCollectorMock.cs" />
-    <Compile Include="Mocks\StockDailyInfoCollectorMock.cs" />
+    <Compile Include="Stubs\StockBasicInfoCollectorStub.cs" />
+    <Compile Include="Stubs\StockHistoryPriceCollectorStub2.cs" />
+    <Compile Include="Stubs\StockHistoryPriceCollectorStub.cs" />
+    <Compile Include="Stubs\StockReportCollectorStub.cs" />
+    <Compile Include="Stubs\StockDailyInfoCollectorStub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Jobs\StockPriceHistoryInitJobTest.cs" />
     <Compile Include="Jobs\StockPriceUpdateJobTest.cs" />

@@ -3,11 +3,11 @@ using System;
 using System.IO;
 
 #if (DEBUG)
-namespace StockCrawler.UnitTest.Mocks
+namespace StockCrawler.UnitTest.Stubs
 {
-    internal class StockHistoryPriceCollectorMock : YahooStockHistoryPriceCollector
+    internal class StockHistoryPriceCollectorStub : YahooStockHistoryPriceCollector
     {
-        public StockHistoryPriceCollectorMock():base() {
+        public StockHistoryPriceCollectorStub():base() {
             _logger = new UnitTestLogger();
         }
         protected override string DownloadYahooStockCSV(string stockNo, DateTime startDT, DateTime endDT)
