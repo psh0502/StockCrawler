@@ -91,4 +91,4 @@ Each main function, these classes were implemeted with *IJop* interface from **Q
 
 You can schedule your own triggers by **Quartz**.
 
-I prefer to run this tool by **Windows scheduled tasker**, so I made this tiny cli for it to execute.
+I prefer to run this tool by **Windows scheduled tasker**, so I made this tiny cli for it.
