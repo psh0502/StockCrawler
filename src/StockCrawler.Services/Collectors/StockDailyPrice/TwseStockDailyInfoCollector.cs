@@ -129,17 +129,6 @@ namespace StockCrawler.Services.Collectors
             }
             return daily_info.Values.ToArray();
         }
-        private static void GerneralizeNumberFieldData(string[] data)
-        {
-            // Generalize number fields data
-            for (int i = 0; i < data.Length; i++)
-                if (!string.IsNullOrEmpty(data[i]))
-                    data[i] = data[i]
-                        .Replace("--", "0")
-                        .Replace(",", string.Empty)
-                        .Replace("X", string.Empty)
-                        .Trim();
-        }
         private GetStockPeriodPriceResult GetParsedStockDailyInfo(DateTime day, string[] data)
         {
             #region csv index comment

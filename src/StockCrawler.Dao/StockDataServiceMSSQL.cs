@@ -212,5 +212,12 @@ namespace StockCrawler.Dao
             using (var db = GetMSSQLStockDataContext())
                 return db.GetStockBasicInfo(stockNo).SingleOrDefault();
         }
+
+        public void InsertOrUpdateMarketNews(GetMarketNewsResult[] data)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                foreach (var d in data)
+                    db.InsertOrUpdateMarketNews(d.NewsDate, d.Subject, d.Url);
+        }
     }
 }

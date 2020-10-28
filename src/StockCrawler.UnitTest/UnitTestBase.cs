@@ -29,6 +29,7 @@ namespace StockCrawler.UnitTest
             SqlTool.ExecuteSql("TRUNCATE TABLE StockReportIncome");
             SqlTool.ExecuteSql("TRUNCATE TABLE StockReportBalance");
             SqlTool.ExecuteSql("TRUNCATE TABLE StockReportMonthlyNetProfitTaxed");
+            SqlTool.ExecuteSql("TRUNCATE TABLE MarketNews");
             SqlTool.ExecuteSql("DELETE Stock");
 
 

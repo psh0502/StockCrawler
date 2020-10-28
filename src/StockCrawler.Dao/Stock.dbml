@@ -37,6 +37,17 @@
       <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
+  <Function Name="dbo.GetMarketNews" Method="GetMarketNews">
+    <Parameter Name="pTop" Type="System.Int32" DbType="Int" />
+    <Parameter Name="pStartDate" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="pEndDate" Type="System.DateTime" DbType="Date" />
+    <ElementType Name="GetMarketNewsResult">
+      <Column Name="NewsDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Subject" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Url" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
   <Function Name="dbo.GetStockAveragePrice" Method="GetStockAveragePrice">
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
     <Parameter Name="pDateBegin" Type="System.DateTime" DbType="Date" />
@@ -230,6 +241,12 @@
       <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </ElementType>
+  </Function>
+  <Function Name="dbo.InsertOrUpdateMarketNews" Method="InsertOrUpdateMarketNews">
+    <Parameter Name="pNewsDate" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="pSubject" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="pUrl" Type="System.String" DbType="NVarChar(100)" />
+    <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.InsertOrUpdateStock" Method="InsertOrUpdateStock">
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />

@@ -28,6 +28,9 @@ namespace StockCrawler.Services
         {
             return _container.Resolve<IStockHistoryPriceCollector>();
         }
-
+        public static IMarketNewsCollector GetMarketNewsCollector()
+        {
+            return _container.Resolve<IMarketNewsCollector>();
+        }
     }
 }

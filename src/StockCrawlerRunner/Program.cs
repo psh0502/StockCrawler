@@ -53,6 +53,9 @@ namespace StockCrawlerRunner
 
                             job = new StockFinReportUpdateJob() { BeginYear = beginYear, BeginStockNo = stockNo };
                             break;
+                        case "-n":
+                            job = new MarketNewsUpdateJob();
+                            break;
                         default:
                             ShowHelp();
                             break;
@@ -106,6 +109,8 @@ namespace StockCrawlerRunner
             Console.WriteLine("     Update the company finance report since the specified Taiwan year.");
             Console.WriteLine(" <mode>: -f <taiwan year> <stock number>");
             Console.WriteLine("     Update the company finance report since the specified Taiwan year and stock number.");
+            Console.WriteLine(" <mode>: -n");
+            Console.WriteLine("     Get the latest Taiwan stock market news.");
         }
     }
 }
