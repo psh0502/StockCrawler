@@ -31,13 +31,11 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-#if(DEBUG)
 [assembly: AssemblyVersion("1.1.0.1")]
 [assembly: AssemblyFileVersion("1.1.0.1")]
+#if(DEBUG)
 [assembly: AssemblyDescription("Debug build")]
 [assembly: InternalsVisibleTo("StockCrawler.UnitTest")]
 #else
-[assembly: AssemblyVersion("1.1.0.1")]
-[assembly: AssemblyFileVersion("1.1.0.1")]
 [assembly: AssemblyDescription("Release build")]
 #endif

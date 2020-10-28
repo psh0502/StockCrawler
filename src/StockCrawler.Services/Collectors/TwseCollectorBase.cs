@@ -89,8 +89,8 @@ namespace StockCrawler.Services
                 try
                 {
                     html = Tools.DownloadStringData(new Uri(url), Encoding.UTF8, out _, "application/x-www-form-urlencoded", null, "POST", formData);
-                    if (html.Contains("Overrun") || html.Contains("請稍後再試"))
-                        throw new WebException(string.Format("The target[{0}] is pissed off...", stockNo));
+                    if (html.Contains("Overrun") || html.Contains("請稍後再試") || html.Contains("資料庫連線時發生下述問題"))
+                        throw new WebException(string.Format("The target[{0}] is pissed off... stockNo={0}, year={1}, season={2}, month={3}", stockNo, year, season, month));
 
                     break;
                 }
