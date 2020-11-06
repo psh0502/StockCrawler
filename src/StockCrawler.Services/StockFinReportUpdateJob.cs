@@ -31,7 +31,7 @@ namespace StockCrawler.Services
                         .Where(d => 
                         !d.StockNo.StartsWith("0")  // 排除非公司的基金型股票
                         && int.TryParse(d.StockNo.Substring(0, 4), out int no)
-                        && (string.IsNullOrEmpty(BeginStockNo) || no > int.Parse(BeginStockNo)))) // 若有指定起始股票, 則由起始點開始
+                        && (string.IsNullOrEmpty(BeginStockNo) || no >= int.Parse(BeginStockNo)))) // 若有指定起始股票, 則由起始點開始
                     {
                         short now_year = GetTaiwanYear();
                         short now_season = GetSeason();
