@@ -33,53 +33,60 @@ namespace StockCrawler.Services
                         && int.TryParse(d.StockNo.Substring(0, 4), out int no)
                         && (string.IsNullOrEmpty(BeginStockNo) || no >= int.Parse(BeginStockNo)))) // 若有指定起始股票, 則由起始點開始
                     {
-                        short now_year = GetTaiwanYear();
-                        short now_season = GetSeason();
-                        short now_month = (short)SystemTime.Today.Month;
-                        short season = (short)(now_season - 1); // 抓上一季報告
-                        short year = now_year;
-                        
-
-                        if (season <= 0) { season = 4; year -= 1; }
-                        
-                        // 若外部指定特定起始年, 則以該起始年第一季開始抓取資料
-                        if (BeginYear > 100)
+                        try
                         {
-                            year = BeginYear;
-                            season = 1;
-                        }
+                            short now_year = GetTaiwanYear();
+                            short now_season = GetSeason();
+                            short now_month = (short)SystemTime.Today.Month;
+                            short season = (short)(now_season - 1); // 抓上一季報告
+                            short year = now_year;
 
-                        for (; year <= now_year; year++)
-                        {
-                            // 若循覽已到今年, 則季分不該尋找超過當季的資料
-                            for (; season <= 4 && !(year == now_year && season == now_season); season++)
+
+                            if (season <= 0) { season = 4; year -= 1; }
+
+                            // 若外部指定特定起始年, 則以該起始年第一季開始抓取資料
+                            if (BeginYear > 100)
                             {
-                                Thread.Sleep(_breakInternval);
-                                if (!GetCashflowIntoDatabase(db, collector, d.StockNo, year, season)) break;
-                                Thread.Sleep(_breakInternval);
-                                if (!GetIncomeIntoDatabase(db, collector, d.StockNo, year, season)) break;
-                                Thread.Sleep(_breakInternval);
-                                if (!GetBalanceIntoDatabase(db, collector, d.StockNo, year, season)) break;
+                                year = BeginYear;
+                                season = 1;
                             }
-                            season = 1;
-                        }
 
-                        year = now_year;
-                        short month = (short)(now_month - 1); // 抓上月報告;
-                        if (BeginYear > 100)
-                        {
-                            year = BeginYear;
-                            month = 1;
-                        }
-                        if (month <= 0) { month = 12; year -= 1; }
-                        for (; year <= now_year; year++)
-                        {
-                            for (; month <= 12 && !(year == now_year && month == now_month); month++)
+                            for (; year <= now_year; year++)
                             {
-                                if (!GetMonthlyNetProfitTaxedIntoDatabase(db, collector, d.StockNo, year, month)) break;
-                                Thread.Sleep(_breakInternval);
+                                // 若循覽已到今年, 則季分不該尋找超過當季的資料
+                                for (; season <= 4 && !(year == now_year && season == now_season); season++)
+                                {
+                                    Thread.Sleep(_breakInternval);
+                                    if (!GetCashflowIntoDatabase(db, collector, d.StockNo, year, season)) break;
+                                    Thread.Sleep(_breakInternval);
+                                    if (!GetIncomeIntoDatabase(db, collector, d.StockNo, year, season)) break;
+                                    Thread.Sleep(_breakInternval);
+                                    if (!GetBalanceIntoDatabase(db, collector, d.StockNo, year, season)) break;
+                                }
+                                season = 1;
                             }
-                            month = 1;
+
+                            year = now_year;
+                            short month = (short)(now_month - 1); // 抓上月報告;
+                            if (BeginYear > 100)
+                            {
+                                year = BeginYear;
+                                month = 1;
+                            }
+                            if (month <= 0) { month = 12; year -= 1; }
+                            for (; year <= now_year; year++)
+                            {
+                                for (; month <= 12 && !(year == now_year && month == now_month); month++)
+                                {
+                                    if (!GetMonthlyNetProfitTaxedIntoDatabase(db, collector, d.StockNo, year, month)) break;
+                                    Thread.Sleep(_breakInternval);
+                                }
+                                month = 1;
+                            }
+                        }
+                        catch (ApplicationException ex)
+                        {
+                            Logger.Warn(ex.Message);
                         }
                     }
                 }
@@ -129,6 +136,16 @@ namespace StockCrawler.Services
                 return false;
             }
         }
+        /// <summary>
+        /// 抓取現金流量表
+        /// </summary>
+        /// <param name="db">DAO 物件</param>
+        /// <param name="collector">對應資料源的收集器</param>
+        /// <param name="stockNo">股票代碼</param>
+        /// <param name="year">民國年</param>
+        /// <param name="season">第幾季</param>
+        /// <exception cref="ApplicationException">該公司股票不繼續公開發行</exception>
+        /// <returns>成功失敗</returns>
         private static bool GetCashflowIntoDatabase(IStockDataService db, IStockReportCollector collector, string stockNo, short year, short season)
         {
             var info = collector.GetStockReportCashFlow(stockNo, year, season);

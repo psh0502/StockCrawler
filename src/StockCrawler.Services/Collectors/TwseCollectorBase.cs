@@ -79,7 +79,8 @@ namespace StockCrawler.Services
         /// <param name="month">月份</param>
         /// <param name="xpath">搜尋資料的 xpath 提示</param>
         /// <returns>含有資料的 html 節點</returns>
-        /// <exception cref="WebsiteGetPissOffException">網站讀取過於頻繁, 需要稍等後再讀取</exception>
+        /// <exception cref="WebException">網站讀取過於頻繁, 需要稍等後再讀取</exception>
+        /// <exception cref="ApplicationException">該公司股票不繼續公開發行</exception>
         protected HtmlNode GetTwseDataBack(string url, string stockNo, short year = -1, short season = -1, short month = -1, string xpath = _xpath_01)
         {
             var formData = HttpUtility.ParseQueryString(string.Empty);
@@ -100,8 +101,12 @@ namespace StockCrawler.Services
                 try
                 {
                     html = Tools.DownloadStringData(new Uri(url), Encoding.UTF8, out _, "application/x-www-form-urlencoded", null, "POST", formData);
+                    if (html.Contains("不繼續公開發行")) 
+                        throw new ApplicationException(string.Format("The target[{0}] is 不繼續公開發行... ", stockNo));
+
                     if (html.Contains("Overrun") || html.Contains("請稍後再試"))
                         throw new WebException(string.Format("The target[{0}] is pissed off... stockNo={0}, year={1}, season={2}, month={3}", stockNo, year, season, month));
+
                     if (html.Contains("資料庫連線時發生下述問題"))
                     {
                         _logger.Warn("對方資料庫連線時發生問題, 暫停一分鐘後重試.");
