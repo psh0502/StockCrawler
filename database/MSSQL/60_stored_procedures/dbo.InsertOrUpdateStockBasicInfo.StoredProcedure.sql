@@ -41,7 +41,7 @@ BEGIN
 			,[LastModifiedAt] = GETDATE()
 		WHERE [StockNo] = @pStockNo
 
-	ELSE
+	ELSE BEGIN
 		INSERT INTO [dbo].[StockBasicInfo]
 			([StockNo]
 			,[Category]
@@ -68,5 +68,9 @@ BEGIN
 			,@pCEO
 			,@pUrl
 			,@pBusiness)
+		DECLARE @vCategoryNo VARCHAR(10)
+		SELECT @vCategoryNo = CategoryNo FROM CategoryMapping(NOLOCK) WHERE Category = @pCategory
+		EXEC InsertOrUpdateStock @pStockNo, NULL, @vCategoryNo
+	END
 END
 GO
