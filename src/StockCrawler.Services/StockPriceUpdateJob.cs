@@ -1,7 +1,6 @@
 ﻿using Common.Logging;
 using Quartz;
 using StockCrawler.Dao;
-using StockCrawler.Services.Collectors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,13 +21,11 @@ namespace StockCrawler.Services
             try
             {
                 var collector = CollectorProviderService.GetStockDailyPriceCollector();
-                // Renew stock list
-                DownloadTwseLatestInfo(collector);
 
                 var list = new List<GetStockPeriodPriceResult>();
                 using (var db = StockDataServiceProvider.GetServiceInstance())
                 {
-                    foreach (var d in db.GetStocks())
+                    foreach (var d in collector.GetStockDailyPriceInfo())
                     {
                         Logger.DebugFormat("Retrieving daily price of [{0}] stock.", d.StockNo);
                         var info = collector.GetStockDailyPriceInfo(d.StockNo);
@@ -53,18 +50,5 @@ namespace StockCrawler.Services
             return null;
         }
         #endregion
-        private void DownloadTwseLatestInfo(IStockDailyInfoCollector collector)
-        {
-            var list = collector.GetStockDailyPriceInfo()
-                .Select(d => new GetStocksResult()
-                {
-                    StockNo = d.StockNo,
-                    StockName = d.StockName,
-                    Enable = true
-                }).ToList();
-
-            if (list.Any())
-                StockDataServiceProvider.GetServiceInstance().InsertOrUpdateStock(list.ToArray());
-        }
     }
 }
