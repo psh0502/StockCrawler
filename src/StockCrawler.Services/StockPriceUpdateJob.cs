@@ -25,6 +25,17 @@ namespace StockCrawler.Services
                 var list = new List<GetStockPeriodPriceResult>();
                 using (var db = StockDataServiceProvider.GetServiceInstance())
                 {
+                    var stocks = collector.GetStockDailyPriceInfo()
+                        .Select(d => new GetStocksResult()
+                        {
+                            StockNo = d.StockNo,
+                            StockName = d.StockName,
+                            Enable = true
+                        }).ToList();
+
+                    if (stocks.Any())
+                        db.InsertOrUpdateStock(stocks.ToArray());
+
                     foreach (var d in collector.GetStockDailyPriceInfo())
                     {
                         Logger.DebugFormat("Retrieving daily price of [{0}] stock.", d.StockNo);
