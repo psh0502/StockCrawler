@@ -31,7 +31,7 @@ BEGIN
 		VALUES(
 			@pStockNo,
 			@pStockName,
-			@pCategoryNo,
+			ISNULL(@pCategoryNo, ''),
 			@TRUE);
 END
 GO
