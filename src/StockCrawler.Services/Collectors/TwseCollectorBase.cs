@@ -104,6 +104,12 @@ namespace StockCrawler.Services
                     if (html.Contains("不繼續公開發行")) 
                         throw new ApplicationException(string.Format("The target[{0}] is 不繼續公開發行... ", stockNo));
 
+                    if (html.Contains("查無所需資料"))
+                    {
+                        _logger.InfoFormat("The target[{0}] is 查無所需資料... stockNo={0}, year={1}, season={2}, month={3}", stockNo, year, season, month);
+                        return null;
+                    }
+
                     if (html.Contains("Overrun") || html.Contains("請稍後再試"))
                         throw new WebException(string.Format("The target[{0}] is pissed off... stockNo={0}, year={1}, season={2}, month={3}", stockNo, year, season, month));
 
