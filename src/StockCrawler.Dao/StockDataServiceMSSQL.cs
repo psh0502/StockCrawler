@@ -5,6 +5,7 @@ namespace StockCrawler.Dao
 {
     internal class StockDataServiceMSSQL : IStockDataService
     {
+        #region 取得資料
         public GetCategoryMappingResult[] GetCategoryMapping()
         {
             using (var db = GetMSSQLStockDataContext())
@@ -20,6 +21,34 @@ namespace StockCrawler.Dao
             using (var db = GetMSSQLStockDataContext())
                 return db.GetStocks(stockNo).SingleOrDefault();
         }
+        public GetMarketNewsResult[] GetMarketNews(int top, DateTime startDate, DateTime endDate)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                return db.GetMarketNews(top, startDate, endDate).ToArray();
+        }
+        public GetStockPeriodPriceResult[] GetStockPeriodPrice(string stockNo, short period, DateTime bgnDate, DateTime endDate)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                return db.GetStockPeriodPrice(stockNo, period, bgnDate, endDate).ToArray();
+        }
+        public GetStockAveragePriceResult[] GetStockAveragePrice(string stockNo, DateTime bgnDate, DateTime endDate, short period)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                return db.GetStockAveragePrice(stockNo, bgnDate, endDate, period).ToArray();
+        }
+        public GetStockReportIncomeResult GetStockReportIncome(string stockNo, short year, short season)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                return db.GetStockReportIncome(stockNo, year, season).SingleOrDefault();
+        }
+        public GetStockBasicInfoResult GetStockBasicInfo(string stockNo)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                return db.GetStockBasicInfo(stockNo).SingleOrDefault();
+        }
+        #endregion
+
+        #region 新增修改
         public void InsertOrUpdateStockPrice(GetStockPeriodPriceResult[] data)
         {
             using (var db = GetMSSQLStockDataContext())
@@ -49,14 +78,6 @@ namespace StockCrawler.Dao
         private static StockDataContext GetMSSQLStockDataContext()
         {
             return new StockDataContext(ConnectionStringHelper.StockConnectionString);
-        }
-        public void Dispose()
-        {
-        }
-        public void DeleteStockPriceHistoryData(string stockNo, DateTime? tradeDate)
-        {
-            using (var db = GetMSSQLStockDataContext())
-                db.DeleteStockPriceHistoryData(stockNo, tradeDate);
         }
         public void InsertOrUpdateStock(string stockNo, string stockName, string categoryNo)
         {
@@ -182,11 +203,6 @@ namespace StockCrawler.Dao
 
             return oAvgClosePrice ?? 0;
         }
-        public GetStockPeriodPriceResult[] GetStockPeriodPrice(string stockNo, short period, DateTime bgnDate, DateTime endDate)
-        {
-            using (var db = GetMSSQLStockDataContext())
-                return db.GetStockPeriodPrice(stockNo, period, bgnDate, endDate).ToArray();
-        }
         public void InsertOrUpdateStockAveragePrice((string stockNo, DateTime stockDT, short period, decimal averagePrice)[] avgPriceList)
         {
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
@@ -197,27 +213,23 @@ namespace StockCrawler.Dao
                         info.period,
                         info.averagePrice);
         }
-        public GetStockAveragePriceResult[] GetStockAveragePrice(string stockNo, DateTime bgnDate, DateTime endDate, short period)
-        {
-            using (var db = GetMSSQLStockDataContext())
-                return db.GetStockAveragePrice(stockNo, bgnDate, endDate, period).ToArray();
-        }
-        public GetStockReportIncomeResult GetStockReportIncome(string stockNo, short year, short season)
-        {
-            using (var db = GetMSSQLStockDataContext())
-                return db.GetStockReportIncome(stockNo, year, season).SingleOrDefault();
-        }
-        public GetStockBasicInfoResult GetStockBasicInfo(string stockNo)
-        {
-            using (var db = GetMSSQLStockDataContext())
-                return db.GetStockBasicInfo(stockNo).SingleOrDefault();
-        }
-
         public void InsertOrUpdateMarketNews(GetMarketNewsResult[] data)
         {
             using (var db = GetMSSQLStockDataContext())
                 foreach (var d in data)
                     db.InsertOrUpdateMarketNews(d.NewsDate, d.Subject, d.Url);
+        }
+        #endregion
+
+        #region 刪除
+        public void DeleteStockPriceHistoryData(string stockNo, DateTime? tradeDate)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                db.DeleteStockPriceHistoryData(stockNo, tradeDate);
+        }
+        #endregion
+        public void Dispose()
+        {
         }
     }
 }

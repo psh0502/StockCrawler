@@ -48,6 +48,7 @@ namespace StockCrawler.Dao
         GetStocksResult[] GetStocks();
         GetStocksResult GetStock(string stockNo);
         GetStockReportIncomeResult GetStockReportIncome(string stockNo, short year, short season);
+        GetMarketNewsResult[] GetMarketNews(int top, DateTime startDate, DateTime endDate);
         void InsertOrUpdateStockPrice(GetStockPeriodPriceResult[] data);
         void InsertOrUpdateMarketNews(GetMarketNewsResult[] data);
         void InsertOrUpdateStock(GetStocksResult[] data);
