@@ -36,10 +36,25 @@ namespace StockCrawler.Dao
             using (var db = GetMSSQLStockDataContext())
                 return db.GetStockAveragePrice(stockNo, bgnDate, endDate, period).ToArray();
         }
-        public GetStockReportIncomeResult GetStockReportIncome(string stockNo, short year, short season)
+        public GetStockReportIncomeResult[] GetStockReportIncome(string stockNo, short year, short season)
         {
             using (var db = GetMSSQLStockDataContext())
-                return db.GetStockReportIncome(stockNo, year, season).SingleOrDefault();
+                return db.GetStockReportIncome(stockNo, year, season).ToArray();
+        }
+        public GetStockReportCashFlowResult[] GetStockReportCashFlow(string stockNo, short year, short season)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                return db.GetStockReportCashFlow(stockNo, year, season).ToArray();
+        }
+        public GetStockReportBalanceResult[] GetStockReportBalance(string stockNo, short year, short season)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                return db.GetStockReportBalance(stockNo, year, season).ToArray();
+        }
+        public GetStockReportMonthlyNetProfitTaxedResult[] GetStockReportMonthlyNetProfitTaxed(string stockNo, short year, short month)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                return db.GetStockReportMonthlyNetProfitTaxed(stockNo, year, month).ToArray();
         }
         public GetStockBasicInfoResult GetStockBasicInfo(string stockNo)
         {
@@ -190,19 +205,6 @@ namespace StockCrawler.Dao
                     info.TillThisMonthDeltaPercent,
                     info.Remark);
         }
-        public decimal CaculateStockClosingAveragePrice(string stockNo, DateTime endDate, short period)
-        {
-            decimal? oAvgClosePrice = null;
-
-            using (var db = GetMSSQLStockDataContext())
-                db.CalculateStockPriceAverage(
-                    stockNo,
-                    endDate,
-                    period,
-                    ref oAvgClosePrice);
-
-            return oAvgClosePrice ?? 0;
-        }
         public void InsertOrUpdateStockAveragePrice((string stockNo, DateTime stockDT, short period, decimal averagePrice)[] avgPriceList)
         {
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
@@ -228,6 +230,20 @@ namespace StockCrawler.Dao
                 db.DeleteStockPriceHistoryData(stockNo, tradeDate);
         }
         #endregion
+
+        public decimal CaculateStockClosingAveragePrice(string stockNo, DateTime endDate, short period)
+        {
+            decimal? oAvgClosePrice = null;
+
+            using (var db = GetMSSQLStockDataContext())
+                db.CalculateStockPriceAverage(
+                    stockNo,
+                    endDate,
+                    period,
+                    ref oAvgClosePrice);
+
+            return oAvgClosePrice ?? 0;
+        }
         public void Dispose()
         {
         }

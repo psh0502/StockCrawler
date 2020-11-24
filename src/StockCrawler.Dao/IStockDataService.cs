@@ -2,18 +2,12 @@
 
 namespace StockCrawler.Dao
 {
+    /// <summary>
+    /// 股票資訊收集器的資料存取介面
+    /// </summary>
     public interface IStockDataService : IDisposable
     {
-        /// <summary>
-        /// Update stock company's basic information. If it doesn't exist, it will insert it.
-        /// </summary>
-        /// <param name="data">Collection of stock company's basic information</param>
-        void InsertOrUpdateStockBasicInfo(GetStockBasicInfoResult[] data);
-        void InsertOrUpdateStockBasicInfo(GetStockBasicInfoResult data);
-        void InsertOrUpdateStockCashflowReport(GetStockReportCashFlowResult info);
-
-
-
+        #region 取得資料
         ///// <summary>
         ///// Retrieve the average close price of the specified stock since the specified date.
         ///// </summary>
@@ -47,8 +41,30 @@ namespace StockCrawler.Dao
         GetStockBasicInfoResult GetStockBasicInfo(string stockNo);
         GetStocksResult[] GetStocks();
         GetStocksResult GetStock(string stockNo);
-        GetStockReportIncomeResult GetStockReportIncome(string stockNo, short year, short season);
+        GetStockReportCashFlowResult[] GetStockReportCashFlow(string stockNo, short year, short season);
+        GetStockReportBalanceResult[] GetStockReportBalance(string stockNo, short year, short season);
+        GetStockReportIncomeResult[] GetStockReportIncome(string stockNo, short year, short season);
+        GetStockReportMonthlyNetProfitTaxedResult[] GetStockReportMonthlyNetProfitTaxed(string stockNo, short year, short month);
         GetMarketNewsResult[] GetMarketNews(int top, DateTime startDate, DateTime endDate);
+        /// <summary>
+        /// 取得指定期間的股價明細
+        /// </summary>
+        /// <param name="stockNo">股票代碼</param>
+        /// <param name="endDate">結束日期</param>
+        /// <param name="period">週期天數</param>
+        /// <returns>每日收盤資料列表</returns>
+        GetStockPeriodPriceResult[] GetStockPeriodPrice(string stockNo, short period, DateTime bgnDate, DateTime endDate);
+        GetStockAveragePriceResult[] GetStockAveragePrice(string stockNo, DateTime bgnDate, DateTime endDate, short period);
+        #endregion
+
+        #region 新增修改
+        /// <summary>
+        /// Update stock company's basic information. If it doesn't exist, it will insert it.
+        /// </summary>
+        /// <param name="data">Collection of stock company's basic information</param>
+        void InsertOrUpdateStockBasicInfo(GetStockBasicInfoResult[] data);
+        void InsertOrUpdateStockBasicInfo(GetStockBasicInfoResult data);
+        void InsertOrUpdateStockCashflowReport(GetStockReportCashFlowResult info);
         void InsertOrUpdateStockPrice(GetStockPeriodPriceResult[] data);
         void InsertOrUpdateMarketNews(GetMarketNewsResult[] data);
         void InsertOrUpdateStock(GetStocksResult[] data);
@@ -59,10 +75,16 @@ namespace StockCrawler.Dao
         /// <param name="stockName">stock name</param>
         /// <param name="categoryNo">Industry index stock No</param>
         void InsertOrUpdateStock(string stockNo, string stockName, string categoryNo);
-        void DeleteStockPriceHistoryData(string stockNo, DateTime? tradeDate = null);
         void InsertOrUpdateStockIncomeReport(GetStockReportIncomeResult info);
         void InsertOrUpdateStockBalanceReport(GetStockReportBalanceResult info);
+        void InsertOrUpdateStockAveragePrice((string stockNo, DateTime stockDT, short period, decimal averagePrice)[] avgPriceList);
         void InsertOrUpdateStockMonthlyNetProfitTaxedReport(GetStockReportMonthlyNetProfitTaxedResult info);
+        #endregion
+
+        #region 刪除
+        void DeleteStockPriceHistoryData(string stockNo, DateTime? tradeDate = null);
+        #endregion
+
         /// <summary>
         /// 取得股價週期平均值
         /// </summary>
@@ -71,15 +93,5 @@ namespace StockCrawler.Dao
         /// <param name="period">週期天數, 週線: 5, 雙週線: 10, 月線: 20, 季線: 60</param>
         /// <returns>平均收盤價</returns>
         decimal CaculateStockClosingAveragePrice(string stockNo, DateTime endDate, short period);
-        /// <summary>
-        /// 取得指定期間的股價明細
-        /// </summary>
-        /// <param name="stockNo">股票代碼</param>
-        /// <param name="endDate">結束日期</param>
-        /// <param name="period">週期天數</param>
-        /// <returns>每日收盤資料列表</returns>
-        GetStockPeriodPriceResult[] GetStockPeriodPrice(string stockNo, short period, DateTime bgnDate, DateTime endDate);
-        GetStockAveragePriceResult[] GetStockAveragePrice(string stockNo, DateTime bgnDate, DateTime endDate, short period);
-        void InsertOrUpdateStockAveragePrice((string stockNo, DateTime stockDT, short period, decimal averagePrice)[] avgPriceList);
     }
 }

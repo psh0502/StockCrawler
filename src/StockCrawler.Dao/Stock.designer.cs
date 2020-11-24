@@ -119,6 +119,13 @@ namespace StockCrawler.Dao
 			return ((ISingleResult<GetStockBasicInfoResult>)(result.ReturnValue));
 		}
 		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetStockMarketNews")]
+		public ISingleResult<GetStockMarketNewsResult> GetStockMarketNews([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> pTop, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pSource, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pStartDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pEndDate)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pTop, pStockNo, pSource, pStartDate, pEndDate);
+			return ((ISingleResult<GetStockMarketNewsResult>)(result.ReturnValue));
+		}
+		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetStockPeriodPrice")]
 		public ISingleResult<GetStockPeriodPriceResult> GetStockPeriodPrice([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pPeriod, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pBeginDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pEndDate)
 		{
@@ -194,6 +201,13 @@ namespace StockCrawler.Dao
 		public int InsertOrUpdateStockBasicInfo([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pCategory, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(100)")] string pCompanyName, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pCompanyID, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pBuildDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pPublishDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pCapital, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="BigInt")] System.Nullable<long> pReleaseStockCount, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pChairman, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pCEO, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(100)")] string pUrl, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(1000)")] string pBusiness)
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pCategory, pCompanyName, pCompanyID, pBuildDate, pPublishDate, pCapital, pReleaseStockCount, pChairman, pCEO, pUrl, pBusiness);
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertOrUpdateStockMarketNews")]
+		public int InsertOrUpdateStockMarketNews([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pSource, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pNewsDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(100)")] string pSubject, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(100)")] string pUrl)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pSource, pNewsDate, pSubject, pUrl);
 			return ((int)(result.ReturnValue));
 		}
 		
@@ -800,6 +814,122 @@ namespace StockCrawler.Dao
 				if ((this._MarketValue != value))
 				{
 					this._MarketValue = value;
+				}
+			}
+		}
+	}
+	
+	public partial class GetStockMarketNewsResult
+	{
+		
+		private string _StockNo;
+		
+		private string _Source;
+		
+		private System.DateTime _NewsDate;
+		
+		private string _Subject;
+		
+		private string _Url;
+		
+		private System.DateTime _CreatedAt;
+		
+		public GetStockMarketNewsResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockNo", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string StockNo
+		{
+			get
+			{
+				return this._StockNo;
+			}
+			set
+			{
+				if ((this._StockNo != value))
+				{
+					this._StockNo = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Source", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string Source
+		{
+			get
+			{
+				return this._Source;
+			}
+			set
+			{
+				if ((this._Source != value))
+				{
+					this._Source = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NewsDate", DbType="Date NOT NULL")]
+		public System.DateTime NewsDate
+		{
+			get
+			{
+				return this._NewsDate;
+			}
+			set
+			{
+				if ((this._NewsDate != value))
+				{
+					this._NewsDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Subject", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string Subject
+		{
+			get
+			{
+				return this._Subject;
+			}
+			set
+			{
+				if ((this._Subject != value))
+				{
+					this._Subject = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Url", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string Url
+		{
+			get
+			{
+				return this._Url;
+			}
+			set
+			{
+				if ((this._Url != value))
+				{
+					this._Url = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedAt", DbType="DateTime NOT NULL")]
+		public System.DateTime CreatedAt
+		{
+			get
+			{
+				return this._CreatedAt;
+			}
+			set
+			{
+				if ((this._CreatedAt != value))
+				{
+					this._CreatedAt = value;
 				}
 			}
 		}
