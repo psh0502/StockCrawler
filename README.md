@@ -5,6 +5,8 @@
 - History price information.
 - Company basic information.
 - Business finanicial reports.
+- Market news about stock.
+- Forum news about stock.
 
 It grabs history data from serveral available source, e.g **[Yahoo Finance](http://finance.yahoo.com)**, **[TWSE](http://www.twse.com.tw)** and daily closing price from **[TWSE](http://www.twse.com.tw)**.
 
@@ -49,6 +51,8 @@ StockCrawlerRunner.exe <mode>
      Update the company finance report since the specified Taiwan year.
  <mode>: -f <taiwan year> <stock number>
      Update the company finance report since the specified Taiwan year and stock number.
+ <mode>: -n
+     Get the latest Taiwan stock market news.
 ```
 
 ## Note
