@@ -12,7 +12,7 @@ namespace StockCrawler.Services.Collectors
     {
         public GetMarketNewsResult[] GetLatestNews()
         {
-            var csv_data = DownloadData();
+            var csv_data = DownloadTwseData();
             if (string.IsNullOrEmpty(csv_data)) return null;
 
             _logger.InfoFormat("csv={0}", csv_data.Substring(0, 1000));
@@ -31,7 +31,6 @@ namespace StockCrawler.Services.Collectors
             }
             return list.ToArray();
         }
-
         private static GetMarketNewsResult ParseMarketNewsData(string[] data)
         {
             return new GetMarketNewsResult() {
@@ -49,8 +48,7 @@ namespace StockCrawler.Services.Collectors
             int day = int.Parse(v.Substring(7, 2));
             return new DateTime(year, month, day);
         }
-
-        protected virtual string DownloadData()
+        protected virtual string DownloadTwseData()
         {
             while (true) // retry till it get
                 try
@@ -74,6 +72,10 @@ namespace StockCrawler.Services.Collectors
                     _logger.Warn("Target website refuses our connection. Wait till it get peace.");
                     Thread.Sleep((int)new TimeSpan(1, 0, 0).TotalMilliseconds);
                 }
+        }
+        public GetStockMarketNewsResult[] GetLatestStockNews(string stockNo)
+        {
+            throw new NotImplementedException();
         }
     }
 }
