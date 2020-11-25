@@ -13,7 +13,7 @@ namespace StockCrawler.UnitTest.Jobs
     ///to contain all StockPriceUpdateJobTest Unit Tests
     ///</summary>
     [TestClass]
-    public class MarketNewsUpdateJobTest : UnitTestBase
+    public class StockMarketNewsUpdateJobTest : UnitTestBase
     {
         /// <summary>
         ///A test for Execute StockPriceUpdate
@@ -28,7 +28,7 @@ namespace StockCrawler.UnitTest.Jobs
 
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
             {
-                var q = db.GetMarketNews(10, new DateTime(2020, 10, 27), new DateTime(2020, 10, 27)).ToList();
+                var q = db.GetStockMarketNews(10, "0000", "twse", new DateTime(2020, 10, 27), new DateTime(2020, 10, 27)).ToList();
                 Assert.IsTrue(q.Count == 3);
             }
         }

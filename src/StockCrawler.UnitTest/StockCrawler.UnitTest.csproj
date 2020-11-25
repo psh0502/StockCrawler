@@ -131,8 +131,8 @@
     <Compile Include="Collectors\YahooStockHistoryPriceCollectorTest.cs" />
     <Compile Include="Collectors\TwseStockDailyInfoCollectorTest.cs" />
     <Compile Include="Collectors\GoodInfoCollectorTest.cs" />
-    <Compile Include="Jobs\MarketNewsUpdateJobTest.cs" />
-    <Compile Include="Stubs\MarketNewsCollectorStub.cs" />
+    <Compile Include="Jobs\StockMarketNewsUpdateJobTest.cs" />
+    <Compile Include="Stubs\StockMarketNewsCollectorStub.cs" />
     <Compile Include="Stubs\StockBasicInfoCollectorStub.cs" />
     <Compile Include="Stubs\StockHistoryPriceCollectorStub2.cs" />
     <Compile Include="Stubs\StockHistoryPriceCollectorStub.cs" />

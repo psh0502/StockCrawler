@@ -45,7 +45,7 @@ namespace StockCrawler.Dao
         GetStockReportBalanceResult[] GetStockReportBalance(string stockNo, short year, short season);
         GetStockReportIncomeResult[] GetStockReportIncome(string stockNo, short year, short season);
         GetStockReportMonthlyNetProfitTaxedResult[] GetStockReportMonthlyNetProfitTaxed(string stockNo, short year, short month);
-        GetMarketNewsResult[] GetMarketNews(int top, DateTime startDate, DateTime endDate);
+        GetStockMarketNewsResult[] GetStockMarketNews(int top, string stockNo, string source, DateTime startDate, DateTime endDate);
         /// <summary>
         /// 取得指定期間的股價明細
         /// </summary>
@@ -58,6 +58,7 @@ namespace StockCrawler.Dao
         #endregion
 
         #region 新增修改
+        void InsertStockMarketNews(GetStockMarketNewsResult[] data);
         /// <summary>
         /// Update stock company's basic information. If it doesn't exist, it will insert it.
         /// </summary>
@@ -66,7 +67,6 @@ namespace StockCrawler.Dao
         void InsertOrUpdateStockBasicInfo(GetStockBasicInfoResult data);
         void InsertOrUpdateStockCashflowReport(GetStockReportCashFlowResult info);
         void InsertOrUpdateStockPrice(GetStockPeriodPriceResult[] data);
-        void InsertOrUpdateMarketNews(GetMarketNewsResult[] data);
         void InsertOrUpdateStock(GetStocksResult[] data);
         /// <summary>
         /// Update stock name and category no by stock no

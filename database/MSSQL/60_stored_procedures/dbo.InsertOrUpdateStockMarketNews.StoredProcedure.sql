@@ -1,4 +1,4 @@
-/****** Object:  StoredProcedure [dbo].[InsertOrUpdateStockMarketNews] Script Date: 07/15/2013 20:52:04 ******/
+/****** Object:  StoredProcedure [dbo].[InsertStockMarketNews] Script Date: 07/15/2013 20:52:04 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6,10 +6,10 @@ GO
 -- =============================================
 -- Author: Tom Tang
 -- Create date: 2020-11-24
--- Description: IInsertOrUpdateStockMarketNews
+-- Description: Insert Stock Market News
 -- Revision:
 -- =============================================
-CREATE OR ALTER PROCEDURE [dbo].[InsertOrUpdateStockMarketNews]
+CREATE OR ALTER PROCEDURE [dbo].[InsertStockMarketNews]
 @pStockNo VARCHAR(10),
 @pSource VARCHAR(10),
 @pNewsDate DATE, 

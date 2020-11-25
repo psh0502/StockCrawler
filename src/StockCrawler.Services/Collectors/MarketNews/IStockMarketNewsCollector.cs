@@ -2,9 +2,9 @@
 
 namespace StockCrawler.Services.Collectors
 {
-    public interface IMarketNewsCollector
+    public interface IStockMarketNewsCollector
     {
-        GetMarketNewsResult[] GetLatestNews();
+        GetStockMarketNewsResult[] GetLatestNews();
         GetStockMarketNewsResult[] GetLatestStockNews(string stockNo);
     }
 }

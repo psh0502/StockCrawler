@@ -20,11 +20,11 @@ namespace StockCrawler.UnitTest.Collectors
         public void GetStockDailyPriceInfoTest()
         {
             TwseCollectorBase._breakInternval = 5 * 1000;
+            SystemTime.SetFakeTime(new DateTime(2020, 3, 27));
             var collector = new TwseStockDailyInfoCollector
             {
                 _logger = new UnitTestLogger()
             };
-            SystemTime.SetFakeTime(new DateTime(2020, 3, 27));
 
             var r = collector.GetStockDailyPriceInfo();
 

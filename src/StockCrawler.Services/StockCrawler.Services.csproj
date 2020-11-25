@@ -13,7 +13,8 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>DOWAY.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -127,7 +128,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CollectorProviderService.cs" />
-    <Compile Include="Collectors\MarketNews\IMarketNewsCollector.cs" />
+    <Compile Include="Collectors\MarketNews\IStockMarketNewsCollector.cs" />
     <Compile Include="Collectors\MarketNews\TwseMarketNewsCollector.cs" />
     <Compile Include="Collectors\StockHistoryPrice\TwseStockHistoryPriceCollector2.cs" />
     <Compile Include="JobBase.cs" />

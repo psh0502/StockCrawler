@@ -8,16 +8,16 @@ using System.Threading;
 
 namespace StockCrawler.Services.Collectors
 {
-    internal class TwseMarketNewsCollector : TwseCollectorBase, IMarketNewsCollector
+    internal class TwseMarketNewsCollector : TwseCollectorBase, IStockMarketNewsCollector
     {
-        public GetMarketNewsResult[] GetLatestNews()
+        public GetStockMarketNewsResult[] GetLatestNews()
         {
             var csv_data = DownloadTwseData();
             if (string.IsNullOrEmpty(csv_data)) return null;
 
             _logger.InfoFormat("csv={0}", csv_data.Substring(0, 1000));
             // Usage of CsvReader: https://blog.darkthread.net/post-2017-05-13-servicestack-text-csvserializer.aspx
-            List<GetMarketNewsResult> list = new List<GetMarketNewsResult>();
+            List<GetStockMarketNewsResult> list = new List<GetStockMarketNewsResult>();
             var csv_lines = CsvReader.ParseLines(csv_data);
             for (int i = 2; i < csv_lines.Count; i++)
             {
@@ -26,14 +26,16 @@ namespace StockCrawler.Services.Collectors
                 if (data.Length == 3)
                 {
                     GerneralizeNumberFieldData(data);
-                    list.Add(ParseMarketNewsData(data));
+                    list.Add(ParseStockMarketNewsData("0000", "twse", data));
                 }
             }
             return list.ToArray();
         }
-        private static GetMarketNewsResult ParseMarketNewsData(string[] data)
+        private static GetStockMarketNewsResult ParseStockMarketNewsData(string stockNo, string source, string[] data)
         {
-            return new GetMarketNewsResult() {
+            return new GetStockMarketNewsResult() {
+                StockNo = stockNo,
+                Source = source,
                 Subject = data[0],
                 Url = data[1],
                 NewsDate = ParseTaiwanDate(data[2])

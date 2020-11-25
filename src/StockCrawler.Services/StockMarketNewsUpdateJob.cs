@@ -2,7 +2,6 @@
 using Quartz;
 using StockCrawler.Dao;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -25,7 +24,7 @@ namespace StockCrawler.Services
                     var collector = CollectorProviderService.GetMarketNewsCollector();
                     var news = collector.GetLatestNews();
                     if (news.Any())
-                        db.InsertOrUpdateMarketNews(news);
+                        db.InsertStockMarketNews(news);
                 }
             }
             catch (Exception ex)

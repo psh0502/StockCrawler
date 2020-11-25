@@ -70,10 +70,10 @@ namespace StockCrawler.Dao
 			return ((int)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertOrUpdateStockReportMonthlyNetProfitTaxed")]
-		public int InsertOrUpdateStockReportMonthlyNetProfitTaxed([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pYear, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pMonth, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pNetProfitTaxed, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pLastYearNetProfitTaxed, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pDelta, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(18,4)")] System.Nullable<decimal> pDeltaPercent, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pThisYearTillThisMonth, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pLastYearTillThisMonth, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pTillThisMonthDelta, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(18,4)")] System.Nullable<decimal> pTillThisMonthDeltaPercent, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(1000)")] string pRemark)
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertStockMarketNews")]
+		public int InsertStockMarketNews([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pSource, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pNewsDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(100)")] string pSubject, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(100)")] string pUrl)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pYear, pMonth, pNetProfitTaxed, pLastYearNetProfitTaxed, pDelta, pDeltaPercent, pThisYearTillThisMonth, pLastYearTillThisMonth, pTillThisMonthDelta, pTillThisMonthDeltaPercent, pRemark);
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pSource, pNewsDate, pSubject, pUrl);
 			return ((int)(result.ReturnValue));
 		}
 		
@@ -96,13 +96,6 @@ namespace StockCrawler.Dao
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
 			return ((ISingleResult<GetCategoryMappingResult>)(result.ReturnValue));
-		}
-		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetMarketNews")]
-		public ISingleResult<GetMarketNewsResult> GetMarketNews([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> pTop, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pStartDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pEndDate)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pTop, pStartDate, pEndDate);
-			return ((ISingleResult<GetMarketNewsResult>)(result.ReturnValue));
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetStockAveragePrice")]
@@ -176,13 +169,6 @@ namespace StockCrawler.Dao
 			return ((ISingleResult<GetStocksResult>)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertOrUpdateMarketNews")]
-		public int InsertOrUpdateMarketNews([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pNewsDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(100)")] string pSubject, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(100)")] string pUrl)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pNewsDate, pSubject, pUrl);
-			return ((int)(result.ReturnValue));
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertOrUpdateStock")]
 		public int InsertOrUpdateStock([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pStockName, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pCategoryNo)
 		{
@@ -201,13 +187,6 @@ namespace StockCrawler.Dao
 		public int InsertOrUpdateStockBasicInfo([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pCategory, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(100)")] string pCompanyName, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pCompanyID, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pBuildDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pPublishDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pCapital, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="BigInt")] System.Nullable<long> pReleaseStockCount, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pChairman, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pCEO, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(100)")] string pUrl, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(1000)")] string pBusiness)
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pCategory, pCompanyName, pCompanyID, pBuildDate, pPublishDate, pCapital, pReleaseStockCount, pChairman, pCEO, pUrl, pBusiness);
-			return ((int)(result.ReturnValue));
-		}
-		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertOrUpdateStockMarketNews")]
-		public int InsertOrUpdateStockMarketNews([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pSource, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pNewsDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(100)")] string pSubject, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(100)")] string pUrl)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pSource, pNewsDate, pSubject, pUrl);
 			return ((int)(result.ReturnValue));
 		}
 		
@@ -263,6 +242,13 @@ namespace StockCrawler.Dao
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pYear, pSeason, pRevenue, pGrossProfit, pSalesExpense, pManagementCost, pRDExpense, pOperatingExpenses, pBusinessInterest, pNetProfitTaxFree, pNetProfitTaxed, pEPS, pSEPS);
 			return ((int)(result.ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertOrUpdateStockReportMonthlyNetProfitTaxed")]
+		public int InsertOrUpdateStockReportMonthlyNetProfitTaxed([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pYear, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pMonth, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pNetProfitTaxed, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pLastYearNetProfitTaxed, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pDelta, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(18,4)")] System.Nullable<decimal> pDeltaPercent, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pThisYearTillThisMonth, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pLastYearTillThisMonth, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pTillThisMonthDelta, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(18,4)")] System.Nullable<decimal> pTillThisMonthDeltaPercent, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(1000)")] string pRemark)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pYear, pMonth, pNetProfitTaxed, pLastYearNetProfitTaxed, pDelta, pDeltaPercent, pThisYearTillThisMonth, pLastYearTillThisMonth, pTillThisMonthDelta, pTillThisMonthDeltaPercent, pRemark);
+			return ((int)(result.ReturnValue));
+		}
 	}
 	
 	public partial class GetCategoryMappingResult
@@ -306,86 +292,6 @@ namespace StockCrawler.Dao
 				if ((this._CategoryNo != value))
 				{
 					this._CategoryNo = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedAt", DbType="DateTime NOT NULL")]
-		public System.DateTime CreatedAt
-		{
-			get
-			{
-				return this._CreatedAt;
-			}
-			set
-			{
-				if ((this._CreatedAt != value))
-				{
-					this._CreatedAt = value;
-				}
-			}
-		}
-	}
-	
-	public partial class GetMarketNewsResult
-	{
-		
-		private System.DateTime _NewsDate;
-		
-		private string _Subject;
-		
-		private string _Url;
-		
-		private System.DateTime _CreatedAt;
-		
-		public GetMarketNewsResult()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NewsDate", DbType="Date NOT NULL")]
-		public System.DateTime NewsDate
-		{
-			get
-			{
-				return this._NewsDate;
-			}
-			set
-			{
-				if ((this._NewsDate != value))
-				{
-					this._NewsDate = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Subject", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
-		public string Subject
-		{
-			get
-			{
-				return this._Subject;
-			}
-			set
-			{
-				if ((this._Subject != value))
-				{
-					this._Subject = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Url", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
-		public string Url
-		{
-			get
-			{
-				return this._Url;
-			}
-			set
-			{
-				if ((this._Url != value))
-				{
-					this._Url = value;
 				}
 			}
 		}

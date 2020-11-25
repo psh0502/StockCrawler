@@ -21,10 +21,10 @@ namespace StockCrawler.Dao
             using (var db = GetMSSQLStockDataContext())
                 return db.GetStocks(stockNo).SingleOrDefault();
         }
-        public GetMarketNewsResult[] GetMarketNews(int top, DateTime startDate, DateTime endDate)
+        public GetStockMarketNewsResult[] GetStockMarketNews(int top, string stockNo, string source, DateTime startDate, DateTime endDate)
         {
             using (var db = GetMSSQLStockDataContext())
-                return db.GetMarketNews(top, startDate, endDate).ToArray();
+                return db.GetStockMarketNews(top, stockNo, source, startDate, endDate).ToArray();
         }
         public GetStockPeriodPriceResult[] GetStockPeriodPrice(string stockNo, short period, DateTime bgnDate, DateTime endDate)
         {
@@ -64,6 +64,12 @@ namespace StockCrawler.Dao
         #endregion
 
         #region 新增修改
+        public void InsertStockMarketNews(GetStockMarketNewsResult[] data)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                foreach (var d in data)
+                    db.InsertStockMarketNews(d.StockNo, d.Source, d.NewsDate, d.Subject, d.Url);
+        }
         public void InsertOrUpdateStockPrice(GetStockPeriodPriceResult[] data)
         {
             using (var db = GetMSSQLStockDataContext())
@@ -214,12 +220,6 @@ namespace StockCrawler.Dao
                         info.stockDT,
                         info.period,
                         info.averagePrice);
-        }
-        public void InsertOrUpdateMarketNews(GetMarketNewsResult[] data)
-        {
-            using (var db = GetMSSQLStockDataContext())
-                foreach (var d in data)
-                    db.InsertOrUpdateMarketNews(d.NewsDate, d.Subject, d.Url);
         }
         #endregion
 

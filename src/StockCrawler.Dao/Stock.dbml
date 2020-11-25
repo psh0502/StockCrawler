@@ -7,19 +7,12 @@
     <Parameter Name="oAvgClosePrice" Type="System.Decimal" DbType="Money" Direction="InOut" />
     <Return Type="System.Int32" />
   </Function>
-  <Function Name="dbo.InsertOrUpdateStockReportMonthlyNetProfitTaxed" Method="InsertOrUpdateStockReportMonthlyNetProfitTaxed">
+  <Function Name="dbo.InsertStockMarketNews" Method="InsertStockMarketNews">
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
-    <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
-    <Parameter Name="pMonth" Type="System.Int16" DbType="SmallInt" />
-    <Parameter Name="pNetProfitTaxed" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pLastYearNetProfitTaxed" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pDelta" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pDeltaPercent" Type="System.Decimal" DbType="Decimal(18,4)" />
-    <Parameter Name="pThisYearTillThisMonth" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pLastYearTillThisMonth" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pTillThisMonthDelta" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pTillThisMonthDeltaPercent" Type="System.Decimal" DbType="Decimal(18,4)" />
-    <Parameter Name="pRemark" Type="System.String" DbType="NVarChar(1000)" />
+    <Parameter Name="pSource" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pNewsDate" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="pSubject" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="pUrl" Type="System.String" DbType="NVarChar(100)" />
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.DeleteStockPriceHistoryData" Method="DeleteStockPriceHistoryData">
@@ -34,17 +27,6 @@
     <ElementType Name="GetCategoryMappingResult">
       <Column Name="Category" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="CategoryNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-    </ElementType>
-  </Function>
-  <Function Name="dbo.GetMarketNews" Method="GetMarketNews">
-    <Parameter Name="pTop" Type="System.Int32" DbType="Int" />
-    <Parameter Name="pStartDate" Type="System.DateTime" DbType="Date" />
-    <Parameter Name="pEndDate" Type="System.DateTime" DbType="Date" />
-    <ElementType Name="GetMarketNewsResult">
-      <Column Name="NewsDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
-      <Column Name="Subject" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="Url" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
@@ -257,12 +239,6 @@
       <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
-  <Function Name="dbo.InsertOrUpdateMarketNews" Method="InsertOrUpdateMarketNews">
-    <Parameter Name="pNewsDate" Type="System.DateTime" DbType="Date" />
-    <Parameter Name="pSubject" Type="System.String" DbType="NVarChar(100)" />
-    <Parameter Name="pUrl" Type="System.String" DbType="NVarChar(100)" />
-    <Return Type="System.Int32" />
-  </Function>
   <Function Name="dbo.InsertOrUpdateStock" Method="InsertOrUpdateStock">
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
     <Parameter Name="pStockName" Type="System.String" DbType="NVarChar(50)" />
@@ -289,14 +265,6 @@
     <Parameter Name="pCEO" Type="System.String" DbType="NVarChar(50)" />
     <Parameter Name="pUrl" Type="System.String" DbType="VarChar(100)" />
     <Parameter Name="pBusiness" Type="System.String" DbType="NVarChar(1000)" />
-    <Return Type="System.Int32" />
-  </Function>
-  <Function Name="dbo.InsertOrUpdateStockMarketNews" Method="InsertOrUpdateStockMarketNews">
-    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
-    <Parameter Name="pSource" Type="System.String" DbType="VarChar(10)" />
-    <Parameter Name="pNewsDate" Type="System.DateTime" DbType="Date" />
-    <Parameter Name="pSubject" Type="System.String" DbType="NVarChar(100)" />
-    <Parameter Name="pUrl" Type="System.String" DbType="NVarChar(100)" />
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.InsertOrUpdateStockPriceHistory" Method="InsertOrUpdateStockPriceHistory">
@@ -370,6 +338,21 @@
     <Parameter Name="pNetProfitTaxed" Type="System.Decimal" DbType="Money" />
     <Parameter Name="pEPS" Type="System.Decimal" DbType="Money" />
     <Parameter Name="pSEPS" Type="System.Decimal" DbType="Money" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.InsertOrUpdateStockReportMonthlyNetProfitTaxed" Method="InsertOrUpdateStockReportMonthlyNetProfitTaxed">
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="pMonth" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="pNetProfitTaxed" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pLastYearNetProfitTaxed" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pDelta" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pDeltaPercent" Type="System.Decimal" DbType="Decimal(18,4)" />
+    <Parameter Name="pThisYearTillThisMonth" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pLastYearTillThisMonth" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pTillThisMonthDelta" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pTillThisMonthDeltaPercent" Type="System.Decimal" DbType="Decimal(18,4)" />
+    <Parameter Name="pRemark" Type="System.String" DbType="NVarChar(1000)" />
     <Return Type="System.Int32" />
   </Function>
 </Database>

@@ -20,7 +20,7 @@ namespace StockCrawler.Services
                 using (var db = StockDataServiceProvider.GetServiceInstance())
                 {
                     var collector = CollectorProviderService.GetMarketNewsCollector();
-                    db.InsertOrUpdateMarketNews(collector.GetLatestNews());
+                    db.InsertStockMarketNews(collector.GetLatestNews());
                 }
             }
             catch (Exception ex)
