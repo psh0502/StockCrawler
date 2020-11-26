@@ -44,14 +44,7 @@ namespace StockCrawlerRunner
                                 job = new StockBasicInfoUpdateJob();
                             break;
                         case "-f":
-                            stockNo = null;
-                            short beginYear = -1;
-                            if (args.Length > 1)
-                                beginYear = short.Parse(args[1]);
-                            if (args.Length > 2)
-                                stockNo = args[2];
-
-                            job = new StockFinReportUpdateJob() { BeginYear = beginYear, BeginStockNo = stockNo };
+                            job = new StockFinReportUpdateJob();
                             break;
                         case "-n":
                             job = new MarketNewsUpdateJob();
@@ -105,10 +98,6 @@ namespace StockCrawlerRunner
             Console.WriteLine("     Update the latest company basic information since the specified stock number.");
             Console.WriteLine(" <mode>: -f");
             Console.WriteLine("     Update the company finance report in this year.");
-            Console.WriteLine(" <mode>: -f <taiwan year>");
-            Console.WriteLine("     Update the company finance report since the specified Taiwan year.");
-            Console.WriteLine(" <mode>: -f <taiwan year> <stock number>");
-            Console.WriteLine("     Update the company finance report since the specified Taiwan year and stock number.");
             Console.WriteLine(" <mode>: -n");
             Console.WriteLine("     Get the latest Taiwan stock market news.");
         }

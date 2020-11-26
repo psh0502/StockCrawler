@@ -2,6 +2,7 @@
 using Quartz;
 using StockCrawler.Dao;
 using StockCrawler.Services;
+using System;
 using System.Linq;
 
 #if (DEBUG)
@@ -60,7 +61,6 @@ namespace StockCrawler.UnitTest.Jobs
                 Assert.AreEqual(389845336, d1.NetProfitTaxFree);
                 Assert.AreEqual(345343809, d1.NetProfitTaxed);
                 Assert.AreEqual(13.32M, d1.EPS, "每股盈餘(EPS)");
-                Assert.AreEqual(9.42M, d1.SEPS, "單季每股盈餘(EPS)");
             }
         }
         [TestMethod]
@@ -157,11 +157,9 @@ namespace StockCrawler.UnitTest.Jobs
         {
             if (!IsExecuted)
             {
+                Services.SystemTime.SetFakeTime(new DateTime(1911 + 109, 10, 1));
                 StockFinReportUpdateJob.Logger = new UnitTestLogger();
-                var target = new StockFinReportUpdateJob
-                {
-                    BeginYear = 107
-                };
+                var target = new StockFinReportUpdateJob();
                 IJobExecutionContext context = null;
                 target.Execute(context);
                 IsExecuted = true;

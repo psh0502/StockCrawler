@@ -21,13 +21,13 @@ namespace StockCrawler.Services
         public static string DownloadStringData(Uri url, Encoding encode, out IList<Cookie> respCookies, string contentType = null, IList<Cookie> cookies = null, string method = "GET", NameValueCollection formdata = null, string refer = null)
         {
             _logger.DebugFormat("url=[{0}]", url.OriginalString);
-             
+
             respCookies = new List<Cookie>();
             string downloaded_data = null;
             // https://blog.darkthread.net/blog/disable-tls-1-0-issues
             var req = WebRequest.CreateHttp(url);
             req.Method = method;
-            if(!string.IsNullOrEmpty(contentType)) req.ContentType = contentType;
+            if (!string.IsNullOrEmpty(contentType)) req.ContentType = contentType;
             req.UserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36";
             req.Referer = refer;
             if (null != cookies)
@@ -57,7 +57,7 @@ namespace StockCrawler.Services
                                 Name = ck[0].Trim(),
                                 Value = ck[1].Trim(),
                                 Domain = url.Host,
-                                Path ="/",
+                                Path = "/",
                             });
                     }
                 }
@@ -75,7 +75,6 @@ namespace StockCrawler.Services
             var text = doc.DocumentNode.SelectSingleNode("/html/body/h1/font").InnerText.Trim();
             return text;
         }
-
         /// <summary>
         /// 根據本日收盤資料, 計算 均線(MA 移動線)和不同周期的 K 棒
         /// </summary>
@@ -183,9 +182,14 @@ namespace StockCrawler.Services
         {
             return (short)(westernYear - 1911);
         }
-        public static short GetSeason()
+        /// <summary>
+        /// 取得日期對應的四季(Q?)
+        /// </summary>
+        /// <param name="date">日期</param>
+        /// <returns>季</returns>
+        public static short GetSeason(this DateTime date)
         {
-            return GetSeason(SystemTime.Today.Month);
+            return GetSeason(date.Month);
         }
         public static short GetSeason(int month)
         {
@@ -196,9 +200,23 @@ namespace StockCrawler.Services
         /// </summary>
         /// <param name="date">日期</param>
         /// <returns>是否</returns>
-        public static bool IsWeekend(DateTime date)
+        public static bool IsWeekend(this DateTime date)
         {
             return (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday);
+        }
+        /// <summary>
+        /// 取得台灣的中華民國年
+        /// </summary>
+        /// <param name="date">西園日期物件</param>
+        /// <returns>中華民國年</returns>
+        public static short GetTaiwanYear(this DateTime date)
+        {
+            return GetTaiwanYear(date.Year);
+        }
+        public static DateTime AddSeason(this DateTime date, short season)
+        {
+            var current_season = GetSeason(date);
+            return new DateTime(date.Year, current_season * 3, 1).AddMonths(3 * season);
         }
     }
 }
