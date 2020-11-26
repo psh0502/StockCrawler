@@ -46,11 +46,7 @@ StockCrawlerRunner.exe <mode>
  <mode>: -b <stock number> Update the latest company basic info by the specified stock number
      Update the latest company basic information in database.
  <mode>: -f
-     Update the company finance report in this year.
- <mode>: -f <taiwan year>
-     Update the company finance report since the specified Taiwan year.
- <mode>: -f <taiwan year> <stock number>
-     Update the company finance report since the specified Taiwan year and stock number.
+     Update the company finance report since 2015 to this year.
  <mode>: -n
      Get the latest Taiwan stock market news.
 ```
@@ -87,6 +83,7 @@ Here is the injection setting in *.exe.config
       <register type="IStockBasicInfoCollector" mapTo="TwseStockBasicInfoCollector" />
       <register type="IStockDailyInfoCollector" mapTo="TwseStockDailyInfoCollector" />
       <register type="IStockReportCollector" mapTo="TwseReportCollector" />
+      <register type="IStockMarketNewsCollector" mapTo="TwseMarketNewsCollector" />
     </container>
   </unity>
 </configuration>
