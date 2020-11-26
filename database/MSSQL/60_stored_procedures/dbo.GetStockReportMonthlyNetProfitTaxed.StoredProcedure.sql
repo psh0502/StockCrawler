@@ -10,6 +10,7 @@ GO
 -- Revision:
 -- =============================================
 CREATE OR ALTER PROCEDURE [dbo].[GetStockReportMonthlyNetProfitTaxed]
+@pTop INT,
 @pStockNo VARCHAR(10),
 @pYear SMALLINT,
 @pMonth SMALLINT
@@ -17,7 +18,7 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 	DECLARE @TRUE BIT = 1
-	SELECT a.StockName, b.*
+	SELECT TOP(@pTop) a.StockName, b.*
 	FROM [dbo].[Stock] a(NOLOCK) 
 		INNER JOIN [dbo].[StockReportMonthlyNetProfitTaxed](NOLOCK) b ON a.StockNo = b.StockNo
 	WHERE

@@ -23,7 +23,6 @@ CREATE TABLE [dbo].[StockReportIncome](
 	[NetProfitTaxFree][MONEY] NOT NULL,-- 稅前淨利
 	[NetProfitTaxed][MONEY] NOT NULL, -- 稅後淨利
 	[EPS][MONEY] NOT NULL, -- 每股盈餘
-	[SEPS][MONEY] NOT NULL, -- 本季每股盈餘
 	[CreatedAt] [datetime] NOT NULL,
 	[LastModifiedAt] [datetime] NOT NULL,
  CONSTRAINT [PK_StockReportIncome] PRIMARY KEY CLUSTERED 

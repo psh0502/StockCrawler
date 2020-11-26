@@ -127,6 +127,7 @@
     </ElementType>
   </Function>
   <Function Name="dbo.GetStockReportBalance" Method="GetStockReportBalance">
+    <Parameter Name="pTop" Type="System.Int32" DbType="Int" />
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
     <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
     <Parameter Name="pSeason" Type="System.Int16" DbType="SmallInt" />
@@ -162,6 +163,7 @@
     </ElementType>
   </Function>
   <Function Name="dbo.GetStockReportCashFlow" Method="GetStockReportCashFlow">
+    <Parameter Name="pTop" Type="System.Int32" DbType="Int" />
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
     <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
     <Parameter Name="pSeason" Type="System.Int16" DbType="SmallInt" />
@@ -183,6 +185,7 @@
     </ElementType>
   </Function>
   <Function Name="dbo.GetStockReportIncome" Method="GetStockReportIncome">
+    <Parameter Name="pTop" Type="System.Int32" DbType="Int" />
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
     <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
     <Parameter Name="pSeason" Type="System.Int16" DbType="SmallInt" />
@@ -201,12 +204,12 @@
       <Column Name="NetProfitTaxFree" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
       <Column Name="NetProfitTaxed" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
       <Column Name="EPS" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="SEPS" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
       <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
   <Function Name="dbo.GetStockReportMonthlyNetProfitTaxed" Method="GetStockReportMonthlyNetProfitTaxed">
+    <Parameter Name="pTop" Type="System.Int32" DbType="Int" />
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
     <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
     <Parameter Name="pMonth" Type="System.Int16" DbType="SmallInt" />
@@ -337,7 +340,6 @@
     <Parameter Name="pNetProfitTaxFree" Type="System.Decimal" DbType="Money" />
     <Parameter Name="pNetProfitTaxed" Type="System.Decimal" DbType="Money" />
     <Parameter Name="pEPS" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pSEPS" Type="System.Decimal" DbType="Money" />
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.InsertOrUpdateStockReportMonthlyNetProfitTaxed" Method="InsertOrUpdateStockReportMonthlyNetProfitTaxed">

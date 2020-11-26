@@ -36,25 +36,25 @@ namespace StockCrawler.Dao
             using (var db = GetMSSQLStockDataContext())
                 return db.GetStockAveragePrice(stockNo, bgnDate, endDate, period).ToArray();
         }
-        public GetStockReportIncomeResult[] GetStockReportIncome(string stockNo, short year, short season)
+        public GetStockReportIncomeResult[] GetStockReportIncome(int top, string stockNo, short year, short season)
         {
             using (var db = GetMSSQLStockDataContext())
-                return db.GetStockReportIncome(stockNo, year, season).ToArray();
+                return db.GetStockReportIncome(top, stockNo, year, season).ToArray();
         }
-        public GetStockReportCashFlowResult[] GetStockReportCashFlow(string stockNo, short year, short season)
+        public GetStockReportCashFlowResult[] GetStockReportCashFlow(int top, string stockNo, short year, short season)
         {
             using (var db = GetMSSQLStockDataContext())
-                return db.GetStockReportCashFlow(stockNo, year, season).ToArray();
+                return db.GetStockReportCashFlow(top, stockNo, year, season).ToArray();
         }
-        public GetStockReportBalanceResult[] GetStockReportBalance(string stockNo, short year, short season)
+        public GetStockReportBalanceResult[] GetStockReportBalance(int top, string stockNo, short year, short season)
         {
             using (var db = GetMSSQLStockDataContext())
-                return db.GetStockReportBalance(stockNo, year, season).ToArray();
+                return db.GetStockReportBalance(top, stockNo, year, season).ToArray();
         }
-        public GetStockReportMonthlyNetProfitTaxedResult[] GetStockReportMonthlyNetProfitTaxed(string stockNo, short year, short month)
+        public GetStockReportMonthlyNetProfitTaxedResult[] GetStockReportMonthlyNetProfitTaxed(int top, string stockNo, short year, short month)
         {
             using (var db = GetMSSQLStockDataContext())
-                return db.GetStockReportMonthlyNetProfitTaxed(stockNo, year, month).ToArray();
+                return db.GetStockReportMonthlyNetProfitTaxed(top, stockNo, year, month).ToArray();
         }
         public GetStockBasicInfoResult GetStockBasicInfo(string stockNo)
         {
@@ -159,8 +159,7 @@ namespace StockCrawler.Dao
                     info.BusinessInterest,
                     info.NetProfitTaxFree,
                     info.NetProfitTaxed,
-                    info.EPS,
-                    info.SEPS);
+                    info.EPS);
         }
         public void InsertOrUpdateStockBalanceReport(GetStockReportBalanceResult info)
         {

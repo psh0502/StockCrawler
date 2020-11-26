@@ -41,10 +41,10 @@ namespace StockCrawler.Dao
         GetStockBasicInfoResult GetStockBasicInfo(string stockNo);
         GetStocksResult[] GetStocks();
         GetStocksResult GetStock(string stockNo);
-        GetStockReportCashFlowResult[] GetStockReportCashFlow(string stockNo, short year, short season);
-        GetStockReportBalanceResult[] GetStockReportBalance(string stockNo, short year, short season);
-        GetStockReportIncomeResult[] GetStockReportIncome(string stockNo, short year, short season);
-        GetStockReportMonthlyNetProfitTaxedResult[] GetStockReportMonthlyNetProfitTaxed(string stockNo, short year, short month);
+        GetStockReportCashFlowResult[] GetStockReportCashFlow(int top, string stockNo, short year, short season);
+        GetStockReportBalanceResult[] GetStockReportBalance(int top, string stockNo, short year, short season);
+        GetStockReportIncomeResult[] GetStockReportIncome(int top, string stockNo, short year, short season);
+        GetStockReportMonthlyNetProfitTaxedResult[] GetStockReportMonthlyNetProfitTaxed(int top, string stockNo, short year, short month);
         GetStockMarketNewsResult[] GetStockMarketNews(int top, string stockNo, string source, DateTime startDate, DateTime endDate);
         /// <summary>
         /// 取得指定期間的股價明細

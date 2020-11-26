@@ -59,7 +59,7 @@ namespace StockCrawler.Services
             {
                 foreach (var stockNo in GetRealCompanyStock())
                 {
-                    var last = db.GetStockReportMonthlyNetProfitTaxed(stockNo, -1, -1).FirstOrDefault();
+                    var last = db.GetStockReportMonthlyNetProfitTaxed(1, stockNo, -1, -1).FirstOrDefault();
                     DateTime bgnDate;
                     if (null == last)
                         bgnDate = new DateTime(beginYear + 1911, 1, 1);
@@ -93,7 +93,7 @@ namespace StockCrawler.Services
             {
                 foreach (var stockNo in GetRealCompanyStock())
                 {
-                    var last = db.GetStockReportIncome(stockNo, -1, -1).FirstOrDefault();
+                    var last = db.GetStockReportIncome(1, stockNo, -1, -1).FirstOrDefault();
                     DateTime bgnDate;
                     if (null == last)
                         bgnDate = new DateTime(beginYear + 1911, 1, 1);
@@ -137,7 +137,7 @@ namespace StockCrawler.Services
             {
                 foreach (var stockNo in GetRealCompanyStock())
                 {
-                    var last = db.GetStockReportCashFlow(stockNo, -1, -1).FirstOrDefault();
+                    var last = db.GetStockReportCashFlow(1, stockNo, -1, -1).FirstOrDefault();
                     DateTime bgnDate;
                     if (null == last)
                         bgnDate = new DateTime(beginYear + 1911, 1, 1);
@@ -171,7 +171,7 @@ namespace StockCrawler.Services
             {
                 foreach (var stockNo in GetRealCompanyStock())
                 {
-                    var last = db.GetStockReportBalance(stockNo, -1, -1).FirstOrDefault();
+                    var last = db.GetStockReportBalance(1, stockNo, -1, -1).FirstOrDefault();
                     DateTime bgnDate;
                     if (null == last)
                         bgnDate = new DateTime(beginYear + 1911, 1, 1);
