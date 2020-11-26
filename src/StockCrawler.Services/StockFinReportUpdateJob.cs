@@ -20,7 +20,7 @@ namespace StockCrawler.Services
 #endif
         internal static ILog Logger { get; set; } = LogManager.GetLogger(typeof(StockFinReportUpdateJob));
 
-#region IJob Members
+        #region IJob Members
         public Task Execute(IJobExecutionContext context)
         {
             Logger.InfoFormat("Invoke [{0}]...", MethodBase.GetCurrentMethod().Name);
@@ -42,6 +42,8 @@ namespace StockCrawler.Services
             }
             return null;
         }
+        #endregion
+
         /// <summary>
         /// 取得股票清單，排除非公司的基金型股票
         /// </summary>
@@ -203,6 +205,5 @@ namespace StockCrawler.Services
                 Logger.Warn(string.Format("[{0}] has error: {1}", MethodBase.GetCurrentMethod().Name, ex.Message), ex);
             }
         }
-#endregion
     }
 }
