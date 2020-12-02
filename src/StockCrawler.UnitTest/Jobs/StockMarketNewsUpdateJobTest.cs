@@ -29,7 +29,22 @@ namespace StockCrawler.UnitTest.Jobs
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
             {
                 var q = db.GetStockMarketNews(10, "0000", "twse", new DateTime(2020, 10, 27), new DateTime(2020, 10, 27)).ToList();
-                Assert.IsTrue(q.Count == 3);
+                Assert.AreEqual(3, q.Count);
+                foreach (var d in q)
+                {
+                    _logger.DebugFormat("[{0}][{1}][{2}]", d.NewsDate.ToShortDateString(), d.Subject, d.Url);
+                    Assert.AreEqual("0000", d.StockNo);
+                    Assert.AreEqual("twse", d.Source);
+                }
+
+                q = db.GetStockMarketNews(10, null, "mops", new DateTime(2020, 12, 01), new DateTime(2020, 12, 31)).ToList();
+                Assert.AreEqual(10, q.Count);
+                foreach (var d in q)
+                {
+                    _logger.DebugFormat("[{0}][{1}][{2}]", d.NewsDate.ToShortDateString(), d.Subject, d.Url);
+                    Assert.AreNotEqual("0000", d.StockNo);
+                    Assert.AreEqual("mops", d.Source);
+                }
             }
         }
     }

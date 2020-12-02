@@ -2,14 +2,16 @@
 using StockCrawler.Services.Collectors;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace StockCrawler.UnitTest.Stubs
 {
-    internal class StockMarketNewsCollectorStub : IStockMarketNewsCollector
+#if (DEBUG)
+    internal class StockMarketNewsCollectorStub : TwseMarketNewsCollector
     {
-        public GetStockMarketNewsResult[] GetLatestNews()
+        public override GetStockMarketNewsResult[] GetLatestNews()
         {
-            List<GetStockMarketNewsResult> list = new List<GetStockMarketNewsResult>
+            var list = new List<GetStockMarketNewsResult>
             {
                 new GetStockMarketNewsResult()
                 {
@@ -39,10 +41,17 @@ namespace StockCrawler.UnitTest.Stubs
 
             return list.ToArray();
         }
-
-        public GetStockMarketNewsResult[] GetLatestStockNews(string stockNo)
+        protected override string DownloadMopsData()
         {
-            throw new NotImplementedException();
+            var file = new FileInfo($@"..\..\..\StockCrawler.UnitTest\TestData\TWSE\2020-12-03.html");
+            if (file.Exists)
+            {
+                using (var sr = file.OpenText())
+                    return sr.ReadToEnd();
+            }
+            else
+                return null;
         }
     }
+#endif
 }

@@ -31,7 +31,6 @@ namespace StockCrawler.Services
                         .Replace("X", string.Empty)
                         .Trim();
         }
-
         protected HtmlNode SearchValueNode(HtmlNode bodyNode, string keyword, int beginIndex = 5, string xpath1 = "./tr[{0}]/td[1]", string xpath2 = "./tr[{0}]/td[2]")
         {
             if (null == bodyNode) throw new ArgumentException("The parameter can't be null", "bodyNode");

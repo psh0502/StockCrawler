@@ -21,6 +21,7 @@ namespace StockCrawler.Services
                 {
                     var collector = CollectorProviderService.GetMarketNewsCollector();
                     db.InsertStockMarketNews(collector.GetLatestNews());
+                    db.InsertStockMarketNews(collector.GetLatestStockNews());
                 }
             }
             catch (Exception ex)

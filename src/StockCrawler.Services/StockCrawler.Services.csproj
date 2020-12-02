@@ -12,9 +12,8 @@
     <AssemblyName>StockCrawler.Services</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>DOWAY.snk</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -128,8 +127,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CollectorProviderService.cs" />
-    <Compile Include="Collectors\MarketNews\IStockMarketNewsCollector.cs" />
-    <Compile Include="Collectors\MarketNews\TwseMarketNewsCollector.cs" />
+    <Compile Include="Collectors\StockMarketNews\IStockMarketNewsCollector.cs" />
+    <Compile Include="Collectors\StockMarketNews\TwseMarketNewsCollector.cs" />
     <Compile Include="Collectors\StockHistoryPrice\TwseStockHistoryPriceCollector2.cs" />
     <Compile Include="JobBase.cs" />
     <Compile Include="Collectors\StockBasicInfo\TwseStockBasicInfoCollector.cs" />
