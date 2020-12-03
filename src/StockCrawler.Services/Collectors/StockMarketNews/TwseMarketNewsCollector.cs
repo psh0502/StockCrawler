@@ -33,7 +33,7 @@ namespace StockCrawler.Services.Collectors
             }
             return list.ToArray();
         }
-        private static GetStockMarketNewsResult ParseStockMarketNewsData(string stockNo, string source, string[] data)
+        private GetStockMarketNewsResult ParseStockMarketNewsData(string stockNo, string source, string[] data)
         {
             return new GetStockMarketNewsResult() {
                 StockNo = stockNo,
@@ -43,8 +43,9 @@ namespace StockCrawler.Services.Collectors
                 NewsDate = ParseTaiwanDate(data[2])
             };
         }
-        private static DateTime ParseTaiwanDate(string v)
+        private DateTime ParseTaiwanDate(string v)
         {
+            _logger.Debug(v);
             //e.g 109年01月20日
             int year = int.Parse(v.Substring(0, 3));
             year += 1911;
@@ -82,7 +83,7 @@ namespace StockCrawler.Services.Collectors
             while (true) // retry till it get
                 try
                 {
-                    var html = Tools.DownloadStringData(new Uri("https://mops.twse.com.tw/mops/web/ajax_t05sr01_1"), Encoding.UTF8, out IList<Cookie> _);
+                    var html = Tools.DownloadStringData(new Uri("https://mops.twse.com.tw/mops/web/ajax_t05sr01_1?TYPEK=sii"), Encoding.UTF8, out IList<Cookie> _);
                     if (string.IsNullOrEmpty(html))
                     {
                         _logger.WarnFormat("Download has no stock news.");
@@ -119,10 +120,10 @@ namespace StockCrawler.Services.Collectors
                 if (null != data && data.Count == 6)
                     list.Add(new GetStockMarketNewsResult()
                     {
-                        StockNo = CleanData(data[2].InnerText),
+                        StockNo = CleanData(data[0].InnerText),
                         Source = "mops",
                         Subject = CleanData(data[4].InnerText),
-                        NewsDate = DateTime.Parse(ParseTaiwanDate(CleanData(data[0].InnerText)).ToShortDateString() + " " + CleanData(data[1].InnerText)),
+                        NewsDate = DateTime.Parse(ParseTaiwanDate(CleanData(data[2].InnerText)).ToShortDateString() + " " + CleanData(data[3].InnerText)),
                         Url = ""
                     });
             }
