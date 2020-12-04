@@ -124,11 +124,29 @@ namespace StockCrawler.Services.Collectors
                         Source = "mops",
                         Subject = CleanData(data[4].InnerText),
                         NewsDate = DateTime.Parse(ParseTaiwanDate(CleanData(data[2].InnerText)).ToShortDateString() + " " + CleanData(data[3].InnerText)),
-                        Url = ""
+                        Url = "https://mops.twse.com.tw/mops/web/ajax_t05sr01_1?TYPEK=sii&step=1&" + GetQueryPath(data[5])
                     });
             }
             return list.ToArray();
         }
+
+        private string GetQueryPath(HtmlNode htmlNode)
+        {
+            string result = null;
+            var node = htmlNode.ChildNodes[0];
+            if (node.Name == "input")
+            {
+                var text = node.Attributes["onclick"].Value;
+                result = text
+                    .Replace("document.fm_t05sr01_1.", string.Empty)
+                    .Replace("'", string.Empty)
+                    .Replace(";", "&")
+                    .Replace("&openWindow(this.form ,)",string.Empty);
+            }
+            _logger.DebugFormat("GetQueryPath() = {0}", result);
+            return result;
+        }
+
         private static string CleanData(string text)
         {
             return text
