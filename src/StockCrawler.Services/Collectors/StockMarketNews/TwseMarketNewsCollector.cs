@@ -117,7 +117,7 @@ namespace StockCrawler.Services.Collectors
             for (int i = 1; i < data_nodes.Count; i++)
             {
                 var data = data_nodes[i].SelectNodes("td");
-                if (null != data && data.Count == 6)
+                if (null != data && data.Count == 6 && CleanData(data[0].InnerText)!= "發言日期")
                     list.Add(new GetStockMarketNewsResult()
                     {
                         StockNo = CleanData(data[0].InnerText),
