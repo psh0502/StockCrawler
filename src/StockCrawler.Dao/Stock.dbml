@@ -12,7 +12,7 @@
     <Parameter Name="pSource" Type="System.String" DbType="VarChar(10)" />
     <Parameter Name="pNewsDate" Type="System.DateTime" DbType="Date" />
     <Parameter Name="pSubject" Type="System.String" DbType="NVarChar(100)" />
-    <Parameter Name="pUrl" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="pUrl" Type="System.String" DbType="NVarChar(500)" />
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.DeleteStockPriceHistoryData" Method="DeleteStockPriceHistoryData">
@@ -76,7 +76,7 @@
       <Column Name="Source" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="NewsDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
       <Column Name="Subject" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="Url" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Url" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
       <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>

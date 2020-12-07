@@ -141,6 +141,7 @@ namespace StockCrawler.Services.Collectors
                     .Replace("document.fm_t05sr01_1.", string.Empty)
                     .Replace("'", string.Empty)
                     .Replace(";", "&")
+                    .Replace(".value", string.Empty)
                     .Replace("&openWindow(this.form ,)",string.Empty);
             }
             _logger.DebugFormat("GetQueryPath() = {0}", result);
