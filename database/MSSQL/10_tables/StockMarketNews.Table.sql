@@ -17,7 +17,7 @@ CREATE TABLE [dbo].[StockMarketNews](
 	[Source] VARCHAR(10) NOT NULL,
 	[NewsDate] DATE NOT NULL DEFAULT(GETDATE()),
 	[Subject] [nvarchar](100) NOT NULL,
-	[Url] [nvarchar](100) NOT NULL,
+	[Url] [nvarchar](500) NOT NULL,
 	[CreatedAt] [datetime] NOT NULL DEFAULT (GETDATE())
  CONSTRAINT [PK_StockMarketNews] PRIMARY KEY CLUSTERED 
 (

@@ -14,7 +14,7 @@ CREATE OR ALTER PROCEDURE [dbo].[InsertStockMarketNews]
 @pSource VARCHAR(10),
 @pNewsDate DATE, 
 @pSubject NVARCHAR(100),
-@pUrl NVARCHAR(100)
+@pUrl NVARCHAR(500)
 AS
 BEGIN
 	IF NOT EXISTS(SELECT [NewsDate] FROM [dbo].[StockMarketNews] WHERE [StockNo] = @pStockNo AND [Source] = @pSource AND [NewsDate] = @pNewsDate AND [Subject] = @pSubject)
