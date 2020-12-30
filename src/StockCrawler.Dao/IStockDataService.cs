@@ -55,6 +55,7 @@ namespace StockCrawler.Dao
         /// <returns>每日收盤資料列表</returns>
         GetStockPeriodPriceResult[] GetStockPeriodPrice(string stockNo, short period, DateTime bgnDate, DateTime endDate);
         GetStockAveragePriceResult[] GetStockAveragePrice(string stockNo, DateTime bgnDate, DateTime endDate, short period);
+        GetLazyStockDataResult GetLazyStockData(string stockNo);
         #endregion
 
         #region 新增修改
