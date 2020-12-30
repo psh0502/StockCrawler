@@ -12,7 +12,7 @@
     <Parameter Name="pSource" Type="System.String" DbType="VarChar(10)" />
     <Parameter Name="pNewsDate" Type="System.DateTime" DbType="Date" />
     <Parameter Name="pSubject" Type="System.String" DbType="NVarChar(100)" />
-    <Parameter Name="pUrl" Type="System.String" DbType="NVarChar(500)" />
+    <Parameter Name="pUrl" Type="System.String" DbType="NVarChar(100)" />
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.DeleteStockPriceHistoryData" Method="DeleteStockPriceHistoryData">
@@ -28,6 +28,32 @@
       <Column Name="Category" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="CategoryNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetLazyStockData" Method="GetLazyStockData">
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <ElementType Name="GetLazyStockDataResult">
+      <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Price" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="StockCashDivi" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="DiviRatio" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="DiviType" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="IsPromisingEPS" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsGrowingUpEPS" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsAlwaysIncomeEPS" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsAlwaysPayDivi" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsStableDivi" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsAlwaysRestoreDivi" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsStableOutsideIncome" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsStableTotalAmount" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsGrowingUpRevenue" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="HasDivi" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsRealMode" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Price5" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="Price6" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="Price7" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="CurrPrice" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
   <Function Name="dbo.GetStockAveragePrice" Method="GetStockAveragePrice">
@@ -76,7 +102,7 @@
       <Column Name="Source" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="NewsDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
       <Column Name="Subject" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="Url" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="Url" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
@@ -241,6 +267,29 @@
       <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </ElementType>
+  </Function>
+  <Function Name="dbo.InsertOrUpdateLazyStockData" Method="InsertOrUpdateLazyStockData">
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pPrice" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="pStockCashDivi" Type="System.Decimal" DbType="Decimal(18,4)" />
+    <Parameter Name="pDiviRatio" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="pDiviType" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="pIsPromisingEPS" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="pIsGrowingUpEPS" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="pIsAlwaysIncomeEPS" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="pIsAlwaysPayDivi" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="pIsStableDivi" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="pIsAlwaysRestoreDivi" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="pIsStableOutsideIncome" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="pIsStableTotalAmount" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="pIsGrowingUpRevenue" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="pHasDivi" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="pIsRealMode" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="pPrice5" Type="System.Decimal" DbType="Decimal(18,4)" />
+    <Parameter Name="pPrice6" Type="System.Decimal" DbType="Decimal(18,4)" />
+    <Parameter Name="pPrice7" Type="System.Decimal" DbType="Decimal(18,4)" />
+    <Parameter Name="pCurrPrice" Type="System.Decimal" DbType="Decimal(18,4)" />
+    <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.InsertOrUpdateStock" Method="InsertOrUpdateStock">
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />

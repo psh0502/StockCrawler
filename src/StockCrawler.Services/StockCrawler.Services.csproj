@@ -12,7 +12,7 @@
     <AssemblyName>StockCrawler.Services</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>DOWAY.snk</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -75,6 +75,9 @@
     <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Quartz, Version=3.2.0.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
       <HintPath>..\packages\Quartz.3.2.0\lib\net461\Quartz.dll</HintPath>
     </Reference>
@@ -127,6 +130,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CollectorProviderService.cs" />
+    <Compile Include="Collectors\LazyStock\LazyStockData.cs" />
+    <Compile Include="Collectors\LazyStock\ILazyStockCollector.cs" />
+    <Compile Include="Collectors\LazyStock\LazyStockCollector.cs" />
     <Compile Include="Collectors\StockMarketNews\IStockMarketNewsCollector.cs" />
     <Compile Include="Collectors\StockMarketNews\TwseMarketNewsCollector.cs" />
     <Compile Include="Collectors\StockHistoryPrice\TwseStockHistoryPriceCollector2.cs" />
@@ -145,6 +151,7 @@
     <Compile Include="Collectors\StockHistoryPrice\YahooStockHistoryPriceCollector.cs" />
     <Compile Include="Collectors\StockHistoryPrice\IStockHistoryPriceCollector.cs" />
     <Compile Include="StockMarketNewsUpdateJob.cs" />
+    <Compile Include="LazyStockUpdateJob.cs" />
     <Compile Include="StockPriceUpdateJob.cs" />
     <Compile Include="StockPriceHistoryInitJob.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

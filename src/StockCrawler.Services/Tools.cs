@@ -89,8 +89,8 @@ namespace StockCrawler.Services
                 var avgPriceList = new List<(string StockNo, DateTime StockDT, short Period, decimal AveragePrice)>();
                 foreach (var d in db.GetStocks().ToList())
                 {
-                    DateTime target_weekend_date = DateTime.MinValue;
-                    DateTime target_monthend_date = DateTime.MinValue;
+                    var target_weekend_date = DateTime.MinValue;
+                    var target_monthend_date = DateTime.MinValue;
                     if (target_weekend_date == DateTime.MinValue)
                     {
                         target_weekend_date = date.AddDays(5 - (int)date.DayOfWeek);
@@ -99,7 +99,7 @@ namespace StockCrawler.Services
                     if (date >= target_weekend_date)
                     {
                         // 週 K
-                        DateTime bgnDate = target_weekend_date.AddDays(-4);
+                        var bgnDate = target_weekend_date.AddDays(-4);
                         var data = db.GetStockPeriodPrice(d.StockNo, 1, bgnDate, target_weekend_date).ToList();
                         if (data.Any())
                         {
@@ -129,7 +129,7 @@ namespace StockCrawler.Services
                     if (date >= target_monthend_date)
                     {
                         // 月 K
-                        DateTime bgnDate = new DateTime(target_monthend_date.Year, target_monthend_date.Month, 1);
+                        var bgnDate = new DateTime(target_monthend_date.Year, target_monthend_date.Month, 1);
                         var data = db.GetStockPeriodPrice(d.StockNo, 1, bgnDate, target_monthend_date).ToList();
                         if (data.Any())
                         {

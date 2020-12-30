@@ -61,6 +61,11 @@ namespace StockCrawler.Dao
             using (var db = GetMSSQLStockDataContext())
                 return db.GetStockBasicInfo(stockNo).SingleOrDefault();
         }
+        public GetLazyStockDataResult GetLazyStockData(string stockNo)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                return db.GetLazyStockData(stockNo).SingleOrDefault();
+        }
         #endregion
 
         #region 新增修改
@@ -219,6 +224,31 @@ namespace StockCrawler.Dao
                         info.stockDT,
                         info.period,
                         info.averagePrice);
+        }
+        public void InsertOrUpdateLazyStock(GetLazyStockDataResult data)
+        {
+            using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
+                db.InsertOrUpdateLazyStockData(
+                    data.StockNo,
+                    data.Price,
+                    data.StockCashDivi,
+                    data.DiviRatio,
+                    data.DiviType,
+                    data.IsPromisingEPS,
+                    data.IsGrowingUpEPS,
+                    data.IsAlwaysIncomeEPS,
+                    data.IsAlwaysPayDivi,
+                    data.IsStableDivi,
+                    data.IsAlwaysRestoreDivi,
+                    data.IsStableOutsideIncome,
+                    data.IsStableTotalAmount,
+                    data.IsGrowingUpRevenue,
+                    data.HasDivi,
+                    data.IsRealMode,
+                    data.Price5,
+                    data.Price6,
+                    data.Price7,
+                    data.CurrPrice);
         }
         #endregion
 

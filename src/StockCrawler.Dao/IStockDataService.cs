@@ -79,6 +79,7 @@ namespace StockCrawler.Dao
         void InsertOrUpdateStockBalanceReport(GetStockReportBalanceResult info);
         void InsertOrUpdateStockAveragePrice((string stockNo, DateTime stockDT, short period, decimal averagePrice)[] avgPriceList);
         void InsertOrUpdateStockMonthlyNetProfitTaxedReport(GetStockReportMonthlyNetProfitTaxedResult info);
+        void InsertOrUpdateLazyStock(GetLazyStockDataResult data);
         #endregion
 
         #region 刪除

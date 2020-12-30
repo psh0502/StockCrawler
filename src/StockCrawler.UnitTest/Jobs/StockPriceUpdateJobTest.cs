@@ -80,8 +80,6 @@ namespace StockCrawler.UnitTest.Jobs
         [TestMethod]
         public void StockPriceUpdateForSaturdayOrSundayNoDataOn0331Test()
         {
-            base.InitBeforeTest();
-            SqlTool.ExecuteSqlFile(@"..\..\..\..\database\MSSQL\20_initial_data\Stock.data.sql");
             int? pageCount = null;
             Services.SystemTime.SetFakeTime(new DateTime(2020, 3, 30));
             {

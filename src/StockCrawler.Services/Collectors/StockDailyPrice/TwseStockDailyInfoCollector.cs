@@ -23,6 +23,11 @@ namespace StockCrawler.Services.Collectors
         {
             return (_stockInfoDictCache.ContainsKey(stockNo)) ? _stockInfoDictCache[stockNo] : null;
         }
+        public virtual IEnumerable<GetStockPeriodPriceResult> GetStockDailyPriceInfo()
+        {
+            InitStockDailyPriceCache();
+            return _stockInfoDictCache.Select(d => d.Value).ToList();
+        }
         private void InitStockDailyPriceCache()
         {
             if (!Tools.IsWeekend(SystemTime.Today))
@@ -73,7 +78,6 @@ namespace StockCrawler.Services.Collectors
             var csv_data = DownloadData(day);
             if (string.IsNullOrEmpty(csv_data)) return null;
 
-            _logger.InfoFormat("Day={1}, csv={0}", csv_data.Substring(0, 1000), day.ToShortDateString());
             // Usage of CsvReader: https://blog.darkthread.net/post-2017-05-13-servicestack-text-csvserializer.aspx
             var csv_lines = CsvReader.ParseLines(csv_data);
             var daily_info = new Dictionary<string, GetStockPeriodPriceResult>();
@@ -233,11 +237,6 @@ namespace StockCrawler.Services.Collectors
                     _logger.WarnFormat("Target website refuses our connection. Wait till it get peace. day={0}", day.ToString("yyyy-MM-dd"));
                     Thread.Sleep((int)new TimeSpan(1, 0, 0).TotalMilliseconds);
                 }
-        }
-        public virtual IEnumerable<GetStockPeriodPriceResult> GetStockDailyPriceInfo()
-        {
-            InitStockDailyPriceCache();
-            return _stockInfoDictCache.Select(d => d.Value).ToList();
         }
     }
 }

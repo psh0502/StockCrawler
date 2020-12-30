@@ -6,6 +6,7 @@
 - Company basic information.
 - Business finanicial reports.
 - Market news about stock.
+- 3rd-Party analytic.
 - Forum news about stock.
 
 It grabs history data from serveral available source, e.g **[Yahoo Finance](http://finance.yahoo.com)**, **[TWSE](http://www.twse.com.tw)** and daily closing price from **[TWSE](http://www.twse.com.tw)**.
@@ -49,6 +50,8 @@ StockCrawlerRunner.exe <mode>
      Update the company finance report since 2015 to this year.
  <mode>: -n
      Get the latest Taiwan stock market news.
+ <mode>: -lz
+     Get the latest LazyStock data.
 ```
 
 ## Note
@@ -57,7 +60,9 @@ StockCrawlerRunner.exe <mode>
 It supports MSSQL currently, so you need modify the following setting to connect your own database.
 
 <connectionStrings>
-    <add name="StockCrawler.Dao.Properties.Settings.StockConnectionString" connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Stock;Integrated Security=True" providerName="System.Data.SqlClient" />
+    <add name="StockCrawler.Dao.Properties.Settings.StockConnectionString" 
+         connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Stock;Integrated Security=True" 
+         providerName="System.Data.SqlClient" />
 </connectionStrings>
 ```
 Since we adopt Unity DI framework, you can implement your IStockDataService interface to support other database.
@@ -84,6 +89,7 @@ Here is the injection setting in *.exe.config
       <register type="IStockDailyInfoCollector" mapTo="TwseStockDailyInfoCollector" />
       <register type="IStockReportCollector" mapTo="TwseReportCollector" />
       <register type="IStockMarketNewsCollector" mapTo="TwseMarketNewsCollector" />
+      <register type="ILazyStockCollector" mapTo="LazyStockCollector" />
     </container>
   </unity>
 </configuration>

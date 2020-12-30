@@ -20,7 +20,7 @@ namespace StockCrawler.Services
             // init stock list
             DownloadTwseLatestInfo();
 #if (DEBUG)
-            var bgnDate = SystemTime.Today.AddYears(-1);
+            var bgnDate = SystemTime.Today.AddMonths(-2);
 #else
             var bgnDate = SystemTime.Today.AddYears(-5);
 #endif

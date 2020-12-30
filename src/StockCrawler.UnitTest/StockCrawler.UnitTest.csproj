@@ -72,6 +72,9 @@
       <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Quartz, Version=3.2.0.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
       <HintPath>..\packages\Quartz.3.2.0\lib\net461\Quartz.dll</HintPath>
     </Reference>
@@ -124,6 +127,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collectors\LazyStockCollectorTest.cs" />
     <Compile Include="Collectors\TwseMarketNewsCollectorTest.cs" />
     <Compile Include="Collectors\TwseStockBasicInfoCollectorTest.cs" />
     <Compile Include="Collectors\TwseStockHistoryPriceCollector2Test.cs" />
@@ -131,11 +135,13 @@
     <Compile Include="Collectors\YahooStockHistoryPriceCollectorTest.cs" />
     <Compile Include="Collectors\TwseStockDailyInfoCollectorTest.cs" />
     <Compile Include="Collectors\GoodInfoCollectorTest.cs" />
+    <Compile Include="Jobs\LazyStockUpdateJobTests.cs" />
     <Compile Include="Jobs\StockMarketNewsUpdateJobTest.cs" />
     <Compile Include="Stubs\StockMarketNewsCollectorStub.cs" />
     <Compile Include="Stubs\StockBasicInfoCollectorStub.cs" />
     <Compile Include="Stubs\StockHistoryPriceCollectorStub2.cs" />
     <Compile Include="Stubs\StockHistoryPriceCollectorStub.cs" />
+    <Compile Include="Stubs\LazyStockCollectorStub.cs" />
     <Compile Include="Stubs\StockReportCollectorStub.cs" />
     <Compile Include="Stubs\StockDailyInfoCollectorStub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

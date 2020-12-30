@@ -49,6 +49,9 @@ namespace StockCrawlerRunner
                         case "-n":
                             job = new MarketNewsUpdateJob();
                             break;
+                        case "-lz":
+                            job = new LazyStockUpdateJob();
+                            break;
                         default:
                             ShowHelp();
                             break;
@@ -100,6 +103,8 @@ namespace StockCrawlerRunner
             Console.WriteLine("     Update the company finance report since 2015 to this year.");
             Console.WriteLine(" <mode>: -n");
             Console.WriteLine("     Get the latest Taiwan stock market news.");
+            Console.WriteLine(" <mode>: -lz");
+            Console.WriteLine("     Get the latest LazyStock data.");
         }
     }
 }

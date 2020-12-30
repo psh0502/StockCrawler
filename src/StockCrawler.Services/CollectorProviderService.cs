@@ -11,7 +11,10 @@ namespace StockCrawler.Services
         {
             _container.LoadConfiguration();
         }
-
+        public static ILazyStockCollector GetLazyStockCollector()
+        {
+            return _container.Resolve<ILazyStockCollector>();
+        }
         public static IStockDailyInfoCollector GetStockDailyPriceCollector()
         {
             return _container.Resolve<IStockDailyInfoCollector>();
