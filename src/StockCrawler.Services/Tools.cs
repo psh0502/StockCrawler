@@ -7,6 +7,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 
 namespace StockCrawler.Services
@@ -30,6 +31,7 @@ namespace StockCrawler.Services
             if (!string.IsNullOrEmpty(contentType)) req.ContentType = contentType;
             req.UserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36";
             req.Referer = refer;
+            req.ContentLength = 0;
             if (null != cookies)
             {
                 req.CookieContainer = new CookieContainer();
@@ -39,6 +41,7 @@ namespace StockCrawler.Services
             if (null != formdata)
             {
                 byte[] byteArray = Encoding.UTF8.GetBytes(formdata.ToString());
+                req.ContentLength = byteArray.Length;
                 using (var reqStream = req.GetRequestStream())
                     reqStream.Write(byteArray, 0, byteArray.Length);
             }
