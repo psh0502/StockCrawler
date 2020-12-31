@@ -1,8 +1,6 @@
 ﻿using Common.Logging;
 using Quartz;
-using StockCrawler.Dao;
 using System;
-using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -13,18 +11,16 @@ namespace StockCrawler.Services
         internal static ILog Logger { get; set; } = LogManager.GetLogger(typeof(StockMarketNewsUpdateJob));
 
         #region IJob Members
-
         public Task Execute(IJobExecutionContext context)
         {
             Logger.InfoFormat("Invoke [{0}]...", MethodBase.GetCurrentMethod().Name);
             try
             {
-                using (var db = StockDataServiceProvider.GetServiceInstance())
+                using (var db = GetDB())
                 {
                     var collector = CollectorProviderService.GetMarketNewsCollector();
-                    var news = collector.GetLatestNews();
-                    if (news.Any())
-                        db.InsertStockMarketNews(news);
+                    db.InsertStockMarketNews(collector.GetLatestNews());
+                    db.InsertStockMarketNews(collector.GetLatestStockNews());
                 }
             }
             catch (Exception ex)

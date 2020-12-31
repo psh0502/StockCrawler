@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using StockCrawler.Dao;
+using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 
@@ -19,6 +20,7 @@ namespace StockCrawler.UnitTest
                     conn.Close();
                 }
             }
+            StockHelper.Reload();
         }
 
         public static void ExecuteSqlFile(string fileName)
@@ -37,7 +39,7 @@ namespace StockCrawler.UnitTest
 
         public static DataTable QuerySql(string sql)
         {
-            DataTable table = new DataTable();
+            var table = new DataTable();
             using (var conn = new SqlConnection(ConnectionString))
             {
                 SqlDataAdapter da = new SqlDataAdapter(sql, conn);

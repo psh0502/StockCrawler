@@ -15,18 +15,31 @@ namespace StockCrawler.UnitTest.Jobs
     [TestClass]
     public class StockMarketNewsUpdateJobTest : UnitTestBase
     {
+        [TestInitialize]
+        public override void InitBeforeTest()
+        {
+            base.InitBeforeTest();
+            var collector = CollectorProviderService.GetMarketNewsCollector();
+            foreach (var d in collector.GetLatestStockNews())
+                using (var db = StockDataServiceProvider.GetServiceInstance())
+                {
+                    db.InsertOrUpdateStock(d.StockNo, string.Empty, string.Empty);
+                    db.InsertOrUpdateStock("0000", "加權指數", "0000");
+                }
+            StockHelper.Reload();
+        }
         /// <summary>
         ///A test for Execute StockPriceUpdate
         ///</summary>
         [TestMethod]
         public void ExecutionTest()
         {
-            MarketNewsUpdateJob.Logger = new UnitTestLogger();
-            var target = new MarketNewsUpdateJob();
+            StockMarketNewsUpdateJob.Logger = new UnitTestLogger();
+            var target = new StockMarketNewsUpdateJob();
             IJobExecutionContext context = null;
             target.Execute(context);
 
-            using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
+            using (var db = StockDataServiceProvider.GetServiceInstance())
             {
                 var q = db.GetStockMarketNews(10, "0000", "twse", new DateTime(2020, 10, 27), new DateTime(2020, 10, 27)).ToList();
                 Assert.AreEqual(3, q.Count);

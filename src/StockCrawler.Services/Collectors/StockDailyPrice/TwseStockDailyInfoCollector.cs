@@ -21,7 +21,8 @@ namespace StockCrawler.Services.Collectors
         }
         public virtual GetStockPeriodPriceResult GetStockDailyPriceInfo(string stockNo)
         {
-            return (_stockInfoDictCache.ContainsKey(stockNo)) ? _stockInfoDictCache[stockNo] : null;
+            return (_stockInfoDictCache.ContainsKey(stockNo)) ? 
+                _stockInfoDictCache[stockNo] : null;
         }
         public virtual IEnumerable<GetStockPeriodPriceResult> GetStockDailyPriceInfo()
         {
@@ -38,22 +39,12 @@ namespace StockCrawler.Services.Collectors
                         {
                             _categoriedVolume = new Dictionary<string, long>();
                             _stockCategoryNo = new Dictionary<string, string>();
-                            using (var db = StockDataServiceProvider.GetServiceInstance())
-                            {
-                                var stock_data = db.GetStocks();
-                                foreach (var d in stock_data
-                                    .Where(s =>
-                                        s.StockNo.StartsWith("00")
-                                        && int.TryParse(s.StockNo, out int no)
-                                        && no < 50))
+                                foreach (var d in StockHelper.GetIndexStockList())
                                     _categoriedVolume.Add(d.StockNo, 0);
 
-                                foreach (var d in stock_data
-                                    .Where(s => 
-                                        !s.StockNo.StartsWith("00")
-                                        && !string.IsNullOrEmpty(s.CategoryNo)))
+                                foreach (var d in StockHelper.GetCompanyStockList()
+                                    .Where(s => !string.IsNullOrEmpty(s.CategoryNo)))
                                     _stockCategoryNo.Add(d.StockNo, d.CategoryNo);
-                            }
                         }
 
                         if (null == _stockInfoDictCache)
@@ -103,7 +94,7 @@ namespace StockCrawler.Services.Collectors
                 {
                     found_stock_list = ("證券代號" == data[0]);
                     if (!found_stock_list && data.Length == 7 && i < 100)
-                        foreach (var s in GetCategoryStockList())
+                        foreach (var s in StockHelper.GetIndexStockList())
                             if (data[0].Contains(s.StockName))
                             {
                                 var marketIndexStock = GetParsedCategoryMarketIndexData(day, data, s);
@@ -202,23 +193,16 @@ namespace StockCrawler.Services.Collectors
 
             return d;
         }
-        /// <summary>
-        /// 取出大盤和類股指數清單
-        /// </summary>
-        /// <returns>大盤和類股指數清單</returns>
-        protected virtual IList<GetStocksResult> GetCategoryStockList()
-        {
-            using(var db = StockDataServiceProvider.GetServiceInstance())
-                return db.GetStocks()
-                    .Where(d => int.TryParse(d.StockNo, out int _) && int.Parse(d.StockNo) < 50)
-                    .ToList();
-        }
         protected virtual string DownloadData(DateTime day)
         {
             while (true) // retry till it get
                 try
                 {
-                    var csv_data = Tools.DownloadStringData(new Uri($"https://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={day:yyyyMMdd}&type=ALLBUT0999"), Encoding.Default, out IList<Cookie> _);
+                    var csv_data = Tools.DownloadStringData(
+                        new Uri($"https://www.twse.com.tw/exchangeReport/MI_INDEX?response=csv&date={day:yyyyMMdd}&type=ALLBUT0999"), 
+                        Encoding.Default, 
+                        out IList<Cookie> _);
+
                     if (string.IsNullOrEmpty(csv_data))
                     {
                         _logger.WarnFormat("Download has no data by date[{0}]", day.ToString("yyyyMMdd"));

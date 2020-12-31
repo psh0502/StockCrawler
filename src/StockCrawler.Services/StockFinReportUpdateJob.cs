@@ -26,7 +26,7 @@ namespace StockCrawler.Services
             Logger.InfoFormat("Invoke [{0}]...", MethodBase.GetCurrentMethod().Name);
             try
             {
-                using (var db = StockDataServiceProvider.GetServiceInstance())
+                using (var db = GetDB())
                 {
                     var collector = CollectorProviderService.GetStockReportCollector();
                     GetIncomeIntoDatabase(db, collector);
@@ -38,7 +38,6 @@ namespace StockCrawler.Services
             catch (Exception ex)
             {
                 Logger.Error("Job executing failed!", ex);
-                throw;
             }
             return null;
         }
@@ -50,10 +49,7 @@ namespace StockCrawler.Services
         /// <returns>股票代碼清單</returns>
         private static string[] GetRealCompanyStock()
         {
-            using (var db = StockDataServiceProvider.GetServiceInstance())
-                return (from d in db.GetStocks()
-                        where !d.StockNo.StartsWith("0") && int.TryParse(d.StockNo, out _)
-                        select d.StockNo).ToArray();
+            return StockHelper.GetCompanyStockList().Select(d => d.StockNo).ToArray();
         }
         private static void GetMonthlyNetProfitTaxedIntoDatabase(IStockDataService db, IStockReportCollector collector)
         {

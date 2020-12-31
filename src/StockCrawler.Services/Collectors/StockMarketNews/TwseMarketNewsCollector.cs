@@ -33,6 +33,31 @@ namespace StockCrawler.Services.Collectors
             }
             return list.ToArray();
         }
+        public virtual GetStockMarketNewsResult[] GetLatestStockNews()
+        {
+            var html = DownloadMopsData();
+            if (string.IsNullOrEmpty(html)) return null;
+
+            _logger.DebugFormat("html={0}", html.Substring(0, 1000));
+            var doc = new HtmlDocument();
+            doc.LoadHtml(html);
+            var data_nodes = doc.DocumentNode.SelectNodes("/html/body/form/table/tr");
+            var list = new List<GetStockMarketNewsResult>();
+            for (int i = 1; i < data_nodes.Count; i++)
+            {
+                var data = data_nodes[i].SelectNodes("td");
+                if (null != data && data.Count == 6 && CleanData(data[0].InnerText) != "發言日期")
+                    list.Add(new GetStockMarketNewsResult()
+                    {
+                        StockNo = CleanData(data[0].InnerText),
+                        Source = "mops",
+                        Subject = CleanData(data[4].InnerText),
+                        NewsDate = DateTime.Parse(ParseTaiwanDate(CleanData(data[2].InnerText)).ToShortDateString() + " " + CleanData(data[3].InnerText)),
+                        Url = "https://mops.twse.com.tw/mops/web/ajax_t05sr01_1?TYPEK=sii&step=1&" + GetQueryPath(data[5])
+                    });
+            }
+            return list.ToArray();
+        }
         private GetStockMarketNewsResult ParseStockMarketNewsData(string stockNo, string source, string[] data)
         {
             return new GetStockMarketNewsResult() {
@@ -58,7 +83,9 @@ namespace StockCrawler.Services.Collectors
             while (true) // retry till it get
                 try
                 {
-                    var csv_data = Tools.DownloadStringData(new Uri($"https://www.twse.com.tw/news/newsList?response=csv&keyword=&startYear=&endYear=&lang=zh"), Encoding.Default, out IList<Cookie> _);
+                    var csv_data = Tools.DownloadStringData(
+                        new Uri($"https://www.twse.com.tw/news/newsList?response=csv&keyword=&startYear=&endYear=&lang=zh"), 
+                        Encoding.Default, out IList<Cookie> _);
                     if (string.IsNullOrEmpty(csv_data))
                     {
                         _logger.WarnFormat("Download has no market news.");
@@ -83,7 +110,9 @@ namespace StockCrawler.Services.Collectors
             while (true) // retry till it get
                 try
                 {
-                    var html = Tools.DownloadStringData(new Uri("https://mops.twse.com.tw/mops/web/ajax_t05sr01_1?TYPEK=sii"), Encoding.UTF8, out IList<Cookie> _);
+                    var html = Tools.DownloadStringData(
+                        new Uri("https://mops.twse.com.tw/mops/web/ajax_t05sr01_1?TYPEK=sii"), 
+                        Encoding.UTF8, out IList<Cookie> _);
                     if (string.IsNullOrEmpty(html))
                     {
                         _logger.WarnFormat("Download has no stock news.");
@@ -104,32 +133,6 @@ namespace StockCrawler.Services.Collectors
                     Thread.Sleep((int)new TimeSpan(1, 0, 0).TotalMilliseconds);
                 }
         }
-        public virtual GetStockMarketNewsResult[] GetLatestStockNews()
-        {
-            var html = DownloadMopsData();
-            if (string.IsNullOrEmpty(html)) return null;
-
-            _logger.DebugFormat("html={0}", html.Substring(0, 1000));
-            var doc = new HtmlDocument();
-            doc.LoadHtml(html);
-            var data_nodes = doc.DocumentNode.SelectNodes("/html/body/form/table/tr");
-            var list = new List<GetStockMarketNewsResult>();
-            for (int i = 1; i < data_nodes.Count; i++)
-            {
-                var data = data_nodes[i].SelectNodes("td");
-                if (null != data && data.Count == 6 && CleanData(data[0].InnerText)!= "發言日期")
-                    list.Add(new GetStockMarketNewsResult()
-                    {
-                        StockNo = CleanData(data[0].InnerText),
-                        Source = "mops",
-                        Subject = CleanData(data[4].InnerText),
-                        NewsDate = DateTime.Parse(ParseTaiwanDate(CleanData(data[2].InnerText)).ToShortDateString() + " " + CleanData(data[3].InnerText)),
-                        Url = "https://mops.twse.com.tw/mops/web/ajax_t05sr01_1?TYPEK=sii&step=1&" + GetQueryPath(data[5])
-                    });
-            }
-            return list.ToArray();
-        }
-
         private string GetQueryPath(HtmlNode htmlNode)
         {
             string result = null;
@@ -147,7 +150,6 @@ namespace StockCrawler.Services.Collectors
             _logger.DebugFormat("GetQueryPath() = {0}", result);
             return result;
         }
-
         private static string CleanData(string text)
         {
             return text

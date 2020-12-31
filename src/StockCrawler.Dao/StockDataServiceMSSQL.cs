@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace StockCrawler.Dao
@@ -73,7 +74,14 @@ namespace StockCrawler.Dao
         {
             using (var db = GetMSSQLStockDataContext())
                 foreach (var d in data)
-                    db.InsertStockMarketNews(d.StockNo, d.Source, d.NewsDate, d.Subject, d.Url);
+                    try
+                    {
+                        db.InsertStockMarketNews(d.StockNo, d.Source, d.NewsDate, d.Subject, d.Url);
+                    }catch(System.Data.SqlClient.SqlException)
+                    {
+                        Debug.WriteLine(string.Format("[{0}] news can't be wrote.", d.StockNo));
+                        throw;
+                    }
         }
         public void InsertOrUpdateStockPrice(GetStockPeriodPriceResult[] data)
         {

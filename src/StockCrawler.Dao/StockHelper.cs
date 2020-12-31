@@ -1,0 +1,112 @@
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace StockCrawler.Dao
+{
+    /// <summary>
+    /// 透過快取設計，快速取得各種股票市場列表的輔助工具。
+    /// </summary>
+    public static class StockHelper
+    {
+        private static IList<GetStocksResult> _STOCK_LIST = null;
+        private static IList<GetStocksResult> _STOCK_COMPANY_LIST = null;
+        private static IList<GetStocksResult> _STOCK_INDEX_LIST = null;
+        private static IList<GetStocksResult> _STOCK_FOUND_LIST = null;
+        private static ConcurrentDictionary<string, GetStocksResult> _STOCK_DICT = null;
+        static StockHelper()
+        {
+            Reload();
+        }
+        /// <summary>
+        /// 取得完整的股票市場列表
+        /// </summary>
+        /// <returns>完整的股票市場列表</returns>
+        public static IList<GetStocksResult> GetAllStockList()
+        {
+            if (null == _STOCK_LIST)
+                lock (typeof(StockHelper))
+                    if (null == _STOCK_LIST)
+                        using (var db = StockDataServiceProvider.GetServiceInstance())
+                            _STOCK_LIST = db.GetStocks().ToList();
+
+            return _STOCK_LIST;
+        }
+
+        internal static GetStocksResult GetStock(string stockNo)
+        {
+            if (null == _STOCK_DICT)
+                lock (typeof(StockHelper))
+                    if (null == _STOCK_DICT)
+                        _STOCK_DICT = new ConcurrentDictionary<string, GetStocksResult>(
+                            GetAllStockList().ToDictionary(d => d.StockNo));
+
+            if (_STOCK_DICT.ContainsKey(stockNo))
+                return _STOCK_DICT[stockNo];
+            else
+                return null;
+        }
+
+        /// <summary>
+        /// 取得完整的上市公司列表
+        /// </summary>
+        /// <returns>上市公司列表</returns>
+        public static IList<GetStocksResult> GetCompanyStockList()
+        {
+            if (null == _STOCK_COMPANY_LIST)
+                lock (typeof(StockHelper))
+                    if (null == _STOCK_COMPANY_LIST)
+                        _STOCK_COMPANY_LIST = GetAllStockList().Where(
+                            d => !d.StockNo.StartsWith("0")
+                                && int.TryParse(d.StockNo, out _))
+                                .ToList();
+
+            return _STOCK_COMPANY_LIST;
+        }
+        /// <summary>
+        /// 取得指數類型列表
+        /// </summary>
+        /// <returns>指數類型列表</returns>
+        public static IList<GetStocksResult> GetIndexStockList()
+        {
+            if (null == _STOCK_INDEX_LIST)
+                lock (typeof(StockHelper))
+                    if (null == _STOCK_INDEX_LIST)
+                        _STOCK_INDEX_LIST = GetAllStockList().Where(
+                            d => d.StockNo.StartsWith("0")
+                                && int.TryParse(d.StockNo, out _)
+                                && int.Parse(d.StockNo) < 50)
+                                .ToList();
+
+            return _STOCK_INDEX_LIST;
+        }
+        /// <summary>
+        /// 取得基金型(ETF)列表
+        /// </summary>
+        /// <returns>基金型(ETF)列表</returns>
+        public static IList<GetStocksResult> GetFoundStockList()
+        {
+            if (null == _STOCK_FOUND_LIST)
+                lock (typeof(StockHelper))
+                    if (null == _STOCK_FOUND_LIST)
+                        _STOCK_FOUND_LIST = GetAllStockList().Where(
+                            d => d.StockNo.StartsWith("00")
+                                && int.TryParse(d.StockNo, out _)
+                                && int.Parse(d.StockNo.Substring(0, 4)) >= 50)
+                                .ToList();
+
+            return _STOCK_FOUND_LIST;
+        }
+        /// <summary>
+        /// 清空快取重新讀取所有列表
+        /// </summary>
+        public static void Reload()
+        {
+            _STOCK_LIST = null;
+            _STOCK_COMPANY_LIST = null;
+            _STOCK_INDEX_LIST = null;
+            _STOCK_FOUND_LIST = null;
+            _STOCK_DICT = null;
+        }
+    }
+}

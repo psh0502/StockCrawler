@@ -56,7 +56,9 @@ namespace StockCrawler.Services.Collectors
 
         private static decimal ParseCapital(string innerText)
         {
-            return decimal.Parse(innerText.Replace(",",string.Empty).Replace("元", string.Empty).Trim());
+            return decimal.Parse(innerText
+                .Replace(",", string.Empty)
+                .Replace("元", string.Empty).Trim());
         }
     }
 }

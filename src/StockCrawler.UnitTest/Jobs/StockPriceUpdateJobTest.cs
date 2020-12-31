@@ -126,6 +126,7 @@ namespace StockCrawler.UnitTest.Jobs
         {
             base.InitBeforeTest();
             SqlTool.ExecuteSqlFile(@"..\..\..\..\database\MSSQL\20_initial_data\Stock.data.sql");
+            StockHelper.Reload();
             int? pageCount = null;
             Services.SystemTime.SetFakeTime(new DateTime(2020, 4, 2));
             {

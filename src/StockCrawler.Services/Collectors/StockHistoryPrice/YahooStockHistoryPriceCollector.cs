@@ -13,7 +13,8 @@ namespace StockCrawler.Services.Collectors
     internal class YahooStockHistoryPriceCollector : IStockHistoryPriceCollector
     {
         internal ILog _logger = LogManager.GetLogger(typeof(YahooStockHistoryPriceCollector));
-        public virtual IEnumerable<GetStockPeriodPriceResult> GetStockHistoryPriceInfo(string stockNo, DateTime bgnDate, DateTime endDate)
+        public virtual IEnumerable<GetStockPeriodPriceResult> GetStockHistoryPriceInfo(
+            string stockNo, DateTime bgnDate, DateTime endDate)
         {
             try
             {
@@ -43,7 +44,9 @@ namespace StockCrawler.Services.Collectors
                                 Volume = long.Parse(data[6]),
                                 StockNo = stockNo
                             };
-                            tmp.DeltaPercent = decimal.Parse((tmp.DeltaPrice / last_data.ClosePrice).ToString("0.####"));
+                            tmp.DeltaPercent = (last_data.ClosePrice == 0) ?
+                                0 : decimal.Parse((tmp.DeltaPrice / last_data.ClosePrice).ToString("0.####"));
+
                             list.Add(tmp);
                             last_data = tmp;
                         }
@@ -75,7 +78,8 @@ namespace StockCrawler.Services.Collectors
             DateTime base_date = new DateTime(1970, 1, 1);
             string url = string.Format("https://finance.yahoo.com/quote/{0}.TW/history?period1={1}&period2={2}&interval=1d&filter=history&frequency=1d",
                 stockNo, (startDT - base_date).TotalSeconds, (endDT - base_date).TotalSeconds);
-            var data = Tools.DownloadStringData(new Uri(url), Encoding.UTF8, out IList<Cookie> respCookie);
+            var data = Tools.DownloadStringData(
+                new Uri(url), Encoding.UTF8, out IList<Cookie> respCookie);
             IList<Cookie> cookies = new List<Cookie>
             {
                 new Cookie() {

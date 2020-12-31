@@ -23,32 +23,29 @@ namespace StockCrawler.Services
             Logger.InfoFormat("Invoke [{0}]...", MethodBase.GetCurrentMethod().Name);
             try
             {
-                using (var db = StockDataServiceProvider.GetServiceInstance())
+                var collector = CollectorProviderService.GetStockBasicInfoCollector();
+                foreach (var d in StockHelper.GetCompanyStockList()
+                    .Where(d => string.IsNullOrEmpty(BeginStockNo) || int.Parse(d.StockNo) >= int.Parse(BeginStockNo)))
                 {
-                    var collector = CollectorProviderService.GetStockBasicInfoCollector();
-                    foreach (var d in db.GetStocks().Where(d => !d.StockNo.StartsWith("0") &&  // 排除非公司的基金型股票
-                        int.TryParse(d.StockNo, out int number) &&  // 排除特別股
-                        (string.IsNullOrEmpty(BeginStockNo) ||  number >= int.Parse(BeginStockNo))))
+                    try
                     {
-                        try
-                        {
-                            var info = collector.GetStockBasicInfo(d.StockNo);
-                            if (null != info)
+                        var info = collector.GetStockBasicInfo(d.StockNo);
+                        if (null != info)
+                            using (var db = GetDB())
                                 db.InsertOrUpdateStockBasicInfo(info);
-                            else
-                                Logger.InfoFormat("[{0}] has no basic info", d.StockNo);
-                        }catch(Exception e)
-                        {
-                            Logger.WarnFormat("[{0}] has no basic info", d.StockNo, e);
-                        }
-                        Thread.Sleep(_breakInternval);
+                        else
+                            Logger.InfoFormat("[{0}] has no basic info", d.StockNo);
                     }
+                    catch (Exception e)
+                    {
+                        Logger.WarnFormat("[{0}] has no basic info", d.StockNo, e);
+                    }
+                    Thread.Sleep(_breakInternval);
                 }
             }
             catch (Exception ex)
             {
                 Logger.Error("Job executing failed!", ex);
-                throw;
             }
             return null;
         }

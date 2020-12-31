@@ -3,8 +3,8 @@ using StockCrawler.Services;
 using StockCrawler.Services.Collectors;
 using System;
 using System.Linq;
-#if (DEBUG)
 
+#if (DEBUG)
 namespace StockCrawler.UnitTest.Collectors
 {
     [TestClass]

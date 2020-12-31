@@ -12,7 +12,7 @@
     <AssemblyName>StockCrawler.Services</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>DOWAY.snk</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -140,7 +140,7 @@
     <Compile Include="Collectors\StockHistoryPrice\TwseStockHistoryPriceCollector2.cs" />
     <Compile Include="JobBase.cs" />
     <Compile Include="Collectors\StockBasicInfo\TwseStockBasicInfoCollector.cs" />
-    <Compile Include="MarketNewsUpdateJob.cs" />
+    <Compile Include="StockMarketNewsUpdateJob.cs" />
     <Compile Include="StockFinReportUpdateJob.cs" />
     <Compile Include="Collectors\StockBasicInfo\GoodInfoStockBasicInfoCollector.cs" />
     <Compile Include="Collectors\StockBasicInfo\IStockBasicInfoCollector.cs" />
@@ -152,7 +152,6 @@
     <Compile Include="Collectors\StockHistoryPrice\TwseStockHistoryPriceCollector.cs" />
     <Compile Include="Collectors\StockHistoryPrice\YahooStockHistoryPriceCollector.cs" />
     <Compile Include="Collectors\StockHistoryPrice\IStockHistoryPriceCollector.cs" />
-    <Compile Include="StockMarketNewsUpdateJob.cs" />
     <Compile Include="LazyStockUpdateJob.cs" />
     <Compile Include="StockPriceUpdateJob.cs" />
     <Compile Include="StockPriceHistoryInitJob.cs" />

@@ -47,7 +47,7 @@ namespace StockCrawlerRunner
                             job = new StockFinReportUpdateJob();
                             break;
                         case "-n":
-                            job = new MarketNewsUpdateJob();
+                            job = new StockMarketNewsUpdateJob();
                             break;
                         case "-lz":
                             job = new LazyStockUpdateJob();

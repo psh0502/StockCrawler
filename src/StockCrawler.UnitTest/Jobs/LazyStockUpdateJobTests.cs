@@ -2,8 +2,7 @@
 using Quartz;
 using StockCrawler.Dao;
 using StockCrawler.Services;
-using System;
-using System.Linq;
+
 #if (DEBUG)
 namespace StockCrawler.UnitTest.Jobs
 {
@@ -23,11 +22,11 @@ namespace StockCrawler.UnitTest.Jobs
             var target = new LazyStockUpdateJob();
             IJobExecutionContext context = null;
             target.Execute(context);
-            using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
+            using (var db = StockDataServiceProvider.GetServiceInstance())
             {
-                var data = db.GetLazyStockData(TEST_STOCK_NO_1).ToList();
-                Assert.AreEqual(1, data.Count);
-                Assert.AreEqual(TEST_STOCK_NO_1, data[0].StockNo);
+                var data = db.GetLazyStockData(TEST_STOCK_NO_1);
+                Assert.IsNotNull(data);
+                Assert.AreEqual(TEST_STOCK_NO_1, data.StockNo);
             }
         }
     }

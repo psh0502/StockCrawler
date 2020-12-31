@@ -1,4 +1,4 @@
-﻿
+﻿using StockCrawler.Dao;
 using System.Configuration;
 
 namespace StockCrawler.Services
@@ -21,6 +21,10 @@ namespace StockCrawler.Services
         protected static short GetSeason(int month)
         {
             return (short)(month / 3 + 1);
+        }
+        protected static IStockDataService GetDB()
+        {
+            return StockDataServiceProvider.GetServiceInstance();
         }
     }
 }

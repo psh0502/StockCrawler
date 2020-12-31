@@ -7,7 +7,6 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Text;
 
 namespace StockCrawler.Services
@@ -15,11 +14,15 @@ namespace StockCrawler.Services
     public static class Tools
     {
         internal static ILog _logger = LogManager.GetLogger(typeof(Tools));
-        static Tools()
-        {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-        }
-        public static string DownloadStringData(Uri url, Encoding encode, out IList<Cookie> respCookies, string contentType = null, IList<Cookie> cookies = null, string method = "GET", NameValueCollection formdata = null, string refer = null)
+        public static string DownloadStringData(
+            Uri url, 
+            Encoding encode, 
+            out IList<Cookie> respCookies, 
+            string contentType = null, 
+            IList<Cookie> cookies = null, 
+            string method = "GET", 
+            NameValueCollection formdata = null, 
+            string refer = null)
         {
             _logger.DebugFormat("url=[{0}]", url.OriginalString);
 

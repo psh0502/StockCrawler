@@ -27,18 +27,19 @@ namespace StockCrawler.Services
             var endDate = SystemTime.Today;
 
             var collector = CollectorProviderService.GetStockHistoryPriceCollector();
-            using (var db = StockDataServiceProvider.GetServiceInstance())
-                foreach (var d in db.GetStocks().Where(d => string.IsNullOrEmpty(ProcessingStockNo) || d.StockNo == ProcessingStockNo))
-                {
+            foreach (var d in StockHelper.GetAllStockList().Where(d => string.IsNullOrEmpty(ProcessingStockNo) || d.StockNo == ProcessingStockNo))
+            {
+                using (var db = GetDB())
                     db.DeleteStockPriceHistoryData(d.StockNo, null);
 
-                    var list = collector.GetStockHistoryPriceInfo(d.StockNo, bgnDate, endDate);
+                var list = collector.GetStockHistoryPriceInfo(d.StockNo, bgnDate, endDate);
 
-                    if (list.Any())
+                if (list.Any())
+                    using (var db = GetDB())
                         db.InsertOrUpdateStockPrice(list.ToArray());
 
-                    Logger.InfoFormat("Finish the {0} stock history task.", d.StockNo);
-                }
+                Logger.InfoFormat("Finish the {0} stock history task.", d.StockNo);
+            }
 
             for (var date = bgnDate; date <= endDate; date = date.AddDays(1))
                 Tools.CalculateMAAndPeriodK(date);
@@ -49,7 +50,8 @@ namespace StockCrawler.Services
 
         private void DownloadTwseLatestInfo()
         {
-            var list = CollectorProviderService.GetStockDailyPriceCollector().GetStockDailyPriceInfo()
+            var list = CollectorProviderService.GetStockDailyPriceCollector()
+                .GetStockDailyPriceInfo()
                 .Select(d => new GetStocksResult()
                 {
                     StockNo = d.StockNo,
@@ -58,7 +60,8 @@ namespace StockCrawler.Services
                 }).ToList();
 
             if (list.Any())
-                StockDataServiceProvider.GetServiceInstance().InsertOrUpdateStock(list.ToArray());
+                using (var db = GetDB()) 
+                    db.InsertOrUpdateStock(list.ToArray());
         }
     }
 }

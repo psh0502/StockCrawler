@@ -23,7 +23,7 @@ namespace StockCrawler.Services
                 var collector = CollectorProviderService.GetStockDailyPriceCollector();
 
                 var list = new List<GetStockPeriodPriceResult>();
-                using (var db = StockDataServiceProvider.GetServiceInstance())
+                using (var db = GetDB())
                 {
                     var stocks = collector.GetStockDailyPriceInfo()
                         .Select(d => new GetStocksResult()

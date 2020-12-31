@@ -12,7 +12,8 @@ namespace StockCrawler.Services.Collectors
 {
     internal class TwseStockHistoryPriceCollector : TwseCollectorBase, IStockHistoryPriceCollector
     {
-        public virtual IEnumerable<GetStockPeriodPriceResult> GetStockHistoryPriceInfo(string stockNo, DateTime bgnDate, DateTime endDate)
+        public virtual IEnumerable<GetStockPeriodPriceResult> GetStockHistoryPriceInfo(
+            string stockNo, DateTime bgnDate, DateTime endDate)
         {
             var result = new List<GetStockPeriodPriceResult>();
             for (int year = bgnDate.Year; year <= endDate.Year; year++)
@@ -30,13 +31,17 @@ namespace StockCrawler.Services.Collectors
 
             return result;
         }
-        private GetStockPeriodPriceResult[] GetStockHistoryPriceInfo(string stockNo, int year, int month)
+        private GetStockPeriodPriceResult[] GetStockHistoryPriceInfo(
+            string stockNo, int year, int month)
         {
             string csv_data = null;
             while (true)
                 try
                 {
-                    csv_data = Tools.DownloadStringData(new Uri($"https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=csv&date={year}{month:00}01&stockNo={stockNo}"), Encoding.Default, out IList<Cookie> _);
+                    csv_data = Tools.DownloadStringData(
+                        new Uri($"https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=csv&date={year}{month:00}01&stockNo={stockNo}"), 
+                        Encoding.Default, 
+                        out IList<Cookie> _);
                     break;
                 }
                 catch (WebException)
@@ -47,7 +52,8 @@ namespace StockCrawler.Services.Collectors
 
             if (string.IsNullOrEmpty(csv_data))
             {
-                _logger.WarnFormat("Download stock[{0}] has no data by date[{1}]", stockNo, new DateTime(year, month, 1).ToString("yyyy-MM"));
+                _logger.WarnFormat("Download stock[{0}] has no data by date[{1}]", 
+                    stockNo, new DateTime(year, month, 1).ToString("yyyy-MM"));
                 return null;
             }
             // Usage of CsvReader: https://blog.darkthread.net/post-2017-05-13-servicestack-text-csvserializer.aspx
@@ -86,7 +92,9 @@ namespace StockCrawler.Services.Collectors
                         ClosePrice = decimal.Parse(data[6]),
                         DeltaPrice = data[7] == "-" || string.IsNullOrEmpty(data[7]) ? 0 : decimal.Parse(data[7]),
                     };
-                    d.DeltaPercent = decimal.Parse((d.DeltaPrice / (d.OpenPrice == 0 ? 1 : d.OpenPrice)).ToString("0.####"));
+                    d.DeltaPercent = (d.OpenPrice == 0) ? 
+                        0 : decimal.Parse((d.DeltaPrice / d.OpenPrice).ToString("0.####"));
+
                     daily_info.Add(d);
                 }
                 else

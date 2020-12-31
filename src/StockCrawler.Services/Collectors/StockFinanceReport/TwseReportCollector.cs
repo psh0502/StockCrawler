@@ -5,7 +5,8 @@ namespace StockCrawler.Services.Collectors
 {
     internal class TwseReportCollector : TwseCollectorBase, IStockReportCollector
     {
-        public virtual GetStockReportCashFlowResult GetStockReportCashFlow(string stockNo, short year, short season)
+        public virtual GetStockReportCashFlowResult GetStockReportCashFlow(
+            string stockNo, short year, short season)
         {
             var url = "https://mops.twse.com.tw/mops/web/ajax_t164sb05";
             GetStockReportCashFlowResult result = null;
@@ -19,7 +20,8 @@ namespace StockCrawler.Services.Collectors
             }
             return result;
         }
-        public virtual GetStockReportIncomeResult GetStockReportIncome(string stockNo, short year, short season)
+        public virtual GetStockReportIncomeResult GetStockReportIncome(
+            string stockNo, short year, short season)
         {
             var url = "https://mops.twse.com.tw/mops/web/ajax_t164sb04";
             GetStockReportIncomeResult result = null;
@@ -33,7 +35,8 @@ namespace StockCrawler.Services.Collectors
             }
             return result;
         }
-        public virtual GetStockReportBalanceResult GetStockReportBalance(string stockNo, short year, short season)
+        public virtual GetStockReportBalanceResult GetStockReportBalance(
+            string stockNo, short year, short season)
         {
             var url = "https://mops.twse.com.tw/mops/web/ajax_t164sb03";
             GetStockReportBalanceResult result = null;
@@ -47,7 +50,8 @@ namespace StockCrawler.Services.Collectors
             }
             return result;
         }
-        public virtual GetStockReportMonthlyNetProfitTaxedResult GetStockReportMonthlyNetProfitTaxed(string stockNo, short year, short month)
+        public virtual GetStockReportMonthlyNetProfitTaxedResult GetStockReportMonthlyNetProfitTaxed(
+            string stockNo, short year, short month)
         {
             var url = "https://mops.twse.com.tw/mops/web/ajax_t05st10_ifrs";
             GetStockReportMonthlyNetProfitTaxedResult result = null;
@@ -133,7 +137,8 @@ namespace StockCrawler.Services.Collectors
                 NetWorth = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "權益總額")),
             };
         }
-        private GetStockReportMonthlyNetProfitTaxedResult TransformNodeToMonlyNetProfitTaxedRow(HtmlNode bodyNode)
+        private GetStockReportMonthlyNetProfitTaxedResult TransformNodeToMonlyNetProfitTaxedRow(
+            HtmlNode bodyNode)
         {
             return new GetStockReportMonthlyNetProfitTaxedResult()
             {

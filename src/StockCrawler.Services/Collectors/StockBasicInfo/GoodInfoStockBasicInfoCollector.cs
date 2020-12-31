@@ -12,7 +12,7 @@ namespace StockCrawler.Services.Collectors
         {
             string html = GetGoodInfoData("https://goodinfo.tw/StockInfo/BasicInfo.asp?STOCK_ID={0}", stockNo);
 
-            HtmlDocument doc = new HtmlDocument();
+            var doc = new HtmlDocument();
             doc.LoadHtml(html);
             var node = doc.DocumentNode.ChildNodes[2].SelectSingleNode("/html/body/table[2]/tr/td[3]/table[2]");
             if (null == node)
