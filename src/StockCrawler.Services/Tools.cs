@@ -11,7 +11,7 @@ using System.Text;
 
 namespace StockCrawler.Services
 {
-    public static class Tools
+    internal static class Tools
     {
         internal static ILog _logger = LogManager.GetLogger(typeof(Tools));
         public static string DownloadStringData(

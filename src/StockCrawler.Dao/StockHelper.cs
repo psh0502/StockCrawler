@@ -32,8 +32,34 @@ namespace StockCrawler.Dao
 
             return _STOCK_LIST;
         }
-
-        internal static GetStocksResult GetStock(string stockNo)
+        /// <summary>
+        /// 取得與關鍵字相關的股票列表
+        /// </summary>
+        /// <param name="fuzzyKeyword">關鍵字</param>
+        /// <returns>與關鍵字相關的股票列表</returns>
+        public static IList<GetStocksResult> GetFuzzyMatchedStockList(string fuzzyKeyword)
+        {
+            return GetAllStockList()
+                .Where(d => d.StockNo.Contains(fuzzyKeyword) || d.StockName.Contains(fuzzyKeyword))
+                .ToList();
+        }
+        /// <summary>
+        /// 以股票代碼或是股票名稱取得對應的股票
+        /// </summary>
+        /// <param name="keyword">股票代碼或是股票名稱</param>
+        /// <returns>對應的股票</returns>
+        public static GetStocksResult GetMatchedStock(string keyword)
+        {
+            return GetAllStockList()
+                .Where(d => d.StockNo == keyword || d.StockName == keyword)
+                .FirstOrDefault();
+        }
+        /// <summary>
+        /// 以股票代碼取得對應的股票資料
+        /// </summary>
+        /// <param name="stockNo">股票代碼</param>
+        /// <returns>股票資料</returns>
+        public static GetStocksResult GetStock(string stockNo)
         {
             if (null == _STOCK_DICT)
                 lock (typeof(StockHelper))
