@@ -130,6 +130,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CollectorProviderService.cs" />
+    <Compile Include="Collectors\Forums\IForumCollector.cs" />
+    <Compile Include="Collectors\Forums\ForumCollector.cs" />
     <Compile Include="Collectors\LazyStock\LazyStockData.cs" />
     <Compile Include="Collectors\LazyStock\ILazyStockCollector.cs" />
     <Compile Include="Collectors\LazyStock\LazyStockCollector.cs" />

@@ -12,4 +12,12 @@ ALTER TABLE [dbo].[StockReportMonthlyNetProfitTaxed] DROP CONSTRAINT [FK_StockRe
 GO
 ALTER TABLE [dbo].[StockAveragePrice] DROP CONSTRAINT [FK_StockAveragePrice_Stock]
 GO
+ALTER TABLE [dbo].[StockForumRelations] DROP CONSTRAINT [FK_StockForumRelations_Stock]
+GO
+ALTER TABLE [dbo].[StockForumRelations] DROP CONSTRAINT [FK_StockForumRelations_StockForums]
+GO
+ALTER TABLE [dbo].[LazyStockData] DROP CONSTRAINT [FK_LazyStockData_Stock]
+GO
+ALTER TABLE [dbo].[StockMarketNews] DROP CONSTRAINT [FK_StockMarketNews_Stock]
+GO
 

@@ -12,7 +12,7 @@
     <Parameter Name="pSource" Type="System.String" DbType="VarChar(10)" />
     <Parameter Name="pNewsDate" Type="System.DateTime" DbType="Date" />
     <Parameter Name="pSubject" Type="System.String" DbType="NVarChar(100)" />
-    <Parameter Name="pUrl" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="pUrl" Type="System.String" DbType="NVarChar(500)" />
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.DeleteStockPriceHistoryData" Method="DeleteStockPriceHistoryData">
@@ -91,6 +91,17 @@
       <Column Name="MarketValue" Type="System.Decimal" DbType="Money" CanBeNull="true" />
     </ElementType>
   </Function>
+  <Function Name="dbo.GetStockForumData" Method="GetStockForumData">
+    <Parameter Name="pID" Type="System.Int64" DbType="BigInt" />
+    <ElementType Name="GetStockForumDataResult">
+      <Column Name="ID" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="Source" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Subject" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Meta" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="Url" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
   <Function Name="dbo.GetStockMarketNews" Method="GetStockMarketNews">
     <Parameter Name="pTop" Type="System.Int32" DbType="Int" />
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
@@ -102,7 +113,7 @@
       <Column Name="Source" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="NewsDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
       <Column Name="Subject" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="Url" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Url" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
       <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
@@ -404,6 +415,19 @@
     <Parameter Name="pTillThisMonthDelta" Type="System.Decimal" DbType="Money" />
     <Parameter Name="pTillThisMonthDeltaPercent" Type="System.Decimal" DbType="Decimal(18,4)" />
     <Parameter Name="pRemark" Type="System.String" DbType="NVarChar(1000)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.InsertStockForumRelations" Method="InsertStockForumRelations">
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pID" Type="System.Int64" DbType="BigInt" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.InsertStockForums" Method="InsertStockForums">
+    <Parameter Name="pSource" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pSubject" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="pMeta" Type="System.String" DbType="NVarChar(500)" />
+    <Parameter Name="pUrl" Type="System.String" DbType="VarChar(200)" />
+    <Parameter Name="oID" Type="System.Int64" DbType="BigInt" Direction="InOut" />
     <Return Type="System.Int32" />
   </Function>
 </Database>
