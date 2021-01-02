@@ -18,7 +18,7 @@ namespace StockCrawler.Services
             Logger.InfoFormat("Invoke [{0}]...", MethodBase.GetCurrentMethod().Name);
             try
             {
-                var collector = CollectorProviderService.GetLazyStockCollector();
+                var collector = CollectorServiceProvider.GetLazyStockCollector();
                 foreach (var d in StockHelper.GetCompanyStockList()
                     .Where(d => !d.StockName.Contains("DR"))) // 排除憑證類
                 {

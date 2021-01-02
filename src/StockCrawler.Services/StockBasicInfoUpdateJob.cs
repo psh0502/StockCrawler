@@ -23,7 +23,7 @@ namespace StockCrawler.Services
             Logger.InfoFormat("Invoke [{0}]...", MethodBase.GetCurrentMethod().Name);
             try
             {
-                var collector = CollectorProviderService.GetStockBasicInfoCollector();
+                var collector = CollectorServiceProvider.GetStockBasicInfoCollector();
                 foreach (var d in StockHelper.GetCompanyStockList()
                     .Where(d => string.IsNullOrEmpty(BeginStockNo) || int.Parse(d.StockNo) >= int.Parse(BeginStockNo)))
                 {

@@ -18,7 +18,7 @@ namespace StockCrawler.Services
             {
                 using (var db = GetDB())
                 {
-                    var collector = CollectorProviderService.GetMarketNewsCollector();
+                    var collector = CollectorServiceProvider.GetMarketNewsCollector();
                     db.InsertStockMarketNews(collector.GetLatestNews());
                     db.InsertStockMarketNews(collector.GetLatestStockNews());
                 }

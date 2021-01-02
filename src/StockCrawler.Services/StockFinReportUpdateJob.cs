@@ -28,7 +28,7 @@ namespace StockCrawler.Services
             {
                 using (var db = GetDB())
                 {
-                    var collector = CollectorProviderService.GetStockReportCollector();
+                    var collector = CollectorServiceProvider.GetStockReportCollector();
                     GetIncomeIntoDatabase(db, collector);
                     GetCashflowIntoDatabase(db, collector);
                     GetBalanceIntoDatabase(db, collector);

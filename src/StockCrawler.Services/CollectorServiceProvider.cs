@@ -4,10 +4,13 @@ using Unity;
 
 namespace StockCrawler.Services
 {
-    internal static class CollectorProviderService
+    /// <summary>
+    /// 提供各種 collector 的服務器
+    /// </summary>
+    public static class CollectorServiceProvider
     {
         private static readonly UnityContainer _container = new UnityContainer();
-        static CollectorProviderService()
+        static CollectorServiceProvider()
         {
             _container.LoadConfiguration();
         }

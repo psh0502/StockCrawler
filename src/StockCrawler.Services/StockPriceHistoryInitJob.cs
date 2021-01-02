@@ -26,7 +26,7 @@ namespace StockCrawler.Services
 #endif
             var endDate = SystemTime.Today;
 
-            var collector = CollectorProviderService.GetStockHistoryPriceCollector();
+            var collector = CollectorServiceProvider.GetStockHistoryPriceCollector();
             foreach (var d in StockHelper.GetAllStockList().Where(d => string.IsNullOrEmpty(ProcessingStockNo) || d.StockNo == ProcessingStockNo))
             {
                 using (var db = GetDB())
@@ -50,7 +50,7 @@ namespace StockCrawler.Services
 
         private void DownloadTwseLatestInfo()
         {
-            var list = CollectorProviderService.GetStockDailyPriceCollector()
+            var list = CollectorServiceProvider.GetStockDailyPriceCollector()
                 .GetStockDailyPriceInfo()
                 .Select(d => new GetStocksResult()
                 {

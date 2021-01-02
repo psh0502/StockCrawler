@@ -20,7 +20,7 @@ namespace StockCrawler.Services
             Logger.InfoFormat("Invoke [{0}]...", MethodBase.GetCurrentMethod().Name);
             try
             {
-                var collector = CollectorProviderService.GetStockDailyPriceCollector();
+                var collector = CollectorServiceProvider.GetStockDailyPriceCollector();
 
                 var list = new List<GetStockPeriodPriceResult>();
                 using (var db = GetDB())
