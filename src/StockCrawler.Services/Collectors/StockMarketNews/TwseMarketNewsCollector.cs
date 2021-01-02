@@ -84,8 +84,9 @@ namespace StockCrawler.Services.Collectors
                 try
                 {
                     var csv_data = Tools.DownloadStringData(
-                        new Uri($"https://www.twse.com.tw/news/newsList?response=csv&keyword=&startYear=&endYear=&lang=zh"), 
-                        Encoding.Default, out IList<Cookie> _);
+                        new Uri($"https://www.twse.com.tw/news/newsList?response=csv&keyword=&startYear=&endYear=&lang=zh"),
+                        out IList<Cookie> _,
+                        Encoding.Default);
                     if (string.IsNullOrEmpty(csv_data))
                     {
                         _logger.WarnFormat("Download has no market news.");
@@ -111,8 +112,7 @@ namespace StockCrawler.Services.Collectors
                 try
                 {
                     var html = Tools.DownloadStringData(
-                        new Uri("https://mops.twse.com.tw/mops/web/ajax_t05sr01_1?TYPEK=sii"), 
-                        Encoding.UTF8, out IList<Cookie> _);
+                        new Uri("https://mops.twse.com.tw/mops/web/ajax_t05sr01_1?TYPEK=sii"), out IList<Cookie> _);
                     if (string.IsNullOrEmpty(html))
                     {
                         _logger.WarnFormat("Download has no stock news.");

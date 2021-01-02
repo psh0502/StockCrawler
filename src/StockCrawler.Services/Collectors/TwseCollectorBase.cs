@@ -99,7 +99,11 @@ namespace StockCrawler.Services
             while (true)
                 try
                 {
-                    html = Tools.DownloadStringData(new Uri(url), Encoding.UTF8, out _, "application/x-www-form-urlencoded", null, "POST", formData);
+                    html = Tools.DownloadStringData(new Uri(url), out _, 
+                        contentType: "application/x-www-form-urlencoded", 
+                        method: "POST", 
+                        formdata: formData);
+
                     if (html.Contains("不繼續公開發行")) 
                         throw new ApplicationException(string.Format("The target[{0}] is 不繼續公開發行... ", stockNo));
 

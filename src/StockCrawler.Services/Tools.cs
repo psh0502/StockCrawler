@@ -11,13 +11,28 @@ using System.Text;
 
 namespace StockCrawler.Services
 {
-    internal static class Tools
+    /// <summary>
+    /// 瑞士小刀馬蓋仙
+    /// </summary>
+    public static class Tools
     {
         internal static ILog _logger = LogManager.GetLogger(typeof(Tools));
+        /// <summary>
+        /// 網路資料下載萬用工法
+        /// </summary>
+        /// <param name="url">網址, 若要帶入 query 參數請直接串好送入</param>
+        /// <param name="respCookies">網站回應輸出的 cookies</param>
+        /// <param name="encode">資料採用的編碼頁, 若不指定, 預設為 UTF8</param>
+        /// <param name="contentType">要求的內容類型</param>
+        /// <param name="cookies">要送出去的 cookies</param>
+        /// <param name="method">使用哪種呼叫方法 GET POST DELETE UPDATE</param>
+        /// <param name="formdata">若是要採用 form post 方式, 請提供</param>
+        /// <param name="refer">呼叫來源</param>
+        /// <returns>下載到的字串資料</returns>
         public static string DownloadStringData(
             Uri url, 
-            Encoding encode, 
-            out IList<Cookie> respCookies, 
+            out IList<Cookie> respCookies,
+            Encoding encode = null,
             string contentType = null, 
             IList<Cookie> cookies = null, 
             string method = "GET", 
@@ -25,7 +40,7 @@ namespace StockCrawler.Services
             string refer = null)
         {
             _logger.DebugFormat("url=[{0}]", url.OriginalString);
-
+            if (null == encode) encode = Encoding.UTF8;
             respCookies = new List<Cookie>();
             string downloaded_data = null;
             // https://blog.darkthread.net/blog/disable-tls-1-0-issues
@@ -75,7 +90,10 @@ namespace StockCrawler.Services
         }
         public static string GetMyIpAddress()
         {
-            var html = DownloadStringData(new Uri("http://myip.com.tw/"), Encoding.UTF8, out _);
+            var html = DownloadStringData(new Uri("http://myip.com.tw/"),
+                out IList<Cookie> _,
+                Encoding.Default);
+
             var doc = new HtmlDocument();
             doc.LoadHtml(html);
             var text = doc.DocumentNode.SelectSingleNode("/html/body/h1/font").InnerText.Trim();

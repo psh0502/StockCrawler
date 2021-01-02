@@ -39,9 +39,9 @@ namespace StockCrawler.Services.Collectors
                 try
                 {
                     csv_data = Tools.DownloadStringData(
-                        new Uri($"https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=csv&date={year}{month:00}01&stockNo={stockNo}"), 
-                        Encoding.Default, 
-                        out IList<Cookie> _);
+                        new Uri($"https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=csv&date={year}{month:00}01&stockNo={stockNo}"),
+                        out IList<Cookie> _,
+                        Encoding.Default);
                     break;
                 }
                 catch (WebException)

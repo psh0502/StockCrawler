@@ -54,7 +54,7 @@ namespace StockCrawler.Services.Collectors
                     new Cookie("SCREEN_SIZE", "WIDTH=1920&HEIGHT=1080", "/", "goodinfo.tw"),
                     new Cookie("GOOD_INFO_STOCK_BROWSE_LIST", $"3|{stockNo}", "/", "goodinfo.tw")
                 };
-                html = Tools.DownloadStringData(new Uri(url), Encoding.UTF8, out IList<Cookie> _, null, cookies);
+                html = Tools.DownloadStringData(new Uri(url), out IList<Cookie> _, cookies: cookies);
                 if (string.IsNullOrEmpty(html)) return null;
                 if (html.Contains("您的瀏覽量異常"))
                 {

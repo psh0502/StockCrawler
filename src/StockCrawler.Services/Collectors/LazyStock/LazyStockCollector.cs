@@ -15,7 +15,7 @@ namespace StockCrawler.Services.Collectors
             {
                 do
                 {
-                    var json = Tools.DownloadStringData(new Uri($"http://www.lazystock.tw/Data/GetStockInfo?StockNum={stockNo}&isFullYear=false"), Encoding.UTF8, out _, method: "POST");
+                    var json = Tools.DownloadStringData(new Uri($"http://www.lazystock.tw/Data/GetStockInfo?StockNum={stockNo}&isFullYear=false"), out _, method: "POST");
                     var result = JsonConvert.DeserializeObject<LazyStockData>(json);
                     if (result.Code == 0)
                         return result;

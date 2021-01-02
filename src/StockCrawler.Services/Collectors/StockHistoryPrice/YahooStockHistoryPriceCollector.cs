@@ -79,7 +79,7 @@ namespace StockCrawler.Services.Collectors
             string url = string.Format("https://finance.yahoo.com/quote/{0}.TW/history?period1={1}&period2={2}&interval=1d&filter=history&frequency=1d",
                 stockNo, (startDT - base_date).TotalSeconds, (endDT - base_date).TotalSeconds);
             var data = Tools.DownloadStringData(
-                new Uri(url), Encoding.UTF8, out IList<Cookie> respCookie);
+                new Uri(url), out IList<Cookie> respCookie);
             IList<Cookie> cookies = new List<Cookie>
             {
                 new Cookie() {
@@ -97,7 +97,7 @@ namespace StockCrawler.Services.Collectors
 
             url = string.Format("https://query1.finance.yahoo.com/v7/finance/download/{0}.TW?period1={1}&period2={2}&interval=1d&events=history&crumb={3}",
                 stockNo, (startDT - base_date).TotalSeconds, (endDT - base_date).TotalSeconds, crumb);
-            return Tools.DownloadStringData(new Uri(url), Encoding.UTF8, out _, null, cookies);
+            return Tools.DownloadStringData(new Uri(url), out _, cookies: cookies);
         }
     }
 }
