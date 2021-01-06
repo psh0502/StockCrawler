@@ -12,17 +12,21 @@ GO
 -- Revision:
 -- =============================================
 CREATE OR ALTER PROCEDURE [dbo].[GetStockForumData]
+@pTop INT,
 @pID BIGINT,
-@pStockNo VARCHAR(10)
+@pStockNo VARCHAR(10),
+@pBgnDate DATE,
+@pEndDate DATE
 AS
 BEGIN
 	SET NOCOUNT ON
-	SELECT c.StockName, a.*
+	SELECT TOP (@pTop) c.StockNo, c.StockName, a.*
 	FROM [dbo].[StockForums] a(NOLOCK)
 		INNER JOIN [dbo].[StockForumRelations] b(NOLOCK) ON a.ID = b.ID
 		INNER JOIN [dbo].[Stock] c(NOLOCK) ON b.StockNo = c.StockNo
 	WHERE 
 		(@pID IS NULL OR a.[ID] = @pID)
 		AND (@pStockNo IS NULL OR @pStockNo = '' OR c.StockNo = @pStockNo)
+		AND (a.ArticleDate BETWEEN @pBgnDate AND @pEndDate)
 END
 GO

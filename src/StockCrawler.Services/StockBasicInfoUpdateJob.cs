@@ -38,7 +38,7 @@ namespace StockCrawler.Services
                     }
                     catch (Exception e)
                     {
-                        Logger.WarnFormat("[{0}] has no basic info", d.StockNo, e);
+                        Logger.Warn(string.Format("[{0}] has no basic info", d.StockNo), e);
                     }
                     Thread.Sleep(_breakInternval);
                 }

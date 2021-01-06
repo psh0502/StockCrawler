@@ -69,6 +69,11 @@ namespace StockCrawler.Dao
             using (var db = GetMSSQLStockDataContext())
                 return db.GetLazyStockData(stockNo).SingleOrDefault();
         }
+        public GetStockForumDataResult[] GetStockForumData(int top, DateTime bgnDate, DateTime endDate, long? id = null, string stockNo = null)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                return db.GetStockForumData(top, id, stockNo, bgnDate, endDate).ToArray();
+        }
         #endregion
 
         #region 新增修改
@@ -76,13 +81,14 @@ namespace StockCrawler.Dao
         {
             using (var db = GetMSSQLStockDataContext())
             {
+                db.Connection.Open();
                 db.Transaction = db.Connection.BeginTransaction();
                 try
                 {
                     foreach (var d in data)
                     {
                         long? id = 0;
-                        db.InsertStockForums(d.forum.Source, d.forum.Subject, d.forum.Meta, d.forum.Url, d.forum.ArticleDate, ref id);
+                        db.InsertStockForums(d.forum.Source, d.forum.Subject, d.forum.Hash, d.forum.Url, d.forum.ArticleDate, ref id);
                         d.forum.ID = id ?? 0;
                         foreach (var s in d.stock)
                             db.InsertStockForumRelations(s.StockNo, d.forum.ID);

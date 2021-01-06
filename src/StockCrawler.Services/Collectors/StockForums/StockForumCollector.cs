@@ -50,7 +50,7 @@ namespace StockCrawler.Services.Collectors
                                 var article = new GetStockForumDataResult()
                                 {
                                     Subject = title,
-                                    Meta = string.Empty,
+                                    Hash = Tools.GenerateMD5Hash(string.Format("{0:yyyyMMdd}|{1}", article_date,title)),
                                     Url = url,
                                     Source = "ptt",
                                     ArticleDate = article_date

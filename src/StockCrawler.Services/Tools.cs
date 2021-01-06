@@ -7,6 +7,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace StockCrawler.Services
@@ -263,6 +264,17 @@ namespace StockCrawler.Services
                 .Replace(Environment.NewLine, string.Empty)
                 .Replace(UTF8SpacingChar, string.Empty)
                 .Trim();
+        }
+        public static string GenerateMD5Hash(string text, string salt = null)
+        {
+            HashAlgorithm md5;
+            if (string.IsNullOrEmpty(salt))
+                md5 = MD5.Create();
+            else
+                md5 = new HMACMD5(Encoding.UTF8.GetBytes(salt));
+
+            using (md5)
+                return Convert.ToBase64String(md5.ComputeHash(Encoding.UTF8.GetBytes(text)));
         }
     }
 }

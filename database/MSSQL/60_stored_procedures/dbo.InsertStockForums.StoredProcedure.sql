@@ -12,25 +12,28 @@ GO
 CREATE OR ALTER PROCEDURE [dbo].[InsertStockForums]
 @pSource VARCHAR(10),
 @pSubject NVARCHAR(50),
-@pMeta NVARCHAR(500),
+@pHash VARCHAR(50),
 @pUrl VARCHAR(200),
 @pArticleDate DATE,
 @oID BIGINT OUTPUT
 AS
 BEGIN
 	SET NOCOUNT ON
-	INSERT INTO [dbo].[StockForums]
-		([Source]
-		,[Subject]
-		,[Meta]
-		,[Url]
-		,[ArticleDate])
-	VALUES
-		(@pSource
-		,@pSubject
-		,@pMeta
-		,@pUrl
-		,@pArticleDate)
-	SET @oID = SCOPE_IDENTITY()
+	SET @oID = 0
+	IF NOT EXISTS(SELECT [Hash] FROM [dbo].[StockForums](NOLOCK) WHERE [Hash] = @pHash) BEGIN
+		INSERT INTO [dbo].[StockForums]
+			([Source]
+			,[Subject]
+			,[Hash]
+			,[Url]
+			,[ArticleDate])
+		VALUES
+			(@pSource
+			,@pSubject
+			,@pHash
+			,@pUrl
+			,@pArticleDate)
+		SET @oID = SCOPE_IDENTITY()
+	END
 END
 GO

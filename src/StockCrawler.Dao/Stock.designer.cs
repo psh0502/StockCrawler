@@ -120,9 +120,9 @@ namespace StockCrawler.Dao
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetStockForumData")]
-		public ISingleResult<GetStockForumDataResult> GetStockForumData([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="BigInt")] System.Nullable<long> pID, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo)
+		public ISingleResult<GetStockForumDataResult> GetStockForumData([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> pTop, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="BigInt")] System.Nullable<long> pID, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pBgnDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pEndDate)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pID, pStockNo);
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pTop, pID, pStockNo, pBgnDate, pEndDate);
 			return ((ISingleResult<GetStockForumDataResult>)(result.ReturnValue));
 		}
 		
@@ -299,9 +299,9 @@ namespace StockCrawler.Dao
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertStockForums")]
-		public int InsertStockForums([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pSource, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pSubject, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(500)")] string pMeta, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(200)")] string pUrl, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pArticleDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="BigInt")] ref System.Nullable<long> oID)
+		public int InsertStockForums([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pSource, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pSubject, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(50)")] string pHash, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(200)")] string pUrl, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pArticleDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="BigInt")] ref System.Nullable<long> oID)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pSource, pSubject, pMeta, pUrl, pArticleDate, oID);
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pSource, pSubject, pHash, pUrl, pArticleDate, oID);
 			oID = ((System.Nullable<long>)(result.GetParameterValue(5)));
 			return ((int)(result.ReturnValue));
 		}
@@ -1170,6 +1170,8 @@ namespace StockCrawler.Dao
 	public partial class GetStockForumDataResult
 	{
 		
+		private string _StockNo;
+		
 		private string _StockName;
 		
 		private long _ID;
@@ -1178,7 +1180,7 @@ namespace StockCrawler.Dao
 		
 		private string _Subject;
 		
-		private string _Meta;
+		private string _Hash;
 		
 		private string _Url;
 		
@@ -1188,6 +1190,22 @@ namespace StockCrawler.Dao
 		
 		public GetStockForumDataResult()
 		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockNo", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string StockNo
+		{
+			get
+			{
+				return this._StockNo;
+			}
+			set
+			{
+				if ((this._StockNo != value))
+				{
+					this._StockNo = value;
+				}
+			}
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
@@ -1254,18 +1272,18 @@ namespace StockCrawler.Dao
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Meta", DbType="NVarChar(500) NOT NULL", CanBeNull=false)]
-		public string Meta
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Hash", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string Hash
 		{
 			get
 			{
-				return this._Meta;
+				return this._Hash;
 			}
 			set
 			{
-				if ((this._Meta != value))
+				if ((this._Hash != value))
 				{
-					this._Meta = value;
+					this._Hash = value;
 				}
 			}
 		}

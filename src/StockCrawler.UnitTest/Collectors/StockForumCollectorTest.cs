@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StockCrawler.Services.Collectors;
 using StockCrawler.UnitTest.Stubs;
 using System;
 using System.Linq;

@@ -14,6 +14,10 @@ namespace StockCrawler.Services
         {
             _container.LoadConfiguration();
         }
+        public static IStockForumCollector GetStockForumCollector()
+        {
+            return _container.Resolve<IStockForumCollector>();
+        }
         public static ILazyStockCollector GetLazyStockCollector()
         {
             return _container.Resolve<ILazyStockCollector>();
