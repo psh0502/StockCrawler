@@ -120,9 +120,9 @@ namespace StockCrawler.Dao
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetStockForumData")]
-		public ISingleResult<GetStockForumDataResult> GetStockForumData([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="BigInt")] System.Nullable<long> pID)
+		public ISingleResult<GetStockForumDataResult> GetStockForumData([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="BigInt")] System.Nullable<long> pID, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pID);
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pID, pStockNo);
 			return ((ISingleResult<GetStockForumDataResult>)(result.ReturnValue));
 		}
 		
@@ -299,10 +299,10 @@ namespace StockCrawler.Dao
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertStockForums")]
-		public int InsertStockForums([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pSource, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pSubject, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(500)")] string pMeta, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(200)")] string pUrl, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="BigInt")] ref System.Nullable<long> oID)
+		public int InsertStockForums([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pSource, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pSubject, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(500)")] string pMeta, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(200)")] string pUrl, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pArticleDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="BigInt")] ref System.Nullable<long> oID)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pSource, pSubject, pMeta, pUrl, oID);
-			oID = ((System.Nullable<long>)(result.GetParameterValue(4)));
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pSource, pSubject, pMeta, pUrl, pArticleDate, oID);
+			oID = ((System.Nullable<long>)(result.GetParameterValue(5)));
 			return ((int)(result.ReturnValue));
 		}
 	}
@@ -1170,6 +1170,8 @@ namespace StockCrawler.Dao
 	public partial class GetStockForumDataResult
 	{
 		
+		private string _StockName;
+		
 		private long _ID;
 		
 		private string _Source;
@@ -1180,10 +1182,28 @@ namespace StockCrawler.Dao
 		
 		private string _Url;
 		
+		private System.DateTime _ArticleDate;
+		
 		private System.DateTime _CreatedAt;
 		
 		public GetStockForumDataResult()
 		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string StockName
+		{
+			get
+			{
+				return this._StockName;
+			}
+			set
+			{
+				if ((this._StockName != value))
+				{
+					this._StockName = value;
+				}
+			}
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", DbType="BigInt NOT NULL")]
@@ -1262,6 +1282,22 @@ namespace StockCrawler.Dao
 				if ((this._Url != value))
 				{
 					this._Url = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ArticleDate", DbType="Date NOT NULL")]
+		public System.DateTime ArticleDate
+		{
+			get
+			{
+				return this._ArticleDate;
+			}
+			set
+			{
+				if ((this._ArticleDate != value))
+				{
+					this._ArticleDate = value;
 				}
 			}
 		}

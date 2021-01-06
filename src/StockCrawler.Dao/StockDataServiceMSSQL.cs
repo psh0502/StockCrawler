@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 
@@ -70,6 +72,34 @@ namespace StockCrawler.Dao
         #endregion
 
         #region 新增修改
+        public void InsertStockForumData(IList<(GetStockForumDataResult forum, IList<GetStocksResult> stock)> data)
+        {
+            using (var db = GetMSSQLStockDataContext())
+            {
+                db.Transaction = db.Connection.BeginTransaction();
+                try
+                {
+                    foreach (var d in data)
+                    {
+                        long? id = 0;
+                        db.InsertStockForums(d.forum.Source, d.forum.Subject, d.forum.Meta, d.forum.Url, d.forum.ArticleDate, ref id);
+                        d.forum.ID = id ?? 0;
+                        foreach (var s in d.stock)
+                            db.InsertStockForumRelations(s.StockNo, d.forum.ID);
+                    }
+                    db.Transaction.Commit();
+                }
+                catch
+                {
+                    try
+                    {
+                        db.Transaction.Rollback();
+                    }
+                    catch { }
+                    throw;
+                }
+            }
+        }
         public void InsertStockMarketNews(GetStockMarketNewsResult[] data)
         {
             using (var db = GetMSSQLStockDataContext())
@@ -77,7 +107,7 @@ namespace StockCrawler.Dao
                     try
                     {
                         db.InsertStockMarketNews(d.StockNo, d.Source, d.NewsDate, d.Subject, d.Url);
-                    }catch(System.Data.SqlClient.SqlException)
+                    }catch(SqlException)
                     {
                         Debug.WriteLine(string.Format("[{0}] news can't be wrote.", d.StockNo));
                         throw;

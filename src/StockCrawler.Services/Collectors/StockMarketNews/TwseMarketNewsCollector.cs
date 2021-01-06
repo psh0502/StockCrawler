@@ -46,13 +46,13 @@ namespace StockCrawler.Services.Collectors
             for (int i = 1; i < data_nodes.Count; i++)
             {
                 var data = data_nodes[i].SelectNodes("td");
-                if (null != data && data.Count == 6 && CleanData(data[0].InnerText) != "發言日期")
+                if (null != data && data.Count == 6 && Tools.CleanString(data[0].InnerText) != "發言日期")
                     list.Add(new GetStockMarketNewsResult()
                     {
-                        StockNo = CleanData(data[0].InnerText),
+                        StockNo = Tools.CleanString(data[0].InnerText),
                         Source = "mops",
-                        Subject = CleanData(data[4].InnerText),
-                        NewsDate = DateTime.Parse(ParseTaiwanDate(CleanData(data[2].InnerText)).ToShortDateString() + " " + CleanData(data[3].InnerText)),
+                        Subject = Tools.CleanString(data[4].InnerText),
+                        NewsDate = DateTime.Parse(ParseTaiwanDate(Tools.CleanString(data[2].InnerText)).ToShortDateString() + " " + Tools.CleanString(data[3].InnerText)),
                         Url = "https://mops.twse.com.tw/mops/web/ajax_t05sr01_1?TYPEK=sii&step=1&" + GetQueryPath(data[5])
                     });
             }
@@ -149,14 +149,6 @@ namespace StockCrawler.Services.Collectors
             }
             _logger.DebugFormat("GetQueryPath() = {0}", result);
             return result;
-        }
-        private static string CleanData(string text)
-        {
-            return text
-                .Replace("&nbsp;", string.Empty)
-                .Replace(" ", string.Empty)
-                .Replace(Environment.NewLine, string.Empty)
-                .Trim();
         }
     }
 }

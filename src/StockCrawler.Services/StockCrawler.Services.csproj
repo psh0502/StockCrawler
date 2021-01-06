@@ -12,7 +12,7 @@
     <AssemblyName>StockCrawler.Services</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>DOWAY.snk</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -130,8 +130,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CollectorServiceProvider.cs" />
-    <Compile Include="Collectors\Forums\IForumCollector.cs" />
-    <Compile Include="Collectors\Forums\ForumCollector.cs" />
+    <Compile Include="Collectors\StockForums\IStockForumCollector.cs" />
+    <Compile Include="Collectors\StockForums\StockForumCollector.cs" />
     <Compile Include="Collectors\LazyStock\LazyStockData.cs" />
     <Compile Include="Collectors\LazyStock\ILazyStockCollector.cs" />
     <Compile Include="Collectors\LazyStock\LazyStockCollector.cs" />

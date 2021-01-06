@@ -14,6 +14,7 @@ CREATE OR ALTER PROCEDURE [dbo].[InsertStockForums]
 @pSubject NVARCHAR(50),
 @pMeta NVARCHAR(500),
 @pUrl VARCHAR(200),
+@pArticleDate DATE,
 @oID BIGINT OUTPUT
 AS
 BEGIN
@@ -22,12 +23,14 @@ BEGIN
 		([Source]
 		,[Subject]
 		,[Meta]
-		,[Url])
+		,[Url]
+		,[ArticleDate])
 	VALUES
 		(@pSource
 		,@pSubject
 		,@pMeta
-		,@pUrl)
+		,@pUrl
+		,@pArticleDate)
 	SET @oID = SCOPE_IDENTITY()
 END
 GO

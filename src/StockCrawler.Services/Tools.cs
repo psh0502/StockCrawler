@@ -16,6 +16,7 @@ namespace StockCrawler.Services
     /// </summary>
     public static class Tools
     {
+        private static readonly string UTF8SpacingChar = Encoding.UTF8.GetString(new byte[] { 0xC2, 0xA0 });
         internal static ILog _logger = LogManager.GetLogger(typeof(Tools));
         /// <summary>
         /// 網路資料下載萬用工法
@@ -73,13 +74,20 @@ namespace StockCrawler.Services
                     {
                         var ck = c.Split('=');
                         if (ck.Length > 1)
-                            respCookies.Add(new Cookie
+                            try
                             {
-                                Name = ck[0].Trim(),
-                                Value = ck[1].Trim(),
-                                Domain = url.Host,
-                                Path = "/",
-                            });
+                                respCookies.Add(new Cookie
+                                {
+                                    Name = ck[0].Trim(),
+                                    Value = ck[1].Trim(),
+                                    Domain = url.Host,
+                                    Path = "/",
+                                });
+                            }
+                            catch (Exception e)
+                            {
+                                _logger.Warn(e.Message, e);
+                            }
                     }
                 }
                 var stream = res1.GetResponseStream();
@@ -241,6 +249,20 @@ namespace StockCrawler.Services
         {
             var current_season = GetSeason(date);
             return new DateTime(date.Year, current_season * 3, 1).AddMonths(3 * season);
+        }
+        /// <summary>
+        /// 清理字串內容不必要的垃圾字元
+        /// </summary>
+        /// <param name="text">參雜垃圾字元的字串</param>
+        /// <returns>乾淨的字元</returns>
+        public static string CleanString(string text)
+        {
+            return text
+                .Replace("&nbsp;", string.Empty)
+                .Replace(" ", string.Empty)
+                .Replace(Environment.NewLine, string.Empty)
+                .Replace(UTF8SpacingChar, string.Empty)
+                .Trim();
         }
     }
 }

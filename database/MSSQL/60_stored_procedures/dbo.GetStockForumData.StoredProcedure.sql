@@ -12,13 +12,17 @@ GO
 -- Revision:
 -- =============================================
 CREATE OR ALTER PROCEDURE [dbo].[GetStockForumData]
-@pID BIGINT
+@pID BIGINT,
+@pStockNo VARCHAR(10)
 AS
 BEGIN
 	SET NOCOUNT ON
-	SELECT *
-	FROM [dbo].[StockForums](NOLOCK)
+	SELECT c.StockName, a.*
+	FROM [dbo].[StockForums] a(NOLOCK)
+		INNER JOIN [dbo].[StockForumRelations] b(NOLOCK) ON a.ID = b.ID
+		INNER JOIN [dbo].[Stock] c(NOLOCK) ON b.StockNo = c.StockNo
 	WHERE 
-		[ID] = @pID
+		(@pID IS NULL OR a.[ID] = @pID)
+		AND (@pStockNo IS NULL OR @pStockNo = '' OR c.StockNo = @pStockNo)
 END
 GO

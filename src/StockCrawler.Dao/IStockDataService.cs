@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace StockCrawler.Dao
 {
@@ -59,6 +60,7 @@ namespace StockCrawler.Dao
         #endregion
 
         #region 新增修改
+        void InsertStockForumData(IList<(GetStockForumDataResult forum, IList<GetStocksResult> stock)> data);
         void InsertStockMarketNews(GetStockMarketNewsResult[] data);
         /// <summary>
         /// Update stock company's basic information. If it doesn't exist, it will insert it.

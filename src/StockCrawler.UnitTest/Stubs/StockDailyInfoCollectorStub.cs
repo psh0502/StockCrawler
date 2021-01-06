@@ -26,7 +26,7 @@ namespace StockCrawler.UnitTest.Stubs
         }
         protected override string DownloadData(DateTime day)
         {
-            _logger.Info($"Mock DownloadTwseStockCSV!!!day={day:yyyyMMdd}");
+            _logger.Info($"Mock DownloadData!!!day={day:yyyyMMdd}");
             var file = new FileInfo($@"..\..\..\StockCrawler.UnitTest\TestData\TWSE\MI_INDEX_ALLBUT0999_{day:yyyyMMdd}.csv");
             if (file.Exists)
             {

@@ -19,7 +19,7 @@ namespace StockCrawler.UnitTest.Jobs
         public override void InitBeforeTest()
         {
             base.InitBeforeTest();
-            var collector = CollectorProviderService.GetMarketNewsCollector();
+            var collector = CollectorServiceProvider.GetMarketNewsCollector();
             foreach (var d in collector.GetLatestStockNews())
                 using (var db = StockDataServiceProvider.GetServiceInstance())
                 {
