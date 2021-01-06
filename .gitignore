@@ -253,3 +253,4 @@ paket-files/
 /database/*.bat
 src/web/StockOracle/log4net.config
 *.snk
+src/StockCrawler.UnitTest/TestData/TWSE/2020-04-06.csv

@@ -93,7 +93,7 @@ namespace StockCrawler.Services.Collectors
                         return null;
                     }
 #if (DEBUG)
-                    var file = new FileInfo($"D:\\tmp\\{DateTime.Today:yyyy-MM-dd}.csv");
+                    var file = new FileInfo($@"..\..\..\StockCrawler.UnitTest\TestData\TWSE\{SystemTime.Today:yyyy-MM-dd}.csv");
                     if (file.Exists) file.Delete();
                     using (var sw = file.CreateText())
                         sw.Write(csv_data);
