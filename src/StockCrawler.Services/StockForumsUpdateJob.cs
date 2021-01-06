@@ -46,7 +46,7 @@ namespace StockCrawler.Services
                                where d.Article.Source == "ptt"
                                select d).ToList();
                     var doing = "twse";
-                    using (var db = StockDataServiceProvider.GetServiceInstance())
+                    using (var db = GetDB())
                         try
                         {
                             db.InsertStockMarketNews(twse.ToArray());
