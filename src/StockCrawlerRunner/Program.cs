@@ -52,6 +52,11 @@ namespace StockCrawlerRunner
                         case "-lz":
                             job = new LazyStockUpdateJob();
                             break;
+                        case "-ptt":
+                            if (args.Length > 1)
+                                StockCrawler.Services.SystemTime.SetFakeTime(DateTime.Parse(args[1]));
+                            job = new StockForumsUpdateJob();
+                            break;
                         default:
                             ShowHelp();
                             break;
@@ -105,6 +110,8 @@ namespace StockCrawlerRunner
             Console.WriteLine("     Get the latest Taiwan stock market news.");
             Console.WriteLine(" <mode>: -lz");
             Console.WriteLine("     Get the latest LazyStock data.");
+            Console.WriteLine(" <mode>: -ptt [Date:yyyy/MM/dd]");
+            Console.WriteLine("     Get the latest articles from PTT stock forum. If you assign date, it grab articles by the date.");
         }
     }
 }
