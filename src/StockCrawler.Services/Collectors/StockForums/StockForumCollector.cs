@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Web;
 
 namespace StockCrawler.Services.Collectors
 {
@@ -32,7 +33,7 @@ namespace StockCrawler.Services.Collectors
                     var a = node.SelectSingleNode("div[@class=\"title\"]/a");
                     if (a != null)
                     {
-                        var title = Tools.CleanString(a.InnerText);
+                        var title = HttpUtility.UrlDecode(Tools.CleanString(a.InnerText));
                         var date_str = Tools.CleanString(node.SelectSingleNode("div[@class=\"meta\"]/div[@class=\"date\"]").InnerText);
                         article_date = DateTime.Parse(DateTime.Today.Year + "/" + date_str);
                         if (article_date == date)
@@ -125,7 +126,7 @@ namespace StockCrawler.Services.Collectors
                                     var title_node = doc.DocumentNode.SelectSingleNode("//title");
                                     if (null != title_node)
                                     {
-                                        article.Subject = Tools.CleanString(title_node.InnerText);
+                                        article.Subject = HttpUtility.UrlDecode(Tools.CleanString(title_node.InnerText));
                                         article.Url = url;
                                     }
                                 }
