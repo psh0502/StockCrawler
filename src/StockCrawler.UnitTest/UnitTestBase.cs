@@ -22,6 +22,8 @@ namespace StockCrawler.UnitTest
             SystemTime.SetFakeTime(new DateTime(2020, 4, 6));
 
             SqlTool.ConnectionString = ConnectionStringHelper.StockConnectionString;
+            SqlTool.ExecuteSql("TRUNCATE TABLE StockForumRelations");
+            SqlTool.ExecuteSql("TRUNCATE TABLE StockForums");
             SqlTool.ExecuteSql("TRUNCATE TABLE StockAveragePrice");
             SqlTool.ExecuteSql("TRUNCATE TABLE StockPriceHistory");
             SqlTool.ExecuteSql("TRUNCATE TABLE StockBasicInfo");

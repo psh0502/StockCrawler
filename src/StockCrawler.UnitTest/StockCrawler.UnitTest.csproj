@@ -170,7 +170,10 @@
     <Content Include="TestData\Ptt\4mkVAR.html" />
     <Content Include="TestData\Ptt\ampsec.ltn.com.twamparticlebreakingnews3401465.html" />
     <Content Include="TestData\Ptt\articlebreakingnews3400804.html" />
+    <Content Include="TestData\Ptt\articlebreakingnews3400934.html" />
     <Content Include="TestData\Ptt\articlebreakingnews3401378.html" />
+    <Content Include="TestData\Ptt\articlebreakingnews3402257.html" />
+    <Content Include="TestData\Ptt\articlebreakingnews3401471.html" />
     <Content Include="TestData\Ptt\bbsStockindex.html" />
     <Content Include="TestData\Ptt\bbsStockindex5001.html" />
     <Content Include="TestData\Ptt\bbsStockindex5002.html" />
@@ -187,6 +190,7 @@
     <Content Include="TestData\Ptt\bbsStockindex5013.html" />
     <Content Include="TestData\Ptt\bbsStockindex5014.html" />
     <Content Include="TestData\Ptt\bbsStockindex5015.html" />
+    <Content Include="TestData\Ptt\bbsStockindex5016.html" />
     <Content Include="TestData\Ptt\bbsStockM.1609777138.A.63A.html" />
     <Content Include="TestData\Ptt\bbsStockM.1609778859.A.480.html" />
     <Content Include="TestData\Ptt\bbsStockM.1609806798.A.CFA.html" />
@@ -257,10 +261,12 @@
     <Content Include="TestData\Ptt\newsstory72525144919.html" />
     <Content Include="TestData\Ptt\newsstory72535146905.html" />
     <Content Include="TestData\Ptt\newstech397806.html" />
+    <Content Include="TestData\Ptt\newsviewid2088337.html" />
     <Content Include="TestData\Ptt\nTqe3.html" />
     <Content Include="TestData\Ptt\odN3YD.html" />
     <Content Include="TestData\Ptt\property202101053QTUHPDCXJARTCU7ZRFB5AWKYM.html" />
     <Content Include="TestData\Ptt\property202101055S3YGVHP6ZAZNIVT4I5FAFYUBM.html" />
+    <Content Include="TestData\Ptt\property202101057EHKPRWVSNFLVGGVETKKYU6MXI.html" />
     <Content Include="TestData\Ptt\property20210105EL3CHZ42SFDYTN6M6HA4VXCSSQ.html" />
     <Content Include="TestData\Ptt\property20210105PLWN2KCP2RHEDP6DSCZZT5WRBM.html" />
     <Content Include="TestData\Ptt\Q31z4O.html" />

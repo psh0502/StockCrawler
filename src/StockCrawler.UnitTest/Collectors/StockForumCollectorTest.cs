@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using StockCrawler.Services.Collectors;
 using StockCrawler.UnitTest.Stubs;
 using System;
 using System.Linq;
@@ -43,9 +44,10 @@ namespace StockCrawler.UnitTest.Collectors
                     else
                         Assert.AreEqual("twse", d.Article.Source);
                 }
+                Assert.IsFalse(d.Article.Subject.StartsWith("[新聞]"));
                 Assert.AreEqual(testDate, d.Article.ArticleDate);
             }
-            Assert.AreEqual(85, r.Count);
+            Assert.AreEqual(65, r.Count);
         }
     }
 }

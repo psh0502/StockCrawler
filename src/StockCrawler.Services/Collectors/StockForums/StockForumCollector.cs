@@ -22,7 +22,7 @@ namespace StockCrawler.Services.Collectors
             do
             {
                 var hasArticleInRightDate = false;
-                var html = this.DownloadData(uri);
+                var html = DownloadData(uri);
                 doc.LoadHtml(html);
                 var previos_url = doc.DocumentNode
                     .SelectSingleNode("//*[@id=\"action-bar-container\"]/div/div[2]/a[2]")
@@ -50,14 +50,17 @@ namespace StockCrawler.Services.Collectors
                                 var article = new GetStockForumDataResult()
                                 {
                                     Subject = title,
-                                    Hash = Tools.GenerateMD5Hash(string.Format("{0:yyyyMMdd}|{1}", article_date,title)),
+                                    Hash = Tools.GenerateMD5Hash(string.Format("{0:yyyyMMdd}|{1}", article_date, title)),
                                     Url = url,
                                     Source = "ptt",
                                     ArticleDate = article_date
                                 };
                                 IList<GetStocksResult> related_stocks = AnalyzeArticle(ref article);
-                                result.Add((article, related_stocks));
-                                _logger.DebugFormat("Subject: {0}, ArticleDate: {1}, Url: {2}", article.Subject, article.ArticleDate, article.Url);
+                                if (article.Source != "ptt" || (null != related_stocks && related_stocks.Any()))
+                                {
+                                    result.Add((article, related_stocks));
+                                    _logger.DebugFormat("Subject: {0}, ArticleDate: {1}, Url: {2}", article.Subject, article.ArticleDate, article.Url);
+                                }
                             }
                         }
                     }
@@ -80,7 +83,6 @@ namespace StockCrawler.Services.Collectors
             } while (missing_right_date_page_counter < 2);
             return result;
         }
-
         private IList<GetStocksResult> AnalyzeArticle(ref GetStockForumDataResult article)
         {
             var result = new List<GetStocksResult>();
@@ -94,26 +96,45 @@ namespace StockCrawler.Services.Collectors
                 var html = DownloadData(new Uri(article.Url));
                 var doc = new HtmlDocument();
                 doc.LoadHtml(html);
-                var node = doc.DocumentNode.SelectSingleNode("//*[@id=\"main-content\"]/a[1]");
+                var node = doc.DocumentNode.SelectSingleNode("//*[@id=\"main-content\"]");
                 if (null != node)
                 {
-                    var url = node.Attributes["href"]?.Value;
-                    if (!string.IsNullOrEmpty(url))
+                    const string keyword = "原文連結：";
+                    var index = node.InnerHtml.IndexOf(keyword);
+                    if (index > 0)
+                        node.InnerHtml = node.InnerHtml.Substring(index + keyword.Length);
+                    int i = 1;
+                    do
                     {
-                        article.Url = url;
-                        article.Source = result.Any() ? "mops" : "twse";
-                        var news = DownloadData(new Uri(url));
-                        if (!string.IsNullOrEmpty(news))
+                        var a_node = node.SelectSingleNode("a[" + i + "]");
+                        if (null != a_node)
                         {
-                            doc.LoadHtml(news);
-                            var title_node = doc.DocumentNode.SelectSingleNode("//title");
-                            if (null != title_node)
-                                article.Subject = Tools.CleanString(title_node.InnerText);
+                            var url = a_node.Attributes["href"]?.Value;
+                            if (!string.IsNullOrEmpty(url))
+                            {
+                                if (url == "https://bit.ly/")
+                                {
+                                    i++;
+                                    continue;
+                                }
+                                article.Source = result.Any() ? "mops" : "twse";
+                                var news = DownloadData(new Uri(url));
+                                if (!string.IsNullOrEmpty(news))
+                                {
+                                    doc.LoadHtml(news);
+                                    var title_node = doc.DocumentNode.SelectSingleNode("//title");
+                                    if (null != title_node)
+                                    {
+                                        article.Subject = Tools.CleanString(title_node.InnerText);
+                                        article.Url = url;
+                                    }
+                                }
+                            }
                         }
-                    }
+                        break;
+                    } while (true);
                 }
             }
-
             return result;
         }
         /// <summary>

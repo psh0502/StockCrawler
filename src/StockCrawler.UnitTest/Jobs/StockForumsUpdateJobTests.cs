@@ -34,6 +34,7 @@ namespace StockCrawler.UnitTest.Jobs
                 foreach (var d in data)
                 {
                     _logger.DebugFormat("{0}\t{1}\t{2}", d.StockNo, d.Subject, d.Url);
+                    Assert.IsFalse(d.Subject.StartsWith("[新聞]"));
                     Assert.AreEqual(TEST_STOCK_NO_1, d.StockNo);
                 }
                 data = db.GetStockMarketNews(10, null, "twse", new DateTime(2021, 1, 5), new DateTime(2021, 1, 5));
@@ -42,14 +43,16 @@ namespace StockCrawler.UnitTest.Jobs
                 {
                     _logger.DebugFormat("{0}\t{1}\t{2}", d.StockNo, d.Subject, d.Url);
                     Assert.AreEqual("0000", d.StockNo);
+                    Assert.IsFalse(d.Subject.StartsWith("[新聞]"));
                 }
-                var data2 = db.GetStockForumData(1000, new DateTime(2021, 1, 5), new DateTime(2021, 1, 5), null, "2340");
+                var data2 = db.GetStockForumData(1000, new DateTime(2021, 1, 5), new DateTime(2021, 1, 5), null, null);
                 Assert.IsTrue(data2.Any());
+                Assert.AreEqual(17, data2.Length);
                 foreach (var d in data2)
                 {
                     _logger.DebugFormat("{0}\t{1}\t{2}", d.StockNo, d.Subject, d.Url);
-                    Assert.AreEqual("光磊", d.StockName);
-                    Assert.AreEqual("2340", d.StockNo);
+                    Assert.IsFalse(d.Subject.StartsWith("[新聞]"));
+                    Assert.AreEqual(StockHelper.GetStock(d.StockNo).StockName, d.StockName, StockHelper.GetStock(d.StockNo).StockName);
                 }
             }
         }
