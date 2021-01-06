@@ -52,6 +52,8 @@ StockCrawlerRunner.exe <mode>
      Get the latest Taiwan stock market news.
  <mode>: -lz
      Get the latest LazyStock data.
+ <mode>: -ptt [Date:yyyy/MM/dd]
+     Get the latest articles from PTT stock forum. If you assign date, it grab articles by the date.
 ```
 
 ## Note
@@ -84,6 +86,7 @@ Here is the injection setting in *.exe.config
 
     <container>
       <register type="IStockDataService" mapTo="StockDataServiceMSSQL" />
+      <register type="IStockForumCollector" mapTo="StockForumCollector" />
       <register type="IStockHistoryPriceCollector" mapTo="YaooStockHistoryPriceCollector" />
       <register type="IStockBasicInfoCollector" mapTo="TwseStockBasicInfoCollector" />
       <register type="IStockDailyInfoCollector" mapTo="TwseStockDailyInfoCollector" />
