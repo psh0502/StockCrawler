@@ -3,6 +3,7 @@ using HtmlAgilityPack;
 using StockCrawler.Dao;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -12,6 +13,8 @@ namespace StockCrawler.Services.Collectors
 {
     internal class StockForumCollector : IStockForumCollector
     {
+        // 由於 PTT 的文章順序不是依照最新日期排序, 所以可能要往下多翻幾頁找看看才能找到較多的文章
+        private static readonly int MISSING_RIGHT_DATE_PAGE_MAX = int.Parse(ConfigurationManager.AppSettings["PTT_MISSING_RIGHT_DATE_PAGE_MAX"] ?? "2");
         internal ILog _logger = LogManager.GetLogger(typeof(StockForumCollector));
         public IList<(GetStockForumDataResult Article, IList<GetStocksResult> relateToStockNo)> GetPttData(DateTime date)
         {
@@ -81,7 +84,7 @@ namespace StockCrawler.Services.Collectors
 #if(!DEBUG)
                 Thread.Sleep(1000);
 #endif
-            } while (missing_right_date_page_counter < 2);
+            } while (missing_right_date_page_counter < MISSING_RIGHT_DATE_PAGE_MAX);
             return result;
         }
         private IList<GetStocksResult> AnalyzeArticle(ref GetStockForumDataResult article)
