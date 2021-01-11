@@ -90,8 +90,9 @@ namespace StockCrawler.Dao
                         long? id = 0;
                         db.InsertStockForums(d.forum.Source, d.forum.Subject, d.forum.Hash, d.forum.Url, d.forum.ArticleDate, ref id);
                         d.forum.ID = id ?? 0;
-                        foreach (var s in d.stock)
-                            db.InsertStockForumRelations(s.StockNo, d.forum.ID);
+                        if (d.forum.ID > 0)
+                            foreach (var s in d.stock)
+                                db.InsertStockForumRelations(s.StockNo, d.forum.ID);
                     }
                     db.Transaction.Commit();
                 }
