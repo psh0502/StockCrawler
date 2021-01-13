@@ -23,7 +23,6 @@ namespace StockCrawler.UnitTest
 
             SqlTool.ConnectionString = ConnectionStringHelper.StockConnectionString;
             SqlTool.ExecuteSql("TRUNCATE TABLE StockForumRelations");
-            SqlTool.ExecuteSql("TRUNCATE TABLE StockForums");
             SqlTool.ExecuteSql("TRUNCATE TABLE StockAveragePrice");
             SqlTool.ExecuteSql("TRUNCATE TABLE StockPriceHistory");
             SqlTool.ExecuteSql("TRUNCATE TABLE StockBasicInfo");
@@ -34,9 +33,10 @@ namespace StockCrawler.UnitTest
             SqlTool.ExecuteSql("TRUNCATE TABLE StockMarketNews");
             SqlTool.ExecuteSql("TRUNCATE TABLE LazyStockData");
             SqlTool.ExecuteSql("DELETE Stock");
+            SqlTool.ExecuteSql("DELETE StockForums");
 
 
-            using (var db = StockDataServiceProvider.GetServiceInstance())
+            using (var db = RepositoryProvider.GetRepositoryInstance())
             {
                 db.InsertOrUpdateStock("2330", "台積電", "0029");
                 db.InsertOrUpdateStock("2888", "新光金", "0040");

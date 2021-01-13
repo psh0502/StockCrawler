@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace StockCrawler.Dao
 {
-    internal class StockDataServiceMSSQL : IStockDataService
+    internal class MsSqlRepository : IRepository
     {
         #region 取得資料
         public GetCategoryMappingResult[] GetCategoryMapping()

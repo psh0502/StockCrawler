@@ -3,20 +3,20 @@ using Unity;
 
 namespace StockCrawler.Dao
 {
-    public abstract class StockDataServiceProvider
+    public abstract class RepositoryProvider
     {
         private static readonly UnityContainer _container = new UnityContainer();
-        static StockDataServiceProvider()
+        static RepositoryProvider()
         {
             _container.LoadConfiguration();
         }
         /// <summary>
         /// Retrieve a new service instance. It's thread-safe.
         /// </summary>
-        /// <returns>Database service instance</returns>
-        public static IStockDataService GetServiceInstance()
+        /// <returns>Database Repository instance</returns>
+        public static IRepository GetRepositoryInstance()
         {
-            return _container.Resolve<IStockDataService>();
+            return _container.Resolve<IRepository>();
         }
     }
 }

@@ -27,7 +27,7 @@ namespace StockCrawler.UnitTest.Jobs
             Services.SystemTime.SetFakeTime(new DateTime(2021, 1, 5));
             IJobExecutionContext context = null;
             target.Execute(context);
-            using (var db = StockDataServiceProvider.GetServiceInstance())
+            using (var db = RepositoryProvider.GetRepositoryInstance())
             {
                 var data = db.GetStockMarketNews(10, TEST_STOCK_NO_1, "mops", new DateTime(2021, 1, 5), new DateTime(2021, 1, 5));
                 Assert.IsTrue(data.Any());

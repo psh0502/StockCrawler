@@ -22,7 +22,7 @@ namespace StockCrawler.UnitTest.Jobs
             var target = new LazyStockUpdateJob();
             IJobExecutionContext context = null;
             target.Execute(context);
-            using (var db = StockDataServiceProvider.GetServiceInstance())
+            using (var db = RepositoryProvider.GetRepositoryInstance())
             {
                 var data = db.GetLazyStockData(TEST_STOCK_NO_1);
                 Assert.IsNotNull(data);

@@ -100,9 +100,9 @@ namespace StockCrawler.Services.Collectors
 #endif
                     return csv_data;
                 }
-                catch (WebException)
+                catch (WebException e)
                 {
-                    _logger.Warn("Target website refuses our connection. Wait till it get peace.");
+                    _logger.Warn("Target website refuses our connection. Wait till it get peace." + e.Message);
                     Thread.Sleep((int)new TimeSpan(1, 0, 0).TotalMilliseconds);
                 }
         }

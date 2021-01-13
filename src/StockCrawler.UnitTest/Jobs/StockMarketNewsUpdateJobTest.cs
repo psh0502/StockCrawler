@@ -21,7 +21,7 @@ namespace StockCrawler.UnitTest.Jobs
             base.InitBeforeTest();
             var collector = CollectorServiceProvider.GetMarketNewsCollector();
             foreach (var d in collector.GetLatestStockNews())
-                using (var db = StockDataServiceProvider.GetServiceInstance())
+                using (var db = RepositoryProvider.GetRepositoryInstance())
                 {
                     db.InsertOrUpdateStock(d.StockNo, string.Empty, string.Empty);
                     db.InsertOrUpdateStock("0000", "加權指數", "0000");
@@ -39,7 +39,7 @@ namespace StockCrawler.UnitTest.Jobs
             IJobExecutionContext context = null;
             target.Execute(context);
 
-            using (var db = StockDataServiceProvider.GetServiceInstance())
+            using (var db = RepositoryProvider.GetRepositoryInstance())
             {
                 var q = db.GetStockMarketNews(10, "0000", "twse", new DateTime(2020, 10, 27), new DateTime(2020, 10, 27)).ToList();
                 Assert.AreEqual(3, q.Count);

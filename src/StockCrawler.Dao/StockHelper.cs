@@ -27,7 +27,7 @@ namespace StockCrawler.Dao
             if (null == _STOCK_LIST)
                 lock (typeof(StockHelper))
                     if (null == _STOCK_LIST)
-                        using (var db = StockDataServiceProvider.GetServiceInstance())
+                        using (var db = RepositoryProvider.GetRepositoryInstance())
                             _STOCK_LIST = db.GetStocks().ToList();
 
             return _STOCK_LIST;

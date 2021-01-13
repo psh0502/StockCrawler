@@ -16,7 +16,7 @@ namespace StockCrawler.UnitTest.Stubs
         }
         public override IEnumerable<GetStockPeriodPriceResult> GetStockDailyPriceInfo()
         {
-            using (var db = StockDataServiceProvider.GetServiceInstance())
+            using (var db = RepositoryProvider.GetRepositoryInstance())
                 return db.GetStocks().Select(d =>
                 new GetStockPeriodPriceResult()
                 {

@@ -98,14 +98,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Stock.dbml</DependentUpon>
     </Compile>
-    <Compile Include="StockDataServiceMSSQL.cs" />
-    <Compile Include="IStockDataService.cs" />
+    <Compile Include="MsSqlRepository.cs" />
+    <Compile Include="IRepository.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="StockDataServiceProvider.cs" />
+    <Compile Include="RepositoryProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StockHelper.cs" />
   </ItemGroup>

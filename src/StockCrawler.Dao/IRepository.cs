@@ -6,7 +6,7 @@ namespace StockCrawler.Dao
     /// <summary>
     /// 股票資訊收集器的資料存取介面
     /// </summary>
-    public interface IStockDataService : IDisposable
+    public interface IRepository : IDisposable
     {
         #region 取得資料
         ///// <summary>

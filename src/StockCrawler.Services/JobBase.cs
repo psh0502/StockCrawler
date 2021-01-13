@@ -22,9 +22,9 @@ namespace StockCrawler.Services
         {
             return (short)(month / 3 + 1);
         }
-        protected static IStockDataService GetDB()
+        protected static IRepository GetDB()
         {
-            return StockDataServiceProvider.GetServiceInstance();
+            return RepositoryProvider.GetRepositoryInstance();
         }
     }
 }

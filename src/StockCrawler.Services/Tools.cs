@@ -19,6 +19,10 @@ namespace StockCrawler.Services
     {
         private static readonly string UTF8SpacingChar = Encoding.UTF8.GetString(new byte[] { 0xC2, 0xA0 });
         internal static ILog _logger = LogManager.GetLogger(typeof(Tools));
+        static Tools()
+        {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+        }
         /// <summary>
         /// 網路資料下載萬用工法
         /// </summary>
@@ -108,6 +112,10 @@ namespace StockCrawler.Services
             var text = doc.DocumentNode.SelectSingleNode("/html/body/h1/font").InnerText.Trim();
             return text;
         }
+        public static string GetMyIpAddress2()
+        {
+            return DownloadStringData(new Uri("http://www.comeondata.com/App/api/IpLocApi/GetMyIpInfo"), out _).Replace("\"", string.Empty);
+        }
         /// <summary>
         /// 根據本日收盤資料, 計算 均線(MA 移動線)和不同周期的 K 棒
         /// </summary>
@@ -115,7 +123,7 @@ namespace StockCrawler.Services
         public static void CalculateMAAndPeriodK(DateTime date)
         {
             _logger.InfoFormat("Begin caculation MA and K ...{0}", date.ToString("yyyyMMdd"));
-            using (var db = StockDataServiceProvider.GetServiceInstance())
+            using (var db = RepositoryProvider.GetRepositoryInstance())
             {
                 var K5_list = new List<GetStockPeriodPriceResult>();
                 var K20_list = new List<GetStockPeriodPriceResult>();

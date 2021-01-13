@@ -51,7 +51,7 @@ namespace StockCrawler.Services
         {
             return StockHelper.GetCompanyStockList().Select(d => d.StockNo).ToArray();
         }
-        private static void GetMonthlyNetProfitTaxedIntoDatabase(IStockDataService db, IStockReportCollector collector)
+        private static void GetMonthlyNetProfitTaxedIntoDatabase(IRepository db, IStockReportCollector collector)
         {
             try
             {
@@ -85,7 +85,7 @@ namespace StockCrawler.Services
                 Logger.Warn(string.Format("[{0}] has error: {1}", MethodBase.GetCurrentMethod().Name, ex.Message), ex);
             }
         }
-        private static void GetIncomeIntoDatabase(IStockDataService db, IStockReportCollector collector)
+        private static void GetIncomeIntoDatabase(IRepository db, IStockReportCollector collector)
         {
             try
             {
@@ -129,7 +129,7 @@ namespace StockCrawler.Services
         /// <param name="season">第幾季</param>
         /// <exception cref="ApplicationException">該公司股票不繼續公開發行</exception>
         /// <returns>成功失敗</returns>
-        private static void GetCashflowIntoDatabase(IStockDataService db, IStockReportCollector collector)
+        private static void GetCashflowIntoDatabase(IRepository db, IStockReportCollector collector)
         {
             try
             {
@@ -163,7 +163,7 @@ namespace StockCrawler.Services
                 Logger.Warn(string.Format("[{0}] has error: {1}", MethodBase.GetCurrentMethod().Name, ex.Message), ex);
             }
         }
-        private static void GetBalanceIntoDatabase(IStockDataService db, IStockReportCollector collector)
+        private static void GetBalanceIntoDatabase(IRepository db, IStockReportCollector collector)
         {
             try
             {

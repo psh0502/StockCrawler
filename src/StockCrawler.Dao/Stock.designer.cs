@@ -13,15 +13,9 @@ namespace StockCrawler.Dao
 {
 	using System.Data.Linq;
 	using System.Data.Linq.Mapping;
-	using System.Data;
-	using System.Collections.Generic;
 	using System.Reflection;
-	using System.Linq;
-	using System.Linq.Expressions;
-	using System.ComponentModel;
-	using System;
-	
-	
+
+
 	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="Stock")]
 	public partial class StockDataContext : System.Data.Linq.DataContext
 	{
@@ -33,7 +27,7 @@ namespace StockCrawler.Dao
     #endregion
 		
 		public StockDataContext() : 
-				base(global::StockCrawler.Dao.Properties.Settings.Default.StockConnectionString1, mappingSource)
+				base(global::StockCrawler.Dao.Properties.Settings.Default.StockConnectionString, mappingSource)
 		{
 			OnCreated();
 		}

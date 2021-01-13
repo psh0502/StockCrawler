@@ -11,7 +11,8 @@ namespace StockCrawler.UnitTest.Others
         public void GetMyIpAddressTest()
         {
             var result = Tools.GetMyIpAddress();
-            Assert.AreEqual("220.135.20.48", result);
+            var expect = Tools.GetMyIpAddress2();
+            Assert.AreEqual(expect, result);
         }
     }
 }
