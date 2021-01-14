@@ -23,10 +23,10 @@ namespace StockCrawler.UnitTest.Jobs
         {
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
             {
-                var data = db.GetStockReportCashFlow(1, TEST_STOCK_NO_1, (short)(Services.SystemTime.Today.Year - 1911), 1).ToList();
+                var data = db.GetStockReportCashFlow(1, TEST_STOCKNO_台積電, (short)(Services.SystemTime.Today.Year - 1911), 1).ToList();
                 Assert.AreEqual(1, data.Count, "資料筆數");
                 var d1 = data.First();
-                Assert.AreEqual(TEST_STOCK_NO_1, d1.StockNo);
+                Assert.AreEqual(TEST_STOCKNO_台積電, d1.StockNo);
                 Assert.AreEqual(109, d1.Year);
                 Assert.AreEqual(1, d1.Season);
                 Assert.AreEqual(67083741, d1.Depreciation);
@@ -44,11 +44,11 @@ namespace StockCrawler.UnitTest.Jobs
         {
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
             {
-                var data = db.GetStockReportIncome(1, TEST_STOCK_NO_1, (short)(Services.SystemTime.Today.AddYears(-1).Year - 1911), 4).ToList();
+                var data = db.GetStockReportIncome(1, TEST_STOCKNO_台積電, (short)(Services.SystemTime.Today.AddYears(-1).Year - 1911), 4).ToList();
                 Assert.AreEqual(1, data.Count, "資料筆數");
                 var d1 = data.First();
 
-                Assert.AreEqual(TEST_STOCK_NO_1, d1.StockNo);
+                Assert.AreEqual(TEST_STOCKNO_台積電, d1.StockNo);
                 Assert.AreEqual(108, d1.Year);
                 Assert.AreEqual(4, d1.Season);
                 Assert.AreEqual(1069985448, d1.Revenue);
@@ -68,11 +68,11 @@ namespace StockCrawler.UnitTest.Jobs
         {
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
             {
-                var data = db.GetStockReportBalance(1, TEST_STOCK_NO_1, (short)(Services.SystemTime.Today.Year - 1911), 1).ToList();
+                var data = db.GetStockReportBalance(1, TEST_STOCKNO_台積電, (short)(Services.SystemTime.Today.Year - 1911), 1).ToList();
                 Assert.AreEqual(1, data.Count, "資料筆數");
                 var d1 = data.First();
 
-                Assert.AreEqual(TEST_STOCK_NO_1, d1.StockNo);
+                Assert.AreEqual(TEST_STOCKNO_台積電, d1.StockNo);
                 Assert.AreEqual(109, d1.Year);
                 Assert.AreEqual(1, d1.Season);
 
@@ -111,11 +111,11 @@ namespace StockCrawler.UnitTest.Jobs
         {
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
             {
-                var data = db.GetStockReportMonthlyNetProfitTaxed(1, TEST_STOCK_NO_1, 109, 3).ToList();
+                var data = db.GetStockReportMonthlyNetProfitTaxed(1, TEST_STOCKNO_台積電, 109, 3).ToList();
                 Assert.AreEqual(1, data.Count, "資料筆數");
                 var d1 = data.First();
 
-                Assert.AreEqual(TEST_STOCK_NO_1, d1.StockNo);
+                Assert.AreEqual(TEST_STOCKNO_台積電, d1.StockNo);
                 Assert.AreEqual(109, d1.Year);
                 Assert.AreEqual(3, d1.Month);
                 Assert.AreEqual(113519599, d1.NetProfitTaxed);
@@ -134,11 +134,11 @@ namespace StockCrawler.UnitTest.Jobs
         {
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
             {
-                var data = db.GetStockReportMonthlyNetProfitTaxed(1, TEST_STOCK_NO_1, 108, 12).ToList();
+                var data = db.GetStockReportMonthlyNetProfitTaxed(1, TEST_STOCKNO_台積電, 108, 12).ToList();
                 Assert.AreEqual(1, data.Count, "資料筆數");
                 var d1 = data.First();
 
-                Assert.AreEqual(TEST_STOCK_NO_1, d1.StockNo);
+                Assert.AreEqual(TEST_STOCKNO_台積電, d1.StockNo);
                 Assert.AreEqual(108, d1.Year);
                 Assert.AreEqual(12, d1.Month);
                 Assert.AreEqual(103313138M, d1.NetProfitTaxed);

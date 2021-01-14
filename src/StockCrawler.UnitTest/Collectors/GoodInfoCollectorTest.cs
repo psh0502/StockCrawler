@@ -14,9 +14,9 @@ namespace StockCrawler.UnitTest.Collectors
             {
                 _logger = new UnitTestLogger()
             };
-            var r = collector.GetStockBasicInfo(TEST_STOCK_NO_1);
+            var r = collector.GetStockBasicInfo(TEST_STOCKNO_台積電);
 
-            Assert.AreEqual(TEST_STOCK_NO_1, r.StockNo);
+            Assert.AreEqual(TEST_STOCKNO_台積電, r.StockNo);
             Assert.AreEqual("台積電", r.StockName);
             Assert.AreEqual(new DateTime(1987, 2, 21), r.BuildDate);
             Assert.AreEqual(new DateTime(1994, 9, 5), r.PublishDate);

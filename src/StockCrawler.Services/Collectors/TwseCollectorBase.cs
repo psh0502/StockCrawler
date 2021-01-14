@@ -11,6 +11,10 @@ namespace StockCrawler.Services
 {
     internal abstract class TwseCollectorBase
     {
+        private static Func<string, string, bool>[] _compare_methods = new Func<string, string, bool>[] {
+            new Func<string, string, bool>((d1, d2) => { return d1.StartsWith(d2); }),
+            new Func<string, string, bool>((d1, d2) => { return d1.Contains(d2); })
+        };
         internal ILog _logger = LogManager.GetLogger(typeof(TwseCollectorBase));
         protected static readonly string UTF8SpacingChar = Encoding.UTF8.GetString(new byte[] { 0xC2, 0xA0 });
         protected const string _xpath_01 = "/html/body/center/table[2]";
@@ -33,40 +37,61 @@ namespace StockCrawler.Services
         }
         protected HtmlNode SearchValueNode(HtmlNode bodyNode, string keyword, int beginIndex = 5, string xpath1 = "./tr[{0}]/td[1]", string xpath2 = "./tr[{0}]/td[2]")
         {
-            if (null == bodyNode) throw new ArgumentException("The parameter can't be null", "bodyNode");
-            int index = beginIndex;
-            do
+            return SearchValueNode(bodyNode, new string[] { keyword }, beginIndex, xpath1, xpath2);
+        }
+        protected HtmlNode SearchValueNode(HtmlNode bodyNode, string[] keywords, int beginIndex = 5, string xpath1 = "./tr[{0}]/td[1]", string xpath2 = "./tr[{0}]/td[2]")
+        {
+            if (null == bodyNode) throw new ArgumentException("The parameter can't be null", nameof(bodyNode));
+            foreach (var compare in _compare_methods)
             {
-                var item = bodyNode.SelectSingleNode(string.Format(xpath1, index));
-                if (null != item)
+                var index = beginIndex;
+                do
                 {
-                    if (item.InnerText.Contains(keyword))
-                        return bodyNode.SelectSingleNode(string.Format(xpath2, index));
-                }
-                index++;
-            } while (index < bodyNode.ChildNodes.Count);
-            _logger.WarnFormat("Can't find the keyword[{0}] in this html", keyword);
+                    foreach (var keyword in keywords)
+                    {
+                        var item = bodyNode.SelectSingleNode(string.Format(xpath1, index));
+                        if (null != item)
+                            if (compare(item.InnerText, keyword))
+                            {
+                                item = bodyNode.SelectSingleNode(string.Format(xpath2, index));
+                                if (null != item && !string.IsNullOrEmpty(item.InnerText))
+                                    return item;
+                            }
+                    }
+                    index++;
+                } while (index < bodyNode.ChildNodes.Count);
+            }
+
+            _logger.WarnFormat("Can't find the keyword[{0}] in this html", string.Join(",", keywords));
             return null;
         }
-        protected static T GetNodeTextTo<T>(HtmlNode node)
+        protected T GetNodeTextTo<T>(HtmlNode node)
         {
             if (null == node) return default;
-            var innerText = HttpUtility.HtmlDecode(node.InnerText.Trim().Replace(",", string.Empty));
+            var innerText = HttpUtility.HtmlDecode(node.InnerText.Replace(",", string.Empty).Trim());
             innerText = innerText.Replace(UTF8SpacingChar, string.Empty);
-            if (typeof(T) == typeof(int))
-                return (T)((object)int.Parse(innerText));
-            else if (typeof(T) == typeof(decimal))
-                return (T)((object)decimal.Parse(innerText));
-            else if (typeof(T) == typeof(double))
-                return (T)((object)double.Parse(innerText));
-            else if (typeof(T) == typeof(float))
-                return (T)((object)float.Parse(innerText));
-            else if (typeof(T) == typeof(string))
-                return (T)((object)innerText.Trim());
-            else if (typeof(T) == typeof(bool))
-                return (T)((object)bool.Parse(innerText));
-            else
-                throw new InvalidCastException(typeof(T).Name + " is not defined in GetNodeTextTo.");
+            try
+            {
+                if (typeof(T) == typeof(int))
+                    return (T)((object)int.Parse(innerText));
+                else if (typeof(T) == typeof(decimal))
+                    return (T)((object)decimal.Parse(innerText));
+                else if (typeof(T) == typeof(double))
+                    return (T)((object)double.Parse(innerText));
+                else if (typeof(T) == typeof(float))
+                    return (T)((object)float.Parse(innerText));
+                else if (typeof(T) == typeof(string))
+                    return (T)((object)innerText.Trim());
+                else if (typeof(T) == typeof(bool))
+                    return (T)((object)bool.Parse(innerText));
+                else
+                    throw new InvalidCastException(typeof(T).Name + " is not defined in GetNodeTextTo.");
+            }
+            catch (Exception e)
+            {
+                _logger.DebugFormat("{0} innerText={1}, {2}", e.Message, innerText, typeof(T));
+                throw;
+            }
         }
         /// <summary>
         /// 取得 TWSE HTML 的資料節點
@@ -80,10 +105,10 @@ namespace StockCrawler.Services
         /// <returns>含有資料的 html 節點</returns>
         /// <exception cref="WebException">網站讀取過於頻繁, 需要稍等後再讀取</exception>
         /// <exception cref="ApplicationException">該公司股票不繼續公開發行</exception>
-        protected HtmlNode GetTwseDataBack(string url, string stockNo, short year = -1, short season = -1, short month = -1, string xpath = _xpath_01)
+        protected HtmlNode GetTwseDataBack(string url, string stockNo, short year = -1, short season = -1, short month = -1, short step = 1, string xpath = _xpath_01)
         {
             var formData = HttpUtility.ParseQueryString(string.Empty);
-            formData.Add("step", "1");
+            formData.Add("step", step.ToString());
             formData.Add("firstin", "1");
             formData.Add("off", "1");
             formData.Add("queryName", "co_id");
@@ -135,8 +160,11 @@ namespace StockCrawler.Services
             var tableNode = doc.DocumentNode.SelectSingleNode(xpath);
             if (null == tableNode || string.IsNullOrEmpty(tableNode.InnerText.Trim()))
             {
-                _logger.Warn($"[{stockNo}] can't get the body node, html={html}");
-                return null;
+                if (step == 1)
+                    tableNode = GetTwseDataBack(url, stockNo, year, season, month, 2, xpath);
+                if (null == tableNode || string.IsNullOrEmpty(tableNode.InnerText.Trim()))
+                    _logger.Warn($"[{stockNo}] can't get the body node, html={html}");
+                return tableNode;
             }
             else
             {

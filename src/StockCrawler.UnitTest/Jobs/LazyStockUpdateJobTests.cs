@@ -24,9 +24,9 @@ namespace StockCrawler.UnitTest.Jobs
             target.Execute(context);
             using (var db = RepositoryProvider.GetRepositoryInstance())
             {
-                var data = db.GetLazyStockData(TEST_STOCK_NO_1);
+                var data = db.GetLazyStockData(TEST_STOCKNO_台積電);
                 Assert.IsNotNull(data);
-                Assert.AreEqual(TEST_STOCK_NO_1, data.StockNo);
+                Assert.AreEqual(TEST_STOCKNO_台積電, data.StockNo);
             }
         }
     }

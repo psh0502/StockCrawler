@@ -83,19 +83,18 @@ namespace StockCrawler.Services.Collectors
         }
         private GetStockReportIncomeResult TransformNodeToIncomeRow(HtmlNode bodyNode)
         {
-            return new GetStockReportIncomeResult()
-            {
-                Revenue = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "營業收入合計")),
-                GrossProfit = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "營業毛利")),
-                SalesExpense = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "推銷費用")),
-                ManagementCost = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "管理費用")),
-                RDExpense = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "研究發展費用")),
-                OperatingExpenses = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "營業費用合計")),
-                BusinessInterest = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "營業利益")),
-                NetProfitTaxFree = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "稅前淨利")),
-                NetProfitTaxed = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "本期淨利")),
-                EPS = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "　基本每股盈餘")),
-            };
+            var result = new GetStockReportIncomeResult();
+            result.Revenue = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, new string[] { "營業收入合計", "淨收益" }));
+            result.GrossProfit = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "營業毛利"));
+            result.SalesExpense = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "推銷費用"));
+            result.ManagementCost = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, new string[] { "管理費用", "其他業務及管理費用" }));
+            result.RDExpense = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "研究發展費用"));
+            result.OperatingExpenses = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "營業費用合計"));
+            result.BusinessInterest = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, new string[] { "營業利益", "繼續營業單位稅前淨利" }));
+            result.NetProfitTaxFree = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, new string[] { "稅前淨利", "繼續營業單位稅前淨利" }));
+            result.NetProfitTaxed = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, new string[] { "本期淨利", "本期稅後淨利" }));
+            result.EPS = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "基本每股盈餘"));
+            return result;
         }
         private GetStockReportBalanceResult TransformNodeToBalanceRow(HtmlNode bodyNode)
         {
@@ -117,24 +116,25 @@ namespace StockCrawler.Services.Collectors
                     + GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "無形資產"))
                     + GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "遞延所得稅資產"))
                     + GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "其他非流動資產")),
-                TotalAssets = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "資產總額")),
+                TotalAssets = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, new string[] { "資產總額", "資產總計" })),
                 // Liabilities
                 ShortLoan = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "短期借款")),
                 ShortBillsPayable = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "應付短期票券")),
-                AccountsAndBillsPayable = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "應付帳款"))
+                AccountsAndBillsPayable = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, new string[] { "應付帳款", "應付款項" }))
                     + GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "應付帳款－關係人")),
                 AdvenceReceipt = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "預收款項")),
                 LongLiabilitiesWithinOneYear = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "一年內到期長期負債")),
-                OtherCurrentLiabilities = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "其他應付款"))
+                OtherCurrentLiabilities = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, new string[] { "其他應付款", "其他負債" }))
                     + GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "本期所得稅負債"))
-                    + GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "其他流動負債")),
+                    + GetNodeTextTo<decimal>(SearchValueNode(bodyNode, new string[] { "其他流動負債", "其他金融負債" })),
                 CurrentLiabilities = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "流動負債合計")),
                 LongLiabilities = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "應付公司債")),
                 OtherLiabilities = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "遞延所得稅負債"))
                     + GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "租賃負債－非流動"))
-                    + +GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "其他非流動負債")),
-                TotalLiability = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "負債總額")),
-                NetWorth = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "權益總額")),
+                    + GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "其他負債"))
+                    + GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "其他非流動負債")),
+                TotalLiability = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, new string[] { "負債總額", "負債總計" })),
+                NetWorth = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, new string[] { "權益總額", "權益總計" })),
             };
         }
         private GetStockReportMonthlyNetProfitTaxedResult TransformNodeToMonlyNetProfitTaxedRow(
@@ -142,7 +142,7 @@ namespace StockCrawler.Services.Collectors
         {
             return new GetStockReportMonthlyNetProfitTaxedResult()
             {
-                NetProfitTaxed = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "本月", beginIndex:1, xpath1: "./tr[{0}]/th[1]", xpath2: "./tr[{0}]/td[1]")),
+                NetProfitTaxed = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "本月", beginIndex: 1, xpath1: "./tr[{0}]/th[1]", xpath2: "./tr[{0}]/td[1]")),
                 LastYearNetProfitTaxed = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "去年同期", beginIndex: 1, xpath1: "./tr[{0}]/th[1]", xpath2: "./tr[{0}]/td[1]")),
                 Delta = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "增減金額", beginIndex: 1, xpath1: "./tr[{0}]/th[1]", xpath2: "./tr[{0}]/td[1]")),
                 DeltaPercent = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "增減百分比", beginIndex: 1, xpath1: "./tr[{0}]/th[1]", xpath2: "./tr[{0}]/td[1]")) / 100,
@@ -150,7 +150,7 @@ namespace StockCrawler.Services.Collectors
                 LastYearTillThisMonth = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "去年累計", beginIndex: 1, xpath1: "./tr[{0}]/th[1]", xpath2: "./tr[{0}]/td[1]")),
                 TillThisMonthDelta = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "增減金額", beginIndex: 8, xpath1: "./tr[{0}]/th[1]", xpath2: "./tr[{0}]/td[1]")),
                 TillThisMonthDeltaPercent = GetNodeTextTo<decimal>(SearchValueNode(bodyNode, "增減百分比", beginIndex: 9, xpath1: "./tr[{0}]/th[1]", xpath2: "./tr[{0}]/td[1]")) / 100,
-                Remark = SearchValueNode(bodyNode, "備註/營收變化原因說明", beginIndex: 1, xpath1: "./th[1]", xpath2: "./td[1]").InnerText.Trim().Replace(" ", string.Empty),
+                Remark = SearchValueNode(bodyNode, "備註/營收變化原因說明", beginIndex: 1, xpath1: "./th[1]", xpath2: "./td[1]")?.InnerText.Trim().Replace(" ", string.Empty) ?? string.Empty,
             };
         }
     }

@@ -28,11 +28,11 @@ namespace StockCrawler.UnitTest.Jobs
                 {
                     var data = db.GetStocks(null).ToList();
                     Assert.AreEqual(45, data.Count);
-                    Assert.AreEqual(TEST_STOCK_NO_1, data[43].StockNo);
+                    Assert.AreEqual(TEST_STOCKNO_台積電, data[43].StockNo);
                 }
                 {
-                    var data = db.GetStockBasicInfo(TEST_STOCK_NO_1).First();
-                    Assert.AreEqual(TEST_STOCK_NO_1, data.StockNo);
+                    var data = db.GetStockBasicInfo(TEST_STOCKNO_台積電).First();
+                    Assert.AreEqual(TEST_STOCKNO_台積電, data.StockNo);
                     Assert.AreEqual("台積電", data.StockName);
                     Assert.AreEqual(new DateTime(1987, 2, 21), data.BuildDate);
                     Assert.AreEqual(new DateTime(1994, 9, 5), data.PublishDate);

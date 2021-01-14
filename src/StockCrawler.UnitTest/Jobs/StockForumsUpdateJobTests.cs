@@ -29,13 +29,13 @@ namespace StockCrawler.UnitTest.Jobs
             target.Execute(context);
             using (var db = RepositoryProvider.GetRepositoryInstance())
             {
-                var data = db.GetStockMarketNews(10, TEST_STOCK_NO_1, "mops", new DateTime(2021, 1, 5), new DateTime(2021, 1, 5));
+                var data = db.GetStockMarketNews(10, TEST_STOCKNO_台積電, "mops", new DateTime(2021, 1, 5), new DateTime(2021, 1, 5));
                 Assert.IsTrue(data.Any());
                 foreach (var d in data)
                 {
                     _logger.DebugFormat("{0}\t{1}\t{2}", d.StockNo, d.Subject, d.Url);
                     Assert.IsFalse(d.Subject.StartsWith("[新聞]"));
-                    Assert.AreEqual(TEST_STOCK_NO_1, d.StockNo);
+                    Assert.AreEqual(TEST_STOCKNO_台積電, d.StockNo);
                 }
                 data = db.GetStockMarketNews(10, null, "twse", new DateTime(2021, 1, 5), new DateTime(2021, 1, 5));
                 Assert.IsTrue(data.Any());

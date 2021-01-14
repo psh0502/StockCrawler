@@ -16,7 +16,7 @@ namespace StockCrawler.UnitTest.Jobs
     public class StockPriceHistoryInitJobTest : UnitTestBase
     {
         private static bool IsExecuted = false;
-        private const string stockNo = TEST_STOCK_NO_1; // 台積電
+        private const string stockNo = TEST_STOCKNO_台積電; // 台積電
         private static readonly DateTime today = new DateTime(2020, 4, 6);
         [TestInitialize]
         public override void InitBeforeTest()
