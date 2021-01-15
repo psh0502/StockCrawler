@@ -36,7 +36,7 @@ namespace StockCrawler.Services.Collectors
                     var a = node.SelectSingleNode("div[@class=\"title\"]/a");
                     if (a != null)
                     {
-                        var title = HttpUtility.UrlDecode(Tools.CleanString(a.InnerText));
+                        var title = HttpUtility.HtmlDecode(Tools.CleanString(a.InnerText));
                         var date_str = Tools.CleanString(node.SelectSingleNode("div[@class=\"meta\"]/div[@class=\"date\"]").InnerText);
                         article_date = DateTime.Parse(DateTime.Today.Year + "/" + date_str);
                         if (article_date == date)
