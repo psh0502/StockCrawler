@@ -68,8 +68,7 @@ namespace StockCrawler.Services
         protected T GetNodeTextTo<T>(HtmlNode node)
         {
             if (null == node) return default;
-            var innerText = HttpUtility.HtmlDecode(node.InnerText.Replace(",", string.Empty).Trim());
-            innerText = innerText.Replace(UTF8SpacingChar, string.Empty);
+            var innerText = Tools.CleanString(node.InnerText).Replace(",", string.Empty).Trim();
             try
             {
                 if (typeof(T) == typeof(int))
@@ -89,7 +88,7 @@ namespace StockCrawler.Services
             }
             catch (Exception e)
             {
-                _logger.DebugFormat("{0} innerText={1}, {2}", e.Message, innerText, typeof(T));
+                _logger.WarnFormat("{0} innerText={1}, {2}", e.Message, innerText, typeof(T).Name);
                 throw;
             }
         }

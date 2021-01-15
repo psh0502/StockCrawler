@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
+using System.Web;
 
 namespace StockCrawler.Services
 {
@@ -266,7 +267,7 @@ namespace StockCrawler.Services
         /// <returns>乾淨的字元</returns>
         public static string CleanString(string text)
         {
-            return text
+            return HttpUtility.HtmlEncode(text)
                 .Replace("&nbsp;", string.Empty)
                 .Replace(" ", string.Empty)
                 .Replace(Environment.NewLine, string.Empty)
