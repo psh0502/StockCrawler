@@ -8,6 +8,10 @@ namespace StockCrawler.Dao
 {
     internal class MsSqlRepository : IRepository
     {
+        private static StockDataContext GetMSSQLStockDataContext()
+        {
+            return new StockDataContext(ConnectionStringHelper.StockConnectionString);
+        }
         #region 取得資料
         public GetCategoryMappingResult[] GetCategoryMapping()
         {
@@ -102,7 +106,7 @@ namespace StockCrawler.Dao
                     {
                         db.Transaction.Rollback();
                     }
-                    catch { }
+                    catch(SqlException) { }
                     throw;
                 }
             }
@@ -114,7 +118,8 @@ namespace StockCrawler.Dao
                     try
                     {
                         db.InsertStockMarketNews(d.StockNo, d.Source, d.NewsDate, d.Subject, d.Url);
-                    }catch(SqlException)
+                    }
+                    catch (SqlException)
                     {
                         Debug.WriteLine(string.Format("[{0}] news can't be wrote.", d.StockNo));
                         throw;
@@ -145,10 +150,6 @@ namespace StockCrawler.Dao
                 foreach (var d in data)
                     db.InsertOrUpdateStock(d.StockNo, d.StockName, d.CategoryNo);
             }
-        }
-        private static StockDataContext GetMSSQLStockDataContext()
-        {
-            return new StockDataContext(ConnectionStringHelper.StockConnectionString);
         }
         public void InsertOrUpdateStock(string stockNo, string stockName, string categoryNo)
         {

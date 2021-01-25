@@ -1,7 +1,6 @@
 ﻿using Common.Logging;
 using Newtonsoft.Json;
 using System;
-using System.Text;
 using System.Threading;
 
 namespace StockCrawler.Services.Collectors
@@ -9,6 +8,8 @@ namespace StockCrawler.Services.Collectors
     internal class LazyStockCollector : ILazyStockCollector
     {
         internal ILog _logger = LogManager.GetLogger(typeof(LazyStockCollector));
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         public LazyStockData GetData(string stockNo)
         {
             try
