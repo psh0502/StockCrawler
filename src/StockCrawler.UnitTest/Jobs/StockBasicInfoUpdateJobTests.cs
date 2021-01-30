@@ -26,9 +26,8 @@ namespace StockCrawler.UnitTest.Jobs
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
             {
                 {
-                    var data = db.GetStocks(null).ToList();
-                    Assert.AreEqual(45, data.Count);
-                    Assert.AreEqual(TEST_STOCKNO_台積電, data[43].StockNo);
+                    var s = db.GetStocks(TEST_STOCKNO_台積電).First();
+                    Assert.AreEqual("0029", s.CategoryNo);
                 }
                 {
                     var data = db.GetStockBasicInfo(TEST_STOCKNO_台積電).First();
