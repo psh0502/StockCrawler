@@ -32,10 +32,11 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.1.0.4")]
-[assembly: AssemblyFileVersion("1.1.1.3")]
+[assembly: AssemblyFileVersion("1.1.1.4")]
 #if(DEBUG)
 [assembly: AssemblyDescription("Debug build")]
 [assembly: InternalsVisibleTo("StockCrawler.UnitTest")]
 #else
 [assembly: AssemblyDescription("Release build")]
+[assembly: AssemblyKeyFile("DOWAY.snk")]
 #endif
