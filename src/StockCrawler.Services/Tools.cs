@@ -267,7 +267,7 @@ namespace StockCrawler.Services
         /// <returns>乾淨的字元</returns>
         public static string CleanString(string text)
         {
-            return HttpUtility.HtmlEncode(text)
+            return HttpUtility.HtmlDecode(text)
                 .Replace("&nbsp;", string.Empty)
                 .Replace(" ", string.Empty)
                 .Replace(Environment.NewLine, string.Empty)
