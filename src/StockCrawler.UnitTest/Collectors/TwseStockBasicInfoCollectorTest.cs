@@ -23,7 +23,7 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual(259303804580, r.Capital);
             // Assert.AreNotEqual(0, r.MarketValue, "市場總值");
             Assert.AreEqual("劉德音", r.Chairman);
-            Assert.AreEqual("總裁: 魏哲家", r.CEO);
+            Assert.AreEqual("總裁:魏哲家", r.CEO);
             Assert.AreEqual("半導體業", r.Category);
             Assert.AreEqual("依客戶之訂單與其提供之產品設計說明，以從事製造與銷售積體電路以及其他晶圓半導體裝置。提供前述產品之封裝與測試服務、積體電路之電腦輔助設計技術服務。提供製造光罩及其設計服務。", r.Business);
             Assert.AreEqual("22099131", r.CompanyID);
