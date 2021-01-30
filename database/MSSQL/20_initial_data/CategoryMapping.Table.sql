@@ -1,8 +1,10 @@
+TRUNCATE TABLE [dbo].[CategoryMapping]
+GO
 INSERT INTO [dbo].[CategoryMapping]([Category], [CategoryNo])
 VALUES
 (N'保險業', '0040'),
 (N'光電業', '0031'),
-(N'其他業', '0043'),
+(N'其他', '0043'),
 (N'其他電子業', '0036'),
 (N'化學工業', '0023'),
 (N'半導體業', '0029'),
