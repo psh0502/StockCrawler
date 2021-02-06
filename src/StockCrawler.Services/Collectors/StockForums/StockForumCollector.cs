@@ -19,7 +19,7 @@ namespace StockCrawler.Services.Collectors
         public IList<(GetStockForumDataResult Article, IList<GetStocksResult> relateToStockNo)> GetPttData(DateTime date)
         {
             var article_date = DateTime.MinValue;
-            IList<(GetStockForumDataResult, IList<GetStocksResult>)> result = new List<(GetStockForumDataResult, IList<GetStocksResult>)>();
+            var result = new List<(GetStockForumDataResult, IList<GetStocksResult>)>();
             var uri = new Uri("https://www.ptt.cc/bbs/Stock/index.html");
             var doc = new HtmlDocument();
             var missing_right_date_page_counter = 0;
