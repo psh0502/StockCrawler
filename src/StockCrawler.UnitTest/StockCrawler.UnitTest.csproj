@@ -281,6 +281,7 @@
     <Content Include="TestData\Ptt\ziIfT.html" />
     <Content Include="TestData\Sql\Stock.data.sql" />
     <Content Include="TestData\TWSE\2020-12-03.html" />
+    <Content Include="TestData\TWSE\SimplfiedFinancialReport_2330.html" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StockCrawler.Dao\StockCrawler.Dao.csproj">
