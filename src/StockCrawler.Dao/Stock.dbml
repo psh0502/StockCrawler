@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Stock" Class="StockDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Stock;Integrated Security=True" SettingsObjectName="StockCrawler.Dao.Properties.Settings" SettingsPropertyName="StockConnectionString1" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Stock;Integrated Security=True" SettingsObjectName="StockCrawler.Dao.Properties.Settings" SettingsPropertyName="StockConnectionString" Provider="System.Data.SqlClient" />
   <Function Name="dbo.CalculateStockPriceAverage" Method="CalculateStockPriceAverage">
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
     <Parameter Name="pDateEnd" Type="System.DateTime" DbType="Date" />
@@ -91,6 +91,31 @@
       <Column Name="MarketValue" Type="System.Decimal" DbType="Money" CanBeNull="true" />
     </ElementType>
   </Function>
+  <Function Name="dbo.GetStockFinancialReport" Method="GetStockFinancialReport">
+    <Parameter Name="pTop" Type="System.Int32" DbType="Int" />
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="pSeason" Type="System.Int16" DbType="SmallInt" />
+    <ElementType Name="GetStockFinancialReportResult">
+      <Column Name="StockName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Year" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="Season" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="TotalAssets" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="TotalLiability" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="NetWorth" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="NAV" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="Revenue" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="BusinessInterest" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="NetProfitTaxFree" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="EPS" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="BusinessCashflow" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="InvestmentCashflow" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="FinancingCashflow" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
   <Function Name="dbo.GetStockForumData" Method="GetStockForumData">
     <Parameter Name="pTop" Type="System.Int32" DbType="Int" />
     <Parameter Name="pID" Type="System.Int64" DbType="BigInt" />
@@ -170,111 +195,6 @@
       <Column Name="RNO" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
     </ElementType>
   </Function>
-  <Function Name="dbo.GetStockReportBalance" Method="GetStockReportBalance">
-    <Parameter Name="pTop" Type="System.Int32" DbType="Int" />
-    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
-    <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
-    <Parameter Name="pSeason" Type="System.Int16" DbType="SmallInt" />
-    <ElementType Name="GetStockReportBalanceResult">
-      <Column Name="StockName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="Year" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
-      <Column Name="Season" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
-      <Column Name="CashAndEquivalents" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="ShortInvestments" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="BillsReceivable" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="Stock" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="OtherCurrentAssets" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="CurrentAssets" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="LongInvestment" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="FixedAssets" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="OtherAssets" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="TotalAssets" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="ShortLoan" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="ShortBillsPayable" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="AccountsAndBillsPayable" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="AdvenceReceipt" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="LongLiabilitiesWithinOneYear" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="OtherCurrentLiabilities" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="CurrentLiabilities" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="LongLiabilities" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="OtherLiabilities" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="TotalLiability" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="NetWorth" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="NAV" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-    </ElementType>
-  </Function>
-  <Function Name="dbo.GetStockReportCashFlow" Method="GetStockReportCashFlow">
-    <Parameter Name="pTop" Type="System.Int32" DbType="Int" />
-    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
-    <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
-    <Parameter Name="pSeason" Type="System.Int16" DbType="SmallInt" />
-    <ElementType Name="GetStockReportCashFlowResult">
-      <Column Name="StockName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="Year" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
-      <Column Name="Season" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
-      <Column Name="Depreciation" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="AmortizationFee" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="BusinessCashflow" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="InvestmentCashflow" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="FinancingCashflow" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="CapitalExpenditures" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="FreeCashflow" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="NetCashflow" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-    </ElementType>
-  </Function>
-  <Function Name="dbo.GetStockReportIncome" Method="GetStockReportIncome">
-    <Parameter Name="pTop" Type="System.Int32" DbType="Int" />
-    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
-    <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
-    <Parameter Name="pSeason" Type="System.Int16" DbType="SmallInt" />
-    <ElementType Name="GetStockReportIncomeResult">
-      <Column Name="StockName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="Year" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
-      <Column Name="Season" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
-      <Column Name="Revenue" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="GrossProfit" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="SalesExpense" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="ManagementCost" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="RDExpense" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="OperatingExpenses" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="BusinessInterest" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="NetProfitTaxFree" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="NetProfitTaxed" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="EPS" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-    </ElementType>
-  </Function>
-  <Function Name="dbo.GetStockReportMonthlyNetProfitTaxed" Method="GetStockReportMonthlyNetProfitTaxed">
-    <Parameter Name="pTop" Type="System.Int32" DbType="Int" />
-    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
-    <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
-    <Parameter Name="pMonth" Type="System.Int16" DbType="SmallInt" />
-    <ElementType Name="GetStockReportMonthlyNetProfitTaxedResult">
-      <Column Name="StockName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="Year" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
-      <Column Name="Month" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
-      <Column Name="NetProfitTaxed" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="LastYearNetProfitTaxed" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="Delta" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="DeltaPercent" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
-      <Column Name="ThisYearTillThisMonth" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="LastYearTillThisMonth" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="TillThisMonthDelta" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="TillThisMonthDeltaPercent" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
-      <Column Name="Remark" Type="System.String" DbType="NVarChar(1000) NOT NULL" CanBeNull="false" />
-      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-    </ElementType>
-  </Function>
   <Function Name="dbo.GetStocks" Method="GetStocks">
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(20)" />
     <ElementType Name="GetStocksResult">
@@ -337,6 +257,23 @@
     <Parameter Name="pBusiness" Type="System.String" DbType="NVarChar(1000)" />
     <Return Type="System.Int32" />
   </Function>
+  <Function Name="dbo.InsertOrUpdateStockFinancialReport" Method="InsertOrUpdateStockFinancialReport">
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="pSeason" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="pTotalAssets" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pTotalLiability" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pNetWorth" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pNAV" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pRevenue" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pBusinessInterest" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pNetProfitTaxFree" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pEPS" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pBusinessCashflow" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pInvestmentCashflow" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pFinancingCashflow" Type="System.Decimal" DbType="Money" />
+    <Return Type="System.Int32" />
+  </Function>
   <Function Name="dbo.InsertOrUpdateStockPriceHistory" Method="InsertOrUpdateStockPriceHistory">
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(20)" />
     <Parameter Name="pStockDT" Type="System.DateTime" DbType="Date" />
@@ -349,79 +286,6 @@
     <Parameter Name="pDeltaPercent" Type="System.Decimal" DbType="Decimal(10,4)" />
     <Parameter Name="pPE" Type="System.Decimal" DbType="Decimal(10,4)" />
     <Parameter Name="pVolume" Type="System.Int64" DbType="BigInt" />
-    <Return Type="System.Int32" />
-  </Function>
-  <Function Name="dbo.InsertOrUpdateStockReportBalance" Method="InsertOrUpdateStockReportBalance">
-    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
-    <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
-    <Parameter Name="pSeason" Type="System.Int16" DbType="SmallInt" />
-    <Parameter Name="pCashAndEquivalents" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pShortInvestments" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pBillsReceivable" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pStock" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pOtherCurrentAssets" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pCurrentAssets" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pLongInvestment" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pFixedAssets" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pOtherAssets" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pTotalAssets" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pShortLoan" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pShortBillsPayable" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pAccountsAndBillsPayable" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pAdvenceReceipt" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pLongLiabilitiesWithinOneYear" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pOtherCurrentLiabilities" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pCurrentLiabilities" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pLongLiabilities" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pOtherLiabilities" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pTotalLiability" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pNetWorth" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pNAV" Type="System.Decimal" DbType="Money" />
-    <Return Type="System.Int32" />
-  </Function>
-  <Function Name="dbo.InsertOrUpdateStockReportCashFlow" Method="InsertOrUpdateStockReportCashFlow">
-    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
-    <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
-    <Parameter Name="pSeason" Type="System.Int16" DbType="SmallInt" />
-    <Parameter Name="pDepreciation" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pAmortizationFee" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pBusinessCashflow" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pInvestmentCashflow" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pFinancingCashflow" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pCapitalExpenditures" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pFreeCashflow" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pNetCashflow" Type="System.Decimal" DbType="Money" />
-    <Return Type="System.Int32" />
-  </Function>
-  <Function Name="dbo.InsertOrUpdateStockReportIncome" Method="InsertOrUpdateStockReportIncome">
-    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
-    <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
-    <Parameter Name="pSeason" Type="System.Int16" DbType="SmallInt" />
-    <Parameter Name="pRevenue" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pGrossProfit" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pSalesExpense" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pManagementCost" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pRDExpense" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pOperatingExpenses" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pBusinessInterest" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pNetProfitTaxFree" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pNetProfitTaxed" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pEPS" Type="System.Decimal" DbType="Money" />
-    <Return Type="System.Int32" />
-  </Function>
-  <Function Name="dbo.InsertOrUpdateStockReportMonthlyNetProfitTaxed" Method="InsertOrUpdateStockReportMonthlyNetProfitTaxed">
-    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
-    <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
-    <Parameter Name="pMonth" Type="System.Int16" DbType="SmallInt" />
-    <Parameter Name="pNetProfitTaxed" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pLastYearNetProfitTaxed" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pDelta" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pDeltaPercent" Type="System.Decimal" DbType="Decimal(18,4)" />
-    <Parameter Name="pThisYearTillThisMonth" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pLastYearTillThisMonth" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pTillThisMonthDelta" Type="System.Decimal" DbType="Money" />
-    <Parameter Name="pTillThisMonthDeltaPercent" Type="System.Decimal" DbType="Decimal(18,4)" />
-    <Parameter Name="pRemark" Type="System.String" DbType="NVarChar(1000)" />
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.InsertStockForumRelations" Method="InsertStockForumRelations">

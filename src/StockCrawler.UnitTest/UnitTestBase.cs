@@ -27,10 +27,7 @@ namespace StockCrawler.UnitTest
             SqlTool.ExecuteSql("TRUNCATE TABLE StockAveragePrice");
             SqlTool.ExecuteSql("TRUNCATE TABLE StockPriceHistory");
             SqlTool.ExecuteSql("TRUNCATE TABLE StockBasicInfo");
-            SqlTool.ExecuteSql("TRUNCATE TABLE StockReportCashFlow");
-            SqlTool.ExecuteSql("TRUNCATE TABLE StockReportIncome");
-            SqlTool.ExecuteSql("TRUNCATE TABLE StockReportBalance");
-            SqlTool.ExecuteSql("TRUNCATE TABLE StockReportMonthlyNetProfitTaxed");
+            SqlTool.ExecuteSql("TRUNCATE TABLE StockFinancialReport");
             SqlTool.ExecuteSql("TRUNCATE TABLE StockMarketNews");
             SqlTool.ExecuteSql("TRUNCATE TABLE LazyStockData");
             SqlTool.ExecuteSql("DELETE Stock");

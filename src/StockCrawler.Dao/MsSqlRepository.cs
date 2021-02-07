@@ -43,26 +43,6 @@ namespace StockCrawler.Dao
             using (var db = GetMSSQLStockDataContext())
                 return db.GetStockAveragePrice(stockNo, bgnDate, endDate, period).ToArray();
         }
-        public GetStockReportIncomeResult[] GetStockReportIncome(int top, string stockNo, short year, short season)
-        {
-            using (var db = GetMSSQLStockDataContext())
-                return db.GetStockReportIncome(top, stockNo, year, season).ToArray();
-        }
-        public GetStockReportCashFlowResult[] GetStockReportCashFlow(int top, string stockNo, short year, short season)
-        {
-            using (var db = GetMSSQLStockDataContext())
-                return db.GetStockReportCashFlow(top, stockNo, year, season).ToArray();
-        }
-        public GetStockReportBalanceResult[] GetStockReportBalance(int top, string stockNo, short year, short season)
-        {
-            using (var db = GetMSSQLStockDataContext())
-                return db.GetStockReportBalance(top, stockNo, year, season).ToArray();
-        }
-        public GetStockReportMonthlyNetProfitTaxedResult[] GetStockReportMonthlyNetProfitTaxed(int top, string stockNo, short year, short month)
-        {
-            using (var db = GetMSSQLStockDataContext())
-                return db.GetStockReportMonthlyNetProfitTaxed(top, stockNo, year, month).ToArray();
-        }
         public GetStockBasicInfoResult GetStockBasicInfo(string stockNo)
         {
             using (var db = GetMSSQLStockDataContext())
@@ -77,6 +57,11 @@ namespace StockCrawler.Dao
         {
             using (var db = GetMSSQLStockDataContext())
                 return db.GetStockForumData(top, id, stockNo, bgnDate, endDate).ToArray();
+        }
+        public GetStockFinancialReportResult[] GetStockFinancialReport(int top, string stockNo, short year, short season)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                return db.GetStockFinancialReport(top, stockNo, year, season).ToArray();
         }
         #endregion
 
@@ -178,89 +163,6 @@ namespace StockCrawler.Dao
                     info.Url,
                     info.Business);
         }
-        public void InsertOrUpdateStockCashflowReport(GetStockReportCashFlowResult info)
-        {
-            using (var db = GetMSSQLStockDataContext())
-                db.InsertOrUpdateStockReportCashFlow(
-                    info.StockNo,
-                    info.Year,
-                    info.Season,
-                    info.Depreciation,
-                    info.AmortizationFee,
-                    info.BusinessCashflow,
-                    info.InvestmentCashflow,
-                    info.FinancingCashflow,
-                    info.CapitalExpenditures,
-                    info.FreeCashflow,
-                    info.NetCashflow);
-        }
-        public void InsertOrUpdateStockIncomeReport(GetStockReportIncomeResult info)
-        {
-            using (var db = GetMSSQLStockDataContext())
-                db.InsertOrUpdateStockReportIncome(
-                    info.StockNo,
-                    info.Year,
-                    info.Season,
-                    info.Revenue,
-                    info.GrossProfit,
-                    info.SalesExpense,
-                    info.ManagementCost,
-                    info.RDExpense,
-                    info.OperatingExpenses,
-                    info.BusinessInterest,
-                    info.NetProfitTaxFree,
-                    info.NetProfitTaxed,
-                    info.EPS);
-        }
-        public void InsertOrUpdateStockBalanceReport(GetStockReportBalanceResult info)
-        {
-            using (var db = GetMSSQLStockDataContext())
-            {
-                db.InsertOrUpdateStockReportBalance(
-                    info.StockNo,
-                    info.Year,
-                    info.Season,
-                    info.CashAndEquivalents,
-                    info.ShortInvestments,
-                    info.BillsReceivable,
-                    info.Stock,
-                    info.OtherCurrentAssets,
-                    info.CurrentAssets,
-                    info.LongInvestment,
-                    info.FixedAssets,
-                    info.OtherAssets,
-                    info.TotalAssets,
-                    info.ShortLoan,
-                    info.ShortBillsPayable,
-                    info.AccountsAndBillsPayable,
-                    info.AdvenceReceipt,
-                    info.LongLiabilitiesWithinOneYear,
-                    info.OtherCurrentLiabilities,
-                    info.CurrentLiabilities,
-                    info.LongLiabilities,
-                    info.OtherLiabilities,
-                    info.TotalLiability,
-                    info.NetWorth,
-                    info.NAV);
-            }
-        }
-        public void InsertOrUpdateStockMonthlyNetProfitTaxedReport(GetStockReportMonthlyNetProfitTaxedResult info)
-        {
-            using (var db = GetMSSQLStockDataContext())
-                db.InsertOrUpdateStockReportMonthlyNetProfitTaxed(
-                    info.StockNo,
-                    info.Year,
-                    info.Month,
-                    info.NetProfitTaxed,
-                    info.LastYearNetProfitTaxed,
-                    info.Delta,
-                    info.DeltaPercent,
-                    info.ThisYearTillThisMonth,
-                    info.LastYearTillThisMonth,
-                    info.TillThisMonthDelta,
-                    info.TillThisMonthDeltaPercent,
-                    info.Remark);
-        }
         public void InsertOrUpdateStockAveragePrice((string stockNo, DateTime stockDT, short period, decimal averagePrice)[] avgPriceList)
         {
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
@@ -295,6 +197,26 @@ namespace StockCrawler.Dao
                     data.Price6,
                     data.Price7,
                     data.CurrPrice);
+        }
+        public void InsertOrUpdateStockFinancialReport(GetStockFinancialReportResult data)
+        {
+            using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
+                db.InsertOrUpdateStockFinancialReport(
+                    data.StockNo,
+                    data.Year,
+                    data.Season,
+                    data.TotalAssets,
+                    data.TotalLiability,
+                    data.NetWorth,
+                    data.NAV,
+                    data.Revenue,
+                    data.BusinessInterest,
+                    data.NetProfitTaxFree,
+                    data.EPS,
+                    data.BusinessCashflow,
+                    data.InvestmentCashflow,
+                    data.FinancingCashflow
+                    );
         }
         #endregion
 

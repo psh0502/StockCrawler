@@ -42,10 +42,6 @@ namespace StockCrawler.Dao
         GetStockBasicInfoResult GetStockBasicInfo(string stockNo);
         GetStocksResult[] GetStocks();
         GetStocksResult GetStock(string stockNo);
-        GetStockReportCashFlowResult[] GetStockReportCashFlow(int top, string stockNo, short year, short season);
-        GetStockReportBalanceResult[] GetStockReportBalance(int top, string stockNo, short year, short season);
-        GetStockReportIncomeResult[] GetStockReportIncome(int top, string stockNo, short year, short season);
-        GetStockReportMonthlyNetProfitTaxedResult[] GetStockReportMonthlyNetProfitTaxed(int top, string stockNo, short year, short month);
         GetStockMarketNewsResult[] GetStockMarketNews(int top, string stockNo, string source, DateTime startDate, DateTime endDate);
         /// <summary>
         /// 取得指定期間的股價明細
@@ -58,6 +54,7 @@ namespace StockCrawler.Dao
         GetStockAveragePriceResult[] GetStockAveragePrice(string stockNo, DateTime bgnDate, DateTime endDate, short period);
         GetLazyStockDataResult GetLazyStockData(string stockNo);
         GetStockForumDataResult[] GetStockForumData(int top, DateTime bgnDate, DateTime endDate, long? id = null, string stockNo = null);
+        GetStockFinancialReportResult[] GetStockFinancialReport(int top, string stockNo, short year, short season);
         #endregion
 
         #region 新增修改
@@ -69,7 +66,6 @@ namespace StockCrawler.Dao
         /// <param name="data">Collection of stock company's basic information</param>
         void InsertOrUpdateStockBasicInfo(GetStockBasicInfoResult[] data);
         void InsertOrUpdateStockBasicInfo(GetStockBasicInfoResult data);
-        void InsertOrUpdateStockCashflowReport(GetStockReportCashFlowResult info);
         void InsertOrUpdateStockPrice(GetStockPeriodPriceResult[] data);
         void InsertOrUpdateStock(GetStocksResult[] data);
         /// <summary>
@@ -79,11 +75,9 @@ namespace StockCrawler.Dao
         /// <param name="stockName">stock name</param>
         /// <param name="categoryNo">Industry index stock No</param>
         void InsertOrUpdateStock(string stockNo, string stockName, string categoryNo);
-        void InsertOrUpdateStockIncomeReport(GetStockReportIncomeResult info);
-        void InsertOrUpdateStockBalanceReport(GetStockReportBalanceResult info);
         void InsertOrUpdateStockAveragePrice((string stockNo, DateTime stockDT, short period, decimal averagePrice)[] avgPriceList);
-        void InsertOrUpdateStockMonthlyNetProfitTaxedReport(GetStockReportMonthlyNetProfitTaxedResult info);
         void InsertOrUpdateLazyStock(GetLazyStockDataResult data);
+        void InsertOrUpdateStockFinancialReport(GetStockFinancialReportResult data);
         #endregion
 
         #region 刪除
