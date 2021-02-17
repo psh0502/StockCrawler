@@ -29,6 +29,8 @@ namespace StockCrawler.Services
                         StockName = d.StockName,
                         Enable = true
                     }).ToList();
+                // #34 Filter out non-trade day price data
+                priceInfo = priceInfo.Where(d => d.ClosePrice > 0).ToArray();
 
                 using (var db = GetDB())
                 {
