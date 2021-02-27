@@ -2,6 +2,7 @@
 using HtmlAgilityPack;
 using System;
 using System.Configuration;
+using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading;
@@ -35,11 +36,11 @@ namespace StockCrawler.Services
                         .Replace("X", string.Empty)
                         .Trim();
         }
-        protected HtmlNode SearchValueNode(HtmlNode bodyNode, string keyword, int beginIndex = 5, string xpath1 = "./tr[{0}]/td[1]", string xpath2 = "./tr[{0}]/td[2]")
+        protected HtmlNode SearchValueNode(HtmlNode bodyNode, string keyword, int beginIndex = 1, string xpath1 = "./tr[{0}]/td[1]", string xpath2 = "./tr[{0}]/td[2]")
         {
             return SearchValueNode(bodyNode, new string[] { keyword }, beginIndex, xpath1, xpath2);
         }
-        protected HtmlNode SearchValueNode(HtmlNode bodyNode, string[] keywords, int beginIndex = 5, string xpath1 = "./tr[{0}]/td[1]", string xpath2 = "./tr[{0}]/td[2]")
+        protected HtmlNode SearchValueNode(HtmlNode bodyNode, string[] keywords, int beginIndex = 1, string xpath1 = "./tr[{0}]/td[1]", string xpath2 = "./tr[{0}]/td[2]")
         {
             if (null == bodyNode) throw new ArgumentException("The parameter can't be null", nameof(bodyNode));
             foreach (var compare in _compare_methods)
@@ -104,7 +105,7 @@ namespace StockCrawler.Services
         /// <returns>含有資料的 html 節點</returns>
         /// <exception cref="WebException">網站讀取過於頻繁, 需要稍等後再讀取</exception>
         /// <exception cref="ApplicationException">該公司股票不繼續公開發行</exception>
-        protected HtmlNode GetTwseDataBack(string url, string stockNo, short year = -1, short season = -1, short month = -1, short step = 1, string xpath = _xpath_01)
+        protected virtual HtmlNode GetTwseDataBack(string url, string stockNo, short year = -1, short season = -1, short month = -1, short step = 1, string xpath = _xpath_01)
         {
             var formData = HttpUtility.ParseQueryString(string.Empty);
             formData.Add("step", step.ToString());
@@ -156,6 +157,13 @@ namespace StockCrawler.Services
 
             var doc = new HtmlDocument();
             doc.LoadHtml(html);
+#if (DEBUG)
+            //var file = new FileInfo($@"..\..\..\StockCrawler.UnitTest\TestData\TWSE\{stockNo}_{year}_{month}_{season}_{SystemTime.Today:yyyy-MM-dd}_{step}.html");
+            //if (file.Exists) file.Delete();
+            //using (var sw = file.CreateText())
+            //    sw.Write(html);
+#endif
+
             var tableNode = doc.DocumentNode.SelectSingleNode(xpath);
             if (null == tableNode || string.IsNullOrEmpty(tableNode.InnerText.Trim()))
             {

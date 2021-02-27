@@ -23,30 +23,29 @@ namespace StockCrawler.UnitTest.Jobs
         {
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
             {
-                var data = db.GetStockFinancialReport(1, TEST_STOCKNO_台積電, (short)(Services.SystemTime.Today.Year - 1911), 1).ToList();
-                Assert.AreEqual(1, data.Count, "資料筆數");
+                var data = db.GetStockFinancialReport(100, TEST_STOCKNO_台積電, -1, -1).ToList();
+                Assert.AreEqual(3, data.Count, "資料筆數");
                 var d1 = data.First();
                 Assert.AreEqual(TEST_STOCKNO_台積電, d1.StockNo);
                 Assert.AreEqual(109, d1.Year);
-                Assert.AreEqual(1, d1.Season);
-                Assert.AreEqual(2635572214, d1.TotalAssets);
-                Assert.AreEqual(847305839, d1.TotalLiability);
-                Assert.AreEqual(1788266375, d1.NetWorth);
-                Assert.AreEqual(68.93, d1.NAV);
-                Assert.AreEqual(977721754, d1.Revenue);
-                Assert.AreEqual(409663524, d1.BusinessInterest);
-                Assert.AreEqual(423669819, d1.NetProfitTaxFree);
-                Assert.AreEqual(14.47, d1.EPS);
-                Assert.AreEqual(563535628, d1.BusinessCashflow);
-                Assert.AreEqual(-414823101,  d1.InvestmentCashflow);
-                Assert.AreEqual(12588708, d1.FinancingCashflow);
+                Assert.AreEqual(4, d1.Season);
+                Assert.AreEqual(2760711405m, d1.TotalAssets, "資產總計");
+                Assert.AreEqual(910089406m, d1.TotalLiability, "負債總計");
+                Assert.AreEqual(1850621999m, d1.NetWorth, "權益總計");
+                Assert.AreEqual(71.33m, d1.NAV, "每股淨值");
+                Assert.AreEqual(1339254811m, d1.Revenue, "營業收入");
+                Assert.AreEqual(566783698m, d1.BusinessInterest, "營業利益");
+                Assert.AreEqual(584777180m, d1.NetProfitTaxFree, "稅前淨利");
+                Assert.AreEqual(19.97m, d1.EPS, "每股盈餘");
+                Assert.AreEqual(822666212m, d1.BusinessCashflow, "營業活動之淨現金流入");
+                Assert.AreEqual(-505781714m, d1.InvestmentCashflow, "投資活動之淨現金流入");
+                Assert.AreEqual(-88615087m, d1.FinancingCashflow, "籌資活動之淨現金流入");
             }
         }
-        public void ExecuteTest()
+        public static void ExecuteTest()
         {
             if (!IsExecuted)
             {
-                Services.SystemTime.SetFakeTime(new DateTime(1911 + 109, 10, 1));
                 StockFinReportUpdateJob.Logger = new UnitTestLogger();
                 var target = new StockFinReportUpdateJob();
                 IJobExecutionContext context = null;

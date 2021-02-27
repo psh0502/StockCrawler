@@ -1,0 +1,410 @@
+<html>
+<head>
+    <title>公開資訊觀測站</title>
+    <!--	<link href="css/css1.css" rel="stylesheet" type="text/css" Media="Screen" /> -->
+    <!--	<script type="text/javascript" src="js/mops1.js"></script> -->
+</head>
+
+<body>
+    <div id='company'>
+        <br>
+        <br>
+        <div style='font-weight:bold; float:left;font-size:15px;'><img src='images/icon_nav.gif' hspace='3'>公司名稱：台積電&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+        <div style='font-weight:bold; float:left;font-size:15px;'><img src='images/icon_nav.gif' hspace='3'>公司代號：2330&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+        <div style='font-weight:bold; float:left;font-size:15px;'><img src='images/icon_nav.gif' hspace='3'>產業類別：上市半導體業&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+        <br>
+        <br>
+        <br>
+        <form method='post' onsubmit='return false;' name='fm1' id='fm1'>
+            <input type='hidden' name="firstin" id="firstin" value="true">
+            <input type='hidden' name="off" id="off" value="1">
+            <input type='hidden' name="first" id="first" value="true">
+            <input type='hidden' name="TYPEK" id="TYPEK" value="sii">
+            <input type='hidden' name="step" id="step" value="">
+            <input type='hidden' name="co_id" id="co_id" value="2330">
+            <input type='hidden' name="year" id="year" value="">
+            <input type='hidden' name="season" id="season" value="">
+            <input type='hidden' name="month" id="month" value="">
+            <input type='hidden' name="spoke_date" id="spoke_date" value="">
+            <input type='hidden' name="spoke_time" id="spoke_time" value="">
+            <input type='hidden' name="content" id="content" value="">
+            <input type='hidden' name="seq_no" id="seq_no" value="">
+            <input type='hidden' name="b_date" id="b_date" value="">
+            <input type='hidden' name="e_date" id="e_date" value="">
+            <input type='hidden' name="isnew" id="isnew" value="">
+            <input type='hidden' name="isgood" id="isgood" value="">
+            <input type='hidden' name="COMPANY_NAME" id="COMPANY_NAME" value="台積電">
+            <input type='hidden' name="KIND" id="KIND" value="">
+            <input type='hidden' name="colorchg" id="colorchg" value="">
+            <input type='hidden' name="seamon" id="seamon" value="">
+            <input type='hidden' name="mtype" id="mtype" value="">
+        </form>
+        <div id='title'>
+            <div class='title_left'>公司基本資料</div>
+        </div>
+        <table>
+            <tr class='thbg'>
+                <td>董事長</td>
+                <td>總經理</td>
+                <td>發言人</td>
+                <td>聯絡電話</td>
+                <td class='thbg'>公司網址</td>
+            </tr>
+            <tr class='text_center'>
+                <td>劉德音</td>
+                <td>總裁: 魏哲家</td>
+                <td>黃仁昭</td>
+                <td>03-5636688</td>
+                <td><a href='Http://www.tsmc.com' target='_blank'>Http://www.tsmc.com</a></td>
+            </tr>
+            <tr class='thbg'>
+                <td colspan='3'>公司地址</td>
+                <td>主要經營業務</td>
+                <td>實收資本額</td>
+            </tr>
+            <tr class='text_center'>
+                <td colspan='3'>新竹科學園區力行六路8號</td>
+                <td>依客戶之訂單與其提供之產品設計說明，以從事製造與銷售積體電路</td>
+                <td>    259,303,804,580</td>
+            </tr>
+        </table>
+        <div class='more'>
+            <span class='more_button' onClick="document.fm1.step.value='1';document.fm1.action='/mops/web/ajax_t05st03';openWindow(document.fm1 ,'');">more</span>
+        </div>
+        <div id='title'>
+            <div class='title_left'>公司近期發布之重大訊息</div>
+        </div>
+        <table>
+            <tr class='thbg'>
+                <td class='text_center tdwidth1'>日 期</td>
+                <td>主 旨</td>
+            </tr>
+            <tr class=''>
+                <td>110/02/26</td>
+                <td align='left'>
+                    <button style='background-color:transparent;border:0;cursor:pointer;padding=0pt;heigh:12px;font-size:15px;text-align:left;' onClick="document.fm1.month.value='02';document.fm1.year.value='110';document.fm1.seq_no.value='2';document.fm1.spoke_time.value='171838';document.fm1.spoke_date.value='20210226';document.fm1.step.value='2';document.fm1.action='/mops/web/ajax_t05st01';openWindow(document.fm1 , '');">
+                        本公司代子公司 TSMC Global Ltd. 公告處分固定收益證券
+                    </button>
+                </td>
+            </tr>
+            <tr class='thodd'>
+                <td>110/02/26</td>
+                <td align='left'>
+                    <button style='background-color:transparent;border:0;cursor:pointer;padding=0pt;heigh:12px;font-size:15px;text-align:left;' onClick="document.fm1.month.value='02';document.fm1.year.value='110';document.fm1.seq_no.value='1';document.fm1.spoke_time.value='171636';document.fm1.spoke_date.value='20210226';document.fm1.step.value='2';document.fm1.action='/mops/web/ajax_t05st01';openWindow(document.fm1 , '');">
+                        本公司代子公司 TSMC Global Ltd. 公告取得固定收益證券
+                    </button>
+                </td>
+            </tr>
+            <tr class=''>
+                <td>110/02/25</td>
+                <td align='left'>
+                    <button style='background-color:transparent;border:0;cursor:pointer;padding=0pt;heigh:12px;font-size:15px;text-align:left;' onClick="document.fm1.month.value='02';document.fm1.year.value='110';document.fm1.seq_no.value='1';document.fm1.spoke_time.value='181453';document.fm1.spoke_date.value='20210225';document.fm1.step.value='2';document.fm1.action='/mops/web/ajax_t05st01';openWindow(document.fm1 , '');">
+                        本公司代子公司 TSMC Global Ltd. 公告處分固定收益證券
+                    </button>
+                </td>
+            </tr>
+            <tr class='thodd'>
+                <td>110/02/24</td>
+                <td align='left'>
+                    <button style='background-color:transparent;border:0;cursor:pointer;padding=0pt;heigh:12px;font-size:15px;text-align:left;' onClick="document.fm1.month.value='02';document.fm1.year.value='110';document.fm1.seq_no.value='2';document.fm1.spoke_time.value='180044';document.fm1.spoke_date.value='20210224';document.fm1.step.value='2';document.fm1.action='/mops/web/ajax_t05st01';openWindow(document.fm1 , '');">
+                        本公司代子公司 TSMC Global Ltd. 公告處分固定收益證券
+                    </button>
+                </td>
+            </tr>
+            <tr class=''>
+                <td>110/02/24</td>
+                <td align='left'>
+                    <button style='background-color:transparent;border:0;cursor:pointer;padding=0pt;heigh:12px;font-size:15px;text-align:left;' onClick="document.fm1.month.value='02';document.fm1.year.value='110';document.fm1.seq_no.value='1';document.fm1.spoke_time.value='175817';document.fm1.spoke_date.value='20210224';document.fm1.step.value='2';document.fm1.action='/mops/web/ajax_t05st01';openWindow(document.fm1 , '');">
+                        本公司代子公司 TSMC Global Ltd. 公告取得固定收益證券
+                    </button>
+                </td>
+            </tr>
+            <tr class='thodd'>
+                <td>110/02/23</td>
+                <td align='left'>
+                    <button style='background-color:transparent;border:0;cursor:pointer;padding=0pt;heigh:12px;font-size:15px;text-align:left;' onClick="document.fm1.month.value='02';document.fm1.year.value='110';document.fm1.seq_no.value='2';document.fm1.spoke_time.value='191327';document.fm1.spoke_date.value='20210223';document.fm1.step.value='2';document.fm1.action='/mops/web/ajax_t05st01';openWindow(document.fm1 , '');">
+                        本公司公告處分子公司采鈺科技股份有限公司普通股
+                    </button>
+                </td>
+            </tr>
+            <tr class=''>
+                <td>110/02/23</td>
+                <td align='left'>
+                    <button style='background-color:transparent;border:0;cursor:pointer;padding=0pt;heigh:12px;font-size:15px;text-align:left;' onClick="document.fm1.month.value='02';document.fm1.year.value='110';document.fm1.seq_no.value='1';document.fm1.spoke_time.value='171858';document.fm1.spoke_date.value='20210223';document.fm1.step.value='2';document.fm1.action='/mops/web/ajax_t05st01';openWindow(document.fm1 , '');">
+                        本公司代子公司 TSMC Global Ltd. 公告取得固定收益證券
+                    </button>
+                </td>
+            </tr>
+            <tr class='thodd'>
+                <td>110/02/22</td>
+                <td align='left'>
+                    <button style='background-color:transparent;border:0;cursor:pointer;padding=0pt;heigh:12px;font-size:15px;text-align:left;' onClick="document.fm1.month.value='02';document.fm1.year.value='110';document.fm1.seq_no.value='2';document.fm1.spoke_time.value='151130';document.fm1.spoke_date.value='20210222';document.fm1.step.value='2';document.fm1.action='/mops/web/ajax_t05st01';openWindow(document.fm1 , '');">
+                        本公司代子公司 TSMC Global Ltd. 公告取得固定收益證券
+                    </button>
+                </td>
+            </tr>
+            <tr class=''>
+                <td>110/02/22</td>
+                <td align='left'>
+                    <button style='background-color:transparent;border:0;cursor:pointer;padding=0pt;heigh:12px;font-size:15px;text-align:left;' onClick="document.fm1.month.value='02';document.fm1.year.value='110';document.fm1.seq_no.value='1';document.fm1.spoke_time.value='141821';document.fm1.spoke_date.value='20210222';document.fm1.step.value='2';document.fm1.action='/mops/web/ajax_t05st01';openWindow(document.fm1 , '');">
+                        本公司將參加摩根大通證券所舉辦之線上法說會 -『J.P. Morgan Taiwan CEO-CFO Conference 2021 (Virtual)』
+                    </button>
+                </td>
+            </tr>
+            <tr class='thodd'>
+                <td>110/02/17</td>
+                <td align='left'>
+                    <button style='background-color:transparent;border:0;cursor:pointer;padding=0pt;heigh:12px;font-size:15px;text-align:left;' onClick="document.fm1.month.value='02';document.fm1.year.value='110';document.fm1.seq_no.value='2';document.fm1.spoke_time.value='174746';document.fm1.spoke_date.value='20210217';document.fm1.step.value='2';document.fm1.action='/mops/web/ajax_t05st01';openWindow(document.fm1 , '');">
+                        本公司代子公司 TSMC Global Ltd. 公告處分固定收益證券
+                    </button>
+                </td>
+            </tr>
+        </table>
+        <div class='more'>
+            <div class='more_button' onClick="document.fm1.step.value='1';document.fm1.e_date.value='27';document.fm1.b_date.value='27';document.fm1.month.value='02';document.fm1.year.value='110';document.fm1.firstin.value='';document.fm1.action='/mops/web/t05st01';document.fm1.submit();">more</div>
+        </div>
+        <div id='title'>
+            <div class='title_left'>營收資訊</div>
+            <div class='title_right'>單位 : 新台幣仟元</div>
+        </div>
+        <table>
+            <tr class='thbg'>
+                <td>本年迄今累計營收</td>
+                <td>去年同期累計營收</td>
+                <td>累計營收成長率</td>
+            </tr>
+            <tr class='text_center'>
+                <td>        126,749,152</td>
+                <td>        103,683,135</td>
+                <td>                 22.25%</td>
+            </tr>
+            <tr class='thbg'>
+                <td>110年01月營收</td>
+                <td>去年同期月營收</td>
+                <td>月營收成長率</td>
+            </tr>
+            <tr class='text_center'>
+                <td>        126,749,152</td>
+                <td>        103,683,135</td>
+                <td>                 22.25%</td>
+            </tr>
+            <tr class='thbg'>
+                <td>109年12月營收</td>
+                <td>去年同期月營收</td>
+                <td>月營收成長率</td>
+            </tr>
+            <tr class='text_center'>
+                <td>        117,364,912</td>
+                <td>        103,313,138</td>
+                <td>                 13.60%</td>
+            </tr>
+            <tr class='thbg'>
+                <td>109年11月營收</td>
+                <td>去年同期月營收</td>
+                <td>月營收成長率</td>
+            </tr>
+            <tr class='text_center'>
+                <td>        124,865,438</td>
+                <td>        107,884,396</td>
+                <td>                 15.74%</td>
+            </tr>
+            <tr class='thbg'>
+                <td>109年10月營收</td>
+                <td>去年同期月營收</td>
+                <td>月營收成長率</td>
+            </tr>
+            <tr class='text_center'>
+                <td>        119,302,707</td>
+                <td>        106,039,531</td>
+                <td>                 12.51%</td>
+            </tr>
+        </table>
+        <div class='more'>
+            <div class='more_button' onClick="document.fm1.step.value='2';document.fm1.action='/mops/web/ajax_t146sb05';openWindow(document.fm1 ,'');">more</div>
+        </div>
+        <div id='title'>
+            <div class='title_left'>採IFRSs後財報資訊</div>
+            <div class='title_right'>單位 : 新台幣仟元</div>
+        </div>
+        <div class='button_right'>
+            <input type='button' name='button3' id='button3' onClick="document.fm1.step.value='1';document.fm1.co_id.value='2330';document.fm1.year.value='109';document.fm1.season.value='04';document.fm1.action='/mops/web/ajax_t164sb03';openWindow(document.fm1 ,'');" value='資產負債表'>
+            <input type='button' name='button11' id='button11' onClick="document.fm1.step.value='1';document.fm1.co_id.value='2330';document.fm1.year.value='109';document.fm1.season.value='04';document.fm1.action='/mops/web/ajax_t164sb04';openWindow(document.fm1 ,'');" value='綜合損益表'>
+            <input type='button' name='button9' id='button9' onClick="document.fm1.step.value='1';document.fm1.co_id.value='2330';document.fm1.year.value='109';document.fm1.season.value='04';document.fm1.action='/mops/web/ajax_t164sb05';openWindow(document.fm1 ,'');" value='現金流量表'>
+            <input type='button' name='button10' id='button10' onClick="document.fm1.step.value='1';document.fm1.co_id.value='2330';document.fm1.year.value='109';document.fm1.seamon.value='04';document.fm1.colorchg.value='1';document.fm1.mtype.value='A';document.fm1.action='https://doc.twse.com.tw/server-java/t57sb01';openWindowAction(document.fm1 , '');" value='電子書'>
+        </div>
+        <table>
+            <tr class='thbg'>
+                <td colspan='2'>期 別</td>
+                <td>109年度</td>
+                <td>108年度</td>
+                <td>107年度</td>
+            </tr>
+            <tr>
+                <td rowspan='4' class='tdbg'>簡明資產負債</td>
+                <td align='left'>資產總計</td>
+                <td>      2,760,711,405</td>
+                <td>      2,264,805,032</td>
+                <td>      2,090,128,038</td>
+            </tr>
+            <tr class='thodd'>
+                <td align='left'>負債總計</td>
+                <td>        910,089,406</td>
+                <td>        642,709,606</td>
+                <td>        412,631,642</td>
+            </tr>
+            <tr>
+                <td align='left'>權益總計</td>
+                <td>      1,850,621,999</td>
+                <td>      1,622,095,426</td>
+                <td>      1,677,496,396</td>
+            </tr>
+            <tr class='thodd'>
+                <td align='left'>每股淨值(元)</td>
+                <td>                 71.33</td>
+                <td>                 62.53</td>
+                <td>                 64.67</td>
+            </tr>
+            <tr>
+                <td rowspan='4' class='tdbg'>簡明綜合損益表</td>
+                <td align='left'>營業收入</td>
+                <td>      1,339,254,811</td>
+                <td>      1,069,985,448</td>
+                <td>      1,031,473,557</td>
+            </tr>
+            <tr class='thodd'>
+                <td align='left'>營業利益(損失)</td>
+                <td>        566,783,698</td>
+                <td>        372,701,090</td>
+                <td>        383,623,524</td>
+            </tr>
+            <tr>
+                <td align='left'>稅前淨利(淨損)</td>
+                <td>        584,777,180</td>
+                <td>        389,845,336</td>
+                <td>        397,510,263</td>
+            </tr>
+            <tr class='thodd'>
+                <td align='left'>基本每股盈餘(元)</td>
+                <td>                 19.97</td>
+                <td>                 13.32</td>
+                <td>                 13.54</td>
+            </tr>
+            <tr>
+                <td rowspan='4' class='tdbg'>簡明現金流量表</td>
+                <td align='left'>營業活動之淨現金流入(流出)</td>
+                <td>        822,666,212</td>
+                <td>        615,138,744</td>
+                <td>        573,954,308</td>
+            </tr>
+            <tr class='thodd'>
+                <td align='left'>投資活動之淨現金流入(流出)</td>
+                <td>       -505,781,714</td>
+                <td>       -458,801,647</td>
+                <td>       -314,268,908</td>
+            </tr>
+            <tr>
+                <td align='left'>籌資活動之淨現金流入(流出)</td>
+                <td>        -88,615,087</td>
+                <td>       -269,638,166</td>
+                <td>       -245,124,791</td>
+            </tr>
+        </table>
+        <div class='more'>
+        </div>
+        <div id='title'>
+            <div class='title_left'>最近期股利分配</div>
+            <div class='title_right'>單位 : (元/股)</div>
+        </div>
+        <div class='button_right'>
+            <input type='button' id='button7' name='button7' onClick="document.fm1.year.value='110';document.fm1.off.value='1';document.fm1.isgood.value='1';document.fm1.action='/mops/web/ajax_t05st09_2';openWindow(document.fm1 ,'');" value='最近五年股利分派情形'>
+        </div>
+        <table>
+            <tr class='thbg'>
+                <td colspan='2'>決議（擬議）進度</td>
+                <td colspan='2'>股利所屬年(季)度</td>
+                <td colspan='4'>股利所屬期間</td>
+            </tr>
+            <tr class='thoddc'>
+                <td colspan='2'>董事會決議</td>
+                <td colspan='2'>109年 第4季</td>
+                <td colspan='4'>109/10/01~109/12/31</td>
+            </tr>
+            <tr class='thbg'>
+                <td>董事會決議（擬議）日期</td>
+                <td>股東會日期</td>
+                <td>盈餘分配之現金股利</td>
+                <td>盈餘分配之股票股利</td>
+                <td>法定盈餘公積發放之現金(元/股)</td>
+                <td>資本公積轉增資發放之現金(元/股)</td>
+                <td>法定盈餘公積轉增資配股(元/股)</td>
+                <td>資本公積轉增資配股(元/股)</td>
+            </tr>
+            <tr class='text_center'>
+                <td>109/05/12</td>
+                <td>不適用</td>
+                <td>                  2.50</td>
+                <td>                  0.00</td>
+                <td>                  0.00</td>
+                <td>                  0.00</td>
+                <td>                  0.00</td>
+                <td>                  0.00</td>
+            </tr>
+            <tr class='thbg'>
+                <td colspan='2'>權利分派基準日</td>
+                <td colspan='2'>除權/除息交易日</td>
+                <td colspan='4'>現金股利發放日</td>
+            </tr>
+            <tr class='thoddc'>
+                <td colspan='2'>&nbsp;</td>
+                <td colspan='2'>&nbsp;</td>
+                <td colspan='4'>&nbsp;</td>
+            </tr>
+        </table>
+        <table class='noBorder'>
+            <tr>
+                <td align='left'>註：股利所屬年(季)度為108年以前者，「股東配發-法定盈餘公積發放之現金(元/股)」之金額「包含股東配發-法定盈餘公積發放之現金(元/股)」及「股東配發-資本公積轉增資發放之現金(元/股)」；「股東配發-法定盈餘公積轉增資配股(元/股)」之股數包含「股東配發-法定盈餘公積轉增資配股(元/股)」及「股東配發-資本公積轉增資配股(元/股)」</td>
+            </tr>
+        </table>
+        <div class='more'>
+        </div>
+        <div id='title'>
+            <div class='title_left'>內部人股權異動</div>
+        </div>
+        <table>
+            <tr class='thbg'>
+                <td>期 間</td>
+                <td>持有張數</td>
+                <td>較前月增減</td>
+                <td>占股份總額</td>
+            </tr>
+            <tr class=''>
+                <td>11001</td>
+                <td>          1,745,845</td>
+                <td>                  0.0089%</td>
+                <td>                  6.73%</td>
+            </tr>
+            <tr class='thodd'>
+                <td>10912</td>
+                <td>          1,745,689</td>
+                <td>                  0.0015%</td>
+                <td>                  6.73%</td>
+            </tr>
+            <tr class=''>
+                <td>10911</td>
+                <td>          1,745,663</td>
+                <td>                  0.0984%</td>
+                <td>                  6.73%</td>
+            </tr>
+        </table>
+        <div class='more'>
+            <div class='more_button' onClick="document.fm1.KIND.value='1';document.fm1.step.value='1';document.fm1.year.value='11001';document.fm1.action='/mops/web/ajax_query6_1';openWindow(document.fm1 ,'');">more</div>
+        </div>
+        <div class='ps'>
+            備 註：<br>
+            *1、「持有張數」：係指該公司內部人(董監事、經理人及持股逾10%大股東)本人之持股數。<br>
+            *2、「占股份總額」：股份總額係指該公司已發行股份總數。<br>
+            *3、右下方橘色「MORE」按鍵可查詢該公司內部人股權變動之最近一期詳細資料，欲查詢其歷史資料，請至公開資訊觀測站-->基本資料-->董監大股東持股、質押、轉讓-->內部人持股異動事後申報表(<a href='https://mops.twse.com.tw/mops/web/query6_1'>https://mops.twse.com.tw/mops/web/query6_1</a>)，依月份進行查閱。
+        </div>
+    </div>
+</body>
+</html>

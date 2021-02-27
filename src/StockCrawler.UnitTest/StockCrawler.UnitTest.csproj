@@ -67,6 +67,9 @@
     <Reference Include="Common.Logging.Core, Version=3.4.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <HintPath>..\packages\Common.Logging.Core.3.4.1\lib\net40\Common.Logging.Core.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.11.24.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.11.24\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
@@ -281,6 +284,7 @@
     <Content Include="TestData\Ptt\ziIfT.html" />
     <Content Include="TestData\Sql\Stock.data.sql" />
     <Content Include="TestData\TWSE\2020-12-03.html" />
+    <Content Include="TestData\TWSE\2330_109_-1_3_2020-04-06_1.html" />
     <Content Include="TestData\TWSE\SimplfiedFinancialReport_2330.html" />
   </ItemGroup>
   <ItemGroup>
@@ -296,6 +300,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="TestData\TWSE\2020-04-06.csv" />
     <None Include="TestData\TWSE\MI_INDEX_ALLBUT0999_20200102.csv" />
     <None Include="TestData\TWSE\MI_INDEX_ALLBUT0999_20200103.csv" />
     <None Include="TestData\TWSE\MI_INDEX_ALLBUT0999_20200106.csv" />

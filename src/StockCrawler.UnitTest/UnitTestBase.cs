@@ -12,8 +12,8 @@ namespace StockCrawler.UnitTest
         /// <summary>
         /// 測試用股票代碼 1, 台積電
         /// </summary>
-        protected const string TEST_STOCKNO_台積電 = "2330";
-        protected const string TEST_STOCKNO_彰銀 = "2801";
+        internal const string TEST_STOCKNO_台積電 = "2330";
+        internal const string TEST_STOCKNO_彰銀 = "2801";
         protected static readonly ILog _logger = new UnitTestLogger();
         [ClassInitialize]
         public static void ClassInitInit(TestContext param)

@@ -1,37 +1,28 @@
-﻿using StockCrawler.Dao;
+﻿using HtmlAgilityPack;
 using StockCrawler.Services.Collectors;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 
 namespace StockCrawler.UnitTest.Stubs
 {
-    internal class StockReportCollectorStub : IStockReportCollector
+    internal class StockReportCollectorStub : TwseReportCollector
     {
-        private const string TEST_STOCK_NO_1 = "2330";
-        private static readonly List<GetStockFinancialReportResult> _StockFinancial;
-        static StockReportCollectorStub()
+        protected override HtmlNode GetTwseDataBack(string url, string stockNo, short year = -1, short season = -1, short month = -1, short step = 1, string xpath = "/html/body/center/table[2]")
         {
-            _StockFinancial = new List<GetStockFinancialReportResult>
+            _logger = new UnitTestLogger();
+            string html = null;
+            _logger.Info($"Mock DownloadData!!!");
+            var file = new FileInfo($@"..\..\..\StockCrawler.UnitTest\TestData\TWSE\2330_109_-1_3_2020-04-06_1.html");
+            if (file.Exists)
             {
-                new GetStockFinancialReportResult() { StockNo = TEST_STOCK_NO_1, Year = 109 , Season = 1 },
-                new GetStockFinancialReportResult() { StockNo = TEST_STOCK_NO_1, Year = 108 , Season = 4 },
-                new GetStockFinancialReportResult() { StockNo = TEST_STOCK_NO_1, Year = 108 , Season = 3 },
-                new GetStockFinancialReportResult() { StockNo = TEST_STOCK_NO_1, Year = 108 , Season = 2 },
-                new GetStockFinancialReportResult() { StockNo = TEST_STOCK_NO_1, Year = 108 , Season = 1 },
-                new GetStockFinancialReportResult() { StockNo = TEST_STOCK_NO_1, Year = 107 , Season = 4 },
-                new GetStockFinancialReportResult() { StockNo = TEST_STOCK_NO_1, Year = 107 , Season = 3 },
-                new GetStockFinancialReportResult() { StockNo = TEST_STOCK_NO_1, Year = 107 , Season = 2 },
-                new GetStockFinancialReportResult() { StockNo = TEST_STOCK_NO_1, Year = 107 , Season = 1 },
-            };
-        }
+                using (var sr = file.OpenText())
+                    html = sr.ReadToEnd();
 
-        public GetStockFinancialReportResult GetStockFinancialReport(string stockNo, short year, short season)
-        {
-            return _StockFinancial
-                .Where(d => d.StockNo == stockNo 
-                    && (d.Year == year || year == -1) 
-                    && (d.Season == season || season == -1))
-                .FirstOrDefault();
+                var doc = new HtmlDocument();
+                doc.LoadHtml(html);
+                return doc.DocumentNode.SelectSingleNode(xpath);
+            }
+            else
+                return null;
         }
     }
 }

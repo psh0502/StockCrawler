@@ -163,6 +163,9 @@
     <Compile Include="Collectors\TwseCollectorBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
