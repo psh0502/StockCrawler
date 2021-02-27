@@ -105,7 +105,7 @@ namespace StockCrawlerRunner
             Console.WriteLine(" <mode>: -b <stock number>");
             Console.WriteLine("     Update the latest company basic information since the specified stock number.");
             Console.WriteLine(" <mode>: -f");
-            Console.WriteLine("     Update the company finance report since 2015 to this year.");
+            Console.WriteLine("     Update the company finance report this year.");
             Console.WriteLine(" <mode>: -n");
             Console.WriteLine("     Get the latest Taiwan stock market news.");
             Console.WriteLine(" <mode>: -lz");

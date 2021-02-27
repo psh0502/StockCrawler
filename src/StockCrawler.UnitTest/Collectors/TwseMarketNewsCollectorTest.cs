@@ -30,7 +30,7 @@ namespace StockCrawler.UnitTest.Collectors
         [TestMethod]
         public void CollectorTestMethod_GetLatestStockNews()
         {
-            SystemTime.SetFakeTime(new DateTime(2020, 12, 3));
+            SystemTime.Reset();
 
             var collector = new TwseMarketNewsCollector()
             {

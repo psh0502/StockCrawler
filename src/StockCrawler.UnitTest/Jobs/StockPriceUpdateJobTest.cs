@@ -37,8 +37,8 @@ namespace StockCrawler.UnitTest.Jobs
             {
                 {
                     var data = db.GetStocks(null).ToList();
-                    Assert.AreEqual(45, data.Count);
-                    Assert.AreEqual(TEST_STOCKNO_台積電, data[43].StockNo);
+                    Assert.AreEqual(1155, data.Count);
+                    Assert.IsTrue(data.Where(d => d.StockNo == TEST_STOCKNO_台積電).Any());
                 }
                 {
                     int? pageCount = null;
@@ -114,8 +114,8 @@ namespace StockCrawler.UnitTest.Jobs
                 Assert.AreEqual(308M, d1.OpenPrice);
                 Assert.AreEqual(326M, d1.HighPrice);
                 Assert.AreEqual(235.5M, d1.LowPrice);
-                Assert.AreEqual(274M, d1.ClosePrice);
-                Assert.AreEqual(1906813004, d1.Volume);
+                Assert.AreEqual(267.5M, d1.ClosePrice);
+                Assert.AreEqual(1852911081, d1.Volume);
                 Assert.AreEqual(0, d1.DeltaPrice);
                 Assert.AreEqual(0M, d1.DeltaPercent);
                 Assert.AreEqual(0M, d1.PE);

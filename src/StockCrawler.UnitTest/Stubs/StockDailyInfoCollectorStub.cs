@@ -14,16 +14,6 @@ namespace StockCrawler.UnitTest.Stubs
         {
             _logger = new UnitTestLogger();
         }
-        public override IEnumerable<GetStockPeriodPriceResult> GetStockDailyPriceInfo()
-        {
-            using (var db = RepositoryProvider.GetRepositoryInstance())
-                return db.GetStocks().Select(d =>
-                new GetStockPeriodPriceResult()
-                {
-                    StockNo = d.StockNo,
-                    StockName = d.StockName
-                });
-        }
         protected override string DownloadData(DateTime day)
         {
             _logger.Info($"Mock DownloadData!!!day={day:yyyyMMdd}");
