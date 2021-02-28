@@ -90,7 +90,7 @@ namespace StockCrawler.Services
             catch (Exception e)
             {
                 _logger.WarnFormat("{0} innerText={1}, {2}", e.Message, innerText, typeof(T).Name);
-                throw;
+                return default;
             }
         }
         /// <summary>
