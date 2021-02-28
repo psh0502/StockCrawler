@@ -4,6 +4,7 @@ using System.IO;
 
 namespace StockCrawler.UnitTest.Stubs
 {
+#if (DEBUG)
     internal class StockReportCollectorStub : TwseReportCollector
     {
         protected override HtmlNode GetTwseDataBack(string url, string stockNo, short year = -1, short season = -1, short month = -1, short step = 1, string xpath = "/html/body/center/table[2]")
@@ -25,4 +26,5 @@ namespace StockCrawler.UnitTest.Stubs
                 return null;
         }
     }
+#endif
 }
