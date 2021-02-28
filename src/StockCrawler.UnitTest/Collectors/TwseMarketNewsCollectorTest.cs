@@ -38,7 +38,6 @@ namespace StockCrawler.UnitTest.Collectors
             };
             var r = collector.GetLatestStockNews();
             Assert.IsTrue(r.Any(), "查無有效資料筆數");
-            Assert.IsTrue(r.Count() > 10, "資料比數不足十筆");
             foreach (var d in r)
             {
                 _logger.DebugFormat("[{0}][{1}][{2}][{3}][{4}]", d.StockNo, d.Source, d.NewsDate, d.Subject, d.Url);
