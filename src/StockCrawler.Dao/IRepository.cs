@@ -47,6 +47,7 @@ namespace StockCrawler.Dao
         /// 取得指定期間的股價明細
         /// </summary>
         /// <param name="stockNo">股票代碼</param>
+        /// <param name="bgnDate">起始日期</param>
         /// <param name="endDate">結束日期</param>
         /// <param name="period">週期天數</param>
         /// <returns>每日收盤資料列表</returns>
