@@ -79,6 +79,11 @@ namespace StockCrawler.Dao
         void InsertOrUpdateStockAveragePrice((string stockNo, DateTime stockDT, short period, decimal averagePrice)[] avgPriceList);
         void InsertOrUpdateLazyStock(GetLazyStockDataResult data);
         void InsertOrUpdateStockFinancialReport(GetStockFinancialReportResult data);
+        /// <summary>
+        /// Insert or update stock interest cash/stock issued.
+        /// </summary>
+        /// <param name="data">Interest issued info</param>
+        void InsertOrUpdateStockInterestIssuedInfo(GetStockInterestIssuedInfoResult data);
         #endregion
 
         #region 刪除

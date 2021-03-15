@@ -134,6 +134,27 @@
       <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
+  <Function Name="dbo.GetStockInterestIssuedInfo" Method="GetStockInterestIssuedInfo">
+    <Parameter Name="pTop" Type="System.Int32" DbType="Int" />
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="pSeason" Type="System.Int16" DbType="SmallInt" />
+    <ElementType Name="GetStockInterestIssuedInfoResult">
+      <Column Name="StockName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Year" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="Season" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="DecisionDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="ProfitCashIssued" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="ProfitStockIssued" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="SsrCashIssued" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="SsrStockIssued" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="CapitalReserveCashIssued" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="CapitalReserveStockIssued" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
   <Function Name="dbo.GetStockMarketNews" Method="GetStockMarketNews">
     <Parameter Name="pTop" Type="System.Int32" DbType="Int" />
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
@@ -272,6 +293,18 @@
     <Parameter Name="pBusinessCashflow" Type="System.Decimal" DbType="Money" />
     <Parameter Name="pInvestmentCashflow" Type="System.Decimal" DbType="Money" />
     <Parameter Name="pFinancingCashflow" Type="System.Decimal" DbType="Money" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.InsertOrUpdateStockInterestIssuedInfo" Method="InsertOrUpdateStockInterestIssuedInfo">
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="pSeason" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="pProfitCashIssued" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pProfitStockIssued" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pSsrCashIssued" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pSsrStockIssued" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pCapitalReserveCashIssued" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pCapitalReserveStockIssued" Type="System.Decimal" DbType="Money" />
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.InsertOrUpdateStockPriceHistory" Method="InsertOrUpdateStockPriceHistory">

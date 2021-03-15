@@ -218,6 +218,21 @@ namespace StockCrawler.Dao
                     data.FinancingCashflow
                     );
         }
+        public void InsertOrUpdateStockInterestIssuedInfo(GetStockInterestIssuedInfoResult data)
+        {
+            using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
+                db.InsertOrUpdateStockInterestIssuedInfo(
+                    data.StockNo,
+                    data.Year,
+                    data.Season,
+                    data.ProfitCashIssued,
+                    data.ProfitStockIssued,
+                    data.SsrCashIssued,
+                    data.SsrStockIssued,
+                    data.CapitalReserveCashIssued,
+                    data.CapitalReserveStockIssued
+                    );
+        }
         #endregion
 
         #region 刪除

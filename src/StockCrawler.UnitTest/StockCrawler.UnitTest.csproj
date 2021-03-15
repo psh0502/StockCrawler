@@ -133,6 +133,7 @@
     <Compile Include="Collectors\StockForumCollectorTest.cs" />
     <Compile Include="Collectors\LazyStockCollectorTest.cs" />
     <Compile Include="Collectors\TwseMarketNewsCollectorTest.cs" />
+    <Compile Include="Collectors\TwseInterestIssuedCollectorTests.cs" />
     <Compile Include="Collectors\TwseStockBasicInfoCollectorTest.cs" />
     <Compile Include="Collectors\TwseStockHistoryPriceCollector2Test.cs" />
     <Compile Include="Collectors\TwseStockHistoryPriceCollectorTest.cs" />
@@ -148,6 +149,7 @@
     <Compile Include="Stubs\StockHistoryPriceCollectorStub2.cs" />
     <Compile Include="Stubs\StockHistoryPriceCollectorStub.cs" />
     <Compile Include="Stubs\LazyStockCollectorStub.cs" />
+    <Compile Include="Stubs\StockInterestIssuedCollectorStub.cs" />
     <Compile Include="Stubs\StockReportCollectorStub.cs" />
     <Compile Include="Stubs\StockDailyInfoCollectorStub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -362,7 +364,9 @@
     <None Include="TestData\TWSE\STOCK_DAY_2330_202004.csv" />
     <None Include="TestData\yahoo_history_2330.csv" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="TestData\TWSE\Issued\" />
+  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
       <Visible>False</Visible>

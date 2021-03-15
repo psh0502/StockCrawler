@@ -135,11 +135,14 @@
     <Compile Include="Collectors\LazyStock\LazyStockData.cs" />
     <Compile Include="Collectors\LazyStock\ILazyStockCollector.cs" />
     <Compile Include="Collectors\LazyStock\LazyStockCollector.cs" />
+    <Compile Include="Collectors\StockInterestIssued\IStockInterestIssuedCollector.cs" />
+    <Compile Include="Collectors\StockInterestIssued\TwseInterestIssuedCollector.cs" />
     <Compile Include="Collectors\StockMarketNews\IStockMarketNewsCollector.cs" />
     <Compile Include="Collectors\StockMarketNews\TwseMarketNewsCollector.cs" />
     <Compile Include="Collectors\StockHistoryPrice\TwseStockHistoryPriceCollector2.cs" />
     <Compile Include="JobBase.cs" />
     <Compile Include="Collectors\StockBasicInfo\TwseStockBasicInfoCollector.cs" />
+    <Compile Include="StockInterestIssuedUpdateJob.cs" />
     <Compile Include="StockForumsUpdateJob.cs" />
     <Compile Include="StockMarketNewsUpdateJob.cs" />
     <Compile Include="StockFinReportUpdateJob.cs" />

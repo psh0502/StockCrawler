@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("DOWAY Studio")]
 [assembly: AssemblyProduct("StockCrawler")]
-[assembly: AssemblyCopyright("Copyright ©  2010")]
+[assembly: AssemblyCopyright("Copyright ©  2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,7 +32,7 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.2.0.6")]
-[assembly: AssemblyFileVersion("1.2.2.4")]
+[assembly: AssemblyFileVersion("1.2.2.5")]
 #if(DEBUG)
 [assembly: AssemblyDescription("Debug build")]
 [assembly: InternalsVisibleTo("StockCrawler.UnitTest")]

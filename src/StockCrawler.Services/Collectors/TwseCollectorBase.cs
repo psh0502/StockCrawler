@@ -158,10 +158,10 @@ namespace StockCrawler.Services
             var doc = new HtmlDocument();
             doc.LoadHtml(html);
 #if (DEBUG)
-            //var file = new FileInfo($@"..\..\..\StockCrawler.UnitTest\TestData\TWSE\{stockNo}_{year}_{month}_{season}_{SystemTime.Today:yyyy-MM-dd}_{step}.html");
-            //if (file.Exists) file.Delete();
-            //using (var sw = file.CreateText())
-            //    sw.Write(html);
+            var file = new FileInfo($@"..\..\..\StockCrawler.UnitTest\TestData\TWSE\Issued\{stockNo}_{year}_{month}_{season}_{SystemTime.Today:yyyy-MM-dd}_{step}.html");
+            if (file.Exists) file.Delete();
+            using (var sw = file.CreateText())
+                sw.Write(html);
 #endif
 
             var tableNode = doc.DocumentNode.SelectSingleNode(xpath);
