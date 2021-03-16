@@ -102,20 +102,14 @@ namespace StockCrawler.Services
             }
             return downloaded_data.Trim();
         }
+        /// <summary>
+        /// 服務提供 by 湯湯數據庫
+        /// </summary>
+        /// <returns></returns>
         public static string GetMyIpAddress()
         {
-            var html = DownloadStringData(new Uri("http://myip.com.tw/"),
-                out IList<Cookie> _,
-                Encoding.Default);
-
-            var doc = new HtmlDocument();
-            doc.LoadHtml(html);
-            var text = doc.DocumentNode.SelectSingleNode("/html/body/h1/font").InnerText.Trim();
-            return text;
-        }
-        public static string GetMyIpAddress2()
-        {
-            return DownloadStringData(new Uri("http://www.comeondata.com/App/api/IpLocApi/GetMyIpInfo"), out _).Replace("\"", string.Empty);
+            return DownloadStringData(new Uri("http://www.comeondata.com/App/api/IpLocApi/GetMyIpInfo"), out _)
+                .Replace("\"", string.Empty);
         }
         /// <summary>
         /// 根據本日收盤資料, 計算 均線(MA 移動線)和不同周期的 K 棒

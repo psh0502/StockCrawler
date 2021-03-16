@@ -45,16 +45,9 @@ namespace StockCrawler.Services.Collectors
         {
             url = string.Format(url, stockNo);
             string html;
-            var ipAddress = Tools.GetMyIpAddress();
             do
             {
-                IList<Cookie> cookies = new List<Cookie>
-                {
-                    new Cookie("CLIENT_ID", string.Format("{0}_{1}", now.ToString("yyyyMMddHHmmssfff"), ipAddress), "/", "goodinfo.tw"),
-                    new Cookie("SCREEN_SIZE", "WIDTH=1920&HEIGHT=1080", "/", "goodinfo.tw"),
-                    new Cookie("GOOD_INFO_STOCK_BROWSE_LIST", $"3|{stockNo}", "/", "goodinfo.tw")
-                };
-                html = Tools.DownloadStringData(new Uri(url), out IList<Cookie> _, cookies: cookies);
+                html = Tools.DownloadStringData(new Uri(url), out IList<Cookie> _);
                 if (string.IsNullOrEmpty(html)) return null;
                 if (html.Contains("您的瀏覽量異常"))
                 {
