@@ -17,7 +17,7 @@ It grabs history data from serveral available source, e.g **[Yahoo Finance](http
 
 In 2010, I wish to build a stock trading bot, but no data means no work.
 
-All history stock data are needed and I have to keep them up-to-date, so this project was bored for it.
+All history stock data are needed and I have to keep them up-to-date, so this project was born for it.
 
 Some remaining tasks haven't be done yet, so I am still keeping going.
 
