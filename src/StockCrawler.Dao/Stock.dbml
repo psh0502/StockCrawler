@@ -299,6 +299,7 @@
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
     <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
     <Parameter Name="pSeason" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="pDecisionDate" Type="System.DateTime" DbType="Date" />
     <Parameter Name="pProfitCashIssued" Type="System.Decimal" DbType="Money" />
     <Parameter Name="pProfitStockIssued" Type="System.Decimal" DbType="Money" />
     <Parameter Name="pSsrCashIssued" Type="System.Decimal" DbType="Money" />

@@ -8,17 +8,18 @@
 - Market news about stock.
 - 3rd-Party analytic.
 - Forum news about stock.
+- History interest issuing result.
 
 It grabs history data from serveral available source, e.g **[Yahoo Finance](http://finance.yahoo.com)**, **[TWSE](http://www.twse.com.tw)** and daily closing price from **[TWSE](http://www.twse.com.tw)**.
 
 ***Yahoo** has incompleted price information, **TWSE** is better resource but costs very much time, even days...*
 ## Objective
 
-In 2010, I was going to build a stock trading bot. 
+In 2010, I wish to build a stock trading bot, but no data means no work.
 
-I need all history stock data and keep them up-to-date, this is why I created it.
+All history stock data are needed and I have to keep them up-to-date, so this project was bored for it.
 
-There are some bucket lists I haven't sone yet, so I am keeping going.
+Some remaining tasks haven't be done yet, so I am still keeping going.
 
 Anyone would like join is welcome.
 
@@ -52,6 +53,8 @@ StockCrawlerRunner.exe <mode>
      Get the latest Taiwan stock market news.
  <mode>: -lz
      Get the latest LazyStock data.
+ <mode>: -is
+     Get the latest interest issued result.
  <mode>: -ptt [Date:yyyy/MM/dd]
      Get the latest articles from PTT stock forum. If you assign date, it grab articles by the date.
 ```

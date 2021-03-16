@@ -225,6 +225,7 @@ namespace StockCrawler.Dao
                     data.StockNo,
                     data.Year,
                     data.Season,
+                    data.DecisionDate,
                     data.ProfitCashIssued,
                     data.ProfitStockIssued,
                     data.SsrCashIssued,

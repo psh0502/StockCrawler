@@ -13,6 +13,7 @@ CREATE OR ALTER PROCEDURE [dbo].[InsertOrUpdateStockInterestIssuedInfo]
 @pStockNo VARCHAR(10), 
 @pYear SMALLINT,
 @pSeason SMALLINT,
+@pDecisionDate DATE,
 @pProfitCashIssued MONEY,
 @pProfitStockIssued MONEY,
 @pSsrCashIssued MONEY,
@@ -24,6 +25,7 @@ BEGIN
 	IF EXISTS(SELECT [StockNo] FROM [StockInterestIssuedInfo](NOLOCK) WHERE [StockNo] = @pStockNo AND [Year] = @pYear AND [Season] = @pSeason)
 		UPDATE [StockInterestIssuedInfo]
 		SET
+			[DecisionDate] = @pDecisionDate,
 			[ProfitCashIssued] = @pProfitCashIssued,
 			[ProfitStockIssued] = @pProfitStockIssued,
 			[SsrCashIssued] = @pSsrCashIssued,
@@ -37,6 +39,7 @@ BEGIN
 			([StockNo]
 			,[Year]
 			,[Season]
+			,[DecisionDate]
 			,[ProfitCashIssued]
 			,[ProfitStockIssued]
 			,[SsrCashIssued]
@@ -47,6 +50,7 @@ BEGIN
 			(@pStockNo
 			,@pYear
 			,@pSeason
+			,@pDecisionDate
 			,@pProfitCashIssued
 			,@pProfitStockIssued
 			,@pSsrCashIssued
