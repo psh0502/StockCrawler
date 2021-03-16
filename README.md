@@ -94,6 +94,7 @@ Here is the injection setting in *.exe.config
       <register type="IStockBasicInfoCollector" mapTo="TwseStockBasicInfoCollector" />
       <register type="IStockDailyInfoCollector" mapTo="TwseStockDailyInfoCollector" />
       <register type="IStockReportCollector" mapTo="TwseReportCollector" />
+      <register type="IStockInterestIssuedCollector" mapTo="TwseInterestIssuedCollector" />
       <register type="IStockMarketNewsCollector" mapTo="TwseMarketNewsCollector" />
       <register type="ILazyStockCollector" mapTo="LazyStockCollector" />
     </container>
