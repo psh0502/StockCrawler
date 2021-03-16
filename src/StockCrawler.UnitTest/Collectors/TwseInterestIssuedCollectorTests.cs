@@ -1,6 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using StockCrawler.Services;
 using StockCrawler.Services.Collectors;
+using System;
 using System.Linq;
 #if (DEBUG)
 namespace StockCrawler.UnitTest.Collectors
@@ -15,6 +17,7 @@ namespace StockCrawler.UnitTest.Collectors
         [TestMethod]
         public void GetStockInterestIssuedInfoTest_109Q4()
         {
+            SystemTime.SetFakeTime(new DateTime(2021, 3, 16));
             var collector = new TwseInterestIssuedCollector
             {
                 _logger = new UnitTestLogger()

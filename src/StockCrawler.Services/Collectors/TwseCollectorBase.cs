@@ -115,6 +115,7 @@ namespace StockCrawler.Services
             formData.Add("inpuType", "co_id");
             formData.Add("TYPEK", "all");
             formData.Add("isnew", false.ToString());
+            formData.Add("isgood", "1");
             formData.Add("co_id", stockNo);
             if (year != -1) formData.Add("year", year.ToString());
             if (season != -1) formData.Add("season", season.ToString("00"));
@@ -158,10 +159,10 @@ namespace StockCrawler.Services
             var doc = new HtmlDocument();
             doc.LoadHtml(html);
 #if (DEBUG)
-            var file = new FileInfo($@"..\..\..\StockCrawler.UnitTest\TestData\TWSE\Issued\{stockNo}_{year}_{month}_{season}_{SystemTime.Today:yyyy-MM-dd}_{step}.html");
-            if (file.Exists) file.Delete();
-            using (var sw = file.CreateText())
-                sw.Write(html);
+            //var file = new FileInfo($@"..\..\..\StockCrawler.UnitTest\TestData\TWSE\Issued\{stockNo}_{year}_{month}_{season}_{SystemTime.Today:yyyy-MM-dd}_{step}.html");
+            //if (file.Exists) file.Delete();
+            //using (var sw = file.CreateText())
+            //    sw.Write(html);
 #endif
 
             var tableNode = doc.DocumentNode.SelectSingleNode(xpath);

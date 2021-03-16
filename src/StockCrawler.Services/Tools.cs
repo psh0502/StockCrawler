@@ -216,6 +216,10 @@ namespace StockCrawler.Services
                     db.InsertOrUpdateStockAveragePrice(avgPriceList.ToArray());
             }
         }
+        /// <summary>
+        /// 取得今日的台灣民國年
+        /// </summary>
+        /// <returns>回傳今日的台灣民國年</returns>
         public static short GetTaiwanYear()
         {
             return GetTaiwanYear(SystemTime.Today.Year);

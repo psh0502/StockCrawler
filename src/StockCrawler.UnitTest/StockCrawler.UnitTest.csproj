@@ -287,6 +287,7 @@
     <Content Include="TestData\Sql\Stock.data.sql" />
     <Content Include="TestData\TWSE\2020-12-03.html" />
     <Content Include="TestData\TWSE\2330_109_-1_3_2020-04-06_1.html" />
+    <Content Include="TestData\TWSE\Issued\2330_110_-1_-1_2021-03-16_1.html" />
     <Content Include="TestData\TWSE\SimplfiedFinancialReport_2330.html" />
   </ItemGroup>
   <ItemGroup>
@@ -364,9 +365,7 @@
     <None Include="TestData\TWSE\STOCK_DAY_2330_202004.csv" />
     <None Include="TestData\yahoo_history_2330.csv" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="TestData\TWSE\Issued\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
       <Visible>False</Visible>
