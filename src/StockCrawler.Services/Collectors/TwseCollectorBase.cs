@@ -42,7 +42,7 @@ namespace StockCrawler.Services
         }
         protected HtmlNode SearchValueNode(HtmlNode bodyNode, string[] keywords, int beginIndex = 1, string xpath1 = "./tr[{0}]/td[1]", string xpath2 = "./tr[{0}]/td[2]")
         {
-            if (null == bodyNode) throw new ArgumentException("The parameter can't be null", nameof(bodyNode));
+            if (null == bodyNode) throw new ArgumentNullException("The parameter can't be null", nameof(bodyNode));
             foreach (var compare in _compare_methods)
             {
                 var index = beginIndex;
@@ -171,8 +171,12 @@ namespace StockCrawler.Services
                 if (step == 1)
                     tableNode = GetTwseDataBack(url, stockNo, year, season, month, 2, xpath);
                 if (null == tableNode || string.IsNullOrEmpty(tableNode.InnerText.Trim()))
+                {
                     _logger.Warn($"[{stockNo}] can't get the body node, html={html}");
-                return tableNode;
+                    throw new ArgumentNullException($"[{stockNo}] can't get the body node.");
+                }
+                else
+                    return tableNode;
             }
             else
             {
