@@ -75,17 +75,18 @@ namespace StockCrawler.Services.Collectors
         private void ParseYearSeasonNumber(string y, ref short season, ref short year)
         {
             var ss = Tools.CleanString(y)
+                .Replace("年度", string.Empty)
                 .Replace("年", ";")
                 .Replace("第", string.Empty)
                 .Replace("季", string.Empty)
                 .Split(';');
 
-            if (ss.Length == 2)
+            if (ss.Length >= 2)
             {
                 if (!short.TryParse(Tools.CleanString(ss[0]), out year))
                     throw new InvalidCastException("year can't be parsed, y=" + y);
                 if (!short.TryParse(Tools.CleanString(ss[1]), out season))
-                    throw new InvalidCastException("season can't be parsed, y=" + y);
+                    season = -1; // 全年度單次發放
             }
             else
                 throw new InvalidCastException(string.Format("期別無法解析, y={0}", y));
