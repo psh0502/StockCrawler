@@ -62,6 +62,8 @@ namespace StockCrawler.Services.Collectors
 
         private DateTime ConvertToDecisionDate(string v)
         {
+            if (string.IsNullOrEmpty(v)) return new DateTime(1900, 1, 1);
+
             var ss = v.Split('/');
             if (ss.Length == 3)
                 return new DateTime(
