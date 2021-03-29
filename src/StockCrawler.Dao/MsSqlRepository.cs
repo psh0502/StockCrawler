@@ -12,6 +12,7 @@ namespace StockCrawler.Dao
         {
             return new StockDataContext(ConnectionStringHelper.StockConnectionString);
         }
+
         #region 取得資料
         public GetCategoryMappingResult[] GetCategoryMapping()
         {
@@ -62,6 +63,11 @@ namespace StockCrawler.Dao
         {
             using (var db = GetMSSQLStockDataContext())
                 return db.GetStockFinancialReport(top, stockNo, year, season).ToArray();
+        }
+        public GetStockInterestIssuedInfoResult[] GetStockInterestIssuedInfo(int top, string stockNo, short year, short season)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                return db.GetStockInterestIssuedInfo(top, stockNo, year, season).ToArray();
         }
         #endregion
 

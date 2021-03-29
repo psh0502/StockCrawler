@@ -56,6 +56,7 @@ namespace StockCrawler.Dao
         GetLazyStockDataResult GetLazyStockData(string stockNo);
         GetStockForumDataResult[] GetStockForumData(int top, DateTime bgnDate, DateTime endDate, long? id = null, string stockNo = null);
         GetStockFinancialReportResult[] GetStockFinancialReport(int top, string stockNo, short year, short season);
+        GetStockInterestIssuedInfoResult[] GetStockInterestIssuedInfo(int top, string stockNo, short year, short season);
         #endregion
 
         #region 新增修改
