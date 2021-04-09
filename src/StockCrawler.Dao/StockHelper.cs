@@ -50,7 +50,7 @@ namespace StockCrawler.Dao
         /// <returns>對應的股票</returns>
         public static GetStocksResult GetMatchedStock(string keyword)
         {
-            return GetAllStockList()
+            return GetStock(keyword) ?? GetAllStockList()
                 .Where(d => d.StockNo == keyword || d.StockName == keyword)
                 .FirstOrDefault();
         }
@@ -72,7 +72,6 @@ namespace StockCrawler.Dao
             else
                 return null;
         }
-
         /// <summary>
         /// 取得完整的上市公司列表
         /// </summary>
