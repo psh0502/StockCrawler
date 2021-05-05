@@ -15,11 +15,12 @@ namespace StockCrawler.UnitTest.Jobs
         [TestInitialize]
         public override void InitBeforeTest()
         {
+            base.InitBeforeTest();
             if (!IsExecuted)
                 ExecuteTest();
         }
         [TestMethod]
-        public void 五年內除權息資料_Test()
+        public void 五年內除權息資料_2330_Test()
         {
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
             {
@@ -31,6 +32,26 @@ namespace StockCrawler.UnitTest.Jobs
                 Assert.AreEqual(4, d.Season, "季度錯誤");
                 Assert.AreEqual(new DateTime(2021, 2, 9), d.DecisionDate, "董事會決議（擬議）日期錯誤");
                 Assert.AreEqual(2.5M, d.ProfitCashIssued, "盈餘分配之現金股利錯誤");
+                Assert.AreEqual(0M, d.ProfitStockIssued, "盈餘分配之股票股利錯誤");
+                Assert.AreEqual(0M, d.ProfitStockIssued, "法定盈餘公積發放之現金錯誤");
+                Assert.AreEqual(0M, d.ProfitStockIssued, "法定盈餘公積轉增資配股(元/股)錯誤");
+                Assert.AreEqual(0M, d.ProfitStockIssued, "資本公積發放之現金(元/股)錯誤");
+                Assert.AreEqual(0M, d.ProfitStockIssued, "資本公積轉增資配股(元/股)錯誤");
+            }
+        }
+        [TestMethod]
+        public void 五年內除權息資料_1477_Test()
+        {
+            using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
+            {
+                var data = db.GetStockInterestIssuedInfo(100, TEST_STOCKNO_聚陽, -1, -1).ToList();
+                Assert.IsTrue(data.Any(), "資料筆數");
+                var d = data.First();
+                Assert.AreEqual(TEST_STOCKNO_聚陽, d.StockNo);
+                Assert.AreEqual(109, d.Year, "年度錯誤");
+                Assert.AreEqual(-1, d.Season, "季度錯誤");
+                Assert.AreEqual(new DateTime(2021, 3, 22), d.DecisionDate, "董事會決議（擬議）日期錯誤");
+                Assert.AreEqual(8M, d.ProfitCashIssued, "盈餘分配之現金股利錯誤");
                 Assert.AreEqual(0M, d.ProfitStockIssued, "盈餘分配之股票股利錯誤");
                 Assert.AreEqual(0M, d.ProfitStockIssued, "法定盈餘公積發放之現金錯誤");
                 Assert.AreEqual(0M, d.ProfitStockIssued, "法定盈餘公積轉增資配股(元/股)錯誤");

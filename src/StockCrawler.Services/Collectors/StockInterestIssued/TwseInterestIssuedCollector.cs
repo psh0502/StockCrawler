@@ -10,14 +10,13 @@ namespace StockCrawler.Services.Collectors
         public virtual IList<GetStockInterestIssuedInfoResult> GetStockInterestIssuedInfo(string stockNo)
         {
             var url = "https://mops.twse.com.tw/mops/web/ajax_t05st09_2";
-            IList<GetStockInterestIssuedInfoResult> result = null;
             var tableNode = GetTwseDataBack(
                 url
                 , stockNo
                 , year: Tools.GetTaiwanYear()
                 , xpath: "/html/body/center/table[3]");
 
-            result = TransformNodeToInterestIssuedResult(stockNo, tableNode);
+            IList<GetStockInterestIssuedInfoResult> result = TransformNodeToInterestIssuedResult(stockNo, tableNode);
             return result;
         }
         private IList<GetStockInterestIssuedInfoResult> TransformNodeToInterestIssuedResult(

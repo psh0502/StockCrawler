@@ -14,6 +14,7 @@ namespace StockCrawler.UnitTest
         /// </summary>
         internal const string TEST_STOCKNO_台積電 = "2330";
         internal const string TEST_STOCKNO_彰銀 = "2801";
+        internal const string TEST_STOCKNO_聚陽 = "1477";
         protected static readonly ILog _logger = new UnitTestLogger();
         [ClassInitialize]
         public static void ClassInitInit(TestContext param)
@@ -29,6 +30,7 @@ namespace StockCrawler.UnitTest
             SqlTool.ExecuteSql("TRUNCATE TABLE StockBasicInfo");
             SqlTool.ExecuteSql("TRUNCATE TABLE StockFinancialReport");
             SqlTool.ExecuteSql("TRUNCATE TABLE StockMarketNews");
+            SqlTool.ExecuteSql("TRUNCATE TABLE StockInterestIssuedInfo");
             SqlTool.ExecuteSql("TRUNCATE TABLE LazyStockData");
             SqlTool.ExecuteSql("DELETE Stock");
             SqlTool.ExecuteSql("DELETE StockForums");
@@ -36,8 +38,9 @@ namespace StockCrawler.UnitTest
 
             using (var db = RepositoryProvider.GetRepositoryInstance())
             {
-                db.InsertOrUpdateStock("2330", "台積電", "0029");
+                db.InsertOrUpdateStock(TEST_STOCKNO_台積電, "台積電", "0029");
                 db.InsertOrUpdateStock("2888", "新光金", "0040");
+                db.InsertOrUpdateStock(TEST_STOCKNO_聚陽, "聚陽", "1477");
             }
 
             SqlTool.ExecuteSql(@"INSERT [dbo].[StockBasicInfo]
