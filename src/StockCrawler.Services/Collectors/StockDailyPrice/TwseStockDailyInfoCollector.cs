@@ -160,7 +160,7 @@ namespace StockCrawler.Services.Collectors
                 DeltaPrice = decimal.Parse(data[9] + data[10]),
                 PE = decimal.Parse(data[15]),
             };
-            var previousClosePrice = tmp.ClosePrice - tmp.DeltaPercent;
+            var previousClosePrice = tmp.ClosePrice - tmp.DeltaPrice;
             // 取小數點下四位就好
             tmp.DeltaPercent = (previousClosePrice == 0) ? 0 : decimal.Parse((tmp.DeltaPrice / previousClosePrice).ToString("0.####"));
             return tmp;
