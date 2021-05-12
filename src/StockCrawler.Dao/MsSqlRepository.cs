@@ -129,7 +129,7 @@ namespace StockCrawler.Dao
                         d.LowPrice,
                         d.ClosePrice,
                         d.DeltaPrice,
-                        (d.OpenPrice == 0) ? 0 : d.DeltaPrice / d.OpenPrice,
+                        d.DeltaPercent,
                         d.PE,
                         d.Volume);
         }
