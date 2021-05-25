@@ -49,9 +49,6 @@ namespace StockCrawlerRunner
                         case "-n":
                             job = new StockMarketNewsUpdateJob();
                             break;
-                        case "-lz":
-                            job = new LazyStockUpdateJob();
-                            break;
                         case "-ptt":
                             if (args.Length > 1)
                                 StockCrawler.Services.SystemTime.SetFakeTime(DateTime.Parse(args[1]));
@@ -111,8 +108,6 @@ namespace StockCrawlerRunner
             Console.WriteLine("     Update the company finance report this year.");
             Console.WriteLine(" <mode>: -n");
             Console.WriteLine("     Get the latest Taiwan stock market news.");
-            Console.WriteLine(" <mode>: -lz");
-            Console.WriteLine("     Get the latest LazyStock data.");
             Console.WriteLine(" <mode>: -is");
             Console.WriteLine("     Get the latest interest issued result.");
             Console.WriteLine(" <mode>: -ptt [Date:yyyy/MM/dd]");

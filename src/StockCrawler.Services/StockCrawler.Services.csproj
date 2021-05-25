@@ -132,9 +132,6 @@
     <Compile Include="CollectorServiceProvider.cs" />
     <Compile Include="Collectors\StockForums\IStockForumCollector.cs" />
     <Compile Include="Collectors\StockForums\StockForumCollector.cs" />
-    <Compile Include="Collectors\LazyStock\LazyStockData.cs" />
-    <Compile Include="Collectors\LazyStock\ILazyStockCollector.cs" />
-    <Compile Include="Collectors\LazyStock\LazyStockCollector.cs" />
     <Compile Include="Collectors\StockInterestIssued\IStockInterestIssuedCollector.cs" />
     <Compile Include="Collectors\StockInterestIssued\TwseInterestIssuedCollector.cs" />
     <Compile Include="Collectors\StockMarketNews\IStockMarketNewsCollector.cs" />
@@ -156,7 +153,6 @@
     <Compile Include="Collectors\StockHistoryPrice\TwseStockHistoryPriceCollector.cs" />
     <Compile Include="Collectors\StockHistoryPrice\YahooStockHistoryPriceCollector.cs" />
     <Compile Include="Collectors\StockHistoryPrice\IStockHistoryPriceCollector.cs" />
-    <Compile Include="LazyStockUpdateJob.cs" />
     <Compile Include="StockPriceUpdateJob.cs" />
     <Compile Include="StockPriceHistoryInitJob.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
