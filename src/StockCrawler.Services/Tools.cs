@@ -130,7 +130,7 @@ namespace StockCrawler.Services
                     if (target_weekend_date == DateTime.MinValue)
                     {
                         target_weekend_date = date.AddDays(5 - (int)date.DayOfWeek);
-                        _logger.Debug($"target_weekend_date:{target_weekend_date:yyyy-MM-dd}");
+                        _logger.Debug($"[{d.StockNo}]target_weekend_date:{target_weekend_date:yyyy-MM-dd}");
                     }
                     if (date >= target_weekend_date)
                     {
@@ -154,13 +154,13 @@ namespace StockCrawler.Services
                         }
 
                         target_weekend_date = target_weekend_date.AddDays(7);
-                        _logger.Debug($"target_weekend_date:{target_weekend_date:yyyy-MM-dd}");
+                        _logger.Debug($"[{d.StockNo}]target_weekend_date:{target_weekend_date:yyyy-MM-dd}");
                     }
 
                     if (target_monthend_date == DateTime.MinValue)
                     {
                         target_monthend_date = new DateTime(date.Year, date.Month, 1).AddMonths(1).AddDays(-1);
-                        _logger.Debug($"target_monthend_date:{target_monthend_date:yyyy-MM-dd}");
+                        _logger.Debug($"[{d.StockNo}]target_monthend_date:{target_monthend_date:yyyy-MM-dd}");
                     }
                     if (date >= target_monthend_date)
                     {
@@ -183,7 +183,7 @@ namespace StockCrawler.Services
                             if (tmp.Volume > 0) K20_list.Add(tmp);
                         }
                         target_monthend_date = bgnDate.AddMonths(2).AddDays(-1);
-                        _logger.Debug($"target_monthend_date:{target_monthend_date:yyyy-MM-dd}");
+                        _logger.Debug($"[{d.StockNo}]target_monthend_date:{target_monthend_date:yyyy-MM-dd}");
                     }
                     {
                         // 週線
