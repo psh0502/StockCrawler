@@ -53,13 +53,25 @@ namespace StockCrawler.Services
             };
             using (var db = GetDB())
             {
-                // 近年
-                var thisYearFinanaces = db.GetStockFinancialReport(4, stockNo, SystemTime.Today.AddYears(-1).GetTaiwanYear(), -1);
+                // 今年
+                var thisYearFinanaces = db.GetStockFinancialReport(4, stockNo, SystemTime.Today.GetTaiwanYear(), -1);
+                var thisYearDivis = db.GetStockInterestIssuedInfo(4, stockNo, SystemTime.Today.GetTaiwanYear(), -1);
                 // 去年
-                var lastYearFinanaces = db.GetStockFinancialReport(4, stockNo, SystemTime.Today.AddYears(-2).GetTaiwanYear(), -1);
+                var lastYearFinanaces = db.GetStockFinancialReport(4, stockNo, SystemTime.Today.AddYears(-1).GetTaiwanYear(), -1);
+                var lastYearDivis = db.GetStockInterestIssuedInfo(4, stockNo, SystemTime.Today.AddYears(-1).GetTaiwanYear(), -1);
                 // 前年
-                var beforeYearFinanaces = db.GetStockFinancialReport(4, stockNo, SystemTime.Today.AddYears(-3).GetTaiwanYear(), -1);
+                var beforeYearFinanaces = db.GetStockFinancialReport(4, stockNo, SystemTime.Today.AddYears(-2).GetTaiwanYear(), -1);
+                var beforeLastYearDivis = db.GetStockInterestIssuedInfo(4, stockNo, SystemTime.Today.AddYears(-2).GetTaiwanYear(), -1);
 
+                if (!thisYearFinanaces.Any())   // 若今年 Q1 還未公布，以去年財報比較為準
+                {
+                    thisYearFinanaces = db.GetStockFinancialReport(4, stockNo, SystemTime.Today.AddYears(-1).GetTaiwanYear(), -1);
+                    thisYearDivis = db.GetStockInterestIssuedInfo(4, stockNo, SystemTime.Today.AddYears(-1).GetTaiwanYear(), -1);
+                    lastYearFinanaces = db.GetStockFinancialReport(4, stockNo, SystemTime.Today.AddYears(-2).GetTaiwanYear(), -1);
+                    lastYearDivis = db.GetStockInterestIssuedInfo(4, stockNo, SystemTime.Today.AddYears(-2).GetTaiwanYear(), -1);
+                    beforeYearFinanaces = db.GetStockFinancialReport(4, stockNo, SystemTime.Today.AddYears(-3).GetTaiwanYear(), -1);
+                    beforeLastYearDivis = db.GetStockInterestIssuedInfo(4, stockNo, SystemTime.Today.AddYears(-3).GetTaiwanYear(), -1);
+                }
                 #region 獲利能力
                 var thisYearEPS = thisYearFinanaces.Sum(d => d.EPS);
                 var lastYearEPS = lastYearFinanaces.Sum(d => d.EPS);
@@ -78,7 +90,7 @@ namespace StockCrawler.Services
                 var beforeLastYearRevenue = beforeYearFinanaces.Sum(d => d.Revenue);
 
                 // 營收正成長
-                result.IsGrowingUpRevenue = thisYearRevenue > lastYearRevenue && lastYearRevenue > beforeLastYearRevenue;
+                result.IsGrowingUpRevenue = thisYearRevenue > lastYearRevenue;
 
                 var basic = db.GetStockBasicInfo(stockNo);
                 if (basic != null)
@@ -92,13 +104,9 @@ namespace StockCrawler.Services
                 #endregion
 
                 #region 股利政策
-                var thisYearDivis = db.GetStockInterestIssuedInfo(4, stockNo, SystemTime.Today.AddYears(-1).GetTaiwanYear(), -1);
-                var lastYearDivis = db.GetStockInterestIssuedInfo(4, stockNo, SystemTime.Today.AddYears(-2).GetTaiwanYear(), -1);
-                var beforeLastYearDivis = db.GetStockInterestIssuedInfo(4, stockNo, SystemTime.Today.AddYears(-3).GetTaiwanYear(), -1);
-
-                var thisDivi = thisYearDivis.Sum(d => d.ProfitCashIssued + d.SsrCashIssued + d.CapitalReserveCashIssued);
-                var lastDivi = lastYearDivis.Sum(d => d.ProfitCashIssued + d.SsrCashIssued + d.CapitalReserveCashIssued);
-                var beforeLastDivi = beforeLastYearDivis.Sum(d => d.ProfitCashIssued + d.SsrCashIssued + d.CapitalReserveCashIssued);
+                var thisDivi = thisYearDivis.Sum(d => d.ProfitCashIssued + d.ProfitStockIssued);
+                var lastDivi = lastYearDivis.Sum(d => d.ProfitCashIssued + d.ProfitStockIssued);
+                var beforeLastDivi = beforeLastYearDivis.Sum(d => d.ProfitCashIssued + d.ProfitStockIssued);
                 result.HasDivi = thisDivi > 0;
                 result.StockCashDivi = thisDivi;
                 // 連續配息
@@ -111,14 +119,18 @@ namespace StockCrawler.Services
                 result.IsAlwaysRestoreDivi = false; // TODO: need help to do it
                 #endregion
 
-                if (thisDivi > 0)
+                // 平均配息 = 最今三年加總(配息 / EPS) / 3 年
+                var averageDivi = ((thisDivi / thisYearEPS) + (lastDivi / lastYearEPS) + (beforeLastDivi / beforeLastYearEPS)) / 3;
+                // 預測配息 = 平均配息 * 目前已實現的 EPS
+                var possibleDivi = averageDivi * thisYearEPS;
+                if (possibleDivi > 0)
                 {
                     // 5% 合理價
-                    result.Price5 = thisDivi / 0.05M;
+                    result.Price5 = possibleDivi / 0.05M;
                     // 6% 合理價
-                    result.Price6 = thisDivi / 0.06M;
+                    result.Price6 = possibleDivi / 0.06M;
                     // 7% 合理價
-                    result.Price7 = thisDivi / 0.07M;
+                    result.Price7 = possibleDivi / 0.07M;
                 }
                 // 現價
                 var latestPrice = db.GetStockPeriodPrice(stockNo, 1, SystemTime.Today.AddDays(-14), SystemTime.Today.AddDays(1)).First();
