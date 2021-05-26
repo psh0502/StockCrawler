@@ -35,6 +35,7 @@ namespace StockCrawler.Services
             catch (Exception ex)
             {
                 Logger.Error("Job executing failed!", ex);
+                throw;
             }
             return null;
         }
