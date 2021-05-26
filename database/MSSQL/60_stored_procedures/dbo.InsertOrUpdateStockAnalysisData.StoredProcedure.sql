@@ -1,15 +1,15 @@
-/****** Object:  StoredProcedure [dbo].[InsertOrUpdateLazyStockData] Script Date: 07/15/2013 20:52:04 ******/
+/****** Object:  StoredProcedure [dbo].[InsertOrUpdateStockAnalysisData] Script Date: 07/15/2013 20:52:04 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 -- =============================================
 -- Author: Tom Tang
--- Create date: 2020-12-30
--- Description: Patch lazystock information
+-- Create date: 2021-05-25
+-- Description: Patch StockAnalysisData information
 -- Revision:
 -- =============================================
-CREATE OR ALTER PROCEDURE [dbo].[InsertOrUpdateLazyStockData]
+CREATE OR ALTER PROCEDURE [dbo].[InsertOrUpdateStockAnalysisData]
 @pStockNo VARCHAR(10), 
 @pPrice NVARCHAR(50),
 @pStockCashDivi DECIMAL(18, 4),
@@ -33,8 +33,8 @@ CREATE OR ALTER PROCEDURE [dbo].[InsertOrUpdateLazyStockData]
 AS
 BEGIN
 	SET NOCOUNT ON
-	IF EXISTS(SELECT [StockNo] FROM [dbo].[LazyStockData](NOLOCK) WHERE [StockNo] = @pStockNo)
-		UPDATE [dbo].[LazyStockData]
+	IF EXISTS(SELECT [StockNo] FROM [dbo].[StockAnalysisData](NOLOCK) WHERE [StockNo] = @pStockNo)
+		UPDATE [dbo].[StockAnalysisData]
 		SET
 			[Price] = ISNULL(@pPrice, [Price])
 			,[StockCashDivi] = ISNULL(@pStockCashDivi, [StockCashDivi])
@@ -59,7 +59,7 @@ BEGIN
 		WHERE [StockNo] = @pStockNo
 
 	ELSE BEGIN
-		INSERT INTO [dbo].[LazyStockData]
+		INSERT INTO [dbo].[StockAnalysisData]
            ([StockNo]
            ,[Price]
            ,[StockCashDivi]

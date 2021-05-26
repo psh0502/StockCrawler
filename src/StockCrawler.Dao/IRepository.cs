@@ -53,7 +53,7 @@ namespace StockCrawler.Dao
         /// <returns>每日收盤資料列表</returns>
         GetStockPeriodPriceResult[] GetStockPeriodPrice(string stockNo, short period, DateTime bgnDate, DateTime endDate);
         GetStockAveragePriceResult[] GetStockAveragePrice(string stockNo, DateTime bgnDate, DateTime endDate, short period);
-        GetLazyStockDataResult GetLazyStockData(string stockNo);
+        GetStockAnalysisDataResult GetStockAnalysisData(string stockNo);
         GetStockForumDataResult[] GetStockForumData(int top, DateTime bgnDate, DateTime endDate, long? id = null, string stockNo = null);
         GetStockFinancialReportResult[] GetStockFinancialReport(int top, string stockNo, short year, short season);
         GetStockInterestIssuedInfoResult[] GetStockInterestIssuedInfo(int top, string stockNo, short year, short season);
@@ -78,7 +78,7 @@ namespace StockCrawler.Dao
         /// <param name="categoryNo">Industry index stock No</param>
         void InsertOrUpdateStock(string stockNo, string stockName, string categoryNo);
         void InsertOrUpdateStockAveragePrice((string stockNo, DateTime stockDT, short period, decimal averagePrice)[] avgPriceList);
-        void InsertOrUpdateLazyStock(GetLazyStockDataResult data);
+        void InsertOrUpdateStockAnalysis(GetStockAnalysisDataResult data);
         void InsertOrUpdateStockFinancialReport(GetStockFinancialReportResult data);
         /// <summary>
         /// Insert or update stock interest cash/stock issued.

@@ -139,6 +139,7 @@
     <Compile Include="Collectors\StockHistoryPrice\TwseStockHistoryPriceCollector2.cs" />
     <Compile Include="JobBase.cs" />
     <Compile Include="Collectors\StockBasicInfo\TwseStockBasicInfoCollector.cs" />
+    <Compile Include="StockAnalysisUpdateJob.cs" />
     <Compile Include="StockInterestIssuedUpdateJob.cs" />
     <Compile Include="StockForumsUpdateJob.cs" />
     <Compile Include="StockMarketNewsUpdateJob.cs" />

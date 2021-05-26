@@ -1,8 +1,8 @@
-/****** Object:  Table [dbo].[LazyStockData]    Script Date: 2017/7/3 下午 09:12:15 ******/
-DROP TABLE IF EXISTS [dbo].[LazyStockData]
+/****** Object:  Table [dbo].[StockAnalysisData]    Script Date: 2017/7/3 下午 09:12:15 ******/
+DROP TABLE IF EXISTS [dbo].[StockAnalysisData]
 GO
 
-/****** Object:  Table [dbo].[LazyStockData]    Script Date: 2017/7/3 下午 09:12:15 ******/
+/****** Object:  Table [dbo].[StockAnalysisData]    Script Date: 2017/7/3 下午 09:12:15 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -12,7 +12,7 @@ GO
 SET ANSI_PADDING ON
 GO
 
-CREATE TABLE [dbo].[LazyStockData](
+CREATE TABLE [dbo].[StockAnalysisData](
 	[StockNo] VARCHAR(10) NOT NULL,
 	[Price] NVARCHAR(50) NOT NULL,
 	[StockCashDivi] DECIMAL(18, 4) NOT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE [dbo].[LazyStockData](
 	Price7 DECIMAL(18, 4) NOT NULL,
 	CurrPrice DECIMAL(18, 4) NOT NULL,
 	[LastModifiedAt] DATETIME NOT NULL DEFAULT(GETDATE())
- CONSTRAINT [PK_LazyStockData] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_StockAnalysisData] PRIMARY KEY CLUSTERED 
 (
 	[StockNo] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]

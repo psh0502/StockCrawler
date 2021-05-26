@@ -49,10 +49,10 @@ namespace StockCrawler.Dao
             using (var db = GetMSSQLStockDataContext())
                 return db.GetStockBasicInfo(stockNo).SingleOrDefault();
         }
-        public GetLazyStockDataResult GetLazyStockData(string stockNo)
+        public GetStockAnalysisDataResult GetStockAnalysisData(string stockNo)
         {
             using (var db = GetMSSQLStockDataContext())
-                return db.GetLazyStockData(stockNo).SingleOrDefault();
+                return db.GetStockAnalysisData(stockNo).SingleOrDefault();
         }
         public GetStockForumDataResult[] GetStockForumData(int top, DateTime bgnDate, DateTime endDate, long? id = null, string stockNo = null)
         {
@@ -171,7 +171,7 @@ namespace StockCrawler.Dao
         }
         public void InsertOrUpdateStockAveragePrice((string stockNo, DateTime stockDT, short period, decimal averagePrice)[] avgPriceList)
         {
-            using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
+            using (var db = GetMSSQLStockDataContext())
                 foreach (var info in avgPriceList)
                     db.InsertOrUpdateStockAveragePrice(
                         info.stockNo,
@@ -179,10 +179,10 @@ namespace StockCrawler.Dao
                         info.period,
                         info.averagePrice);
         }
-        public void InsertOrUpdateLazyStock(GetLazyStockDataResult data)
+        public void InsertOrUpdateStockAnalysis(GetStockAnalysisDataResult data)
         {
-            using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
-                db.InsertOrUpdateLazyStockData(
+            using (var db = GetMSSQLStockDataContext())
+                db.InsertOrUpdateStockAnalysisData(
                     data.StockNo,
                     data.Price,
                     data.StockCashDivi,
@@ -206,7 +206,7 @@ namespace StockCrawler.Dao
         }
         public void InsertOrUpdateStockFinancialReport(GetStockFinancialReportResult data)
         {
-            using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
+            using (var db = GetMSSQLStockDataContext())
                 db.InsertOrUpdateStockFinancialReport(
                     data.StockNo,
                     data.Year,
@@ -226,7 +226,7 @@ namespace StockCrawler.Dao
         }
         public void InsertOrUpdateStockInterestIssuedInfo(GetStockInterestIssuedInfoResult data)
         {
-            using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
+            using (var db = GetMSSQLStockDataContext())
                 db.InsertOrUpdateStockInterestIssuedInfo(
                     data.StockNo,
                     data.Year,

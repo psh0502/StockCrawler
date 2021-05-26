@@ -42,6 +42,8 @@ namespace StockCrawler.Services
                         db.InsertOrUpdateStockPrice(priceInfo.ToArray());
                 }
                 Tools.CalculateMAAndPeriodK(SystemTime.Today);
+
+                new StockAnalysisUpdateJob().Execute(context);
             }
             catch (Exception ex)
             {

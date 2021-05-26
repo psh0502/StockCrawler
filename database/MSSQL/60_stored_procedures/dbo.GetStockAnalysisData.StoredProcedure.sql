@@ -1,4 +1,4 @@
-/****** Object:  StoredProcedure [dbo].[GetLazyStockData] ******/
+/****** Object:  StoredProcedure [dbo].[GetStockAnalysisData] ******/
 SET ANSI_NULLS ON
 GO
 
@@ -7,17 +7,17 @@ GO
 
 -- =============================================
 -- Author:		Tom Tang
--- Create date: 2020-12-30
--- Description:	Get lazy stock data
+-- Create date: 2021-05-25
+-- Description:	Get StockAnalysisData
 -- Revision:
 -- =============================================
-CREATE OR ALTER PROCEDURE [dbo].[GetLazyStockData]
+CREATE OR ALTER PROCEDURE [dbo].[GetStockAnalysisData]
 @pStockNo VARCHAR(10)
 AS
 BEGIN
 	SET NOCOUNT ON
 	SELECT *
-	FROM [dbo].[LazyStockData](NOLOCK)
+	FROM [dbo].[StockAnalysisData](NOLOCK)
 	WHERE 
 		StockNo = @pStockNo 
 END
