@@ -54,28 +54,33 @@ namespace StockCrawler.Services
             using (var db = GetDB())
             {
                 // 今年
-                var thisYearFinanaces = db.GetStockFinancialReport(4, stockNo, SystemTime.Today.GetTaiwanYear(), -1);
+                var thisYearFinanaces = db.GetStockFinancialReport(1, stockNo, SystemTime.Today.GetTaiwanYear(), -1).FirstOrDefault();
                 var thisYearDivis = db.GetStockInterestIssuedInfo(4, stockNo, SystemTime.Today.GetTaiwanYear(), -1);
                 // 去年
-                var lastYearFinanaces = db.GetStockFinancialReport(4, stockNo, SystemTime.Today.AddYears(-1).GetTaiwanYear(), -1);
+                var lastYearFinanaces = db.GetStockFinancialReport(1, stockNo, SystemTime.Today.AddYears(-1).GetTaiwanYear(), 4).FirstOrDefault() ?? new GetStockFinancialReportResult();
                 var lastYearDivis = db.GetStockInterestIssuedInfo(4, stockNo, SystemTime.Today.AddYears(-1).GetTaiwanYear(), -1);
                 // 前年
-                var beforeYearFinanaces = db.GetStockFinancialReport(4, stockNo, SystemTime.Today.AddYears(-2).GetTaiwanYear(), -1);
+                var beforeYearFinanaces = db.GetStockFinancialReport(1, stockNo, SystemTime.Today.AddYears(-2).GetTaiwanYear(), 4).FirstOrDefault() ?? new GetStockFinancialReportResult();
                 var beforeLastYearDivis = db.GetStockInterestIssuedInfo(4, stockNo, SystemTime.Today.AddYears(-2).GetTaiwanYear(), -1);
+                // 大前年
+                var mostBeforeYearFinanaces = db.GetStockFinancialReport(1, stockNo, SystemTime.Today.AddYears(-3).GetTaiwanYear(), 4).FirstOrDefault() ?? new GetStockFinancialReportResult();
+                var mostBeforeLastYearDivis = db.GetStockInterestIssuedInfo(4, stockNo, SystemTime.Today.AddYears(-3).GetTaiwanYear(), -1);
 
-                if (!thisYearFinanaces.Any())   // 若今年 Q1 還未公布，以去年財報比較為準
+                if (null == thisYearFinanaces)   // 若今年 Q1 還未公布，以去年財報比較為準
                 {
-                    thisYearFinanaces = db.GetStockFinancialReport(4, stockNo, SystemTime.Today.AddYears(-1).GetTaiwanYear(), -1);
+                    thisYearFinanaces = db.GetStockFinancialReport(1, stockNo, SystemTime.Today.AddYears(-1).GetTaiwanYear(), 4).FirstOrDefault() ?? new GetStockFinancialReportResult();
                     thisYearDivis = db.GetStockInterestIssuedInfo(4, stockNo, SystemTime.Today.AddYears(-1).GetTaiwanYear(), -1);
-                    lastYearFinanaces = db.GetStockFinancialReport(4, stockNo, SystemTime.Today.AddYears(-2).GetTaiwanYear(), -1);
+                    lastYearFinanaces = db.GetStockFinancialReport(1, stockNo, SystemTime.Today.AddYears(-2).GetTaiwanYear(), 4).FirstOrDefault() ?? new GetStockFinancialReportResult();
                     lastYearDivis = db.GetStockInterestIssuedInfo(4, stockNo, SystemTime.Today.AddYears(-2).GetTaiwanYear(), -1);
-                    beforeYearFinanaces = db.GetStockFinancialReport(4, stockNo, SystemTime.Today.AddYears(-3).GetTaiwanYear(), -1);
+                    beforeYearFinanaces = db.GetStockFinancialReport(1, stockNo, SystemTime.Today.AddYears(-3).GetTaiwanYear(), 4).FirstOrDefault() ?? new GetStockFinancialReportResult();
                     beforeLastYearDivis = db.GetStockInterestIssuedInfo(4, stockNo, SystemTime.Today.AddYears(-3).GetTaiwanYear(), -1);
+                    mostBeforeYearFinanaces = db.GetStockFinancialReport(1, stockNo, SystemTime.Today.AddYears(-4).GetTaiwanYear(), 4).FirstOrDefault() ?? new GetStockFinancialReportResult();
+                    mostBeforeLastYearDivis = db.GetStockInterestIssuedInfo(4, stockNo, SystemTime.Today.AddYears(-4).GetTaiwanYear(), -1);
                 }
                 #region 獲利能力
-                var thisYearEPS = thisYearFinanaces.Sum(d => d.EPS);
-                var lastYearEPS = lastYearFinanaces.Sum(d => d.EPS);
-                var beforeLastYearEPS = beforeYearFinanaces.Sum(d => d.EPS);
+                var thisYearEPS = thisYearFinanaces.EPS;
+                var lastYearEPS = lastYearFinanaces.EPS;
+                var beforeLastYearEPS = beforeYearFinanaces.EPS;
                 // 賺的比去年多
                 result.IsPromisingEPS = thisYearEPS > lastYearEPS;
                 // 獲利持續成長
@@ -85,20 +90,21 @@ namespace StockCrawler.Services
                 #endregion
 
                 #region 參考項目
-                var thisYearRevenue = thisYearFinanaces.Sum(d => d.Revenue);
-                var lastYearRevenue = lastYearFinanaces.Sum(d => d.Revenue);
-                var beforeLastYearRevenue = beforeYearFinanaces.Sum(d => d.Revenue);
+                var thisYearRevenue = thisYearFinanaces.Revenue;
+                var lastYearRevenue = lastYearFinanaces.Revenue;
+                var beforeLastYearRevenue = beforeYearFinanaces.Revenue;
+                var mostBeforeLastYearRevenue = mostBeforeYearFinanaces.Revenue;
 
                 // 營收正成長
-                result.IsGrowingUpRevenue = thisYearRevenue > lastYearRevenue;
+                result.IsGrowingUpRevenue = lastYearRevenue > beforeLastYearRevenue;
 
                 var basic = db.GetStockBasicInfo(stockNo);
                 if (basic != null)
                     // 公司市值(>30億）
                     result.IsStableTotalAmount = basic.MarketValue > 30 * 100000000M;
 
-                var thisOtherCashflow = thisYearFinanaces.Sum(d => d.InvestmentCashflow + d.FinancingCashflow);
-                var thisBusinessCashflow = thisYearFinanaces.Sum(d => d.BusinessCashflow);
+                var thisOtherCashflow = thisYearFinanaces.InvestmentCashflow + thisYearFinanaces.FinancingCashflow;
+                var thisBusinessCashflow = thisYearFinanaces.BusinessCashflow;
                 // 業外收入(<=30%)
                 result.IsStableOutsideIncome = thisBusinessCashflow != 0 && (thisOtherCashflow / thisBusinessCashflow) <= 0.3M;
                 #endregion
@@ -107,14 +113,15 @@ namespace StockCrawler.Services
                 var thisDivi = thisYearDivis.Sum(d => d.ProfitCashIssued + d.ProfitStockIssued);
                 var lastDivi = lastYearDivis.Sum(d => d.ProfitCashIssued + d.ProfitStockIssued);
                 var beforeLastDivi = beforeLastYearDivis.Sum(d => d.ProfitCashIssued + d.ProfitStockIssued);
+                var mostBeforeLastYearDivi = mostBeforeLastYearDivis.Sum(d => d.ProfitCashIssued + d.ProfitStockIssued);
                 result.HasDivi = thisDivi > 0;
                 result.StockCashDivi = thisDivi;
                 // 連續配息
-                result.IsAlwaysPayDivi = thisDivi > 0 && lastDivi > 0 && beforeLastDivi > 0;
+                result.IsAlwaysPayDivi = lastDivi > 0 && beforeLastDivi > 0 && mostBeforeLastYearDivi > 0;
                 // 配息穩定性，配息的每年變動差異低於 10% 以內
-                result.IsStableDivi = 
-                    (lastDivi != 0 && (Math.Abs((thisDivi - lastDivi) / lastDivi)) < 0.1M)
-                    && (beforeLastDivi != 0 && (Math.Abs((lastDivi - beforeLastDivi) / beforeLastDivi)) < 0.1M);
+                result.IsStableDivi =
+                    (beforeLastDivi != 0 && (Math.Abs((lastDivi - beforeLastDivi) / beforeLastDivi)) < 0.1M)
+                    && (mostBeforeLastYearDivi != 0 && (Math.Abs((beforeLastDivi - mostBeforeLastYearDivi) / mostBeforeLastYearDivi)) < 0.1M);
                 // 連續三年填息(90天內)
                 result.IsAlwaysRestoreDivi = false; // TODO: need help to do it
                 #endregion
@@ -122,12 +129,14 @@ namespace StockCrawler.Services
                 // 平均配息 = 最今三年加總(配息 / EPS) / 3 年
                 var averageDivi = 
                     (
-                    thisYearEPS == 0 ? 0 : (thisDivi / thisYearEPS)
-                    + lastYearEPS == 0 ? 0 : (lastDivi / lastYearEPS)
-                    + beforeLastYearEPS == 0 ? 0 : (beforeLastDivi / beforeLastYearEPS)
+                    (thisYearEPS == 0 ? 0 : (thisDivi / thisYearEPS))
+                    + (lastYearEPS == 0 ? 0 : (lastDivi / lastYearEPS))
+                    + (beforeLastYearEPS == 0 ? 0 : (beforeLastDivi / beforeLastYearEPS))
                     ) / 3;
+                Logger.DebugFormat("thisYearEPS: {0}, lastYearEPS: {1}, beforeLastYearEPS: {2}", thisYearEPS, lastYearEPS, beforeLastYearEPS);
                 // 預測配息 = 平均配息 * 目前已實現的 EPS
                 var possibleDivi = averageDivi * thisYearEPS;
+                Logger.DebugFormat("averageDivi({0}) * thisYearEPS({1}) = possibleDivi({2})", averageDivi, thisYearEPS, possibleDivi);
                 if (possibleDivi > 0)
                 {
                     // 5% 合理價
