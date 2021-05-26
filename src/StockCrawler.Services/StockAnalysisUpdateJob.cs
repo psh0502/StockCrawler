@@ -120,7 +120,12 @@ namespace StockCrawler.Services
                 #endregion
 
                 // 平均配息 = 最今三年加總(配息 / EPS) / 3 年
-                var averageDivi = ((thisDivi / thisYearEPS) + (lastDivi / lastYearEPS) + (beforeLastDivi / beforeLastYearEPS)) / 3;
+                var averageDivi = 
+                    (
+                    thisYearEPS == 0 ? 0 : (thisDivi / thisYearEPS)
+                    + lastYearEPS == 0 ? 0 : (lastDivi / lastYearEPS)
+                    + beforeLastYearEPS == 0 ? 0 : (beforeLastDivi / beforeLastYearEPS)
+                    ) / 3;
                 // 預測配息 = 平均配息 * 目前已實現的 EPS
                 var possibleDivi = averageDivi * thisYearEPS;
                 if (possibleDivi > 0)
