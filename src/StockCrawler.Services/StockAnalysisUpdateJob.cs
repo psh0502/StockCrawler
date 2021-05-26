@@ -81,8 +81,9 @@ namespace StockCrawler.Services
                 result.IsGrowingUpRevenue = thisYearRevenue > lastYearRevenue && lastYearRevenue > beforeLastYearRevenue;
 
                 var basic = db.GetStockBasicInfo(stockNo);
-                // 公司市值(>30億）
-                result.IsStableTotalAmount = basic.MarketValue > 30 * 100000000M;
+                if (basic != null)
+                    // 公司市值(>30億）
+                    result.IsStableTotalAmount = basic.MarketValue > 30 * 100000000M;
 
                 var thisOtherCashflow = thisYearFinanaces.Sum(d => d.InvestmentCashflow + d.FinancingCashflow);
                 var thisBusinessCashflow = thisYearFinanaces.Sum(d => d.BusinessCashflow);
