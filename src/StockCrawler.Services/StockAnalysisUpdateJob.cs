@@ -86,7 +86,7 @@ namespace StockCrawler.Services
                 var thisOtherCashflow = thisYearFinanaces.Sum(d => d.InvestmentCashflow + d.FinancingCashflow);
                 var thisBusinessCashflow = thisYearFinanaces.Sum(d => d.BusinessCashflow);
                 // 業外收入(<=30%)
-                result.IsStableOutsideIncome = (thisOtherCashflow / thisBusinessCashflow) <= 0.3M;
+                result.IsStableOutsideIncome = thisBusinessCashflow != 0 && (thisOtherCashflow / thisBusinessCashflow) <= 0.3M;
                 #endregion
 
                 #region 股利政策
@@ -101,10 +101,10 @@ namespace StockCrawler.Services
                 result.StockCashDivi = thisDivi;
                 // 連續配息
                 result.IsAlwaysPayDivi = thisDivi > 0 && lastDivi > 0 && beforeLastDivi > 0;
-                // 配息穩定性
-                result.IsStableDivi = // 配息的每年變動差異低於 10% 以內
-                    Math.Abs((thisDivi - lastDivi) / lastDivi) < 0.1M
-                    && Math.Abs((lastDivi - beforeLastDivi) / beforeLastDivi) < 0.1M;
+                // 配息穩定性，配息的每年變動差異低於 10% 以內
+                result.IsStableDivi = 
+                    (lastDivi != 0 && (Math.Abs((thisDivi - lastDivi) / lastDivi)) < 0.1M)
+                    && (beforeLastDivi != 0 && (Math.Abs((lastDivi - beforeLastDivi) / beforeLastDivi)) < 0.1M);
                 // 連續三年填息(90天內)
                 result.IsAlwaysRestoreDivi = false; // TODO: need help to do it
                 #endregion
