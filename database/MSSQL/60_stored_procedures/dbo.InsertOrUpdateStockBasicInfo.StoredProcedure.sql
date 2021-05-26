@@ -68,9 +68,9 @@ BEGIN
 			,@pCEO
 			,@pUrl
 			,@pBusiness)
-		DECLARE @vCategoryNo VARCHAR(10)
-		SELECT @vCategoryNo = CategoryNo FROM CategoryMapping(NOLOCK) WHERE Category = @pCategory
-		EXEC InsertOrUpdateStock @pStockNo, NULL, @vCategoryNo
 	END
+	DECLARE @vCategoryNo VARCHAR(10)
+	SELECT @vCategoryNo = CategoryNo FROM CategoryMapping(NOLOCK) WHERE Category = @pCategory
+	EXEC InsertOrUpdateStock @pStockNo, NULL, @vCategoryNo
 END
 GO
