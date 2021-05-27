@@ -146,9 +146,6 @@ namespace StockCrawler.Services
                     // 7% 合理價
                     result.Price7 = possibleDivi / 0.07M;
                 }
-                // 現價
-                var latestPrice = db.GetStockPeriodPrice(stockNo, 1, SystemTime.Today.AddDays(-14), SystemTime.Today.AddDays(1)).First();
-                result.CurrPrice = latestPrice.ClosePrice;
             }
             return result;
         }

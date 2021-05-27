@@ -1,5 +1,6 @@
 ﻿using Common.Logging;
 using Quartz;
+using Quartz.Impl;
 using StockCrawler.Services;
 using System;
 using System.Threading;
@@ -23,25 +24,13 @@ namespace StockCrawlerRunner
                     switch (args[0])
                     {
                         case "-i":
-                            string stockNo = null;
-                            if (args.Length > 1)
-                                StockCrawler.Services.SystemTime.SetFakeTime(DateTime.Parse(args[1]));
-                            if (args.Length > 2)
-                                stockNo = args[2];
-
-                            job = new StockPriceHistoryInitJob() { ProcessingStockNo = stockNo };
+                            job = new StockPriceHistoryInitJob();
                             break;
                         case "-u":
-                            if (args.Length > 1)
-                                StockCrawler.Services.SystemTime.SetFakeTime(DateTime.Parse(args[1]));
                             job = new StockPriceUpdateJob();
                             break;
                         case "-b":
-                            stockNo = null;
-                            if (args.Length > 1)
-                                job = new StockBasicInfoUpdateJob() { BeginStockNo = args[1] };
-                            else
-                                job = new StockBasicInfoUpdateJob();
+                            job = new StockBasicInfoUpdateJob();
                             break;
                         case "-f":
                             job = new StockFinReportUpdateJob();
@@ -50,26 +39,27 @@ namespace StockCrawlerRunner
                             job = new StockMarketNewsUpdateJob();
                             break;
                         case "-ptt":
-                            if (args.Length > 1)
-                                StockCrawler.Services.SystemTime.SetFakeTime(DateTime.Parse(args[1]));
                             job = new StockForumsUpdateJob();
                             break;
                         case "-is":
                             job = new StockInterestIssuedUpdateJob();
                             break;
+                        case "-a":
+                            job = new StockAnalysisUpdateJob();
+                            break;
                         default:
                             ShowHelp();
                             break;
                     }
+                    var jobContext = new JobExecutionContextImpl(null, null, job);
+                    jobContext.Put("args", args);
                     if (null != job)
-                        job.Execute(null);
+                        job.Execute(jobContext);
                     else
                         Console.WriteLine("No job execute.");
                 }
                 else
-                {
                     ShowHelp();
-                }
             }
             catch (Exception ex)
             {
@@ -110,6 +100,8 @@ namespace StockCrawlerRunner
             Console.WriteLine("     Get the latest Taiwan stock market news.");
             Console.WriteLine(" <mode>: -is");
             Console.WriteLine("     Get the latest interest issued result.");
+            Console.WriteLine(" <mode>: -a");
+            Console.WriteLine("     Analyze stock health according to the latest finance reports.");
             Console.WriteLine(" <mode>: -ptt [Date:yyyy/MM/dd]");
             Console.WriteLine("     Get the latest articles from PTT stock forum. If you assign date, it grab articles by the date.");
         }

@@ -19,6 +19,10 @@ namespace StockCrawler.Services
             Logger.InfoFormat("Invoke [{0}]...", MethodBase.GetCurrentMethod().Name);
             try
             {
+                var args = (string[])context.Get("args");
+                if (args != null && args.Length > 1)
+                    SystemTime.SetFakeTime(DateTime.Parse(args[1]));
+
                 var collector = CollectorServiceProvider.GetStockDailyPriceCollector();
 
                 var priceInfo = collector.GetStockDailyPriceInfo();
@@ -42,8 +46,6 @@ namespace StockCrawler.Services
                         db.InsertOrUpdateStockPrice(priceInfo.ToArray());
                 }
                 Tools.CalculateMAAndPeriodK(SystemTime.Today);
-
-                new StockAnalysisUpdateJob().Execute(context);
             }
             catch (Exception ex)
             {

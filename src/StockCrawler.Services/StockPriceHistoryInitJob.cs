@@ -1,6 +1,7 @@
 ﻿using Common.Logging;
 using Quartz;
 using StockCrawler.Dao;
+using System;
 using System.Data;
 using System.Linq;
 using System.Reflection;
@@ -11,7 +12,6 @@ namespace StockCrawler.Services
     public class StockPriceHistoryInitJob : JobBase, IJob
     {
         internal static ILog Logger { get; set; } = LogManager.GetLogger(typeof(StockPriceHistoryInitJob));
-        public string ProcessingStockNo { get; set; }
 
         #region IJob Members
         public Task Execute(IJobExecutionContext context)
@@ -26,8 +26,13 @@ namespace StockCrawler.Services
 #endif
             var endDate = SystemTime.Today;
 
+            string stockNo = null;
+            var args = (string[])context.Get("args");
+            if (null == args && args.Length > 1) SystemTime.SetFakeTime(DateTime.Parse(args[1]));
+            if (null == args && args.Length > 2) stockNo = args[2];
+
             var collector = CollectorServiceProvider.GetStockHistoryPriceCollector();
-            foreach (var d in StockHelper.GetAllStockList().Where(d => string.IsNullOrEmpty(ProcessingStockNo) || d.StockNo == ProcessingStockNo))
+            foreach (var d in StockHelper.GetAllStockList().Where(d => string.IsNullOrEmpty(stockNo) || d.StockNo == stockNo))
             {
                 using (var db = GetDB())
                     db.DeleteStockPriceHistoryData(d.StockNo, null);

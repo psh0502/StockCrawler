@@ -14,8 +14,6 @@ namespace StockCrawler.Services
     {
         internal static ILog Logger { get; set; } = LogManager.GetLogger(typeof(StockBasicInfoUpdateJob));
 
-        public string BeginStockNo { get; set; }
-
         #region IJob Members
 
         public Task Execute(IJobExecutionContext context)
@@ -23,9 +21,13 @@ namespace StockCrawler.Services
             Logger.InfoFormat("Invoke [{0}]...", MethodBase.GetCurrentMethod().Name);
             try
             {
+                string stockNo = null;
+                var args = (string[])context.Get("args");
+                if (null == args && args.Length > 1) stockNo = args[1];
+
                 var collector = CollectorServiceProvider.GetStockBasicInfoCollector();
                 foreach (var d in StockHelper.GetCompanyStockList()
-                    .Where(d => string.IsNullOrEmpty(BeginStockNo) || int.Parse(d.StockNo) >= int.Parse(BeginStockNo)))
+                    .Where(d => string.IsNullOrEmpty(stockNo) || int.Parse(d.StockNo) >= int.Parse(stockNo)))
                 {
                     try
                     {
