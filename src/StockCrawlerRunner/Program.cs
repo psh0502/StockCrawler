@@ -51,7 +51,7 @@ namespace StockCrawlerRunner
                             ShowHelp();
                             break;
                     }
-                    var jobContext = new JobExecutionContextImpl(null, null, job);
+                    var jobContext = new ArgumentJobExecutionContext(job);
                     jobContext.Put("args", args);
                     if (null != job)
                         job.Execute(jobContext);
