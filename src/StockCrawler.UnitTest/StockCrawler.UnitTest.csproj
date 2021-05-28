@@ -142,6 +142,7 @@
     <Compile Include="Jobs\StockInterestIssuedUpdateJobTests.cs" />
     <Compile Include="Jobs\StockForumsUpdateJobTests.cs" />
     <Compile Include="Jobs\StockMarketNewsUpdateJobTest.cs" />
+    <Compile Include="Others\UnitTestTools.cs" />
     <Compile Include="Stubs\StockForumCollectorStub.cs" />
     <Compile Include="Stubs\StockMarketNewsCollectorStub.cs" />
     <Compile Include="Stubs\StockBasicInfoCollectorStub.cs" />
@@ -363,9 +364,7 @@
     <None Include="TestData\TWSE\STOCK_DAY_2330_202004.csv" />
     <None Include="TestData\yahoo_history_2330.csv" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Others\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
       <Visible>False</Visible>

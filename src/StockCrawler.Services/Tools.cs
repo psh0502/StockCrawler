@@ -118,12 +118,12 @@ namespace StockCrawler.Services
         public static void CalculateMAAndPeriodK(DateTime date)
         {
             _logger.InfoFormat("Begin caculation MA and K ...{0}", date.ToString("yyyyMMdd"));
+            var K5_list = new List<GetStockPeriodPriceResult>();
+            var K20_list = new List<GetStockPeriodPriceResult>();
+            var avgPriceList = new List<(string StockNo, DateTime StockDT, short Period, decimal AveragePrice)>();
             using (var db = RepositoryProvider.GetRepositoryInstance())
             {
-                var K5_list = new List<GetStockPeriodPriceResult>();
-                var K20_list = new List<GetStockPeriodPriceResult>();
-                var avgPriceList = new List<(string StockNo, DateTime StockDT, short Period, decimal AveragePrice)>();
-                foreach (var d in db.GetStocks().ToList())
+                foreach (var d in StockHelper.GetAllStockList())
                 {
                     var target_weekend_date = DateTime.MinValue;
                     var target_monthend_date = DateTime.MinValue;
