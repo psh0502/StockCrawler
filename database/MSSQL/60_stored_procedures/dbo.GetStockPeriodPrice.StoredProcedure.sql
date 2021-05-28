@@ -22,7 +22,7 @@ BEGIN
 	SELECT a.StockName, b.*
 	FROM StockPriceHistory b(NOLOCK)
 		INNER JOIN Stock a(NOLOCK) ON a.StockNo = b.StockNo 
-	WHERE b.StockNo = @pStockNo 
+	WHERE (@pStockNo IS NULL OR @pStockNo = '' OR b.StockNo = @pStockNo)
 		AND b.StockDT BETWEEN @pBeginDate AND @pEndDate
 		AND b.[Period] = @pPeriod
 	ORDER BY b.StockDT DESC
