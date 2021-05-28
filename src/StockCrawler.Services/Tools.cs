@@ -125,18 +125,14 @@ namespace StockCrawler.Services
             {
                 foreach (var d in StockHelper.GetAllStockList())
                 {
-                    var target_weekend_date = DateTime.MinValue;
-                    var target_monthend_date = DateTime.MinValue;
-                    if (target_weekend_date == DateTime.MinValue)
-                    {
-                        target_weekend_date = date.AddDays(5 - (int)date.DayOfWeek);
-                        _logger.Debug($"[{d.StockNo}]target_weekend_date:{target_weekend_date:yyyy-MM-dd}");
-                    }
+                    var target_weekend_date = date.AddDays(5 - (int)date.DayOfWeek);
+                    _logger.Debug($"[{d.StockNo}]target_weekend_date:{target_weekend_date:yyyy-MM-dd}");
+
                     if (date >= target_weekend_date)
                     {
                         // 週 K
                         var bgnDate = target_weekend_date.AddDays(-4);
-                        var data = db.GetStockPeriodPrice(d.StockNo, 1, bgnDate, target_monthend_date).ToList();
+                        var data = db.GetStockPeriodPrice(d.StockNo, 1, bgnDate, target_weekend_date).ToList();
                         if (data.Any())
                         {
                             var first = data.OrderBy(x => x.StockDT).First();
@@ -163,11 +159,9 @@ namespace StockCrawler.Services
                         _logger.Debug($"[{d.StockNo}]target_weekend_date:{target_weekend_date:yyyy-MM-dd}");
                     }
 
-                    if (target_monthend_date == DateTime.MinValue)
-                    {
-                        target_monthend_date = new DateTime(date.Year, date.Month, 1).AddMonths(1).AddDays(-1);
-                        _logger.Debug($"[{d.StockNo}]target_monthend_date:{target_monthend_date:yyyy-MM-dd}");
-                    }
+                    var target_monthend_date = new DateTime(date.Year, date.Month, 1).AddMonths(1).AddDays(-1);
+                    _logger.Debug($"[{d.StockNo}]target_monthend_date:{target_monthend_date:yyyy-MM-dd}");
+
                     if (date >= target_monthend_date)
                     {
                         // 月 K
