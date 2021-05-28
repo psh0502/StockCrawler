@@ -136,19 +136,25 @@ namespace StockCrawler.Services
                     {
                         // 週 K
                         var bgnDate = target_weekend_date.AddDays(-4);
-                        var data = db.GetStockPeriodPrice(d.StockNo, 1, bgnDate, target_weekend_date).ToList();
+                        var data = db.GetStockPeriodPrice(d.StockNo, 1, bgnDate, target_monthend_date).ToList();
                         if (data.Any())
                         {
+                            var first = data.OrderBy(x => x.StockDT).First();
+                            var last = data.OrderByDescending(x => x.StockDT).First();
+                            var lastPeriodClosePrice = (first.ClosePrice - first.DeltaPrice);
+                            var deltaPrice = (last.ClosePrice - lastPeriodClosePrice);
                             var tmp = new GetStockPeriodPriceResult()
                             {
                                 StockNo = d.StockNo,
                                 StockDT = bgnDate,
-                                OpenPrice = data.OrderBy(x => x.StockDT).First().OpenPrice,
-                                ClosePrice = data.OrderByDescending(x => x.StockDT).First().ClosePrice,
+                                OpenPrice = first.OpenPrice,
+                                ClosePrice = last.ClosePrice,
                                 HighPrice = data.Max(x => x.HighPrice),
                                 LowPrice = data.Min(x => x.LowPrice),
                                 Volume = data.Sum(x => x.Volume),
                                 Period = 5,
+                                DeltaPrice = deltaPrice,
+                                DeltaPercent = deltaPrice / lastPeriodClosePrice
                             };
                             if (tmp.Volume > 0) K5_list.Add(tmp);
                         }
@@ -169,16 +175,22 @@ namespace StockCrawler.Services
                         var data = db.GetStockPeriodPrice(d.StockNo, 1, bgnDate, target_monthend_date).ToList();
                         if (data.Any())
                         {
+                            var first = data.OrderBy(x => x.StockDT).First();
+                            var last = data.OrderByDescending(x => x.StockDT).First();
+                            var lastPeriodClosePrice = (first.ClosePrice - first.DeltaPrice);
+                            var deltaPrice = (last.ClosePrice - lastPeriodClosePrice);
                             var tmp = new GetStockPeriodPriceResult()
                             {
                                 StockNo = d.StockNo,
                                 StockDT = bgnDate,
-                                OpenPrice = data.OrderBy(x => x.StockDT).First().OpenPrice,
-                                ClosePrice = data.OrderByDescending(x => x.StockDT).First().ClosePrice,
+                                OpenPrice = first.OpenPrice,
+                                ClosePrice = last.ClosePrice,
                                 HighPrice = data.Max(x => x.HighPrice),
                                 LowPrice = data.Min(x => x.LowPrice),
                                 Volume = data.Sum(x => x.Volume),
                                 Period = 20,
+                                DeltaPrice = deltaPrice,
+                                DeltaPercent = deltaPrice / lastPeriodClosePrice
                             };
                             if (tmp.Volume > 0) K20_list.Add(tmp);
                         }
