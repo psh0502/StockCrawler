@@ -9,6 +9,15 @@ namespace StockCrawler.Dao
     public interface IRepository : IDisposable
     {
         #region 取得資料
+        GetStockPriceHistoryPagingResult[] GetStockPriceHistoryPaging(
+            string stockNo
+            , DateTime bgnDate
+            , DateTime endDate
+            , short period
+            , int top
+            , int currentPage
+            , int pageSize
+            , out int? pageCount);
         ///// <summary>
         ///// Retrieve the average close price of the specified stock since the specified date.
         ///// </summary>

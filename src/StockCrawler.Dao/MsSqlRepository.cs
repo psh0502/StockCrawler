@@ -14,6 +14,20 @@ namespace StockCrawler.Dao
         }
 
         #region 取得資料
+        public GetStockPriceHistoryPagingResult[] GetStockPriceHistoryPaging(
+            string stockNo
+            , DateTime bgnDate
+            , DateTime endDate
+            , short period
+            , int top
+            , int currentPage
+            , int pageSize
+            , out int? pageCount)
+        {
+            pageCount = 0;
+            using (var db = GetMSSQLStockDataContext())
+                return db.GetStockPriceHistoryPaging(stockNo, bgnDate, endDate, period, top, currentPage, pageSize, ref pageCount).ToArray();
+        }
         public GetCategoryMappingResult[] GetCategoryMapping()
         {
             using (var db = GetMSSQLStockDataContext())
