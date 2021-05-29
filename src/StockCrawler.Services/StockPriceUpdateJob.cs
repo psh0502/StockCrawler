@@ -20,12 +20,9 @@ namespace StockCrawler.Services
             try
             {
                 var args = (string[])context.Get("args");
-                if (args != null && args.Length > 1)
-                    SystemTime.SetFakeTime(DateTime.Parse(args[1]));
-
                 var collector = CollectorServiceProvider.GetStockDailyPriceCollector();
 
-                var priceInfo = collector.GetStockDailyPriceInfo();
+                var priceInfo = collector.GetStockDailyPriceInfo(DateTime.Parse(args[1]));
                 var stocks = priceInfo
                     .Select(d => new GetStocksResult()
                     {

@@ -121,13 +121,12 @@ namespace StockCrawler.Services
             var K5_list = new List<GetStockPeriodPriceResult>();
             var K20_list = new List<GetStockPeriodPriceResult>();
             var avgPriceList = new List<(string StockNo, DateTime StockDT, short Period, decimal AveragePrice)>();
+            var target_weekend_date = date.AddDays(5 - (int)date.DayOfWeek);
+            var target_monthend_date = new DateTime(date.Year, date.Month, 1).AddMonths(1).AddDays(-1);
             using (var db = RepositoryProvider.GetRepositoryInstance())
             {
                 foreach (var d in StockHelper.GetAllStockList())
                 {
-                    var target_weekend_date = date.AddDays(5 - (int)date.DayOfWeek);
-                    _logger.Debug($"[{d.StockNo}]target_weekend_date:{target_weekend_date:yyyy-MM-dd}");
-
                     if (date >= target_weekend_date)
                     {
                         // 週 K
@@ -154,14 +153,7 @@ namespace StockCrawler.Services
                             };
                             if (tmp.Volume > 0) K5_list.Add(tmp);
                         }
-
-                        target_weekend_date = target_weekend_date.AddDays(7);
-                        _logger.Debug($"[{d.StockNo}]target_weekend_date:{target_weekend_date:yyyy-MM-dd}");
                     }
-
-                    var target_monthend_date = new DateTime(date.Year, date.Month, 1).AddMonths(1).AddDays(-1);
-                    _logger.Debug($"[{d.StockNo}]target_monthend_date:{target_monthend_date:yyyy-MM-dd}");
-
                     if (date >= target_monthend_date)
                     {
                         // 月 K
@@ -188,8 +180,6 @@ namespace StockCrawler.Services
                             };
                             if (tmp.Volume > 0) K20_list.Add(tmp);
                         }
-                        target_monthend_date = bgnDate.AddMonths(2).AddDays(-1);
-                        _logger.Debug($"[{d.StockNo}]target_monthend_date:{target_monthend_date:yyyy-MM-dd}");
                     }
                     {
                         // 週線
@@ -208,9 +198,15 @@ namespace StockCrawler.Services
                 }
                 // 寫入 K 線棒
                 if (K5_list.Any())
+                {
+                    _logger.InfoFormat("K5: {0}", date);
                     db.InsertOrUpdateStockPrice(K5_list.ToArray());
+                }
                 if (K20_list.Any())
+                {
+                    _logger.InfoFormat("K20: {0}", date);
                     db.InsertOrUpdateStockPrice(K20_list.ToArray());
+                }
                 // 寫入均價
                 if (avgPriceList.Any())
                     db.InsertOrUpdateStockAveragePrice(avgPriceList.ToArray());

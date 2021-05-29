@@ -9,7 +9,8 @@ namespace StockCrawler.UnitTest
 
         public void Debug(object message, Exception exception)
         {
-            System.Diagnostics.Debug.WriteLine(string.Format("[DEBUG] [{2}] {0}\n{1}", message, exception, DateTime.Now).Trim());
+            if (IsDebugEnabled)
+                System.Diagnostics.Debug.WriteLine(string.Format("[DEBUG] [{2}] {0}\n{1}", message, exception, DateTime.Now).Trim());
         }
 
         public void Debug(object message)
@@ -44,7 +45,8 @@ namespace StockCrawler.UnitTest
 
         public void Error(object message, Exception exception)
         {
-            System.Diagnostics.Debug.WriteLine(string.Format("[ERROR] [{2}] {0}\n{1}", message, exception, DateTime.Now).Trim());
+            if (IsErrorEnabled)
+                System.Diagnostics.Debug.WriteLine(string.Format("[ERROR] [{2}] {0}\n{1}", message, exception, DateTime.Now).Trim());
         }
 
         public void Error(object message)
@@ -79,7 +81,8 @@ namespace StockCrawler.UnitTest
 
         public void Fatal(object message, Exception exception)
         {
-            System.Diagnostics.Debug.WriteLine(string.Format("[FATAL] [{2}] {0}\n{1}", message, exception, DateTime.Now).Trim());
+            if (IsFatalEnabled)
+                System.Diagnostics.Debug.WriteLine(string.Format("[FATAL] [{2}] {0}\n{1}", message, exception, DateTime.Now).Trim());
         }
 
         public void Fatal(object message)
@@ -114,7 +117,8 @@ namespace StockCrawler.UnitTest
 
         public void Info(object message, Exception exception)
         {
-            System.Diagnostics.Debug.WriteLine(string.Format("[INFO] [{2}] {0}\n{1}", message, exception, DateTime.Now).Trim());
+            if (IsInfoEnabled)
+                System.Diagnostics.Debug.WriteLine(string.Format("[INFO] [{2}] {0}\n{1}", message, exception, DateTime.Now).Trim());
         }
 
         public void Info(object message)
@@ -147,34 +151,20 @@ namespace StockCrawler.UnitTest
             Info(string.Format(format, args), null);
         }
 
-        public bool IsDebugEnabled
-        {
-            get { return true; }
-        }
+        public bool IsDebugEnabled { get; set; } = true;
 
-        public bool IsErrorEnabled
-        {
-            get { return true; }
-        }
+        public bool IsErrorEnabled { get; set; } = true;
 
-        public bool IsFatalEnabled
-        {
-            get { return true; }
-        }
+        public bool IsFatalEnabled { get; set; } = true;
 
-        public bool IsInfoEnabled
-        {
-            get { return true; }
-        }
+        public bool IsInfoEnabled { get; set; } = true;
 
-        public bool IsWarnEnabled
-        {
-            get { return true; }
-        }
+        public bool IsWarnEnabled { get; set; } = true;
 
         public void Warn(object message, Exception exception)
         {
-            System.Diagnostics.Debug.WriteLine(string.Format("[WARN] [{2}] {0}\n{1}", message, exception, DateTime.Now).Trim());
+            if (IsWarnEnabled)
+                System.Diagnostics.Debug.WriteLine(string.Format("[WARN] [{2}] {0}\n{1}", message, exception, DateTime.Now).Trim());
         }
 
         public void Warn(object message)
@@ -309,10 +299,7 @@ namespace StockCrawler.UnitTest
         {
             throw new NotImplementedException();
         }
-        public bool IsTraceEnabled
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public bool IsTraceEnabled { get; set; }
         public IVariablesContext ThreadVariablesContext
         {
             get { throw new NotImplementedException(); }

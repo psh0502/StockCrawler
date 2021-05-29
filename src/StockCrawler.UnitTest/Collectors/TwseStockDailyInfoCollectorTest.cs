@@ -20,13 +20,12 @@ namespace StockCrawler.UnitTest.Collectors
         public void GetStockDailyPriceInfoTest()
         {
             TwseCollectorBase._breakInternval = 5 * 1000;
-            SystemTime.SetFakeTime(new DateTime(2020, 3, 27));
             var collector = new TwseStockDailyInfoCollector
             {
                 _logger = new UnitTestLogger()
             };
 
-            var r = collector.GetStockDailyPriceInfo();
+            var r = collector.GetStockDailyPriceInfo(new DateTime(2020, 3, 27));
 
             Assert.AreEqual(1154, r.Count());
             Assert.IsTrue(r.Where(d => d.StockNo == TEST_STOCKNO_台積電).Any());
@@ -61,13 +60,12 @@ namespace StockCrawler.UnitTest.Collectors
         public void GetStockDailyPriceInfoTopBottomTest_4142()
         {
             TwseCollectorBase._breakInternval = 5 * 1000;
-            SystemTime.SetFakeTime(new DateTime(2021, 5, 12));
             var collector = new TwseStockDailyInfoCollector
             {
                 _logger = new UnitTestLogger()
             };
 
-            var r = collector.GetStockDailyPriceInfo();
+            var r = collector.GetStockDailyPriceInfo(new DateTime(2021, 5, 12));
 
             //Assert.AreEqual(1154, r.Count());
             Assert.IsTrue(r.Where(d => d.StockNo == TEST_STOCKNO_國光生).Any());

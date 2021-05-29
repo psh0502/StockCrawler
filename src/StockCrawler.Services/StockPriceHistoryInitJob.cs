@@ -18,7 +18,6 @@ namespace StockCrawler.Services
         {
             Logger.InfoFormat("Invoke [{0}]...", MethodBase.GetCurrentMethod().Name);
             // init stock list
-            DownloadTwseLatestInfo();
 #if (DEBUG)
             var bgnDate = SystemTime.Today.AddMonths(-2);
 #else
@@ -28,8 +27,8 @@ namespace StockCrawler.Services
 
             string stockNo = null;
             var args = (string[])context.Get("args");
-            if (null == args && args.Length > 1) SystemTime.SetFakeTime(DateTime.Parse(args[1]));
             if (null == args && args.Length > 2) stockNo = args[2];
+            if (null == args && args.Length > 1) bgnDate = DateTime.Parse(args[1]);
 
             var collector = CollectorServiceProvider.GetStockHistoryPriceCollector();
             foreach (var d in StockHelper.GetAllStockList().Where(d => string.IsNullOrEmpty(stockNo) || d.StockNo == stockNo))
@@ -53,10 +52,10 @@ namespace StockCrawler.Services
         }
 #endregion
 
-        private void DownloadTwseLatestInfo()
+        private void DownloadTwseLatestInfo(DateTime date)
         {
             var list = CollectorServiceProvider.GetStockDailyPriceCollector()
-                .GetStockDailyPriceInfo()
+                .GetStockDailyPriceInfo(date)
                 .Select(d => new GetStocksResult()
                 {
                     StockNo = d.StockNo,

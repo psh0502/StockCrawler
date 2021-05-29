@@ -13,54 +13,36 @@ namespace StockCrawler.Services.Collectors
     internal class TwseStockDailyInfoCollector : TwseCollectorBase, IStockDailyInfoCollector
     {
         private Dictionary<string, GetStockPeriodPriceResult> _stockInfoDictCache = null;
-        private Dictionary<string, string> _stockCategoryNo = null;
-        private Dictionary<string, long> _categoriedVolume = null;
-        public TwseStockDailyInfoCollector()
+        private static Dictionary<string, string> _stockCategoryNo = null;
+        private static Dictionary<string, long> _categoriedVolume = null;
+        public virtual GetStockPeriodPriceResult GetStockDailyPriceInfo(string stockNo, DateTime date)
         {
-            InitStockDailyPriceCache();
-        }
-        public virtual GetStockPeriodPriceResult GetStockDailyPriceInfo(string stockNo)
-        {
+            InitStockDailyPriceCache(date);
             return (_stockInfoDictCache.ContainsKey(stockNo)) ? 
                 _stockInfoDictCache[stockNo] : null;
         }
-        public virtual IEnumerable<GetStockPeriodPriceResult> GetStockDailyPriceInfo()
+        public virtual IEnumerable<GetStockPeriodPriceResult> GetStockDailyPriceInfo(DateTime date)
         {
-            InitStockDailyPriceCache();
+            InitStockDailyPriceCache(date);
             return _stockInfoDictCache.Select(d => d.Value).ToList();
         }
-        private void InitStockDailyPriceCache()
+        private void InitStockDailyPriceCache(DateTime date)
         {
-            if (!Tools.IsWeekend(SystemTime.Today))
-                if (null == _stockInfoDictCache)
-                    lock (this)
-                    {
-                        if (null == _categoriedVolume)
-                        {
-                            _categoriedVolume = new Dictionary<string, long>();
-                            _stockCategoryNo = new Dictionary<string, string>();
-                                foreach (var d in StockHelper.GetIndexStockList())
-                                    _categoriedVolume.Add(d.StockNo, 0);
+            if (null == _categoriedVolume)
+            {
+                _categoriedVolume = new Dictionary<string, long>();
+                _stockCategoryNo = new Dictionary<string, string>();
+                foreach (var d in StockHelper.GetIndexStockList())
+                    _categoriedVolume.Add(d.StockNo, 0);
 
-                                foreach (var d in StockHelper.GetCompanyStockList()
-                                    .Where(s => !string.IsNullOrEmpty(s.CategoryNo)))
-                                    _stockCategoryNo.Add(d.StockNo, d.CategoryNo);
-                        }
+                foreach (var d in StockHelper.GetCompanyStockList()
+                    .Where(s => !string.IsNullOrEmpty(s.CategoryNo)))
+                    _stockCategoryNo.Add(d.StockNo, d.CategoryNo);
+            }
 
-                        if (null == _stockInfoDictCache)
-                        {
-                            _logger.Info("Initialize all stock information cache.");
-                            _stockInfoDictCache = new Dictionary<string, GetStockPeriodPriceResult>();
-
-                            var data = GetAllStockDailyPriceInfo(SystemTime.Today);
-                            if (null != data)
-                                foreach (var info in data)
-                                {
-                                    _stockInfoDictCache[info.StockNo] = info;
-                                    _logger.DebugFormat("[{0}] {1}", info.StockNo, info.ClosePrice);
-                                }
-                        }
-                    }
+            _logger.Info("Initialize all stock information cache.");
+            var data = GetAllStockDailyPriceInfo(date);
+            if (null != data) _stockInfoDictCache = data.ToDictionary(d => d.StockNo);
         }
         protected virtual GetStockPeriodPriceResult[] GetAllStockDailyPriceInfo(DateTime day)
         {
@@ -104,8 +86,12 @@ namespace StockCrawler.Services.Collectors
             }
             if (daily_info.Any())
             {
-                foreach(var d in _categoriedVolume)
-                    daily_info[d.Key].Volume = d.Value;
+                foreach (var d in _categoriedVolume)
+                    if (!daily_info.ContainsKey(d.Key))
+                        daily_info.Add(d.Key, new GetStockPeriodPriceResult() { StockNo = d.Key, Volume = d.Value });
+                    else
+                        daily_info[d.Key].Volume = d.Value;
+
                 // 未含金融指數(0009) = 大盤指數(0000) - 金融保險類指數(0040) - 
                 daily_info["0009"].Volume = daily_info["0000"].Volume - daily_info["0040"].Volume;
                 // 未含電子指數(0010) = 

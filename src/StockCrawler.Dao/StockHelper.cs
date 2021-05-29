@@ -99,8 +99,8 @@ namespace StockCrawler.Dao
                     if (null == _STOCK_INDEX_LIST)
                         _STOCK_INDEX_LIST = GetAllStockList().Where(
                             d => d.StockNo.StartsWith("0")
-                                && int.TryParse(d.StockNo, out _)
-                                && int.Parse(d.StockNo) < 50)
+                                && int.TryParse(d.StockNo, out int sno)
+                                && sno < 50)
                                 .ToList();
 
             return _STOCK_INDEX_LIST;
