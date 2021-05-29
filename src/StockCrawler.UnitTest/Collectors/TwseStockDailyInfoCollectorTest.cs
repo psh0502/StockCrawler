@@ -58,7 +58,7 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual(-0.0038M, d1.DeltaPercent);
         }
         [TestMethod]
-        public void GetStockDailyPriceInfoTopButtomTest_4142()
+        public void GetStockDailyPriceInfoTopBottomTest_4142()
         {
             TwseCollectorBase._breakInternval = 5 * 1000;
             SystemTime.SetFakeTime(new DateTime(2021, 5, 12));
