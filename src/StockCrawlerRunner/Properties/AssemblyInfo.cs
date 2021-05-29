@@ -1,11 +1,11 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("StockCrawlerRunner")]
-[assembly: AssemblyDescription("It helps download Taiwan stock market information.")]
 #if(DEBUG)
 [assembly: AssemblyConfiguration("Debug version")]
 #else
@@ -37,3 +37,10 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.2.0.0")]
 [assembly: AssemblyFileVersion("1.2.2.1")]
+#if(DEBUG)
+[assembly: AssemblyDescription("Debug build")]
+[assembly: InternalsVisibleTo("StockCrawler.UnitTest")]
+#else
+[assembly: AssemblyDescription("Release build")]
+[assembly: AssemblyKeyFile("DOWAY.snk")]
+#endif
