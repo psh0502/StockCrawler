@@ -23,24 +23,27 @@ namespace StockCrawler.Services
                 var collector = CollectorServiceProvider.GetStockDailyPriceCollector();
 
                 var priceInfo = collector.GetStockDailyPriceInfo(DateTime.Parse(args[1]));
-                var stocks = priceInfo
-                    .Select(d => new GetStocksResult()
-                    {
-                        StockNo = d.StockNo,
-                        StockName = d.StockName,
-                        Enable = true
-                    }).ToList();
-                // #34 Filter out non-trade day price data
-                priceInfo = priceInfo.Where(d => d.ClosePrice > 0).ToArray();
-
-                using (var db = GetDB())
+                if (null != priceInfo)
                 {
-                    if (stocks.Any())
-                        db.InsertOrUpdateStock(stocks.ToArray());
+                    var stocks = priceInfo
+                        .Select(d => new GetStocksResult()
+                        {
+                            StockNo = d.StockNo,
+                            StockName = d.StockName,
+                            Enable = true
+                        }).ToList();
+                    // #34 Filter out non-trade day price data
+                    priceInfo = priceInfo.Where(d => d.ClosePrice > 0).ToArray();
 
-                    if (priceInfo.Any())
-                        // 寫入日價
-                        db.InsertOrUpdateStockPrice(priceInfo.ToArray());
+                    using (var db = GetDB())
+                    {
+                        if (stocks.Any())
+                            db.InsertOrUpdateStock(stocks.ToArray());
+
+                        if (priceInfo.Any())
+                            // 寫入日價
+                            db.InsertOrUpdateStockPrice(priceInfo.ToArray());
+                    }
                 }
                 Tools.CalculateMAAndPeriodK(SystemTime.Today);
             }

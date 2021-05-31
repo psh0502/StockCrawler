@@ -4,7 +4,7 @@ using StockCrawler.Services;
 using StockCrawler.Services.Collectors;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading;
 
 namespace StockCrawler.UnitTest.Others
 {
@@ -25,7 +25,7 @@ namespace StockCrawler.UnitTest.Others
                 IsDebugEnabled = false
             };
             Tools._logger = _logger;
-            var bgnDate = new DateTime(2015, 9, 30);
+            var bgnDate = new DateTime(2015, 09, 30);
             _logger.InfoFormat("bgnDate = {0:yyyy-MM-dd}", bgnDate);
             do
             {
@@ -38,7 +38,7 @@ namespace StockCrawler.UnitTest.Others
         {
             var _logger = new UnitTestLogger { IsDebugEnabled = false };
             Tools._logger = _logger;
-            var bgnDate = new DateTime(2015, 9, 30);
+            var bgnDate = new DateTime(2016, 07, 02);
             _logger.InfoFormat("bgnDate = {0:yyyy-MM-dd}", bgnDate);
             var collector = new TwseStockDailyInfoCollector();
             do
@@ -49,6 +49,8 @@ namespace StockCrawler.UnitTest.Others
                 using (var db = RepositoryProvider.GetRepositoryInstance())
                     db.InsertOrUpdateStockPrice(list.ToArray());
                 bgnDate = bgnDate.AddDays(1);
+                Thread.Sleep(10 * 1000);
+
             } while (bgnDate < DateTime.Today);
         }
     }

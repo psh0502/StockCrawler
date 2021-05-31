@@ -17,13 +17,17 @@ namespace StockCrawler.Services.Collectors
         private static Dictionary<string, long> _categoriedVolume = null;
         public virtual GetStockPeriodPriceResult GetStockDailyPriceInfo(string stockNo, DateTime date)
         {
+            if(Tools.IsWeekend(date)) return null;
             InitStockDailyPriceCache(date);
+            if (_stockInfoDictCache == null) return null;
             return (_stockInfoDictCache.ContainsKey(stockNo)) ? 
                 _stockInfoDictCache[stockNo] : null;
         }
         public virtual IEnumerable<GetStockPeriodPriceResult> GetStockDailyPriceInfo(DateTime date)
         {
+            if (Tools.IsWeekend(date)) return null;
             InitStockDailyPriceCache(date);
+            if (_stockInfoDictCache == null) return null;
             return _stockInfoDictCache.Select(d => d.Value).ToList();
         }
         private void InitStockDailyPriceCache(DateTime date)
