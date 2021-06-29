@@ -97,7 +97,8 @@ namespace StockCrawler.Services
                     }
                 }
                 var stream = res1.GetResponseStream();
-                using (var sr = new StreamReader(stream, encode))
+                var respEncode = (res1.ContentType.Contains("big5") ? Encoding.Default : encode);
+                using (var sr = new StreamReader(stream, respEncode))
                     downloaded_data = sr.ReadToEnd();
             }
             return downloaded_data.Trim();
