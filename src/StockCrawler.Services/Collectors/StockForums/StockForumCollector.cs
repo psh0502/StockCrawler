@@ -129,7 +129,7 @@ namespace StockCrawler.Services.Collectors
                                     var title_node = doc.DocumentNode.SelectSingleNode("//title");
                                     if (null != title_node)
                                     {
-                                        article.Subject = HttpUtility.UrlDecode(Tools.CleanString(title_node.InnerText));
+                                        article.Subject = HttpUtility.UrlDecode(title_node.InnerText);
                                         article.Url = url;
                                     }
                                 }
