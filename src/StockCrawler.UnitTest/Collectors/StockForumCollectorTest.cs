@@ -21,7 +21,7 @@ namespace StockCrawler.UnitTest.Collectors
         [TestMethod]
         public void CollectorTestMethod_GetData_20200105()
         {
-            var collector = new StockForumCollectorStub()
+            var collector = new StockForumCollector()
             {
                 _logger = new UnitTestLogger()
             };

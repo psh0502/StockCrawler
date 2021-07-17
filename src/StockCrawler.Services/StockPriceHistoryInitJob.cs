@@ -46,7 +46,7 @@ namespace StockCrawler.Services
             }
 
             for (var date = bgnDate; date <= endDate; date = date.AddDays(1))
-                Tools.CalculateMAAndPeriodK(date);
+                Tools.CalculateMA(date);
 
             return null;
         }

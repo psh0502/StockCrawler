@@ -49,7 +49,7 @@ namespace StockCrawler.Services
                         }
                     }
                 }
-                Tools.CalculateMAAndPeriodK(targetDate);
+                Tools.CalculateMA(targetDate);
             }
             catch (Exception ex)
             {

@@ -18,15 +18,18 @@ CREATE OR ALTER PROCEDURE [dbo].[GetStockMarketNews]
 AS
 BEGIN
 	SET NOCOUNT ON;
-	SELECT TOP (@pTop) * 
-	FROM [dbo].[StockMarketNews](NOLOCK)
+	DECLARE @TRUE BIT = 1;
+	SELECT TOP (@pTop) a.* 
+	FROM [dbo].[StockMarketNews] a(NOLOCK)
+		INNER JOIN [dbo].[Stock] s(NOLOCK) ON s.StockNo = a.StockNo
 	WHERE
-		(@pStockNo IS NULL OR @pStockNo = '' OR StockNo = @pStockNo)
-		AND(@pSource IS NULL OR @pSource = '' OR [Source] = @pSource)
+		s.[Enable] = @TRUE
+		AND (@pStockNo IS NULL OR @pStockNo = '' OR a.StockNo = @pStockNo)
+		AND (@pSource IS NULL OR @pSource = '' OR [Source] = @pSource)
 		AND NewsDate BETWEEN @pStartDate AND @pEndDate
 	ORDER BY 
 		NewsDate DESC
-		, [StockNo]
+		, a.[StockNo]
 		, [Source]
 		, [Subject] ASC
 END

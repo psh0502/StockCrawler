@@ -29,7 +29,7 @@ namespace StockCrawler.UnitTest.Others
             _logger.InfoFormat("bgnDate = {0:yyyy-MM-dd}", bgnDate);
             do
             {
-                Tools.CalculateMAAndPeriodK(bgnDate);
+                Tools.CalculateMA(bgnDate);
                 bgnDate = bgnDate.AddDays(1);
             } while (bgnDate < DateTime.Today);
         }

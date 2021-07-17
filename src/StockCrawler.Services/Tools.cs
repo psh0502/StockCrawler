@@ -1,5 +1,4 @@
 ﻿using Common.Logging;
-using HtmlAgilityPack;
 using StockCrawler.Dao;
 using System;
 using System.Collections.Generic;
@@ -65,43 +64,60 @@ namespace StockCrawler.Services
             }
             if (null != formdata)
             {
-                byte[] byteArray = Encoding.UTF8.GetBytes(formdata.ToString());
+                var byteArray = Encoding.UTF8.GetBytes(formdata.ToString());
                 req.ContentLength = byteArray.Length;
                 using (var reqStream = req.GetRequestStream())
                     reqStream.Write(byteArray, 0, byteArray.Length);
             }
-            using (var res1 = req.GetResponse())
+            using (var res = req.GetResponse())
             {
-                string cookies_string = res1.Headers["Set-Cookie"];
-                if (!string.IsNullOrEmpty(cookies_string))
+                var target = res.Headers["Target"];
+                var redirect = !string.IsNullOrEmpty(target);
+                if (redirect)
                 {
-                    var cookie_str = cookies_string.Split(';');
-                    foreach (var c in cookie_str)
-                    {
-                        var ck = c.Split('=');
-                        if (ck.Length > 1)
-                            try
-                            {
-                                respCookies.Add(new Cookie
-                                {
-                                    Name = ck[0].Trim(),
-                                    Value = ck[1].Trim(),
-                                    Domain = url.Host,
-                                    Path = "/",
-                                });
-                            }
-                            catch (Exception e)
-                            {
-                                _logger.Warn(e.Message, e);
-                            }
-                    }
+                    return DownloadStringData(
+                        new Uri(target), 
+                        out respCookies, 
+                        encode, 
+                        contentType, 
+                        cookies,
+                        method,
+                        formdata,
+                        refer);
                 }
-                var stream = res1.GetResponseStream();
-                var respEncode = (res1.ContentType.Contains("big5") ? Encoding.Default : encode);
-                using (var sr = new StreamReader(stream, respEncode))
-                    downloaded_data = sr.ReadToEnd();
+                else
+                {
+                    var cookies_string = res.Headers["Set-Cookie"];
+                    if (!string.IsNullOrEmpty(cookies_string))
+                    {
+                        var cookie_str = cookies_string.Split(';');
+                        foreach (var c in cookie_str)
+                        {
+                            var ck = c.Split('=');
+                            if (ck.Length > 1)
+                                try
+                                {
+                                    respCookies.Add(new Cookie
+                                    {
+                                        Name = ck[0].Trim(),
+                                        Value = ck[1].Trim(),
+                                        Domain = url.Host,
+                                        Path = "/",
+                                    });
+                                }
+                                catch (Exception e)
+                                {
+                                    _logger.Warn(e.Message, e);
+                                }
+                        }
+                    }
+                    var stream = res.GetResponseStream();
+                    var respEncode = (res.ContentType.Contains("big5") ? Encoding.Default : encode);
+                    using (var sr = new StreamReader(stream, respEncode))
+                        downloaded_data = sr.ReadToEnd();
+                    return downloaded_data.Trim();
+                }
             }
-            return downloaded_data.Trim();
         }
         /// <summary>
         /// 服務提供 by 湯湯數據庫
@@ -113,100 +129,29 @@ namespace StockCrawler.Services
                 .Replace("\"", string.Empty);
         }
         /// <summary>
-        /// 根據本日收盤資料, 計算 均線(MA 移動線)和不同周期的 K 棒
+        /// 根據本日收盤資料, 計算 均線(MA 移動線)
         /// </summary>
         /// <param name="list">今日收盤價</param>
-        public static void CalculateMAAndPeriodK(DateTime date)
+        public static void CalculateMA(DateTime date)
         {
-            _logger.InfoFormat("Begin caculation MA and K ...{0}", date.ToString("yyyyMMdd"));
-            var K5_list = new List<GetStockPeriodPriceResult>();
-            var K20_list = new List<GetStockPeriodPriceResult>();
+            _logger.InfoFormat("Begin caculation MA...{0}", date.ToString("yyyyMMdd"));
             var avgPriceList = new List<(string StockNo, DateTime StockDT, short Period, decimal AveragePrice)>();
-            var target_weekend_date = date.AddDays(5 - (int)date.DayOfWeek);
-            var target_monthend_date = new DateTime(date.Year, date.Month, 1).AddMonths(1).AddDays(-1);
             using (var db = RepositoryProvider.GetRepositoryInstance())
             {
                 foreach (var d in StockHelper.GetAllStockList())
                 {
-                    if (date >= target_weekend_date)
-                    {
-                        // 週 K
-                        var bgnDate = target_weekend_date.AddDays(-4);
-                        var data = db.GetStockPeriodPrice(d.StockNo, 1, bgnDate, target_weekend_date).ToList();
-                        if (data.Any())
-                        {
-                            var first = data.OrderBy(x => x.StockDT).First();
-                            var last = data.OrderByDescending(x => x.StockDT).First();
-                            var lastPeriodClosePrice = (first.ClosePrice - first.DeltaPrice);
-                            var deltaPrice = (last.ClosePrice - lastPeriodClosePrice);
-                            var tmp = new GetStockPeriodPriceResult()
-                            {
-                                StockNo = d.StockNo,
-                                StockDT = bgnDate,
-                                OpenPrice = first.OpenPrice,
-                                ClosePrice = last.ClosePrice,
-                                HighPrice = data.Max(x => x.HighPrice),
-                                LowPrice = data.Min(x => x.LowPrice),
-                                Volume = data.Sum(x => x.Volume),
-                                Period = 5,
-                                DeltaPrice = deltaPrice,
-                                DeltaPercent = deltaPrice / lastPeriodClosePrice
-                            };
-                            if (tmp.Volume > 0) K5_list.Add(tmp);
-                        }
-                    }
-                    if (date >= target_monthend_date)
-                    {
-                        // 月 K
-                        var bgnDate = new DateTime(target_monthend_date.Year, target_monthend_date.Month, 1);
-                        var data = db.GetStockPeriodPrice(d.StockNo, 1, bgnDate, target_monthend_date).ToList();
-                        if (data.Any())
-                        {
-                            var first = data.OrderBy(x => x.StockDT).First();
-                            var last = data.OrderByDescending(x => x.StockDT).First();
-                            var lastPeriodClosePrice = (first.ClosePrice - first.DeltaPrice);
-                            var deltaPrice = (last.ClosePrice - lastPeriodClosePrice);
-                            var tmp = new GetStockPeriodPriceResult()
-                            {
-                                StockNo = d.StockNo,
-                                StockDT = bgnDate,
-                                OpenPrice = first.OpenPrice,
-                                ClosePrice = last.ClosePrice,
-                                HighPrice = data.Max(x => x.HighPrice),
-                                LowPrice = data.Min(x => x.LowPrice),
-                                Volume = data.Sum(x => x.Volume),
-                                Period = 20,
-                                DeltaPrice = deltaPrice,
-                                DeltaPercent = deltaPrice / lastPeriodClosePrice
-                            };
-                            if (tmp.Volume > 0) K20_list.Add(tmp);
-                        }
-                    }
-                    {
-                        // 週線
-                        var period_price = db.CaculateStockClosingAveragePrice(d.StockNo, date, 5);
-                        if (period_price > 0) avgPriceList.Add((d.StockNo, date, 5, period_price));
-                        // 雙週線
-                        period_price = db.CaculateStockClosingAveragePrice(d.StockNo, date, 10);
-                        if (period_price > 0) avgPriceList.Add((d.StockNo, date, 10, period_price));
-                        // 月線
-                        period_price = db.CaculateStockClosingAveragePrice(d.StockNo, date, 20);
-                        if (period_price > 0) avgPriceList.Add((d.StockNo, date, 20, period_price));
-                        // 季線
-                        period_price = db.CaculateStockClosingAveragePrice(d.StockNo, date, 60);
-                        if (period_price > 0) avgPriceList.Add((d.StockNo, date, 60, period_price));
-                    }
-                }
-                // 寫入 K 線棒
-                if (K5_list.Any())
-                {
-                    _logger.InfoFormat("K5: {0}", date);
-                    db.InsertOrUpdateStockPrice(K5_list.ToArray());
-                }
-                if (K20_list.Any())
-                {
-                    _logger.InfoFormat("K20: {0}", date);
-                    db.InsertOrUpdateStockPrice(K20_list.ToArray());
+                    // 週線
+                    var period_price = db.CaculateStockClosingAveragePrice(d.StockNo, date, 5);
+                    if (period_price > 0) avgPriceList.Add((d.StockNo, date, 5, period_price));
+                    // 雙週線
+                    period_price = db.CaculateStockClosingAveragePrice(d.StockNo, date, 10);
+                    if (period_price > 0) avgPriceList.Add((d.StockNo, date, 10, period_price));
+                    // 月線
+                    period_price = db.CaculateStockClosingAveragePrice(d.StockNo, date, 20);
+                    if (period_price > 0) avgPriceList.Add((d.StockNo, date, 20, period_price));
+                    // 季線
+                    period_price = db.CaculateStockClosingAveragePrice(d.StockNo, date, 60);
+                    if (period_price > 0) avgPriceList.Add((d.StockNo, date, 60, period_price));
                 }
                 // 寫入均價
                 if (avgPriceList.Any())

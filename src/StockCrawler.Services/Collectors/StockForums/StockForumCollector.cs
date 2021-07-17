@@ -1,12 +1,11 @@
-﻿using Common.Logging;
+﻿#define WRITE
+using Common.Logging;
 using HtmlAgilityPack;
 using StockCrawler.Dao;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Web;
 
 namespace StockCrawler.Services.Collectors
@@ -82,7 +81,7 @@ namespace StockCrawler.Services.Collectors
 
                 _logger.DebugFormat("missing_right_date_page_counter: {0}", missing_right_date_page_counter);
 #if(!DEBUG)
-                Thread.Sleep(1000);
+                System.Threading.Thread.Sleep(1000);
 #endif
             } while (missing_right_date_page_counter < MISSING_RIGHT_DATE_PAGE_MAX);
             return result;
@@ -116,11 +115,6 @@ namespace StockCrawler.Services.Collectors
                             var url = a_node.Attributes["href"]?.Value;
                             if (!string.IsNullOrEmpty(url))
                             {
-                                if (url == "https://bit.ly/")
-                                {
-                                    i++;
-                                    continue;
-                                }
                                 article.Source = result.Any() ? "mops" : "twse";
                                 var news = DownloadData(new Uri(url));
                                 if (!string.IsNullOrEmpty(news))
@@ -149,14 +143,14 @@ namespace StockCrawler.Services.Collectors
         protected virtual string DownloadData(Uri uri)
         {
             var html = Tools.DownloadStringData(uri, out _);
-#if (DEBUG)
+#if (DEBUG && WRITE)
             try
             {
                 var file_name = uri.LocalPath.Replace("/", string.Empty);
                 if (!string.IsNullOrEmpty(file_name))
                 {
                     if (!file_name.EndsWith(".html")) file_name += ".html";
-                    var file = new FileInfo(@"..\..\..\StockCrawler.UnitTest\TestData\Ptt\" + file_name);
+                    var file = new System.IO.FileInfo(@"..\..\..\StockCrawler.UnitTest\TestData\Ptt\" + file_name);
                     if (file.Exists) file.Delete();
                     using (var sw = file.CreateText())
                         sw.Write(html);
