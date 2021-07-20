@@ -8,7 +8,7 @@ using System.Linq;
 #if (DEBUG)
 namespace StockCrawler.UnitTest.Jobs
 {
-    [TestClass]
+    //[TestClass]
     public class StockForumsUpdateJobTests : UnitTestBase
     {
         [TestInitialize]

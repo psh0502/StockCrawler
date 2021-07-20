@@ -73,7 +73,7 @@ namespace StockCrawler.UnitTest.Jobs
                     Assert.AreEqual(9818.74M, d1.ClosePrice);
                     Assert.AreEqual(4521499478, d1.Volume);
                     Assert.AreEqual(155.11M, d1.DeltaPrice);
-                    Assert.AreEqual(0.0160M, d1.DeltaPercent);
+                    Assert.AreEqual(0.0161M, d1.DeltaPercent);
                 }
             }
         }
