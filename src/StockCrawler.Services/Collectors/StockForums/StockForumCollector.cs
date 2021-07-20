@@ -1,4 +1,4 @@
-﻿#define WRITE
+﻿#undefine WRITE
 using Common.Logging;
 using HtmlAgilityPack;
 using StockCrawler.Dao;

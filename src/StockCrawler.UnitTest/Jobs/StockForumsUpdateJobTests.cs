@@ -30,6 +30,7 @@ namespace StockCrawler.UnitTest.Jobs
             using (var db = RepositoryProvider.GetRepositoryInstance())
             {
                 var data = db.GetStockMarketNews(10, TEST_STOCKNO_台積電, "mops", new DateTime(2021, 1, 5), new DateTime(2021, 1, 5));
+                Assert.IsNotNull(data);
                 Assert.IsTrue(data.Any());
                 foreach (var d in data)
                 {
