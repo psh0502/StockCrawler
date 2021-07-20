@@ -20,8 +20,6 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual(TEST_STOCKNO_台積電, r.StockNo);
             Assert.AreEqual(new DateTime(1987, 2, 21), r.BuildDate);
             Assert.AreEqual(new DateTime(1994, 9, 5), r.PublishDate);
-            Assert.AreEqual(259303804580, r.Capital);
-            // Assert.AreNotEqual(0, r.MarketValue, "市場總值");
             Assert.AreEqual("劉德音", r.Chairman);
             Assert.AreEqual("總裁:魏哲家", r.CEO);
             Assert.AreEqual("半導體業", r.Category);
@@ -29,7 +27,6 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual("22099131", r.CompanyID);
             Assert.AreEqual("台灣積體電路製造股份有限公司", r.CompanyName);
             Assert.AreEqual("Http://www.tsmc.com", r.Url);
-            Assert.AreEqual(25930380458, r.ReleaseStockCount);
         }
         [TestMethod]
         public void CollectorTestMethod_2888()
@@ -43,7 +40,6 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual("2888", r.StockNo);
             Assert.AreEqual(new DateTime(2002, 2, 19), r.BuildDate);
             Assert.AreEqual(new DateTime(2002, 2, 19), r.PublishDate);
-            Assert.AreEqual(130953940630, r.Capital);
             Assert.AreEqual("許澎", r.Chairman);
             Assert.AreEqual("吳欣儒", r.CEO);
             Assert.AreEqual("金融保險業", r.Category);
@@ -51,7 +47,6 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual("80328219", r.CompanyID);
             Assert.AreEqual("新光金融控股股份有限公司", r.CompanyName);
             Assert.AreEqual("https://www.skfh.com.tw", r.Url);
-            Assert.AreEqual(13020394063, r.ReleaseStockCount);
         }
     }
 }

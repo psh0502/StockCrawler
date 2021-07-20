@@ -65,7 +65,7 @@ namespace StockCrawler.UnitTest.Jobs
             {
                 StockInterestIssuedUpdateJob.Logger = new UnitTestLogger();
                 var target = new StockInterestIssuedUpdateJob();
-                IJobExecutionContext context = null;
+                IJobExecutionContext context = new ArgumentJobExecutionContext(target);
                 target.Execute(context);
                 IsExecuted = true;
             }

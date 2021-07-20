@@ -21,7 +21,7 @@ namespace StockCrawler.UnitTest.Jobs
         {
             StockBasicInfoUpdateJob.Logger = new UnitTestLogger();
             var target = new StockBasicInfoUpdateJob();
-            IJobExecutionContext context = null;
+            IJobExecutionContext context = new ArgumentJobExecutionContext(target);
             target.Execute(context);
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
             {

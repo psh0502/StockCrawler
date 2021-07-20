@@ -36,7 +36,7 @@ namespace StockCrawler.UnitTest.Jobs
         {
             StockMarketNewsUpdateJob.Logger = new UnitTestLogger();
             var target = new StockMarketNewsUpdateJob();
-            IJobExecutionContext context = null;
+            IJobExecutionContext context = new ArgumentJobExecutionContext(target);
             target.Execute(context);
 
             using (var db = RepositoryProvider.GetRepositoryInstance())

@@ -125,15 +125,13 @@
     <!--lazyload-->
     <script src="https://cache.ltn.com.tw/js/lazyload.min.js"></script>
     <script src="https://cache.ltn.com.tw/js/resize_imgs_ltn.min.js"></script>
-    <!-- Alexa Code -->
-<script>
-    _atrk_opts = { atrk_acct:"LS4hj1a8Dy002+", domain:"ltn.com.tw",dynamic: true};
-    (function() { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://d31qbv1cthcecs.cloudfront.net/atrk.js"; var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s); })();
+    <!-- Start Alexa Certify Javascript -->
+<script type="text/javascript">
+_atrk_opts = { atrk_acct:"LS4hj1a8Dy002+", domain:"ltn.com.tw",dynamic: true};
+(function() { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://certify-js.alexametrics.com/atrk.js"; var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s); })();
 </script>
-<noscript>
-    <img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=LS4hj1a8Dy002+" style="display:none" height="1" width="1" alt=""/><img src="https://b.scorecardresearch.com/p?c1=2&c2=18368781&cv=2.0&cj=1"/>
-</noscript>
-<!-- Alexa Code -->
+<noscript><img src="https://certify.alexametrics.com/atrk.gif?account=LS4hj1a8Dy002+" style="display:none" height="1" width="1" alt="" /></noscript>
+<!-- End Alexa Certify Javascript -->
 
 <!-- Comscore Code -->
 <script>
@@ -380,7 +378,160 @@
         }
     };
 </script>
-    </head>
+    <script>
+    let webPushOrigin = 'https://www.ltn.com.tw';
+    let webPushFile = webPushOrigin + '/webNotificationCheck';
+    let webPushNotification = webPushOrigin + '/webNotification';
+
+    // 監聽檢查回應
+    window.addEventListener('message',function(e) {
+        if (e.origin == webPushOrigin) {
+            if (e.data == 'isOK') {
+                let checkIframe = document.getElementById('checkIframe');
+                checkIframe.contentWindow.postMessage('getPermission', webPushOrigin);
+            } else if (e.data == 'granted') {
+                $("#checkIframe").remove();
+                console.log(e.data);
+            } else if (e.data == 'denied' || e.data == 'default') { //default or denied
+                $("#checkIframe").remove();
+                console.log(e.data);
+                softConfirm();
+            }
+        }
+    },false);
+
+    $(function() {
+        let webPush = getCookie("softPush");
+        if (webPush === undefined || webPush < 1) {
+            if (userAgent.indexOf('Chrome') >= 0 || userAgent.indexOf('Firefox') >= 0 || userAgent.indexOf('Edge/') >= 0) {
+                initFcm();
+            } else if (userAgent.indexOf('Safari') >= 0) {
+            }
+        }
+    });
+
+    //檢查notification
+    function initFcm()
+    {
+        console.log('check notification');
+        if ('Notification' in window) {
+            checkFcm();
+        }
+    }
+
+    //檢查notification permission
+    function checkFcm()
+    {
+        console.log('checkFcm');
+        let checkIframe = document.createElement('iframe');
+        checkIframe.setAttribute('id', 'checkIframe');
+        checkIframe.setAttribute('src', webPushFile);
+        checkIframe.setAttribute('allow', 'payment');
+        document.body.appendChild(checkIframe);
+    }
+
+    //觸發軟詢問
+    function softConfirm()
+    {
+        let softPushNotificaton = document.createElement('div');
+        softPushNotificaton.setAttribute('class', 'softPush_notification');
+
+        let softPushNotificationImg = document.createElement('img');
+        softPushNotificationImg.setAttribute('src', 'https://news.ltn.com.tw/assets/images/all/ltn.png');
+        softPushNotificaton.appendChild(softPushNotificationImg);
+
+        let softPushNotificationSpan = document.createElement('span');
+        softPushNotificationSpan.setAttribute('class', 'softPush_word');
+        let softPushNotificationText = document.createTextNode('感謝您的訂閱 自由時報電子報隨時提供您最即時、熱門的新聞訊息。');
+        softPushNotificationSpan.appendChild(softPushNotificationText);
+        softPushNotificaton.appendChild(softPushNotificationSpan);
+
+        let softPushNotificationButton = document.createElement('button');
+        softPushNotificationButton.setAttribute('class', 'softPush_confirm');
+        softPushNotificationText = document.createTextNode('訂閱');
+        softPushNotificationButton.appendChild(softPushNotificationText);
+        softPushNotificaton.appendChild(softPushNotificationButton);
+
+        softPushNotificationButton = document.createElement('button');
+        softPushNotificationButton.setAttribute('class', 'softPush_refuse');
+        softPushNotificationText = document.createTextNode('暫時不要');
+        softPushNotificationButton.appendChild(softPushNotificationText);
+        softPushNotificaton.appendChild(softPushNotificationButton);
+
+        document.body.appendChild(softPushNotificaton);
+    }
+
+    //設定軟詢問時間
+    function setSoftPushCookie(extension = 0)
+    {
+        let st = "";
+        let expires = new Date();
+        //延展時間
+        extension = (extension == 0) ? 7 * 24 * 60 * 60 * 1000 : extension;
+        expires.setTime(expires.getTime() + extension);
+        let ti = getCookie("softPush");
+        if (ti === undefined) ti = 0;
+        st = "softPush=" + (Number(ti)+1) +"; domain=ltn.com.tw;expires=" + expires.toGMTString() +"; path=/";
+        document.cookie = st;
+    }
+
+    $(document).on("click",".softPush_confirm",function() {
+        window.open(webPushNotification);
+        getScrNews('www.webPush.ask', 'ask', '', '1');
+        $(".softPush_notification").remove();
+    });
+
+    $(document).on("click",".softPush_refuse",function(){
+        $(".softPush_notification").remove();
+        getScrNews('www.webPush.ask', 'ask', '', '0');
+        setSoftPushCookie();
+    });
+</script>
+<style>
+    /******************** 瀏覽器推播通知 ********************/
+    .softPush_notification { width: 400px; height: 170px; padding: 20px; border-radius: 10px; position: fixed; left: 50%; margin-left: -200px; top: 28%;  background: #fbfbfb; box-shadow: 0px 0px 30px 6px rgb(0 0 0 / 40%); z-index:  300; text-align: justify;}
+    .softPush_notification img { width: 80px; height: auto; float: left; margin-right: 10px; }
+    .softPush_notification span.softPush_word { margin-bottom: 10px; font-size: 18px; line-height: 30px; font-family: 'Noto Sans TC', "微軟正黑體";}
+    .softPush_notification button { border-radius: 5px; padding: 5px 8px; letter-spacing: 1px; cursor: pointer; border: 0px; font-size: 16px;}
+    .softPush_notification button.softPush_confirm { position: absolute; right: 25px; bottom: 20px; background: #daa01c; color: #fff; transition: .2s linear;}
+    .softPush_notification button.softPush_refuse { position: absolute; right: 80px; bottom: 20px; color: #8e8e8e; transition: .2s linear;}
+    .softPush_notification button.softPush_confirm:hover { background: #c58901; }
+    .softPush_notification button.softPush_refuse:hover { background: #dedede; }
+
+    @media screen and (max-width:500px) {
+        /* 瀏覽器推播通知 */
+        .softPush_notification {
+            width: 280px;
+            height: 140px;
+            padding: 16px;
+            margin-left: -140px;
+        }
+
+        .softPush_notification img {
+            width: 60px;
+        }
+
+        .softPush_notification span.softPush_word {
+            font-size: 16px;
+            line-height: 24px;
+        }
+
+        .softPush_notification button {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .softPush_notification button.softPush_confirm,
+        .softPush_notification button.softPush_refuse {
+            bottom: 12px;
+        }
+
+        .softPush_notification button.softPush_confirm {
+            right: 16px;
+        }
+    }
+</style>
+</head>
 <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
 <script>
     if(window.outerWidth <= 1100) { // 只有手機顯示
@@ -399,6 +550,7 @@
             "food" : "12-food-mobile-H2",
             "health" : "13-health-mobile-H2",
             "video" : "15-video-mobile-H2",
+            "features" : "99-feature-mobile-H2",
         };
 
         let CoverHost = location.hostname.toLowerCase().replace(".ltn.com.tw", "");
@@ -454,7 +606,7 @@
     </script>
     <script>
         googletag.cmd.push(function() {
-            var dfp = {"pc":{"K1":{"slot":"\/21202031\/06-ec-sub-P-K1","size":"[[970, 90],[970, 160],[970, 250],[1260, 90],[1260, 160],[1260, 250]]","div":"ad-K1","class":"suggestTop suggestBottom","collapse":1},"K2":{"slot":"\/21202031\/06-ec-sub-P-K2","size":"[[1, 1], [728, 90]]","div":"ad-K2","class":"","collapse":1},"BD1":{"slot":"\/21202031\/06-ec-sub-P-BD1","size":"[[300, 250], [300, 600]]","div":"ad-BD1","class":"","collapse":1},"BD2":{"slot":"\/21202031\/06-ec-sub-P-BD2","size":"[[300, 250], [300, 600]]","div":"ad-BD2","class":"suggestTop suggestBottom","collapse":1},"C1":{"slot":"\/21202031\/06-ec-sub-P-sponsors-B1","size":"[300, 250]","div":"ad-C1","class":"","collapse":1},"C2":{"slot":"\/21202031\/06-ec-sub-P-sponsors-B2","size":"[300, 250]","div":"ad-C2","class":"","collapse":1}},"m":{"B1-ATF":{"slot":"\/21202031\/06-ec-mobile-sub-P-B1-ATF","size":"['fluid', [1, 1], [300, 250], [336, 280]]","div":"ad-B1-ATF","class":"suggestTop","collapse":1},"B2":{"slot":"\/21202031\/06-ec-mobile-sub-P-B2","size":"['fluid', [1, 1], [300, 250], [320, 480], [336, 280]]","div":"ad-B2","class":"suggestBottom","collapse":1},"IR1":{"slot":"\/21202031\/06-ec-mobile-sub-P-IR1","size":"['fluid', [1, 1], [300, 250], [320, 480], [336, 280]]","div":"ad-IR1","class":"suggestCenter","collapse":1},"I1-bottom":{"slot":"\/21202031\/06-ec-mobile-sub-P-I1-bottom","size":"['fluid', [1, 1], [320, 50], [320, 100]]","div":"ad-I1-bottom","class":"door-bottom door-bottom-head","collapse":1}}};
+            var dfp = {"pc":{"K1":{"slot":"\/21202031\/06-ec-sub-P-K1","size":"[[970, 90],[970, 160],[970, 250],[1260, 90],[1260, 160],[1260, 250], [1, 1]]","div":"ad-K1","class":"suggestTop suggestBottom","collapse":1},"K2":{"slot":"\/21202031\/06-ec-sub-P-K2","size":"[[1, 1], [728, 90]]","div":"ad-K2","class":"","collapse":1},"BD1":{"slot":"\/21202031\/06-ec-sub-P-BD1","size":"[[300, 250], [300, 600]]","div":"ad-BD1","class":"","collapse":1},"BD2":{"slot":"\/21202031\/06-ec-sub-P-BD2","size":"[[300, 250], [300, 600]]","div":"ad-BD2","class":"suggestTop suggestBottom","collapse":1},"C1":{"slot":"\/21202031\/06-ec-sub-P-sponsors-B1","size":"[300, 250]","div":"ad-C1","class":"","collapse":1},"C2":{"slot":"\/21202031\/06-ec-sub-P-sponsors-B2","size":"[300, 250]","div":"ad-C2","class":"","collapse":1}},"m":{"B1-ATF":{"slot":"\/21202031\/06-ec-mobile-sub-P-B1-ATF","size":"['fluid', [1, 1], [300, 250], [336, 280]]","div":"ad-B1-ATF","class":"suggestTop","collapse":1},"B2":{"slot":"\/21202031\/06-ec-mobile-sub-P-B2","size":"['fluid', [1, 1], [300, 250], [320, 480], [336, 280]]","div":"ad-B2","class":"suggestBottom","collapse":1},"IR1":{"slot":"\/21202031\/06-ec-mobile-sub-P-IR1","size":"['fluid', [1, 1], [300, 250], [320, 480], [336, 280]]","div":"ad-IR1","class":"suggestCenter","collapse":1},"I1-bottom":{"slot":"\/21202031\/06-ec-mobile-sub-P-I1-bottom","size":"['fluid', [1, 1], [320, 50], [320, 100]]","div":"ad-I1-bottom","class":"door-bottom door-bottom-head","collapse":1}}};
             var device = cookies_m.isPC() ? 'pc' : 'm';
             dfp = dfp[device] || [];
             for (var key in dfp) {
@@ -563,6 +715,7 @@
         ,"talk":"05-talk-mobile-H1"
         ,"video":"15-video-mobile-H1"
         ,"partners":"17-partners-mobile-H1"
+        ,"features":"99-feature-mobile-H1"
     };
 
     var check = {
@@ -570,7 +723,7 @@
         ,"estate": true
     };
     // 將RWD的domaim加入此陣列
-    var checkHost = ['test', 'news', 'partners', 'auto', 'ec', 'istyle', 'sports', 'playing', 'video', 'ent', 'health', '3c', 'talk', 'food', 'estate'];
+    var checkHost = ['test', 'news', 'partners', 'auto', 'ec', 'istyle', 'sports', 'playing', 'video', 'ent', 'health', '3c', 'talk', 'food', 'estate', 'features'];
     var host = location.hostname.toLowerCase().replace(".ltn.com.tw", "");
 
     // 檢查是否為RWD的網站
@@ -658,7 +811,7 @@ Creation date: 07/18/2019
 <!-- End of event snippet: Please do not remove -->
 
     <link rel="stylesheet" href="https://cache.ltn.com.tw/css/rwd_head_tail.css?202002181" />
-<link rel="stylesheet" href="https://cache.ltn.com.tw/css/rwd_head_cover.css?20200707" />
+<link rel="stylesheet" href="https://cache.ltn.com.tw/css/rwd_head_cover.css?20210309" />
 <link rel="stylesheet" href="https://cache.ltn.com.tw/css/rwd_font-awesome.min.css" />
 <link rel="stylesheet" href="https://cache.ltn.com.tw/css/month.css?20190708" />
 <script src="https://cache.ltn.com.tw/js/rwd_mobile_search.js?20200609"></script>
@@ -1032,7 +1185,7 @@ div[id^='google_ads_iframe'] {
                                 </div>
                 <!-- 所有頻道選單 -->
         <div class="mainM boxTitle boxText" data-desc="側邊選單:頻道選單">
-            <a title="自由影音" href="https://video.ltn.com.tw/m" class="full">自由影音</a>
+            <a title="自由影音" href="https://video.ltn.com.tw" class="full">自由影音</a>
             <!-- 即時 -->
             <div class="ltnM boxText">
                 <a title="即時" href="https://news.ltn.com.tw/list/breakingnews">即時</a>
@@ -1045,24 +1198,24 @@ div[id^='google_ads_iframe'] {
                 <a title="蒐奇" href="https://news.ltn.com.tw/list/breakingnews/novelty">蒐奇</a>
             </div>
             <!-- 頻道 -->
-            <a title="財經" href="https://ec.ltn.com.tw/m">財經</a>
-            <a title="娛樂" href="https://ent.ltn.com.tw/m">娛樂</a>
+            <a title="財經" href="https://ec.ltn.com.tw">財經</a>
+            <a title="娛樂" href="https://ent.ltn.com.tw">娛樂</a>
             <a title="汽車" href="https://auto.ltn.com.tw/m">汽車</a>
-            <a title="時尚" href="https://istyle.ltn.com.tw/m">時尚</a>
-            <a title="體育" href="https://sports.ltn.com.tw/m">體育</a>
-            <a title="3C" href="https://3c.ltn.com.tw/m">3 C</a>
-            <a title="評論" href="https://talk.ltn.com.tw/">評論</a>
-            <a title="玩咖" href="https://playing.ltn.com.tw/m">玩咖</a>
+            <a title="時尚" href="https://istyle.ltn.com.tw">時尚</a>
+            <a title="體育" href="https://sports.ltn.com.tw">體育</a>
+            <a title="3C" href="https://3c.ltn.com.tw">3 C</a>
+            <a title="評論" href="https://talk.ltn.com.tw">評論</a>
+            <a title="玩咖" href="https://playing.ltn.com.tw">玩咖</a>
             <a title="食譜" href="https://food.ltn.com.tw/m">食譜</a>
-            <a title="健康" href="https://health.ltn.com.tw/m">健康</a>
-            <a title="地產" href="https://estate.ltn.com.tw/">地產</a>
+            <a title="健康" href="https://health.ltn.com.tw">健康</a>
+            <a title="地產" href="https://estate.ltn.com.tw">地產</a>
             <!--<a style="cursor: default;"></a>-->
-            <a title="專區" href="https://features.ltn.com.tw/m">專區</a>
-            <a title="服務" href="https://service.ltn.com.tw/">服務</a>
+            <a title="專區" href="https://features.ltn.com.tw">專區</a>
+            <a title="服務" href="https://service.ltn.com.tw">服務</a>
         </div>
         <!-- 其他 -->
         <div class="ltn_home boxTitle boxText" data-desc="側邊選單:其他選單">
-            <a title="自由時報電子報APP" href="https://iservice.ltn.com.tw/app/app.html" target="_blank" class="app">自由電子報APP</>
+            <a title="自由時報電子報APP" href="https://iservice.ltn.com.tw/app/app.html" target="_blank" class="app">自由電子報APP</a>
             <a title="自由時報電子報粉絲團" href="https://www.facebook.com/m.ltn.tw" target="_blank" class="fb">自由電子報粉絲團</a>
             <a title="自由時報電子報Line" href="https://line.me/R/ti/p/%40ltnnews" target="_blank" class="line">自由電子報Line</a>
             <a title="熱門新訊" href="https://market.ltn.com.tw/m" class="dot">熱門新訊</a>
@@ -1303,6 +1456,8 @@ div[id^='google_ads_iframe'] {
             'sports': {'slot': '', 'size': []},
             '3c': {'slot': '/21202031/04-3C-mobile-sub-P-IR2', 'size': ['fluid',[1, 1], [300, 250], [320, 480],  [336, 280]]},
             'talk': {'slot': '/21202031/05-talk-mobile-sub-P-IR2', 'size': ['fluid', [336, 280], [1, 1], [300, 250], [320, 480]]},
+            'estate': {'slot': '21202031/11-estate-mobile-sub-P-IR2', 'size': ['fluid', [1, 1], [300, 250], [320, 480], [336, 280]]},
+            'features': {'slot': '/21202031/99-feature-mobile-sub-P-IR2', 'size': ['fluid', [1, 1], [300, 250], [320, 480], [336, 280]]},
         };
         var dfpSwitch = {
             'ent': [
@@ -1312,7 +1467,7 @@ div[id^='google_ads_iframe'] {
                 {'start': '2018-06-08 00:00:00', 'end': '2018-06-30 23:59:59'}
             ],
             'istyle': [
-                {'start': '2020-12-09 11:00:00', 'end': '2020-12-27 23:59:59'}
+                {'start': '2021-02-23 12:00:00', 'end': '2021-03-02 23:59:59'}
             ],
             'auto': [
                 {'start': '2019-03-28 00:00:00', 'end': '2019-03-29 00:00:00'}
@@ -1325,6 +1480,9 @@ div[id^='google_ads_iframe'] {
             ],
             'talk': [
                 {'start': '2019-03-28 00:00:00', 'end': '2019-03-29 00:00:00'}
+            ],
+            'estate': [
+                {'start': '2021-02-23 12:00:00', 'end': '2021-03-02 23:59:59'}
             ]
         };
 
@@ -1341,6 +1499,11 @@ div[id^='google_ads_iframe'] {
             }
         }
 
+        if (host.indexOf('estate') === 0 || host.indexOf('features') === 0) {
+            disable_onead_mobile_inread = true;
+        }
+
+        
         if (!cookies_m.isPC() && disable_onead_mobile_inread) {
             //M:inread
             $('#ad-IR2').css('display', 'block');
@@ -1419,13 +1582,13 @@ div[id^='google_ads_iframe'] {
                     </a>
                 </li>
                                                 <li class="relatedDom">
-                    <a title="鹿茸－守護全家人的健康就靠它" href="https://pv.ltn.com.tw/click?ano=2021010673521392" target="_blank"
-                       data-desc="P:2:鹿茸－守護全家人的健康就靠它" data-no="2021010673521392">
+                    <a title="存科技基金首選" href="https://pv.ltn.com.tw/click?ano=2021071992516037" target="_blank"
+                       data-desc="P:2:存科技基金首選" data-no="2021071992516037">
                         <script>
-                            document.write('<img style="display:none" src="https://pv.ltn.com.tw/impression?ano=2021010673521392' + '&device=' + adDevice + '&' + new Date().getTime() + '">');
+                            document.write('<img style="display:none" src="https://pv.ltn.com.tw/impression?ano=2021071992516037' + '&device=' + adDevice + '&' + new Date().getTime() + '">');
                         </script>
-                        <div class="resize_imgs_ltn"><img title="鹿茸－守護全家人的健康就靠它" alt="鹿茸－守護全家人的健康就靠它" class="lazy_imgs_ltn" src="assets/images/default.jpg" data-src="https://img.ltn.com.tw/Upload/suggest/334/33494214.jpg" data-desc="P:2:鹿茸－守護全家人的健康就靠它"></div>
-                        <p>鹿茸－守護全家人的健康就靠它</p>
+                        <div class="resize_imgs_ltn"><img title="存科技基金首選" alt="存科技基金首選" class="lazy_imgs_ltn" src="assets/images/default.jpg" data-src="https://img.ltn.com.tw/Upload/suggest/334/334100199.jpg" data-desc="P:2:存科技基金首選"></div>
+                        <p>存科技基金首選</p>
                     </a>
                 </li>
                                                 <li>
@@ -1442,16 +1605,26 @@ div[id^='google_ads_iframe'] {
                             航運股高檔爆量 投資人小心莫追高                                                    </p>
                     </a>
                 </li>
+                                                <li class="relatedDom">
+                    <a title="在岩手＆青森玩好玩滿" href="https://pv.ltn.com.tw/click?ano=2021071981838621" target="_blank"
+                       data-desc="P:5:在岩手＆青森玩好玩滿" data-no="2021071981838621">
+                        <script>
+                            document.write('<img style="display:none" src="https://pv.ltn.com.tw/impression?ano=2021071981838621' + '&device=' + adDevice + '&' + new Date().getTime() + '">');
+                        </script>
+                        <div class="resize_imgs_ltn"><img title="在岩手＆青森玩好玩滿" alt="在岩手＆青森玩好玩滿" class="lazy_imgs_ltn" src="assets/images/default.jpg" data-src="https://img.ltn.com.tw/Upload/suggest/335/335100217.jpg" data-desc="P:5:在岩手＆青森玩好玩滿"></div>
+                        <p>在岩手＆青森玩好玩滿</p>
+                    </a>
+                </li>
                                                 <li>
-                    <a title="貨櫃三雄股價亮燈漲停  躍為強勢主流股" href="https://news.ltn.com.tw/news/business/breakingnews/3394766" class="boxText" data-desc="P:5:貨櫃三雄股價亮燈漲停  躍為強勢主流股">
-                        <div class="resize_imgs_ltn"><img title="貨櫃三雄股價亮燈漲停  躍為強勢主流股" alt="貨櫃三雄股價亮燈漲停  躍為強勢主流股" class="lazy_imgs_ltn" src="assets/images/default.jpg" data-src="https://img.ltn.com.tw/Upload/business/page/400S/2020/12/28/php4nIaTX.jpg" data-desc="P:5:貨櫃三雄股價亮燈漲停  躍為強勢主流股"></div>
+                    <a title="貨櫃三雄股價亮燈漲停  躍為強勢主流股" href="https://news.ltn.com.tw/news/business/breakingnews/3394766" class="boxText" data-desc="P:6:貨櫃三雄股價亮燈漲停  躍為強勢主流股">
+                        <div class="resize_imgs_ltn"><img title="貨櫃三雄股價亮燈漲停  躍為強勢主流股" alt="貨櫃三雄股價亮燈漲停  躍為強勢主流股" class="lazy_imgs_ltn" src="assets/images/default.jpg" data-src="https://img.ltn.com.tw/Upload/business/page/400S/2020/12/28/php4nIaTX.jpg" data-desc="P:6:貨櫃三雄股價亮燈漲停  躍為強勢主流股"></div>
                         <p>
                             貨櫃三雄股價亮燈漲停  躍為強勢主流股                                                    </p>
                     </a>
                 </li>
                                                 <li>
-                    <a title="航運雙雄飆漲 PTT股民笑稱：要運豬肉進來 當然漲" href="https://news.ltn.com.tw/news/business/breakingnews/3392232" class="boxText" data-desc="P:6:航運雙雄飆漲 PTT股民笑稱：要運豬肉進來 當然漲">
-                        <div class="resize_imgs_ltn"><img title="航運雙雄飆漲 PTT股民笑稱：要運豬肉進來 當然漲" alt="航運雙雄飆漲 PTT股民笑稱：要運豬肉進來 當然漲" class="lazy_imgs_ltn" src="assets/images/default.jpg" data-src="https://img.ltn.com.tw/Upload/business/page/400S/2020/12/25/php7W8gBc.jpg" data-desc="P:6:航運雙雄飆漲 PTT股民笑稱：要運豬肉進來 當然漲"></div>
+                    <a title="航運雙雄飆漲 PTT股民笑稱：要運豬肉進來 當然漲" href="https://news.ltn.com.tw/news/business/breakingnews/3392232" class="boxText" data-desc="P:7:航運雙雄飆漲 PTT股民笑稱：要運豬肉進來 當然漲">
+                        <div class="resize_imgs_ltn"><img title="航運雙雄飆漲 PTT股民笑稱：要運豬肉進來 當然漲" alt="航運雙雄飆漲 PTT股民笑稱：要運豬肉進來 當然漲" class="lazy_imgs_ltn" src="assets/images/default.jpg" data-src="https://img.ltn.com.tw/Upload/business/page/400S/2020/12/25/php7W8gBc.jpg" data-desc="P:7:航運雙雄飆漲 PTT股民笑稱：要運豬肉進來 當然漲"></div>
                         <p>
                             航運雙雄飆漲 PTT股民笑稱：要運豬肉進來 當然漲                                                    </p>
                     </a>
@@ -1558,61 +1731,60 @@ div[id^='google_ads_iframe'] {
     <div class="whitecon boxTitle" data-desc="今日熱門新聞">
         <ul class="todaynews">
                                             <li>
-                    <a title="真的出事了？馬雲下落不明 逾2個月未公開露面" href="https://ec.ltn.com.tw/article/breakingnews/3400600" class="small" data-desc="P:0:真的出事了？馬雲下落不明 逾2個月未公開露面">
-                        <div class="resize_imgs_ltn"><img class="lazy_imgs_ltn" title="真的出事了？馬雲下落不明 逾2個月未公開露面" alt="真的出事了？馬雲下落不明 逾2個月未公開露面" src="assets/images/default.jpg" data-src="https://img.ltn.com.tw/Upload/business/page/800/2021/01/04/phpxRUWdg.jpg" data-desc="P:0:真的出事了？馬雲下落不明 逾2個月未公開露面"></div>
+                    <a title="股民心聲》南非動亂 不鏽鋼恐釀大行情" href="https://ec.ltn.com.tw/article/breakingnews/3606462" class="small" data-desc="P:0:股民心聲》南非動亂 不鏽鋼恐釀大行情">
+                        <div class="resize_imgs_ltn"><img class="lazy_imgs_ltn" title="股民心聲》南非動亂 不鏽鋼恐釀大行情" alt="股民心聲》南非動亂 不鏽鋼恐釀大行情" src="assets/images/default.jpg" data-src="https://img.ltn.com.tw/Upload/business/page/800/2021/07/17/phpBV9dVe.jpg" data-desc="P:0:股民心聲》南非動亂 不鏽鋼恐釀大行情"></div>
                         <p>
-                            真的出事了？馬雲下落不明 逾2個月未公開露面                                                    </p>
+                            股民心聲》南非動亂 不鏽鋼恐釀大行情                                                    </p>
                     </a>
                 </li>
                                             <li>
-                    <a title="股民心聲》大象會狂奔 中鋼股東注意了" href="https://ec.ltn.com.tw/article/breakingnews/3400804" class="small" data-desc="P:1:股民心聲》大象會狂奔 中鋼股東注意了">
-                        <div class="resize_imgs_ltn"><img class="lazy_imgs_ltn" title="股民心聲》大象會狂奔 中鋼股東注意了" alt="股民心聲》大象會狂奔 中鋼股東注意了" src="assets/images/default.jpg" data-src="https://img.ltn.com.tw/Upload/business/page/800/2021/01/04/phpBfs49Q.jpg" data-desc="P:1:股民心聲》大象會狂奔 中鋼股東注意了"></div>
+                    <a title="2戰狼互告！戰狼肖像被拿去包檳榔   吳京怒提告" href="https://ec.ltn.com.tw/article/breakingnews/3607885" class="small" data-desc="P:1:2戰狼互告！戰狼肖像被拿去包檳榔   吳京怒提告">
+                        <div class="resize_imgs_ltn"><img class="lazy_imgs_ltn" title="2戰狼互告！戰狼肖像被拿去包檳榔   吳京怒提告" alt="2戰狼互告！戰狼肖像被拿去包檳榔   吳京怒提告" src="assets/images/default.jpg" data-src="https://img.ltn.com.tw/Upload/business/page/800/2021/07/18/phpDABV4c.jpg" data-desc="P:1:2戰狼互告！戰狼肖像被拿去包檳榔   吳京怒提告"></div>
                         <p>
-                            股民心聲》大象會狂奔 中鋼股東注意了                                                    </p>
+                            2戰狼互告！戰狼肖像被拿去包檳榔   吳京怒提告                                                    </p>
                     </a>
                 </li>
                                                 <li><div id="_popIn_recommend_ec_onlyad"></div></li>
                                 <li>
-                    <a title="恐不幸言中？郭文貴2年前斷言馬雲結局「不是入獄就是被殺」" href="https://ec.ltn.com.tw/article/breakingnews/3401697" class="small" data-desc="P:2:恐不幸言中？郭文貴2年前斷言馬雲結局「不是入獄就是被殺」">
-                        <div class="resize_imgs_ltn"><img class="lazy_imgs_ltn" title="恐不幸言中？郭文貴2年前斷言馬雲結局「不是入獄就是被殺」" alt="恐不幸言中？郭文貴2年前斷言馬雲結局「不是入獄就是被殺」" src="assets/images/default.jpg" data-src="https://img.ltn.com.tw/Upload/business/page/800/2021/01/05/phpXotRbn.jpg" data-desc="P:2:恐不幸言中？郭文貴2年前斷言馬雲結局「不是入獄就是被殺」"></div>
+                    <a title="薪資減損勞工萬元紓困金第2輪  23日開跑" href="https://ec.ltn.com.tw/article/breakingnews/3608473" class="small" data-desc="P:2:薪資減損勞工萬元紓困金第2輪  23日開跑">
+                        <div class="resize_imgs_ltn"><img class="lazy_imgs_ltn" title="薪資減損勞工萬元紓困金第2輪  23日開跑" alt="薪資減損勞工萬元紓困金第2輪  23日開跑" src="assets/images/default.jpg" data-src="https://img.ltn.com.tw/Upload/business/page/800/2021/07/19/3608473_1.jpg" data-desc="P:2:薪資減損勞工萬元紓困金第2輪  23日開跑"></div>
                         <p>
-                            恐不幸言中？郭文貴2年前斷言馬雲結局「不是入獄就是被殺」                                                    </p>
+                            薪資減損勞工萬元紓困金第2輪  23日開跑                                                    </p>
                     </a>
                 </li>
                                             <li>
-                    <a title="台股驚現萬五爆4千億天量 外資先拋這十檔" href="https://ec.ltn.com.tw/article/breakingnews/3403310" class="small" data-desc="P:3:台股驚現萬五爆4千億天量 外資先拋這十檔">
-                        <div class="resize_imgs_ltn"><img class="lazy_imgs_ltn" title="台股驚現萬五爆4千億天量 外資先拋這十檔" alt="台股驚現萬五爆4千億天量 外資先拋這十檔" src="assets/images/default.jpg" data-src="https://img.ltn.com.tw/Upload/business/page/800/2021/01/06/phpewaR2u.jpg" data-desc="P:3:台股驚現萬五爆4千億天量 外資先拋這十檔"></div>
+                    <a title="想吞英晶圓廠  牛津學者：中共將資金武器化  等於搬石頭砸自己的腳" href="https://ec.ltn.com.tw/article/breakingnews/3607531" class="small" data-desc="P:3:想吞英晶圓廠  牛津學者：中共將資金武器化  等於搬石頭砸自己的腳">
+                        <div class="resize_imgs_ltn"><img class="lazy_imgs_ltn" title="想吞英晶圓廠  牛津學者：中共將資金武器化  等於搬石頭砸自己的腳" alt="想吞英晶圓廠  牛津學者：中共將資金武器化  等於搬石頭砸自己的腳" src="assets/images/default.jpg" data-src="https://img.ltn.com.tw/Upload/business/page/800/2021/07/18/phpYngMmZ.jpg" data-desc="P:3:想吞英晶圓廠  牛津學者：中共將資金武器化  等於搬石頭砸自己的腳"></div>
                         <p>
-                            台股驚現萬五爆4千億天量 外資先拋這十檔                                                    </p>
+                            想吞英晶圓廠  牛津學者：中共將資金武器化  等於搬石頭砸自己的腳                                                    </p>
                     </a>
                 </li>
                                             <li>
-                    <a title="2021年開紅盤！美系外資喊買11檔台股" href="https://ec.ltn.com.tw/article/breakingnews/3400648" class="small" data-desc="P:4:2021年開紅盤！美系外資喊買11檔台股">
-                        <div class="resize_imgs_ltn"><img class="lazy_imgs_ltn" title="2021年開紅盤！美系外資喊買11檔台股" alt="2021年開紅盤！美系外資喊買11檔台股" src="assets/images/default.jpg" data-src="https://img.ltn.com.tw/Upload/business/page/800/2021/01/04/phpslNqAi.jpg" data-desc="P:4:2021年開紅盤！美系外資喊買11檔台股"></div>
+                    <a title="工業富聯股價頻創新低 謝金河：鴻海漸失中國主場優勢" href="https://ec.ltn.com.tw/article/breakingnews/3607244" class="small" data-desc="P:4:工業富聯股價頻創新低 謝金河：鴻海漸失中國主場優勢">
+                        <div class="resize_imgs_ltn"><img class="lazy_imgs_ltn" title="工業富聯股價頻創新低 謝金河：鴻海漸失中國主場優勢" alt="工業富聯股價頻創新低 謝金河：鴻海漸失中國主場優勢" src="assets/images/default.jpg" data-src="https://img.ltn.com.tw/Upload/business/page/800/2021/07/18/phpGzQGyr.jpg" data-desc="P:4:工業富聯股價頻創新低 謝金河：鴻海漸失中國主場優勢"></div>
                         <p>
-                            2021年開紅盤！美系外資喊買11檔台股                                                    </p>
+                            工業富聯股價頻創新低 謝金河：鴻海漸失中國主場優勢                                                    </p>
                     </a>
                 </li>
                                             <li>
-                    <a title="美股大崩盤即將到來！葛拉漢警告：這是「史詩級泡沫」" href="https://ec.ltn.com.tw/article/breakingnews/3402517" class="small" data-desc="P:5:美股大崩盤即將到來！葛拉漢警告：這是「史詩級泡沫」">
-                        <div class="resize_imgs_ltn"><img class="lazy_imgs_ltn" title="美股大崩盤即將到來！葛拉漢警告：這是「史詩級泡沫」" alt="美股大崩盤即將到來！葛拉漢警告：這是「史詩級泡沫」" src="assets/images/default.jpg" data-src="https://img.ltn.com.tw/Upload/business/page/800/2021/01/06/phpPw42WD.jpg" data-desc="P:5:美股大崩盤即將到來！葛拉漢警告：這是「史詩級泡沫」"></div>
+                    <a title="北京炸雞出包 華萊士上海174家分店全被查、總部被約談" href="https://ec.ltn.com.tw/article/breakingnews/3607998" class="small" data-desc="P:5:北京炸雞出包 華萊士上海174家分店全被查、總部被約談">
+                        <div class="resize_imgs_ltn"><img class="lazy_imgs_ltn" title="北京炸雞出包 華萊士上海174家分店全被查、總部被約談" alt="北京炸雞出包 華萊士上海174家分店全被查、總部被約談" src="assets/images/default.jpg" data-src="https://img.ltn.com.tw/Upload/business/page/800/2021/07/19/php98058C.jpg" data-desc="P:5:北京炸雞出包 華萊士上海174家分店全被查、總部被約談"></div>
                         <p>
-                            美股大崩盤即將到來！葛拉漢警告：這是「史詩級泡沫」                                                    </p>
+                            北京炸雞出包 華萊士上海174家分店全被查、總部被約談                                                    </p>
                     </a>
                 </li>
                                             <li>
-                    <a title="美股將上演大屠殺？華爾街狼王：恐以戲劇性結局告終" href="https://ec.ltn.com.tw/article/breakingnews/3401471" class="small" data-desc="P:6:美股將上演大屠殺？華爾街狼王：恐以戲劇性結局告終">
-                        <div class="resize_imgs_ltn"><img class="lazy_imgs_ltn" title="美股將上演大屠殺？華爾街狼王：恐以戲劇性結局告終" alt="美股將上演大屠殺？華爾街狼王：恐以戲劇性結局告終" src="assets/images/default.jpg" data-src="https://img.ltn.com.tw/Upload/business/page/800/2021/01/05/phpLY09z1.jpg" data-desc="P:6:美股將上演大屠殺？華爾街狼王：恐以戲劇性結局告終"></div>
+                    <a title="一帶一路幻滅-5》坦尚尼亞遭牢牢綁死 憤而廢約" href="https://ec.ltn.com.tw/article/breakingnews/3606022" class="small" data-desc="P:6:一帶一路幻滅-5》坦尚尼亞遭牢牢綁死 憤而廢約">
+                        <div class="resize_imgs_ltn"><img class="lazy_imgs_ltn" title="一帶一路幻滅-5》坦尚尼亞遭牢牢綁死 憤而廢約" alt="一帶一路幻滅-5》坦尚尼亞遭牢牢綁死 憤而廢約" src="assets/images/default.jpg" data-src="https://img.ltn.com.tw/Upload/business/page/800/2021/07/16/phpP0iJTR.jpeg" data-desc="P:6:一帶一路幻滅-5》坦尚尼亞遭牢牢綁死 憤而廢約"></div>
                         <p>
-                            美股將上演大屠殺？華爾街狼王：恐以戲劇性結局告終                                                    </p>
+                            一帶一路幻滅-5》坦尚尼亞遭牢牢綁死 憤而廢約                                                    </p>
                     </a>
                 </li>
                                             <li>
-                    <a title="LTN經濟通》一帶一路 引爆中國海外債務危機" href="https://ec.ltn.com.tw/article/breakingnews/3394050" class="small" data-desc="P:7:LTN經濟通》一帶一路 引爆中國海外債務危機">
-                        <div class="resize_imgs_ltn"><img class="lazy_imgs_ltn" title="LTN經濟通》一帶一路 引爆中國海外債務危機" alt="LTN經濟通》一帶一路 引爆中國海外債務危機" src="assets/images/default.jpg" data-src="https://img.ltn.com.tw/Upload/business/page/800/2020/12/28/phpYG15EW.jpg" data-desc="P:7:LTN經濟通》一帶一路 引爆中國海外債務危機"></div>
+                    <a title="一帶一路幻滅-4》羅馬尼亞 核電及電信事業悍拒中國" href="https://ec.ltn.com.tw/article/breakingnews/3604753" class="small" data-desc="P:7:一帶一路幻滅-4》羅馬尼亞 核電及電信事業悍拒中國">
+                        <div class="resize_imgs_ltn"><img class="lazy_imgs_ltn" title="一帶一路幻滅-4》羅馬尼亞 核電及電信事業悍拒中國" alt="一帶一路幻滅-4》羅馬尼亞 核電及電信事業悍拒中國" src="assets/images/default.jpg" data-src="https://img.ltn.com.tw/Upload/business/page/800/2021/07/15/phpssIA6g.jpeg" data-desc="P:7:一帶一路幻滅-4》羅馬尼亞 核電及電信事業悍拒中國"></div>
                         <p>
-                            LTN經濟通》一帶一路 引爆中國海外債務危機                                                            <span class="video"></span>
-                                                    </p>
+                            一帶一路幻滅-4》羅馬尼亞 核電及電信事業悍拒中國                                                    </p>
                     </a>
                 </li>
                     </ul>
@@ -1712,24 +1884,21 @@ div[id^='google_ads_iframe'] {
     <div class="asideBlock boxTitle boxText" data-desc="熱門新訊">
         <a title="熱門新訊" href="https://market.ltn.com.tw" data-desc="more"><p>熱門新訊<span>more</span></p></a>
         <ul class="market">
-                                                <li class="marketDom">
-                        <a title="鹿茸－守護全家人的健康就靠它" href="https://pv.ltn.com.tw/click?ano=2021010695854146"
-                           target="_blank" data-desc="T:0:鹿茸－守護全家人的健康就靠它">鹿茸－守護全家人的健康就靠它                        </a>
-                        <script>
-                            document.write('<img style="display:none" src="https://pv.ltn.com.tw/impression?ano=2021010695854146' + '&device=' + adDevice + '&' + new Date().getTime() + '">');
-                        </script>
+                                                <li>
+                        <a title="星展銀行推出新一代企業網銀" href="//market.ltn.com.tw/article/10686" class="boxText" data-desc="T:0:星展銀行推出新一代企業網銀">
+                            星展銀行推出新一代企業網銀                        </a>
                     </li>
                                                                 <li>
-                        <a title="桃園案量爆發 中路特區重劃街廓吸睛" href="//market.ltn.com.tw/article/9869" class="boxText" data-desc="T:1:桃園案量爆發 中路特區重劃街廓吸睛">
-                            桃園案量爆發 中路特區重劃街廓吸睛                        </a>
+                        <a title="元大銀行打造數位投資理財生態圈 樂享鑽金Plus數位服務" href="//market.ltn.com.tw/article/10685" class="boxText" data-desc="T:1:元大銀行打造數位投資理財生態圈 樂享鑽金Plus數位服務">
+                            元大銀行打造數位投資理財生態圈 樂享鑽金Plus數位服務                        </a>
                     </li>
                                                                 <li>
-                        <a title="大直山景新地標 企業主鎖定稀有置產物件" href="//market.ltn.com.tw/article/9868" class="boxText" data-desc="T:2:大直山景新地標 企業主鎖定稀有置產物件">
-                            大直山景新地標 企業主鎖定稀有置產物件                        </a>
+                        <a title="熱血觀賽 這包不能少" href="//market.ltn.com.tw/article/10684" class="boxText" data-desc="T:2:熱血觀賽 這包不能少">
+                            熱血觀賽 這包不能少                        </a>
                     </li>
                                                                 <li>
-                        <a title="最有東京味的台北 中山北路最值得等候的一席" href="//market.ltn.com.tw/article/9865" class="boxText" data-desc="T:3:最有東京味的台北 中山北路最值得等候的一席">
-                            最有東京味的台北 中山北路最值得等候的一席                        </a>
+                        <a title="創新企業資金有助力 「臺灣創新板」開板上路" href="//market.ltn.com.tw/article/10683" class="boxText" data-desc="T:3:創新企業資金有助力 「臺灣創新板」開板上路">
+                            創新企業資金有助力 「臺灣創新板」開板上路                        </a>
                     </li>
                                     </ul>
     </div>
@@ -1759,22 +1928,22 @@ div[id^='google_ads_iframe'] {
                 </tr>
                                     <tr>
                         <th><div><img title="國旗" alt="國旗" src="assets/images/flag.jpg" class="USD"></div>美金</th>
-                        <td>28.407</td>
-                        <td class="up">0.005</td>
+                        <td>28.04</td>
+                        <td class="down">-0.419</td>
                     </tr>
                                     <tr>
                         <th><div><img title="國旗" alt="國旗" src="assets/images/flag.jpg" class="JPY"></div>日幣</th>
-                        <td>0.2709</td>
+                        <td>0.2557</td>
                         <td class="up">0</td>
                     </tr>
                                     <tr>
                         <th><div><img title="國旗" alt="國旗" src="assets/images/flag.jpg" class="CNY"></div>人民幣</th>
-                        <td>4.337</td>
+                        <td>4.321</td>
                         <td class="up">0</td>
                     </tr>
                                     <tr>
                         <th><div><img title="國旗" alt="國旗" src="assets/images/flag.jpg" class="EUR"></div>歐元</th>
-                        <td>34.385</td>
+                        <td>33.02</td>
                         <td class="up">0</td>
                     </tr>
                             </table>
@@ -1828,16 +1997,16 @@ div[id^='google_ads_iframe'] {
             <!-- 注目新聞 -->
     <div class="hotnews boxTitle boxText" data-desc="注目新聞">
         <p>注目新聞</p>
-                    <a title="真的出事了？馬雲下落不明 逾2個月未公開露面" href="https://ec.ltn.com.tw/article/breakingnews/3400600" class="boxText" data-desc="T:0:真的出事了？馬雲下落不明 逾2個月未公開露面">
-                真的出事了？馬雲下落不明 逾2個月未公開露面            </a>
-                    <a title="股民心聲》大象會狂奔 中鋼股東注意了" href="https://ec.ltn.com.tw/article/breakingnews/3400804" class="boxText" data-desc="T:1:股民心聲》大象會狂奔 中鋼股東注意了">
-                股民心聲》大象會狂奔 中鋼股東注意了            </a>
-                    <a title="恐不幸言中？郭文貴2年前斷言馬雲結局「不是入獄就是被殺」" href="https://ec.ltn.com.tw/article/breakingnews/3401697" class="boxText" data-desc="T:2:恐不幸言中？郭文貴2年前斷言馬雲結局「不是入獄就是被殺」">
-                恐不幸言中？郭文貴2年前斷言馬雲結局「不是入獄就是被殺」            </a>
-                    <a title="台股驚現萬五爆4千億天量 外資先拋這十檔" href="https://ec.ltn.com.tw/article/breakingnews/3403310" class="boxText" data-desc="T:3:台股驚現萬五爆4千億天量 外資先拋這十檔">
-                台股驚現萬五爆4千億天量 外資先拋這十檔            </a>
-                    <a title="2021年開紅盤！美系外資喊買11檔台股" href="https://ec.ltn.com.tw/article/breakingnews/3400648" class="boxText" data-desc="T:4:2021年開紅盤！美系外資喊買11檔台股">
-                2021年開紅盤！美系外資喊買11檔台股            </a>
+                    <a title="股民心聲》南非動亂 不鏽鋼恐釀大行情" href="https://ec.ltn.com.tw/article/breakingnews/3606462" class="boxText" data-desc="T:0:股民心聲》南非動亂 不鏽鋼恐釀大行情">
+                股民心聲》南非動亂 不鏽鋼恐釀大行情            </a>
+                    <a title="2戰狼互告！戰狼肖像被拿去包檳榔   吳京怒提告" href="https://ec.ltn.com.tw/article/breakingnews/3607885" class="boxText" data-desc="T:1:2戰狼互告！戰狼肖像被拿去包檳榔   吳京怒提告">
+                2戰狼互告！戰狼肖像被拿去包檳榔   吳京怒提告            </a>
+                    <a title="薪資減損勞工萬元紓困金第2輪  23日開跑" href="https://ec.ltn.com.tw/article/breakingnews/3608473" class="boxText" data-desc="T:2:薪資減損勞工萬元紓困金第2輪  23日開跑">
+                薪資減損勞工萬元紓困金第2輪  23日開跑            </a>
+                    <a title="想吞英晶圓廠  牛津學者：中共將資金武器化  等於搬石頭砸自己的腳" href="https://ec.ltn.com.tw/article/breakingnews/3607531" class="boxText" data-desc="T:3:想吞英晶圓廠  牛津學者：中共將資金武器化  等於搬石頭砸自己的腳">
+                想吞英晶圓廠  牛津學者：中共將資金武器化  等於搬石頭砸自己的腳            </a>
+                    <a title="工業富聯股價頻創新低 謝金河：鴻海漸失中國主場優勢" href="https://ec.ltn.com.tw/article/breakingnews/3607244" class="boxText" data-desc="T:4:工業富聯股價頻創新低 謝金河：鴻海漸失中國主場優勢">
+                工業富聯股價頻創新低 謝金河：鴻海漸失中國主場優勢            </a>
             </div>
     </div>
 </aside>
@@ -1877,12 +2046,12 @@ div[id^='google_ads_iframe'] {
     <script src="assets/js/rwdImageLazyload.min.js"></script>
 <script src="https://cache.ltn.com.tw/js/getTargetTime.js"></script>
 <script><!--//<![CDATA[
-    const date = new Date();
+    const thisTimeZoneDate = new Date();
     const inTheTimeZone = (function () {
         const checkTimeZone = [-5, -6, -7, -8];
         // ../cache/js/getTargetTime.js:getDiffTime() 兩地相差時間
         for (let key in checkTimeZone) {
-            if (getDiffTime(date, checkTimeZone[key]) === 0) {
+            if (getDiffTime(thisTimeZoneDate, checkTimeZone[key]) === 0) {
                 return true;
             }
         }
@@ -1890,11 +2059,11 @@ div[id^='google_ads_iframe'] {
     })();
 
     const show_amg_footer = (function () {
-        const host = location.hostname.toLowerCase().replace(".ltn.com.tw", "");
+        const AMGHostName = location.hostname.toLowerCase().replace(".ltn.com.tw", "");
         const AMGOpenTime = {
             'www':[
                 {'start': '2020-09-28T00:00:00', 'end': '2021-01-04T23:59:59'}
-            ],
+                ],
             'news': [
                 {'start': '2020-09-28T00:00:00', 'end': '2021-01-04T23:59:59'}
                 ],
@@ -1908,16 +2077,20 @@ div[id^='google_ads_iframe'] {
                 {'start': '2020-09-28T00:00:00', 'end': '2220-09-28T00:00:00'}
                 ],
             'ec': [
-                {'start': '2020-09-28T00:00:00', 'end': '2220-09-28T00:00:00'}]
+                {'start': '2020-09-28T00:00:00', 'end': '2220-09-28T00:00:00'}
+                ],
+            'features': [
+                {'start': '2020-09-28T00:00:00', 'end': '2021-01-04T23:59:59'}
+                ]
         };
         //AMGOpenTime沒設定的頻道回傳false防測試機報錯
-        if (AMGOpenTime[host] != 'undefined') {
-            const now = date.getFullYear() + "-" + ('0' + (date.getMonth() + 1)).substr(-2, 2) + "-" + ('0' + date.getDate()).substr(-2, 2) + "T" + ('0' + date.getHours()).substr(-2, 2) + ":" + ('0' + date.getMinutes()).substr(-2, 2) + ":" + ('0' + date.getSeconds()).substr(-2, 2);
-            let openTime = AMGOpenTime[host];
+        if (AMGOpenTime[AMGHostName] != 'undefined') {
+            const AMGNowTime = thisTimeZoneDate.getFullYear() + "-" + ('0' + (thisTimeZoneDate.getMonth() + 1)).substr(-2, 2) + "-" + ('0' + thisTimeZoneDate.getDate()).substr(-2, 2) + "T" + ('0' + thisTimeZoneDate.getHours()).substr(-2, 2) + ":" + ('0' + thisTimeZoneDate.getMinutes()).substr(-2, 2) + ":" + ('0' + thisTimeZoneDate.getSeconds()).substr(-2, 2);
+            let openTime = AMGOpenTime[AMGHostName];
             for (let key in openTime) {
                 let start = openTime[key]['start'];
                 let end = openTime[key]['end'];
-                if (now >= start && now <= end) {
+                if (AMGNowTime >= start && AMGNowTime <= end) {
                     return true;
                 }
             }

@@ -25,7 +25,7 @@ namespace StockCrawler.UnitTest.Jobs
             StockForumsUpdateJob.Logger = new UnitTestLogger();
             var target = new StockForumsUpdateJob();
             Services.SystemTime.SetFakeTime(new DateTime(2021, 1, 5));
-            IJobExecutionContext context = null;
+            IJobExecutionContext context = new ArgumentJobExecutionContext(target);
             target.Execute(context);
             using (var db = RepositoryProvider.GetRepositoryInstance())
             {

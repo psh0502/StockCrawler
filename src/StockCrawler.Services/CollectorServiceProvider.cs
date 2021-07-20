@@ -34,10 +34,6 @@ namespace StockCrawler.Services
         {
             return _container.Resolve<IStockReportCollector>();
         }
-        public static IStockHistoryPriceCollector GetStockHistoryPriceCollector()
-        {
-            return _container.Resolve<IStockHistoryPriceCollector>();
-        }
         public static IStockMarketNewsCollector GetMarketNewsCollector()
         {
             return _container.Resolve<IStockMarketNewsCollector>();

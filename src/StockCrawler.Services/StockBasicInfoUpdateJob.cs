@@ -23,7 +23,7 @@ namespace StockCrawler.Services
             {
                 string stockNo = null;
                 var args = (string[])context.Get("args");
-                if (null == args && args.Length > 1) stockNo = args[1];
+                if (null != args && args.Length > 1) stockNo = args[1];
 
                 var collector = CollectorServiceProvider.GetStockBasicInfoCollector();
                 foreach (var d in StockHelper.GetCompanyStockList()

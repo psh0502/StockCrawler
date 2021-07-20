@@ -1,6 +1,7 @@
 ﻿using HtmlAgilityPack;
 using StockCrawler.Services.Collectors;
 using System.IO;
+using System;
 
 namespace StockCrawler.UnitTest.Stubs
 {
@@ -12,7 +13,7 @@ namespace StockCrawler.UnitTest.Stubs
             _logger = new UnitTestLogger();
             string html = null;
             _logger.Info($"Mock DownloadData!!!");
-            FileInfo file = null;
+            FileInfo file;
             switch (stockNo) {
                 case "2330":
                     file = new FileInfo($@"..\..\..\StockCrawler.UnitTest\TestData\TWSE\Issued\2330_110_-1_-1_2021-03-16_1.html");
@@ -20,6 +21,8 @@ namespace StockCrawler.UnitTest.Stubs
                 case "1477":
                     file = new FileInfo($@"..\..\..\StockCrawler.UnitTest\TestData\TWSE\Issued\1477_110_-1_-1_2021-03-16_1.html");
                     break;
+                default:
+                    throw new InvalidDataException($"stockNo is not expected: {stockNo}");
             }
             if (file.Exists)
             {

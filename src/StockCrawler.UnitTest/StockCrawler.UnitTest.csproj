@@ -134,9 +134,6 @@
     <Compile Include="Collectors\TwseMarketNewsCollectorTest.cs" />
     <Compile Include="Collectors\TwseInterestIssuedCollectorTests.cs" />
     <Compile Include="Collectors\TwseStockBasicInfoCollectorTest.cs" />
-    <Compile Include="Collectors\TwseStockHistoryPriceCollector2Test.cs" />
-    <Compile Include="Collectors\TwseStockHistoryPriceCollectorTest.cs" />
-    <Compile Include="Collectors\YahooStockHistoryPriceCollectorTest.cs" />
     <Compile Include="Collectors\TwseStockDailyInfoCollectorTest.cs" />
     <Compile Include="Collectors\GoodInfoCollectorTest.cs" />
     <Compile Include="Jobs\StockInterestIssuedUpdateJobTests.cs" />
@@ -146,8 +143,6 @@
     <Compile Include="Stubs\StockForumCollectorStub.cs" />
     <Compile Include="Stubs\StockMarketNewsCollectorStub.cs" />
     <Compile Include="Stubs\StockBasicInfoCollectorStub.cs" />
-    <Compile Include="Stubs\StockHistoryPriceCollectorStub2.cs" />
-    <Compile Include="Stubs\StockHistoryPriceCollectorStub.cs" />
     <Compile Include="Stubs\StockInterestIssuedCollectorStub.cs" />
     <Compile Include="Stubs\StockReportCollectorStub.cs" />
     <Compile Include="Stubs\StockDailyInfoCollectorStub.cs" />

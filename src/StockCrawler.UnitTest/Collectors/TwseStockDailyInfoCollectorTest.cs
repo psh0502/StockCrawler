@@ -40,7 +40,7 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual(273M, d1.ClosePrice);
             Assert.AreEqual(69320306, d1.Volume);
             Assert.AreEqual(-7M, d1.DeltaPrice);
-            Assert.AreEqual(-0.0246M, d1.DeltaPercent);
+            Assert.AreEqual(-0.025M, d1.DeltaPercent);
             Assert.AreEqual(20.5M, d1.PE);
 
             d1 = r.Where(d => d.StockNo == "0000").First();
@@ -67,7 +67,6 @@ namespace StockCrawler.UnitTest.Collectors
 
             var r = collector.GetStockDailyPriceInfo(new DateTime(2021, 5, 12));
 
-            //Assert.AreEqual(1154, r.Count());
             Assert.IsTrue(r.Where(d => d.StockNo == TEST_STOCKNO_國光生).Any());
             var d1 = r.Where(d => d.StockNo == TEST_STOCKNO_國光生).First();
             _logger.DebugFormat("StockNo={0}\r\nStockDT={1}\r\nOpenPrice={2}\r\nHighPrice={3}\r\nLowPrice={4}\r\nClosePrice={5}\r\nVolume={6}\r\nDeltaPrice={7}\r\nDeltaPercent={8}%\r\nPE={9}",

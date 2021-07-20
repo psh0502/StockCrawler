@@ -2,7 +2,6 @@
 using Quartz;
 using StockCrawler.Dao;
 using StockCrawler.Services;
-using System;
 using System.Linq;
 
 #if (DEBUG)
@@ -48,7 +47,7 @@ namespace StockCrawler.UnitTest.Jobs
             {
                 StockFinReportUpdateJob.Logger = new UnitTestLogger();
                 var target = new StockFinReportUpdateJob();
-                IJobExecutionContext context = null;
+                IJobExecutionContext context = new ArgumentJobExecutionContext(target);
                 target.Execute(context);
                 IsExecuted = true;
             }

@@ -129,6 +129,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArgumentJobExecutionContext.cs" />
     <Compile Include="CollectorServiceProvider.cs" />
     <Compile Include="Collectors\StockForums\IStockForumCollector.cs" />
     <Compile Include="Collectors\StockForums\StockForumCollector.cs" />
@@ -136,7 +137,6 @@
     <Compile Include="Collectors\StockInterestIssued\TwseInterestIssuedCollector.cs" />
     <Compile Include="Collectors\StockMarketNews\IStockMarketNewsCollector.cs" />
     <Compile Include="Collectors\StockMarketNews\TwseMarketNewsCollector.cs" />
-    <Compile Include="Collectors\StockHistoryPrice\TwseStockHistoryPriceCollector2.cs" />
     <Compile Include="JobBase.cs" />
     <Compile Include="Collectors\StockBasicInfo\TwseStockBasicInfoCollector.cs" />
     <Compile Include="StockAnalysisUpdateJob.cs" />
@@ -151,9 +151,6 @@
     <Compile Include="StockBasicInfoUpdateJob.cs" />
     <Compile Include="Collectors\StockFinanceReport\IStockReportCollector.cs" />
     <Compile Include="Collectors\StockFinanceReport\TwseReportCollector.cs" />
-    <Compile Include="Collectors\StockHistoryPrice\TwseStockHistoryPriceCollector.cs" />
-    <Compile Include="Collectors\StockHistoryPrice\YahooStockHistoryPriceCollector.cs" />
-    <Compile Include="Collectors\StockHistoryPrice\IStockHistoryPriceCollector.cs" />
     <Compile Include="StockPriceUpdateJob.cs" />
     <Compile Include="StockPriceHistoryInitJob.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

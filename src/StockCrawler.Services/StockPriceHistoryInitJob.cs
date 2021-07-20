@@ -1,9 +1,6 @@
 ﻿using Common.Logging;
 using Quartz;
-using StockCrawler.Dao;
 using System;
-using System.Data;
-using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -14,6 +11,7 @@ namespace StockCrawler.Services
         internal static ILog Logger { get; set; } = LogManager.GetLogger(typeof(StockPriceHistoryInitJob));
 
         #region IJob Members
+
         public Task Execute(IJobExecutionContext context)
         {
             Logger.InfoFormat("Invoke [{0}]...", MethodBase.GetCurrentMethod().Name);
@@ -26,46 +24,22 @@ namespace StockCrawler.Services
             var endDate = SystemTime.Today;
 
             string stockNo = null;
-            var args = (string[])context.Get("args");
-            if (null == args && args.Length > 2) stockNo = args[2];
-            if (null == args && args.Length > 1) bgnDate = DateTime.Parse(args[1]);
-
-            var collector = CollectorServiceProvider.GetStockHistoryPriceCollector();
-            foreach (var d in StockHelper.GetAllStockList().Where(d => string.IsNullOrEmpty(stockNo) || d.StockNo == stockNo))
-            {
-                using (var db = GetDB())
-                    db.DeleteStockPriceHistoryData(d.StockNo, null);
-
-                var list = collector.GetStockHistoryPriceInfo(d.StockNo, bgnDate, endDate);
-
-                if (list.Any())
-                    using (var db = GetDB())
-                        db.InsertOrUpdateStockPrice(list.ToArray());
-
-                Logger.InfoFormat("Finish the {0} stock history task.", d.StockNo);
+            if (context != null) {
+                var args = (string[])context.Get("args");
+                if (null == args && args.Length > 2) stockNo = args[2];
+                if (null == args && args.Length > 1) bgnDate = DateTime.Parse(args[1]);
             }
-
+            IJob job = new StockPriceUpdateJob();
             for (var date = bgnDate; date <= endDate; date = date.AddDays(1))
-                Tools.CalculateMA(date);
-
+            {
+                var jobContext = new ArgumentJobExecutionContext(job);
+                jobContext.Put("args", new string[] { "StockPriceHistoryInitJob", date.ToShortDateString() });
+                job.Execute(jobContext);
+                Logger.Info($"Finish the {date.ToShortDateString()} stock history task.");
+            }
             return null;
         }
-#endregion
 
-        private void DownloadTwseLatestInfo(DateTime date)
-        {
-            var list = CollectorServiceProvider.GetStockDailyPriceCollector()
-                .GetStockDailyPriceInfo(date)
-                .Select(d => new GetStocksResult()
-                {
-                    StockNo = d.StockNo,
-                    StockName = d.StockName,
-                    Enable = true
-                }).ToList();
-
-            if (list.Any())
-                using (var db = GetDB()) 
-                    db.InsertOrUpdateStock(list.ToArray());
-        }
+        #endregion IJob Members
     }
 }

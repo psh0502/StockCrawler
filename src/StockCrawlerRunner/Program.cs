@@ -1,6 +1,5 @@
 ﻿using Common.Logging;
 using Quartz;
-using Quartz.Impl;
 using StockCrawler.Services;
 using System;
 using System.Threading;

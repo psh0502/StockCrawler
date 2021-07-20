@@ -1,9 +1,6 @@
-﻿using StockCrawler.Dao;
-using StockCrawler.Services.Collectors;
+﻿using StockCrawler.Services.Collectors;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 #if (DEBUG)
 namespace StockCrawler.UnitTest.Stubs

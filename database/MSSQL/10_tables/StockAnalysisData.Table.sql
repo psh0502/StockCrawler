@@ -14,6 +14,7 @@ GO
 
 CREATE TABLE [dbo].[StockAnalysisData](
 	[StockNo] VARCHAR(10) NOT NULL,
+	[Year] SMALLINT NOT NULL,
 	[Price] NVARCHAR(50) NOT NULL,
 	[StockCashDivi] DECIMAL(18, 4) NOT NULL,
 	[DiviRatio] NVARCHAR(50) NOT NULL,

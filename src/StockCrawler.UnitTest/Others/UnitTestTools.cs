@@ -14,7 +14,7 @@ namespace StockCrawler.UnitTest.Others
     /// They are some tools for fixing some issues. 
     /// I put them here for easy to launch.
     /// </summary>
-    [TestClass]
+    //[TestClass]
     public class UnitTestTools
     {
         [TestMethod]
@@ -31,7 +31,7 @@ namespace StockCrawler.UnitTest.Others
             {
                 Tools.CalculateMA(bgnDate);
                 bgnDate = bgnDate.AddDays(1);
-            } while (bgnDate < DateTime.Today);
+            } while (bgnDate < SystemTime.Today);
         }
         [TestMethod]
         public void Patch0022dailyInfo()
@@ -51,7 +51,7 @@ namespace StockCrawler.UnitTest.Others
                 bgnDate = bgnDate.AddDays(1);
                 Thread.Sleep(10 * 1000);
 
-            } while (bgnDate < DateTime.Today);
+            } while (bgnDate < SystemTime.Today);
         }
     }
 #endif

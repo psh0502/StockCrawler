@@ -21,7 +21,7 @@ namespace StockCrawler.Services
             {
                 var args = (string[])context.Get("args");
                 var targetDate = SystemTime.Today;
-                if (args.Length > 1) targetDate = DateTime.Parse(args[1]);
+                if (null != args && args.Length > 1) targetDate = DateTime.Parse(args[1]);
                 if (!Tools.IsWeekend(targetDate))
                 {
                     var collector = CollectorServiceProvider.GetStockDailyPriceCollector();
