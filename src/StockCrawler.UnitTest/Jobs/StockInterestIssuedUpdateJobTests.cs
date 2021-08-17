@@ -15,9 +15,11 @@ namespace StockCrawler.UnitTest.Jobs
         [TestInitialize]
         public override void InitBeforeTest()
         {
-            base.InitBeforeTest();
             if (!IsExecuted)
+            {
+                base.InitBeforeTest();
                 ExecuteTest();
+            }
         }
         [TestMethod]
         public void 五年內除權息資料_2330_Test()

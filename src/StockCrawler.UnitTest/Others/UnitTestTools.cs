@@ -14,7 +14,7 @@ namespace StockCrawler.UnitTest.Others
     /// They are some tools for fixing some issues. 
     /// I put them here for easy to launch.
     /// </summary>
-    //[TestClass]
+    [TestClass]
     public class UnitTestTools
     {
         [TestMethod]
@@ -26,6 +26,7 @@ namespace StockCrawler.UnitTest.Others
             };
             Tools._logger = _logger;
             var bgnDate = new DateTime(2015, 09, 30);
+            SystemTime.SetFakeTime(bgnDate.AddDays(5));
             _logger.InfoFormat("bgnDate = {0:yyyy-MM-dd}", bgnDate);
             do
             {
@@ -33,7 +34,7 @@ namespace StockCrawler.UnitTest.Others
                 bgnDate = bgnDate.AddDays(1);
             } while (bgnDate < SystemTime.Today);
         }
-        [TestMethod]
+        //[TestMethod]
         public void Patch0022dailyInfo()
         {
             var _logger = new UnitTestLogger { IsDebugEnabled = false };

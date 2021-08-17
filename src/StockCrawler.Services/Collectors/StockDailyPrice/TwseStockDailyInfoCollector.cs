@@ -13,8 +13,8 @@ namespace StockCrawler.Services.Collectors
     internal class TwseStockDailyInfoCollector : TwseCollectorBase, IStockDailyInfoCollector
     {
         private Dictionary<string, GetStockPeriodPriceResult> _stockInfoDictCache = null;
-        private static Dictionary<string, string> _stockCategoryNo = null;
-        private static Dictionary<string, long> _categoriedVolume = null;
+        private Dictionary<string, string> _stockCategoryNo = null;
+        private Dictionary<string, long> _categoriedVolume = null;
         public virtual GetStockPeriodPriceResult GetStockDailyPriceInfo(string stockNo, DateTime date)
         {
             InitStockDailyPriceCache(date);
