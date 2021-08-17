@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using StockCrawler.Services;
 using StockCrawler.Services.Collectors;
-using StockCrawler.UnitTest.Stubs;
-using System;
 using System.Linq;
 
 #if (DEBUG)
@@ -25,12 +24,12 @@ namespace StockCrawler.UnitTest.Collectors
             {
                 _logger = new UnitTestLogger()
             };
-            var testDate = new DateTime(2021, 1, 5);
+            SystemTime.Reset();
+            var testDate = SystemTime.Today;
             var r = collector.GetPttData(testDate);
             foreach(var d in r)
             {
                 _logger.InfoFormat("title: {0}, source: {1}, url: {2}", d.Article.Subject, d.Article.Source, d.Article.Url);
-                Assert.IsFalse(d.Article.Subject.StartsWith("Re:"));
                 if (d.relateToStockNo.Any())
                 {
                     Assert.IsTrue(d.Article.Source == "mops" || d.Article.Source == "ptt");
@@ -44,7 +43,6 @@ namespace StockCrawler.UnitTest.Collectors
                     else
                         Assert.AreEqual("twse", d.Article.Source);
                 }
-                Assert.IsFalse(d.Article.Subject.StartsWith("[新聞]"));
                 Assert.AreEqual(testDate, d.Article.ArticleDate);
             }
             Assert.IsTrue(r.Any());

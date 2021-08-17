@@ -1,4 +1,4 @@
-<!-- ad 1 : 52 --><!-- ad 2 : 18 --><!-- ad 3 : 26 --><!-- ad 4 : 5 --><!-- 0.0869 --><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- 0.1815 --><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -51,7 +51,7 @@ rId = function(){
 <title>今國光、佳凌 Q1不看淡 | 集中市場 | 證券 | 經濟日報</title>
 <link rel="manifest" href="//udn.com/upf/static/fcm/manifest.json">
 			<link href="//s.udn.com.tw/static/font-icons/css/fontello.css" rel="stylesheet" type="text/css">
-				<link href="https://money.udn.com/static/css/default.css?20210223" rel="stylesheet" type="text/css">
+				<link href="https://money.udn.com/static/css/default.css" rel="stylesheet" type="text/css">
 				<link href="https://money.udn.com/static/css/browser-update.css" rel="stylesheet" type="text/css">
 				<link href="//s.udn.com.tw/static/css/vote.css" rel="stylesheet" type="text/css">
 				<link href="https://j.udn.com.tw/func/css/colorbox-1.10.2.css" rel="stylesheet" type="text/css">
@@ -79,9 +79,9 @@ rId = function(){
 					<script src="//j.udn.com.tw/func/js/accept_var_min.js" ></script>
 					<script src="//j.udn.com.tw/func/js/voteinit_min.js" ></script>
 					<script src="https://money.udn.com/static/js/module/facebookSocial.js" ></script>
-					<script src="https://money.udn.com/static/js/module/socialbar.js?20210108" ></script>
+					<script src="https://money.udn.com/static/js/module/socialbar.js" ></script>
 					<script src="https://money.udn.com/static/js/module/fontSize.js" ></script>
-					<script src="https://money.udn.com/static/js/socialbar.js?20210108" ></script>
+					<script src="https://money.udn.com/static/js/socialbar.js" ></script>
 			<script>
     console.log("story");
             //<![CDATA[
@@ -163,7 +163,7 @@ rId = function(){
         "content_tag": '佳凌,物聯網,鏡頭模組',
         "post_date": '2021/01/05T00:39:25',
         "member_only": '0,開放閱讀'
-                ,"words" : 920    }];
+    }];
 
 </script>
 <!-- End Data Layer -->
@@ -198,6 +198,112 @@ _atrk_opts = { atrk_acct:"aw0Di1a4ZP00aY", domain:"udn.com",dynamic: true};
 </script>
 <noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=aw0Di1a4ZP00aY" style="display:none" height="1" width="1" alt="" /></noscript>
 <!-- #Location: /inc/meta/trace_alex --><!-- ETU-->
+<script id="etu-recommender" type="text/javascript">
+	function getLocation(){
+		if (navigator.geolocation){
+			navigator.geolocation.getCurrentPosition(getCurrentPosition, errorCallback ,positionOptions);
+		}else{
+			//alert("此瀏覽器不支援 Geolocation");
+			return;
+		}
+	}
+	var ua = navigator.userAgent || navigator.vendor || window.opera;
+	if ( (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1) ) {}
+	else if ( ua.indexOf("Twitter") > -1 ) {}
+	else if ( ua.indexOf("Line") > -1 ) {}
+	else if ( ua.indexOf("Safari") > -1 && ua.indexOf("Chrome") == -1) {}
+	else getLocation();
+	var latitude = '';
+	var longitude = '';
+	var latCookieName = 'latitude';
+	var lonCookieName = 'longitude';
+	var latValue = GetCkValue(latCookieName);
+	var lonValue = GetCkValue(lonCookieName);
+	if(latValue != null && latValue.length > 0){
+		latitude = latValue;
+	}
+	if(lonValue != null && lonValue > 0){
+		longitude = lonValue;
+	}
+	function getCurrentPosition(position){
+		console.log("pos:"+position);
+		latitude = position.coords.latitude;
+		longitude = position.coords.longitude;
+		$.cookie(latCookieName, latitude, { path: '/', expires: 1/24/2});
+		$.cookie(lonCookieName, longitude, { path: '/', expires: 1/24/2});
+	}
+	//選用項目
+	var positionOptions = {
+		enableHighAccuracy: false,//高準確度
+		timeout: 15000, //瀏覽器判斷位置時可用的時間長短。
+		maximumAge: 0 //瀏覽器必需重新計算位置的最大時限
+	};
+	//錯誤處理器
+	function errorCallback( error ) {
+		// 不處理
+		//console.log("position:"+error);
+	}
+	var sereff = '';
+	if (document.referrer != "http://"+location.host+"/" || document.referrer != "http://"+location.host+"/index.html") {
+		sereff = document.referrer;
+	}
+	else {
+		sereff = GetCkValue('dreffer');
+	}
+	// console.log('referrer: '+sereff);
+			var atid = rId();
+		/* sLogin = ''; */
+	/* sLogin = GetCkValue('udnmember'); */
+	var erUrlPrefix = 'https://rec.udn.com/';
+	var _qevents = _qevents || [];
+
+    if (GetCkValue('udngold') != '' && GetCkValue('udnland') == '') {
+        $.ajax({
+            type: "GET",
+            url: "/money/ajax_check_member/udngold_decode",
+            data: {udngold : encodeURIComponent($.cookie("udngold"))},
+            success: function(jdata) {
+                if (jdata !== "") {
+                    Date.prototype.addDays = function(days) {
+                        this.setDate(this.getDate() + days);
+                        return this;
+                    }
+                    udnland_expires = new Date().addDays(365).toUTCString();
+                    document.cookie="udnland=" + jdata + "; expires=" + udnland_expires + "; domain=.udn.com; path=/";
+                }
+            }
+        });
+    }
+
+	_qevents.push({
+		cid : 'udn_soft',
+		act : 'view',
+		cat : ['money','cms','5590,證券','5710,集中市場','5710,集中市場'],
+		uid : GetCkValue('udnland') || 'noset',
+		bid : '',
+		pid : atid,
+		page :'ARTICLE',
+		Rank_cat:'0',
+		Rank_pid:'60',
+		title: '今國光、佳凌 Q1不看淡',
+		tag:['佳凌','物聯網','鏡頭模組'],
+		keywords: [],
+		group : 'udn',
+		referral : sereff,
+		lat : GetCkValue(latCookieName),
+		lon : GetCkValue(lonCookieName)
+	});
+
+(function() {
+		var er = document.createElement('script');
+		er.type = 'text/javascript';
+		er.async = true;
+		er.src = erUrlPrefix + 'er.js?' + (new Date().getTime());
+		var currentJs = document.getElementById('etu-recommender');
+		currentJs.parentNode.insertBefore(er, currentJs);
+	})();
+
+</script>
 <!-- #Location: /inc/meta/trace_etu -->
   
    
@@ -370,7 +476,7 @@ var webonly_300x250 = googletag.sizeMapping().
 		build();
 
 var webonly_970x250PMP = googletag.sizeMapping().
-		addSize([750, 200], [[1200, 110], [970, 250], [1, 1]]).
+		addSize([750, 200], [[1200, 110], [970, 250]]).
 		addSize([0, 0], []).
 		build();
 
@@ -420,7 +526,7 @@ var webonly_Inpage = googletag.sizeMapping().
 		build();
 
 var webonly_300x100 = googletag.sizeMapping().
-		addSize([1000, 200], [[300, 100], [1, 1]]).
+		addSize([1000, 200], [300, 100]).
 		addSize([0, 0], []).
 		build();
 
@@ -587,18 +693,16 @@ var web_mobile = googletag.sizeMapping().
 		addSize([0, 0], [320, 100]).
 		build();
 /* ...沒使用... 唯網頁呈現 */
-/*
 var webonly_300x100 = googletag.sizeMapping().
 		addSize([1000, 200], [300, 100]).
 		addSize([0, 0], []).
 		build();
-*/
 
 /* 參數定義 */
     /* (webonly_970x250PMP) */
     /* 網頁 -- 【測試】PMP 970*250 */
     /* googletag.defineSlot('/129853887/udn.com/money/Web/money_970*250_PMP', [970, 250], 'div-gpt-ad-1533293727384-0').defineSizeMapping(webonly_970x250PMP).setCollapseEmptyDiv(true).addService(googletag.pubads()); */
-    slot1 = googletag.defineSlot('/129853887/udn.com/money/Web/money_970*250_PMP', [[1200, 110], [970, 250], [1, 1]], 'div-gpt-ad-1530270190918-0').defineSizeMapping(webonly_970x250PMP).setCollapseEmptyDiv(true).addService(googletag.pubads());
+    slot1 = googletag.defineSlot('/129853887/udn.com/money/Web/money_970*250_PMP', [[1200, 110], [970, 250]], 'div-gpt-ad-1530270190918-0').defineSizeMapping(webonly_970x250PMP).setCollapseEmptyDiv(true).addService(googletag.pubads());
 
     /* 取消20180925轉PMP版位 */
     /* (webonly_1200x110) */
@@ -619,7 +723,7 @@ var webonly_300x100 = googletag.sizeMapping().
 
     /* (webonly_300x100) */
     /* 網頁 -- 【財經網】首頁 300*100黃金Button (google DFP)google拆code */
-    googletag.defineSlot('/129853887/udn.com/money/Web/money_300*100', [[300, 100], [1, 1]], 'div-gpt-ad-1524818828734-3').defineSizeMapping(webonly_300x100).setCollapseEmptyDiv(true).addService(googletag.pubads());
+    googletag.defineSlot('/129853887/udn.com/money/Web/money_300*100', [300, 100], 'div-gpt-ad-1524818828734-3').defineSizeMapping(webonly_300x100).setCollapseEmptyDiv(true).addService(googletag.pubads());
 
     /* (webonly_300x250) */
     /* 網頁 -- 【財經網】首頁 下方 300*250 (google DFP)google拆code */
@@ -835,7 +939,6 @@ var myParam = $.urlParam('show_active');
 var udngold = GetCkValue('udngold');
 var udnmember = GetCkValue('udnmember');
 var um2 = GetCkValue('um2');
-var userAction = ''
 if(udngold != '' && myParam == 'y')
 {
 	is_useServiceNew();
@@ -871,7 +974,7 @@ if(udngold != '' && myParam == 'y')
 	// 						}
 	// 						else
 	// 						{
-	// 							alert('啟用失敗，請至會員中心重新登入。');
+	// 							alert('啟用失敗，請洽管理人員');
 	// 						}
 	// 					},
 	// 					error : function(){
@@ -888,20 +991,7 @@ if(udngold != '' && myParam == 'y')
 	// });
 }
 
-//index use cookie save userAction 
-$(window).ready(function(){
-	$('#index_ad_2 a.more').click(function(){
-		 if($(this).parent().text().indexOf('大盤走勢') != -1){
-			setCookie('userAction','event=systex_market')
-		 }
-	 });
-});
-
-
 function is_useServiceNew() {
-	if (GetCkValue('userAction') != ''){
-		userAction = '?site=money&' + decodeURIComponent(GetCkValue('userAction'));
-	}
 	$.confirm({
 		title: '',
 		content: '享受暢讀權益，啟用經濟日報會員服務',
@@ -913,7 +1003,7 @@ function is_useServiceNew() {
 				action: function () {
 					$.ajax({
 						type : 'POST',
-						url : '/api/v1/member/activeMoneyMember'+ userAction,
+						url : '/api/v1/member/activeMoneyMember',
 						async:false,
 						xhrFields: {withCredentials: true},
 						crossDomain:true,
@@ -922,11 +1012,11 @@ function is_useServiceNew() {
 								alert('啟用成功');
 								window.location.href=$('meta[property="og:url"]').attr('content');
 							} else {
-								alert('啟用失敗，請至會員中心重新登入。');
+								alert('啟用失敗，請洽管理人員');
 							}
 						},
 						error : function(){
-							alert('啟用失敗，請至會員中心重新登入。');
+							alert('啟用失敗，請洽管理人員');
 							window.location.href=$('meta[property="og:url"]').attr('content');
 						}
 					}); // end
@@ -1072,7 +1162,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="channels">
 <h3>經濟日報網</h3>
 <div class="sub-channels">
-<a href="https://money.udn.com/member/login?from=edn_ham" target="_blank">會員中心</a>
 <a href="https://money.udn.com/rank/newest/1001/0/1?from=edn_ham" target="_blank">即時新聞</a>
 <a href="https://h5-udn.money-link.com.tw/UDN/topbottom.jsp" target="_blank">股市看盤</a>
 <a href="https://money.udn.com/SSI/digital-news/topic/index.html?from=edn_ham" target="_blank">精選專題</a>
@@ -1107,7 +1196,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <h3>產業</h3>
 <div class="sub-channels">
 <a href="https://money.udn.com/money/cate/5591?from=edn_ham#sub_5612" target="_blank">產業熱點</a>
-<a href="https://money.udn.com/money/cate/5591?from=edn_ham#sub_121824" target="_blank">台中韓大戰</a>
+<a href="https://money.udn.com/money/cate/5591?from=edn_ham#sub_121824" target="_blank">護國神山</a>
 <a href="https://money.udn.com/money/cate/5591?from=edn_ham#sub_12524" target="_blank">消費生活</a>
 <a href="https://money.udn.com/money/cate/5591?from=edn_ham#sub_6709" target="_blank">職場風向</a>
 <a href="https://money.udn.com/money/cate/5591?from=edn_ham#sub_12825" target="_blank">創業之星</a>
@@ -1486,15 +1575,7 @@ $('.unique h3').on('click', function(e){
 	<!-- /.money-menu -->
 </div>    </div>
     <!-- /#money-header -->
-    <div id="msg">
-			<a href="https://money.udn.com/money/story/5613/5614556">
-			<h1>6公股金融召開股東會 兆豐金、第一金及台企銀完成改選 15:16</h1>
-		</a>
-			<a href="https://money.udn.com/money/story/5607/5614626" class='only_web'>
-			<h1>航運股領跌台股重挫260.51點 三大法人賣超357.92億 15:29</h1>
-		</a>
-	</div>
-<!-- /#msg --><div class="only_web" style="margin:auto;border:0px;">
+    <div class="only_web" style="margin:auto;border:0px;">
 <div id='div-gpt-ad-1530270190918-0' align='center' style='margin:0px auto 10px;'>
   <script>
 var DCM_RENDER_TIMEOUT = 3000;
@@ -1605,26 +1686,43 @@ googletag.cmd.push(function() { googletag.display('div-gpt-ad-1490165564310-0');
 	      /    		<b>集中市場</b>
             <select onChange="MM_jumpMenu('parent',this,0)" id="jumpMenu" class="only_web related" name="jumpMenu">
       <option selected>相關新聞</option>
-              <option value="/money/story/5710/5613446">法說會失靈？陽明股價跌破現增價 長榮、萬海齊挫</option>
-              <option value="/money/story/5710/5612595">華碩攜美企 攻智慧醫療</option>
-              <option value="/money/story/5710/5613547">矽力-KY每股配息10.46元 早盤順利填息</option>
-              <option value="/money/story/5710/5612557">虹冠電全年業績看俏</option>
-              <option value="/money/story/5710/5612558">亞太攜手TBC及大豐電 攻家庭數位匯流</option>
-              <option value="/money/story/5710/5612559">超眾熱板出貨動能轉強</option>
-              <option value="/money/story/5710/5612560">網家強化最後一哩配送</option>
-              <option value="/money/story/5710/5612561">台灣之星 拓5G企業客戶</option>
-              <option value="/money/story/5710/5612582">展碁股價向上 穩步填息</option>
-              <option value="/money/story/5710/5612605">新揚科100%股權 賣母公司</option>
-              <option value="/money/story/5710/5612607">松下售8.5代廠 群創、友達利多</option>
-              <option value="/money/story/5710/5612609">順達Q2每股賺1.55元</option>
-              <option value="/money/story/5710/5612611">台達電董事改選 三張新面孔</option>
-              <option value="/money/story/5710/5613006">台玻上季營收 攀峰</option>
-              <option value="/money/story/5710/5613013">復盛、明安 訂單將遞延</option>
-              <option value="/money/story/5710/5613018">富邦媒 強攻生鮮網購</option>
-              <option value="/money/story/5710/5613020">越南疫情升溫 豐泰廠停工</option>
-              <option value="/money/story/5710/5613023">東森購物上半年EPS創高</option>
-              <option value="/money/story/5710/5613024">詩肯預期買氣將回流</option>
-              <option value="/money/story/5710/5611332">關不住了!「好想出去玩概念股」喊衝 遊樂園、飯店股旺</option>
+              <option value="/money/story/5710/5151508">晶電、隆達合組富采今掛牌 盤中跳空鎖漲停</option>
+              <option value="/money/story/5710/5149910">GIS營運爆發 本季不淡</option>
+              <option value="/money/story/5710/5151791">富采今掛牌上市 李秉傑擔任董座</option>
+              <option value="/money/story/5710/5151756">陞達科股價連二漲 今盤中創歷史新高</option>
+              <option value="/money/story/5710/5151541">外資喊天價 高盛升聯詠目標價至510元</option>
+              <option value="/money/story/5710/5151343">長榮11月獲利亮眼 盤中股價再創新高</option>
+              <option value="/money/story/5710/5149968">上月業績快報／創意勁揚93% 創新高</option>
+              <option value="/money/story/5710/5149897">上月業績快報／南亞科+3% 逐步向上</option>
+              <option value="/money/story/5710/5149898">上月業績快報／瑞耘+32% 近五月高點</option>
+              <option value="/money/story/5710/5149900">上月業績快報／聯亞創高 台光電下滑3%</option>
+              <option value="/money/story/5710/5149901">精測砸5億買地擴廠</option>
+              <option value="/money/story/5710/5149902">上月業績快報／華通-11% 新廠Q3量產</option>
+              <option value="/money/story/5710/5149906">宏碁NB帶勁 訂單看到Q2</option>
+              <option value="/money/story/5710/5149907">群電營收寫同期最佳紀錄</option>
+              <option value="/money/story/5710/5149908">宏捷科12月營收3.4億 五年高點</option>
+              <option value="/money/story/5710/5149928">璟德去年估賺一股本</option>
+              <option value="/money/story/5710/5149933">神腦EPS 1.69元 今年看升</option>
+              <option value="/money/story/5710/5149937">網通族群 獲利回神</option>
+              <option value="/money/story/5710/5149949">達興材蓋新廠 攻半導體材料</option>
+              <option value="/money/story/5710/5149953">去年業績快報／圓剛+140% 圓展+89%</option>
+              <option value="/money/story/5710/5149955">去年業績快報／明泰倍增 仲琦逾百億</option>
+              <option value="/money/story/5710/5149956">去年業績快報／聚碩+9.8% 續創佳績</option>
+              <option value="/money/story/5710/5149965">新普營收 連四月登頂</option>
+              <option value="/money/story/5710/5149962">上月業績快報／信驊+23% 五個月最佳</option>
+              <option value="/money/story/5710/5150025">上月業績快報／上緯+58% 陸拉貨趨緩</option>
+              <option value="/money/story/5710/5150026">王品、瓦城 強攻微型尾牙</option>
+              <option value="/money/story/5710/5150028">永大之爭 日立提名新獨董</option>
+              <option value="/money/story/5710/5150041">亞德客上月營收 攀峰</option>
+              <option value="/money/story/5710/5150044">上月業績快報／和勤+11% 單月新高</option>
+              <option value="/money/story/5710/5150327">長榮每股賺0.85元 飆223倍</option>
+              <option value="/money/story/5710/5150328">日勝生銀髮宅 總銷達35億元</option>
+              <option value="/money/story/5710/5150331">裕隆去年11月EPS  0.84元</option>
+              <option value="/money/story/5710/5150334">正德擴大船隊 搶商機</option>
+              <option value="/money/story/5710/5150393">上月業績快報／海悅增59% 創新高</option>
+              <option value="/money/story/5710/5150466">晶碩訂單能見度三個月</option>
+              <option value="/money/story/5710/5150475">汽車零件業缺櫃 有解</option>
+              <option value="/money/story/5710/5150469">上月業績快報／鮮活-0.7% 本月回溫</option>
           </select>
   </div>
 <!-- #Location: /inc/nav_html5 -->
@@ -1801,15 +1899,7 @@ googletag.cmd.push(function() { googletag.display('div-gpt-ad-1490165564310-0');
 											<a href="/search/tagging/1001/物聯網" rel="95052">物聯網</a>
 											<a href="/search/tagging/1001/鏡頭模組" rel="95889">鏡頭模組</a>
 									</div>
-									<div>
-	<!-- /129853887/udn.com/money/Web/money-PcMobile-endtxt -->
-<div id='div-gpt-ad-1564727433317-0'>
-  <script>
-    googletag.cmd.push(function() { googletag.display('div-gpt-ad-1564727433317-0'); });
-  </script>
-</div>
-</div>
-			<div class="story_bar story_bar_footer">
+												<div class="story_bar story_bar_footer">
 	<div class="social_bar">
 		<ul>
 			<li class="fb"><a href="#" title="分享">分享</a></li>
@@ -1833,7 +1923,6 @@ googletag.cmd.push(function() { googletag.display('div-gpt-ad-1490165564310-0');
 			<div>
 	<script>
 var mobileOrDesktop = ($(window).width() < 768) ?　'mobile' : 'desktop';
-var stockAction = '';
 var searchStockNumber = function () {
             var re = /（(?:\d){4,5}）/g;
             const filterTxt = ['明年', '後年', '前年', '去年', '今年', '今', '前', '明', '年'];
@@ -1869,22 +1958,16 @@ var searchStockNumber = function () {
 
 // 若有搜尋到股號，在文章結尾插入iframe以及看更多按鈕     
             if (totalStocknumber.length > 0) {
-		
-                $('#article_body').append('<div class="stock_more_button"><a class="stockmoreLab" href="https://money.udn.com/common/systex_login/'+ 
-                      mobileOrDesktop + '/' + totalStocknumber[0] + '?pure=n" target="_blank" id="stockmore_button">前往看盤</a></div>')
+                $('#article_body').append('<div class="stock_more_button"><a class="stockmore" href="https://money.udn.com/common/systex_login/'+ 
+                      mobileOrDesktop + '/' + totalStocknumber[0] + '?pure=n" target="_blank" id="stockmore_button">前往看盤與選股</a></div>')
 
-                    $('#article_body .stock_more_button').append('<a class="stockmoreLab stockorder" href="#"  id="stockorder_button" onclick="openSPWin(\'https://www.sinotrade.com.tw/newweb/OrderGO/?platform=udn&type=S&stockid=' + totalStocknumber[0] +'&utm_campaign=NW_TSP_02&utm_source=udn&utm_medium=button_0601&strProd=0102&strWeb=0135\');return false;">個股下單</a>')    
-                
+                if(rId() === 4938167) {
+                    $('#article_body .stock_more_button').append('<a class="stockmore stockorder" href="https://webrd.sinotrade.com.tw/goOrder?type=S&stockid=2409&bs=S&price=52&qty=6" target="_blank" id="stockorder_button">前往下單</a>')
+                }
+
                 $('#article_body').append('<iframe id="stock_iframe" src="https://pelements.money-link.com.tw/B2B/twstock/TAprice.html?symid=' + totalStocknumber[0] + '"' + 'allowTransparency="true" marginwidth="0" marginheight="0" scrolling="No" frameborder="0" style="width:100%;"></iframe>')
             }
         };
-var openSPWin = function(url){
-		var sinoPacWO = window.open("about：blank","永豐金",config="width=500,height=700");
-		setSPlink(url)
-	};
-var setSPlink = function(url) {
-		 sinoPacWO = window.open(url,"永豐金",config="width=500,height=700");
-	};
 
 var GetCkValue = function( name ) {
     var dc=document.cookie;
@@ -1899,11 +1982,6 @@ var GetCkValue = function( name ) {
 }
 var checkmember = function() {
     // alert($(this).prop("href")); // return false;
-    if($(this).attr('class') == 'systex-link'){
-        stockAction = '?site=money&event=systex_stock';
-   }else{
-       stockAction = '?site=money&event=systex_market';
-   }
     var data = { 
         udnmember: GetCkValue("udnmember"),
         um2: GetCkValue("um2"),
@@ -1944,7 +2022,7 @@ var checkmember = function() {
                                 action: function () {
                                     // ga('create', 'UA-19210365-3', 'auto', {'name': 'money'});
                                     // ga('send', 'event', 'article', 'click', '登入閱讀全文');
-                                    window.location.href='https://money.udn.com/member/login?site=money&again=y&clickcta=subscribe&redirect='+$('meta[property="og:url"]').attr('content') + stockAction ;
+                                    window.location.href='https://money.udn.com/member/login?site=money&again=y&clickcta=subscribe&redirect='+$('meta[property="og:url"]').attr('content');
                                 }
                             },
                             cancel: {
@@ -1973,7 +2051,7 @@ var openmoney = function() {
                 action: function () {
                     $.ajax({
                         type : 'POST',
-                        url : '/api/v1/member/activeMoneyMember' + stockAction ,
+                        url : '/api/v1/member/activeMoneyMember',
                         async:false,
                         xhrFields: {withCredentials: true},
                         crossDomain:true,
@@ -2016,28 +2094,12 @@ $(document).ready(function () {
 
 <style>
 .stock_more_button {
-  position: relative;
-  text-align:right;
-  margin-top: 26px;
+text-align:right;
 }
 #stock_iframe {
   height:400px;
   margin-bottom:10px;
 }
-.stockmoreLab {
-  margin-bottom: -20px;
-  font-size: 14px;
-  padding: 0 8.7px;
-  cursor: pointer;
-  background-color: #EBEBEB;
-  color: #E50027 !important;
-  border-radius: 15px;
-  display: inline-block;
-  line-height: 25px;
-  font-weight: bold;
-  letter-spacing: 0px;
-}
-
 .stockmore {
 text-align:right;
 padding:10px;
@@ -2053,11 +2115,9 @@ display:inline-block;
 margin-left: 5px
 }
 
-.stockmore:hover,.stockmoreLab:hover {
+.stockmore:hover {
 text-decoration: none!important;
-}
-.box{
-margin: 10px auto 30px!important;
+background-color:#EE4E3F;
 }
 
 @media screen and (max-width:767px) {
@@ -2282,8 +2342,8 @@ metered_model.init(rId());
 	<!-- /#story_body -->
 	<div id="story_related" class="only_web">
 					
-		    <a href="/money/story/5710/5611332" id="next" title="關不住了!「好想出去玩概念股」喊衝 遊樂園、飯店股旺">關不住了!「好想出去玩概念股」喊衝 遊樂園、飯店股旺</a>
-							<a href="/money/story/5710/5612595" id="prev" title="華碩攜美企 攻智慧醫療">華碩攜美企 攻智慧醫療</a>
+		    <a href="/money/story/5710/5150469" id="next" title="上月業績快報／鮮活-0.7% 本月回溫">上月業績快報／鮮活-0.7% 本月回溫</a>
+							<a href="/money/story/5710/5149910" id="prev" title="GIS營運爆發 本季不淡">GIS營運爆發 本季不淡</a>
 			</div>
 	<!-- /#story_related -->	
 		<style>
@@ -2298,88 +2358,158 @@ metered_model.init(rId());
 								<a name='m1'></a>
 										
 					<dt class="more1">
-						<a href="/money/story/5710/5613446?from=edn_related_storybottom">法說會失靈？陽明股價跌破現增價 長榮、萬海齊挫<b>2021-07-20</b></a>
+						<a href="/money/story/5710/5151508?from=edn_related_storybottom">晶電、隆達合組富采今掛牌 盤中跳空鎖漲停<b>2021-01-06</b></a>
 					</dt>
 															
 					<dt class="more1">
-						<a href="/money/story/5710/5612595?from=edn_related_storybottom">華碩攜美企 攻智慧醫療<b>2021-07-20</b></a>
+						<a href="/money/story/5710/5149910?from=edn_related_storybottom">GIS營運爆發 本季不淡<b>2021-01-06</b></a>
 					</dt>
 															
 					<dt class="more1">
-						<a href="/money/story/5710/5613547?from=edn_related_storybottom">矽力-KY每股配息10.46元 早盤順利填息<b>2021-07-20</b></a>
+						<a href="/money/story/5710/5151791?from=edn_related_storybottom">富采今掛牌上市 李秉傑擔任董座<b>2021-01-06</b></a>
 					</dt>
 															
 					<dt class="more1">
-						<a href="/money/story/5710/5612557?from=edn_related_storybottom">虹冠電全年業績看俏<b>2021-07-20</b></a>
+						<a href="/money/story/5710/5151756?from=edn_related_storybottom">陞達科股價連二漲 今盤中創歷史新高<b>2021-01-06</b></a>
 					</dt>
 															
 					<dt class="more1">
-						<a href="/money/story/5710/5612558?from=edn_related_storybottom">亞太攜手TBC及大豐電 攻家庭數位匯流<b>2021-07-20</b></a>
+						<a href="/money/story/5710/5151541?from=edn_related_storybottom">外資喊天價 高盛升聯詠目標價至510元<b>2021-01-06</b></a>
 					</dt>
 															
 					<dt class="more1">
-						<a href="/money/story/5710/5612559?from=edn_related_storybottom">超眾熱板出貨動能轉強<b>2021-07-20</b></a>
+						<a href="/money/story/5710/5151343?from=edn_related_storybottom">長榮11月獲利亮眼 盤中股價再創新高<b>2021-01-06</b></a>
 					</dt>
 															
 					<dt class="more1">
-						<a href="/money/story/5710/5612560?from=edn_related_storybottom">網家強化最後一哩配送<b>2021-07-20</b></a>
+						<a href="/money/story/5710/5149968?from=edn_related_storybottom">上月業績快報／創意勁揚93% 創新高<b>2021-01-06</b></a>
 					</dt>
 															
 					<dt class="more1">
-						<a href="/money/story/5710/5612561?from=edn_related_storybottom">台灣之星 拓5G企業客戶<b>2021-07-20</b></a>
+						<a href="/money/story/5710/5149897?from=edn_related_storybottom">上月業績快報／南亞科+3% 逐步向上<b>2021-01-06</b></a>
 					</dt>
 															
 					<dt class="more1">
-						<a href="/money/story/5710/5612582?from=edn_related_storybottom">展碁股價向上 穩步填息<b>2021-07-20</b></a>
+						<a href="/money/story/5710/5149898?from=edn_related_storybottom">上月業績快報／瑞耘+32% 近五月高點<b>2021-01-06</b></a>
 					</dt>
 															
 					<dt class="more1">
-						<a href="/money/story/5710/5612605?from=edn_related_storybottom">新揚科100%股權 賣母公司<b>2021-07-20</b></a>
+						<a href="/money/story/5710/5149900?from=edn_related_storybottom">上月業績快報／聯亞創高 台光電下滑3%<b>2021-01-06</b></a>
 					</dt>
 												
 												<a name='m2'></a>							
 															
 					<dt class="more2">
-						<a href="/money/story/5710/5612607?from=edn_related_storybottom">松下售8.5代廠 群創、友達利多<b>2021-07-20</b></a>
+						<a href="/money/story/5710/5149901?from=edn_related_storybottom">精測砸5億買地擴廠<b>2021-01-06</b></a>
 					</dt>
 															
 					<dt class="more2">
-						<a href="/money/story/5710/5612609?from=edn_related_storybottom">順達Q2每股賺1.55元<b>2021-07-20</b></a>
+						<a href="/money/story/5710/5149902?from=edn_related_storybottom">上月業績快報／華通-11% 新廠Q3量產<b>2021-01-06</b></a>
 					</dt>
 															
 					<dt class="more2">
-						<a href="/money/story/5710/5612611?from=edn_related_storybottom">台達電董事改選 三張新面孔<b>2021-07-20</b></a>
+						<a href="/money/story/5710/5149906?from=edn_related_storybottom">宏碁NB帶勁 訂單看到Q2<b>2021-01-06</b></a>
 					</dt>
 															
 					<dt class="more2">
-						<a href="/money/story/5710/5613006?from=edn_related_storybottom">台玻上季營收 攀峰<b>2021-07-20</b></a>
+						<a href="/money/story/5710/5149907?from=edn_related_storybottom">群電營收寫同期最佳紀錄<b>2021-01-06</b></a>
 					</dt>
 															
 					<dt class="more2">
-						<a href="/money/story/5710/5613013?from=edn_related_storybottom">復盛、明安 訂單將遞延<b>2021-07-20</b></a>
+						<a href="/money/story/5710/5149908?from=edn_related_storybottom">宏捷科12月營收3.4億 五年高點<b>2021-01-06</b></a>
 					</dt>
 															
 					<dt class="more2">
-						<a href="/money/story/5710/5613018?from=edn_related_storybottom">富邦媒 強攻生鮮網購<b>2021-07-20</b></a>
+						<a href="/money/story/5710/5149928?from=edn_related_storybottom">璟德去年估賺一股本<b>2021-01-06</b></a>
 					</dt>
 															
 					<dt class="more2">
-						<a href="/money/story/5710/5613020?from=edn_related_storybottom">越南疫情升溫 豐泰廠停工<b>2021-07-20</b></a>
+						<a href="/money/story/5710/5149933?from=edn_related_storybottom">神腦EPS 1.69元 今年看升<b>2021-01-06</b></a>
 					</dt>
 															
 					<dt class="more2">
-						<a href="/money/story/5710/5613023?from=edn_related_storybottom">東森購物上半年EPS創高<b>2021-07-20</b></a>
+						<a href="/money/story/5710/5149937?from=edn_related_storybottom">網通族群 獲利回神<b>2021-01-06</b></a>
 					</dt>
 															
 					<dt class="more2">
-						<a href="/money/story/5710/5613024?from=edn_related_storybottom">詩肯預期買氣將回流<b>2021-07-20</b></a>
+						<a href="/money/story/5710/5149949?from=edn_related_storybottom">達興材蓋新廠 攻半導體材料<b>2021-01-06</b></a>
 					</dt>
 															
 					<dt class="more2">
-						<a href="/money/story/5710/5611332?from=edn_related_storybottom">關不住了!「好想出去玩概念股」喊衝 遊樂園、飯店股旺<b>2021-07-19</b></a>
+						<a href="/money/story/5710/5149953?from=edn_related_storybottom">去年業績快報／圓剛+140% 圓展+89%<b>2021-01-06</b></a>
 					</dt>
 												
 												<a name='m3'></a>							
+															
+					<dt class="more3">
+						<a href="/money/story/5710/5149955?from=edn_related_storybottom">去年業績快報／明泰倍增 仲琦逾百億<b>2021-01-06</b></a>
+					</dt>
+															
+					<dt class="more3">
+						<a href="/money/story/5710/5149956?from=edn_related_storybottom">去年業績快報／聚碩+9.8% 續創佳績<b>2021-01-06</b></a>
+					</dt>
+															
+					<dt class="more3">
+						<a href="/money/story/5710/5149965?from=edn_related_storybottom">新普營收 連四月登頂<b>2021-01-06</b></a>
+					</dt>
+															
+					<dt class="more3">
+						<a href="/money/story/5710/5149962?from=edn_related_storybottom">上月業績快報／信驊+23% 五個月最佳<b>2021-01-06</b></a>
+					</dt>
+															
+					<dt class="more3">
+						<a href="/money/story/5710/5150025?from=edn_related_storybottom">上月業績快報／上緯+58% 陸拉貨趨緩<b>2021-01-06</b></a>
+					</dt>
+															
+					<dt class="more3">
+						<a href="/money/story/5710/5150026?from=edn_related_storybottom">王品、瓦城 強攻微型尾牙<b>2021-01-06</b></a>
+					</dt>
+															
+					<dt class="more3">
+						<a href="/money/story/5710/5150028?from=edn_related_storybottom">永大之爭 日立提名新獨董<b>2021-01-06</b></a>
+					</dt>
+															
+					<dt class="more3">
+						<a href="/money/story/5710/5150041?from=edn_related_storybottom">亞德客上月營收 攀峰<b>2021-01-06</b></a>
+					</dt>
+															
+					<dt class="more3">
+						<a href="/money/story/5710/5150044?from=edn_related_storybottom">上月業績快報／和勤+11% 單月新高<b>2021-01-06</b></a>
+					</dt>
+															
+					<dt class="more3">
+						<a href="/money/story/5710/5150327?from=edn_related_storybottom">長榮每股賺0.85元 飆223倍<b>2021-01-06</b></a>
+					</dt>
+												
+												<a name='m4'></a>							
+															
+					<dt class="more4">
+						<a href="/money/story/5710/5150328?from=edn_related_storybottom">日勝生銀髮宅 總銷達35億元<b>2021-01-06</b></a>
+					</dt>
+															
+					<dt class="more4">
+						<a href="/money/story/5710/5150331?from=edn_related_storybottom">裕隆去年11月EPS  0.84元<b>2021-01-06</b></a>
+					</dt>
+															
+					<dt class="more4">
+						<a href="/money/story/5710/5150334?from=edn_related_storybottom">正德擴大船隊 搶商機<b>2021-01-06</b></a>
+					</dt>
+															
+					<dt class="more4">
+						<a href="/money/story/5710/5150393?from=edn_related_storybottom">上月業績快報／海悅增59% 創新高<b>2021-01-06</b></a>
+					</dt>
+															
+					<dt class="more4">
+						<a href="/money/story/5710/5150466?from=edn_related_storybottom">晶碩訂單能見度三個月<b>2021-01-06</b></a>
+					</dt>
+															
+					<dt class="more4">
+						<a href="/money/story/5710/5150475?from=edn_related_storybottom">汽車零件業缺櫃 有解<b>2021-01-06</b></a>
+					</dt>
+															
+					<dt class="more4">
+						<a href="/money/story/5710/5150469?from=edn_related_storybottom">上月業績快報／鮮活-0.7% 本月回溫<b>2021-01-06</b></a>
+					</dt>
 												</dl>
 		</div>
 		<!-- /#story_foot_more -->
@@ -2387,130 +2517,130 @@ metered_model.init(rId());
 			<h4>熱門文章</h4>
 			<dl>
 																				<dt class="more1">
-							<a href="/money/story/5710/5612607?from=edn_hotlist_storybottom">松下售8.5代廠 群創、友達利多<b>2021-07-20</b></a>
+							<a href="/money/story/5607/5152190?from=edn_hotlist_storybottom">台股爆4,342億天量 跌16點收14,983點<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more1">
-							<a href="/money/story/5607/5612239?from=edn_hotlist_storybottom">0050第二階段配息增50元！21日將除息0.35元<b>2021-07-19</b></a>
+							<a href="/money/story/5607/5151963?from=edn_hotlist_storybottom">台股巨震360點！總量估突破5,000億元<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more1">
-							<a href="/money/story/5607/5612409?from=edn_hotlist_storybottom">外資大逃殺單日賣超424億 這十檔賣最大<b>2021-07-19</b></a>
+							<a href="/money/story/5607/5151430?from=edn_hotlist_storybottom">鴻海拚新天價！二外資目標價喊上130元<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more1">
-							<a href="/money/story/5710/5613446?from=edn_hotlist_storybottom">法說會失靈？陽明股價跌破現增價 長榮、萬海齊挫<b>2021-07-20</b></a>
+							<a href="/money/story/5607/5152535?from=edn_hotlist_storybottom">台股創天量收跌16.9點 三大法人賣超89.56億<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more1">
-							<a href="/money/story/5607/5613218?from=edn_hotlist_storybottom">7月20日 五件財經大事搶先看<b>2021-07-20</b></a>
+							<a href="/money/story/5607/5153029?from=edn_hotlist_storybottom">台股今成交爆量、一度萬五 黃天牧：外資又回來了<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more1">
-							<a href="/money/story/5607/5612640?from=edn_hotlist_storybottom">獲利穩定族群 優選<b>2021-07-20</b></a>
+							<a href="/money/story/5607/5153475?from=edn_hotlist_storybottom">鋼鐵與航運股人氣退潮？分析師：想逢低買可等到「這個價位 」<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more1">
-							<a href="/money/story/5607/5612642?from=edn_hotlist_storybottom">台燿、台光電、欣興 外資挺<b>2021-07-20</b></a>
+							<a href="/money/story/5607/5151479?from=edn_hotlist_storybottom">大立光、玉晶光目標價 外資雙下修<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more1">
-							<a href="/money/story/5607/5613064?from=edn_hotlist_storybottom">外資大逃殺 賣超台股424億<b>2021-07-20</b></a>
+							<a href="/money/story/5710/5151508?from=edn_hotlist_storybottom">晶電、隆達合組富采今掛牌 盤中跳空鎖漲停<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more1">
-							<a href="/money/story/5607/5612643?from=edn_hotlist_storybottom">新唐、瑞昱 大小摩按讚<b>2021-07-20</b></a>
+							<a href="/money/story/5607/5151987?from=edn_hotlist_storybottom">台股遇巨量震盪怎麼辦？分析師：台積電與美股居關鍵<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more1">
-							<a href="/money/story/5607/5614208?from=edn_hotlist_storybottom">貨櫃三雄領頭殺盤 台股跌260點收17,528點<b>2021-07-20</b></a>
+							<a href="/money/story/5607/5151752?from=edn_hotlist_storybottom">台積電再創天價 張忠謀開年來身價增31億元<b>2021-01-06</b></a>
 						</dt>
 													
 														<a name='m2'></a>							
 																	<dt class="more2">
-							<a href="/money/story/5710/5613023?from=edn_hotlist_storybottom">東森購物上半年EPS創高<b>2021-07-20</b></a>
+							<a href="/money/story/5607/5151511?from=edn_hotlist_storybottom">台股驚驚漲 瑞信上修亞德客、南亞科、台達電目標價<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more2">
-							<a href="/money/story/5710/5613006?from=edn_hotlist_storybottom">台玻上季營收 攀峰<b>2021-07-20</b></a>
+							<a href="/money/story/5607/5151444?from=edn_hotlist_storybottom">二外資上修台積電目標價 到628元、640元<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more2">
-							<a href="/money/story/5607/5613393?from=edn_hotlist_storybottom">高端疫苗通過EUA可專案製造 早盤漲停鎖死<b>2021-07-20</b></a>
+							<a href="/money/story/12509/5151380?from=edn_hotlist_storybottom">群創（3481）開盤即走低 股價下滑 0.7元報價13.3元<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more2">
-							<a href="/money/story/5607/5612575?from=edn_hotlist_storybottom">公司治理100 新增32檔<b>2021-07-20</b></a>
+							<a href="/money/story/5607/5151425?from=edn_hotlist_storybottom">台積電法說會前外資搶先調高目標價 盤中飆上555元天價<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more2">
-							<a href="/money/story/5607/5614577?from=edn_hotlist_storybottom">陽明跌破現增價 賠錢的是這兩類人<b>2021-07-20</b></a>
+							<a href="/money/story/5607/5151717?from=edn_hotlist_storybottom">台股帶量高檔震盪 權證市場量增<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more2">
-							<a href="/money/story/5710/5612557?from=edn_hotlist_storybottom">虹冠電全年業績看俏<b>2021-07-20</b></a>
+							<a href="/money/story/5607/5151381?from=edn_hotlist_storybottom">鴻海去年12月營收亮眼 股價107.5元開盤、市值1.49兆<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more2">
-							<a href="/money/story/5739/5612854?from=edn_hotlist_storybottom">華邦電、威剛 押長天期<b>2021-07-20</b></a>
+							<a href="/money/story/5607/5151844?from=edn_hotlist_storybottom">破除投資迷思 挑選高股息ETF有祕訣<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more2">
-							<a href="/money/story/5607/5613851?from=edn_hotlist_storybottom">籌碼兩極！外資大賣融資創高 多頭未變留意二關鍵<b>2021-07-20</b></a>
+							<a href="/money/story/5607/5153285?from=edn_hotlist_storybottom">台積飆天價效應 富邦台50持股破50%<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more2">
-							<a href="/money/story/5710/5612560?from=edn_hotlist_storybottom">網家強化最後一哩配送<b>2021-07-20</b></a>
+							<a href="/money/story/5607/5151663?from=edn_hotlist_storybottom">富邦證券：電動車、半導體及5G為市場主流<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more2">
-							<a href="/money/story/5607/5613373?from=edn_hotlist_storybottom">陽明開盤跌3元 貨櫃三雄同步走低<b>2021-07-20</b></a>
+							<a href="/money/story/5710/5151343?from=edn_hotlist_storybottom">長榮11月獲利亮眼 盤中股價再創新高<b>2021-01-06</b></a>
 						</dt>
 													
 														<a name='m3'></a>							
 																	<dt class="more3">
-							<a href="/money/story/9008/5612639?from=edn_hotlist_storybottom">IC載板、高速運算 帶勁<b>2021-07-20</b></a>
+							<a href="/money/story/5607/5153454?from=edn_hotlist_storybottom">富采投控掛牌 Mini LED人氣瘋<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more3">
-							<a href="/money/story/5607/5613386?from=edn_hotlist_storybottom">道瓊大跌725點 台股早盤跌逾百點、失守月線<b>2021-07-20</b></a>
+							<a href="/money/story/12509/5151671?from=edn_hotlist_storybottom">長榮（2603）股價下滑 2.25元報價43.25元<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more3">
-							<a href="/money/story/5710/5612558?from=edn_hotlist_storybottom">亞太攜手TBC及大豐電 攻家庭數位匯流<b>2021-07-20</b></a>
+							<a href="/money/story/5607/5151655?from=edn_hotlist_storybottom">美系外資調高聯詠目標價至510元 盤中股價創新高<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more3">
-							<a href="/money/story/5710/5612609?from=edn_hotlist_storybottom">順達Q2每股賺1.55元<b>2021-07-20</b></a>
+							<a href="/money/story/5710/5151541?from=edn_hotlist_storybottom">外資喊天價 高盛升聯詠目標價至510元<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more3">
-							<a href="/money/story/5607/5613991?from=edn_hotlist_storybottom">台股盤中跌逾280點 回測17,500關卡<b>2021-07-20</b></a>
+							<a href="/money/story/5607/5153500?from=edn_hotlist_storybottom">台股爆4,342億天量 分析師：不要在高點亂搶股票<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more3">
-							<a href="/money/story/5739/5612864?from=edn_hotlist_storybottom">最牛一輪／華新利多 台新0B來電<b>2021-07-20</b></a>
+							<a href="/money/story/5710/5151756?from=edn_hotlist_storybottom">陞達科股價連二漲 今盤中創歷史新高<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more3">
-							<a href="/money/story/5710/5613013?from=edn_hotlist_storybottom">復盛、明安 訂單將遞延<b>2021-07-20</b></a>
+							<a href="/money/story/5607/5151354?from=edn_hotlist_storybottom">費半創新高 台股大漲145點開在15,145點<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more3">
-							<a href="/money/story/5710/5612611?from=edn_hotlist_storybottom">台達電董事改選 三張新面孔<b>2021-07-20</b></a>
+							<a href="/money/story/11074/5152185?from=edn_hotlist_storybottom">興櫃股王穎崴承銷價348元 抽中一張賺7.5萬元<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more3">
-							<a href="/money/story/5710/5613018?from=edn_hotlist_storybottom">富邦媒 強攻生鮮網購<b>2021-07-20</b></a>
+							<a href="/money/story/11074/5153154?from=edn_hotlist_storybottom">祺驊、華義等五檔 7日起預收款券<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more3">
-							<a href="/money/story/5607/5612497?from=edn_hotlist_storybottom">亞泰金屬股票、亞泰金屬一轉換公司債 20日起預收款券<b>2021-07-19</b></a>
+							<a href="/money/story/12509/5151472?from=edn_hotlist_storybottom">友達（2409）股價下滑 0.7元報價13.3元<b>2021-01-06</b></a>
 						</dt>
 													
 														<a name='m4'></a>							
 																	<dt class="more4">
-							<a href="/money/story/5710/5612595?from=edn_hotlist_storybottom">華碩攜美企 攻智慧醫療<b>2021-07-20</b></a>
+							<a href="/money/story/12509/5151896?from=edn_hotlist_storybottom">台股盤中速報 大盤熄火下跌9.39點 水泥雙雄電信三巨頭同黑<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more4">
-							<a href="/money/story/5607/5612970?from=edn_hotlist_storybottom">資金轉進 富櫃200指數創高<b>2021-07-20</b></a>
+							<a href="/money/story/12509/5151338?from=edn_hotlist_storybottom">永豐餘（1907）10月營收67.43億 年增8.28%<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more4">
-							<a href="/money/story/5710/5612559?from=edn_hotlist_storybottom">超眾熱板出貨動能轉強<b>2021-07-20</b></a>
+							<a href="/money/story/5710/5151791?from=edn_hotlist_storybottom">富采今掛牌上市 李秉傑擔任董座<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more4">
-							<a href="/money/story/5607/5613576?from=edn_hotlist_storybottom">外資最樂觀 里昂上修祥碩目標價至2,275元<b>2021-07-20</b></a>
+							<a href="/money/story/5608/5151311?from=edn_hotlist_storybottom">1月6日盤前／站上萬五、看好元月行情、持續加碼操作<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more4">
-							<a href="/money/story/5607/5613408?from=edn_hotlist_storybottom">股王矽力-KY今除息 13分鐘填息<b>2021-07-20</b></a>
+							<a href="/money/story/12509/5151475?from=edn_hotlist_storybottom">瑞昱（2379）股價止跌 股價上漲 19.5元報價406.5元<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more4">
-							<a href="/money/story/5607/5613989?from=edn_hotlist_storybottom">全球變種病毒肆虐 防疫概念疫苗、醫材股買盤再起<b>2021-07-20</b></a>
+							<a href="/money/story/8044/5142603?from=edn_hotlist_storybottom">0106 指標焦點股<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more4">
-							<a href="/money/story/11074/5612269?from=edn_hotlist_storybottom">有澤製作所換股入主 新揚科12月10日下櫃<b>2021-07-19</b></a>
+							<a href="/money/story/12509/5151794?from=edn_hotlist_storybottom">華新科（2492）股價下滑 11.5元報價221.5元<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more4">
-							<a href="/money/story/5607/5613296?from=edn_hotlist_storybottom">7月20日重要財經行事曆<b>2021-07-20</b></a>
+							<a href="/money/story/12509/5151099?from=edn_hotlist_storybottom">旺宏（2337）11月營收30.1億 年增-7.46%<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more4">
-							<a href="/money/story/5739/5612856?from=edn_hotlist_storybottom">惠特、億光 四檔錢景亮<b>2021-07-20</b></a>
+							<a href="/money/story/12509/5151656?from=edn_hotlist_storybottom">台玻（1802）股價下滑 1元報價19.6元<b>2021-01-06</b></a>
 						</dt>
 																	<dt class="more4">
-							<a href="/money/story/5710/5612605?from=edn_hotlist_storybottom">新揚科100%股權 賣母公司<b>2021-07-20</b></a>
+							<a href="/money/story/12509/5151192?from=edn_hotlist_storybottom">玉晶光（3406）11月營收18.07億 年增52.29%<b>2021-01-06</b></a>
 						</dt>
 													
 														<a name='m5'></a>							
@@ -2541,7 +2671,7 @@ googletag.cmd.push(function() { googletag.display('div-gpt-ad-1490165647547-0');
 </div></div>
 <div id="ec" class="area">
 			<h3>會員專屬</h3>
-			       <style>
+		       <style>
 
         @media (max-width: 767px) {
 
@@ -3034,27 +3164,33 @@ googletag.cmd.push(function() { googletag.display('div-gpt-ad-1490165647547-0');
 	});
  });
 </script>
-	</div>
+</div>
 <div id="ec" class="area only_mobile">
 			<h3>關注更多</h3>
-		<iframe src="https://money.udn.com/SSI/social/social_link-20210205.html" width="100%" height="420" style="margin-bottom:10px;border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+		<iframe src="https://money.udn.com/SSI/social/social_link-20180411.html" width="100%" height="420" style="margin-bottom:10px;border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
 </div>
 <div id="comments" class="area">
 			<h3>留言</h3>
-				<a name="fb_comments"></a>
-		<div id="comments_head">
-			<div id="fb-root"></div>
-			<div class="fb-comments" data-href="" data-width="100%" data-numposts="5" data-colorscheme="light"></div>
-		</div>
-		<!-- /#comments_head -->
+		<a name="fb_comments"></a>
 
-		<link href="/static/css/comments.css?s=0109" rel="stylesheet" type="text/css">
-		<div id="article_id" style="display:none">5146976</div><div id="channel_id" style="display:none">1001</div>
-		<div id="comments_body">
-		<script src="/static/js/discuss_new.js?20210312PM"> </script> 
-		</div>
-		<!-- /#comments_body -->
-	</div>
+        <div id="comments_head">
+
+                <div id="fb-root"></div>
+                <div class="fb-comments" data-href="" data-width="100%" data-numposts="5" data-colorscheme="light"></div>
+
+        </div>
+        <!-- /#comments_head -->
+
+        <link href="/static/css/comments.css?s=0109" rel="stylesheet" type="text/css">
+        <div id="article_id" style="display:none">5146976</div><div id="channel_id" style="display:none">1001</div>
+        <div id="comments_body">
+
+        <script src="https://s.udn.com.tw/func/js/discuss_min.js?20170310"> </script>
+        <script src="https://j.udn.com.tw/func/js/page3_min.js?20170112"> </script>
+
+        </div>
+
+        <!-- /#comments_body --></div>
 <!--#include file="ad_story.html" -->
 <div id="pv" rel="/pageview/daily/1001/5590/5710/5146976" ></div>
 <div id="ppv" rel="https://misc.udn.com/record/pageview/1001/5590/5710/5146976" ></div>
@@ -3291,7 +3427,7 @@ var checkmemberbar = function(value) {
                                 btnClass: 'btn-default stock-login',
                                 text: '登入',
                                 action: function () {
-                                    window.location.href='https://money.udn.com/member/login?site=money&event=systex_stock&again=y&clickcta=subscribe&redirect='+$('meta[property="og:url"]').attr('content');
+                                    window.location.href='https://money.udn.com/member/login?site=money&again=y&clickcta=subscribe&redirect='+$('meta[property="og:url"]').attr('content');
                                 }
                             },
                             cancel: {
@@ -3321,7 +3457,7 @@ var openmoneybar = function(value) {
                 action: function () {
                     $.ajax({
                         type : 'POST',
-                        url : '/api/v1/member/activeMoneyMember?site=money&event=systex_stock',
+                        url : '/api/v1/member/activeMoneyMember',
                         async: false,
                         xhrFields: {withCredentials: true},
                         crossDomain: true,
@@ -3374,15 +3510,15 @@ console.log(value)
 			<h3>
 							中經社 CENS.com						
 		</h3>
-		<a href="https://www.cens.com/censv1/zh/advertisement/PUB/book_page.jsp?YEAR=2021&PUB_CAT=300&PD_ID=1532?utm_source=udn&utm_medium=ref_text_edn&utm_term=text_edn" target="_blank">
-    <img src="https://money.udn.com/SSI/ad/20210618-cens-ad.gif" width="300px" height="300px">
+		<a href="https://www.cens.com/censv1/zh/advertisement/PUB/book_page.jsp?YEAR=2021&PUB_CAT=302&PD_ID=1524?utm_source=udn&utm_medium=ref_text_edn&utm_term=text_edn" target="_blank">
+    <img src="https://money.udn.com/SSI/ad/20201215-cens-ad.gif" width="300px" height="300px">
 </a>
 
 <div style="padding:15px"> 
   <dl>
     <dt>
-      <a href="https://www.cens.com/censv1/zh/advertisement/PUB/book_page.jsp?YEAR=2021&PUB_CAT=300&PD_ID=1532?utm_source=udn&utm_medium=ref_text_edn&utm_term=text_edn" target="_blank">
-     【2021 台灣機械指南】電子書全方位推廣，拓銷商機利器!
+      <a href="https://www.cens.com/censv1/zh/advertisement/PUB/book_page.jsp?YEAR=2021&PUB_CAT=302&PD_ID=1524?utm_source=udn&utm_medium=ref_text_edn&utm_term=text_edn" target="_blank">
+     【廣告招募中．2021 機械公會中英會員名錄】掌握市場商機，開拓國際市場!
     </a>
     </dt>
   </dl>   
@@ -3403,7 +3539,7 @@ console.log(value)
 <div id="lotto_body" class="area_body">
 <div style="float:left; margin-right:12px;"><a href="http://money.udn.com/invoice/index?from=edn_receipt"> <img src="//money.udn.com/SSI/2015/moneyweb/invoice-red.png"></a></div>
 
-  <div style="float:left; text-align:center;"><a href="http://money.udn.com/invoice/index?from=edn_receipt" style="  width:200px;font-size:13px; padding-top:15px;">110年3-4月、110年1-2月</a> 
+  <div style="float:left; text-align:center;"><a href="http://money.udn.com/invoice/index?from=edn_receipt" style="  width:200px;font-size:13px; padding-top:15px;">109年9-10月、109年7-8月</a> 
   <br>
   <img src="//money.udn.com/SSI/2015/moneyweb/line-red.png">
   </div>
@@ -3418,53 +3554,21 @@ console.log(value)
 <div style="border-top:1px solid #d8d8d8;"></div>
 -->
 
-<!--經濟日報大徵才
-<a><img src="https://uc.udn.com.tw/upf/2015_money/SSI/ad/20210511_ad.jpg" width="300" height="250" alt="經濟日報大徵才"  title="經濟日報大徵才">
-</a>-->
-
-<!--台壽數位問卷-->
-<a href="https://lihi1.cc/Hytru" target="_blank">
-<img src="http://uc.udn.com.tw/upf/2015_money/SSI/ad/20210705_ad.jpg" width="300" height="200" alt="台壽數位問卷"  title="台壽數位問卷">
-</a>
-
-<!--永豐金證開戶活動-->
-<a href="https://lihi1.cc/H4JfO" target="_blank">
-<img src="http://uc.udn.com.tw/upf/2015_money/SSI/ad/20210709_ad.jpg" width="300" height="250" alt="永豐金證開戶活動"  title="永豐金證開戶活動">
-</a>
-
-<!--看新聞即時下單
-<a href="https://money.udn.com/money/story/5648/5271285?from=edn_ad_stock_order" target="_blank" id="sinotrade_order_20210312">
-<img src="https://uc.udn.com.tw/upf/2015_money/SSI/ad/202102231_ad.jpg" width="300" height="250" alt="看新聞即時下單"  title="看新聞即時下單">
-</a>-->
-
 <!--2020會員新功能上線ABTEST-->
 <div id="AB_TEST" style="display:block;">
 </div>
-
-<!--2021大師智庫論壇
-<a href="https://money.udn.com/ACT/2021/thinktank1/index.html" target="_blank">
-<img src="http://uc.udn.com.tw/upf/2015_money/SSI/ad/20210323.jpg" width="300" height="250" alt="2021大師智庫論壇"  title="2021大師智庫論壇">
-</a>-->
 
 <!--2021全球經濟投資展望暨衍生性商品市場發展趨勢論壇
 <a href="https://money.udn.com/ACT/2020/TAIFEX/" target="_blank">
 <img src="https://uc.udn.com.tw/upf/2015_money/SSI/ad/20201202_ad.jpg" width="300" height="250" alt="2021全球經濟投資展望暨衍生性商品市場發展趨勢論壇"  title="2021全球經濟投資展望暨衍生性商品市場發展趨勢論壇">
 </a>-->
 
-<!--第五屆創業之星
-<a href="https://money.udn.com/ACT/2021/innovation/index.html" target="_blank">
-<img src="https://uc.udn.com.tw/upf/2015_money/SSI/ad/202103171_ad.jpg" width="300" height="250" alt="第五屆創業之星"  title="第五屆創業之星">
-</a>-->
 
-<!--報稅停看聽
-<a href="https://money.udn.com/money/cate/5592" target="_blank" id="sinotrade_order_20210312">
-<img src="https://uc.udn.com.tw/upf/2015_money/SSI/ad/20210430_ad.jpg" width="300" height="200" alt="報稅停看聽"  title="報稅停看聽">
-</a>-->
 
-<!--第11屆權民搶百萬
+<!--第11屆權民搶百萬-->
 <a href="https://money.udn.com/warrantbrand/gift#s5" target="_blank">
 <img src="https://uc.udn.com.tw/upf/2015_money/SSI/ad/20210104_ad.jpg" width="300" height="250" alt="第11屆權民搶百萬"  title="第11屆權民搶百萬">
-</a>-->
+</a>
 
 <!--精誠資訊
 <a href="https://pelements.money-link.com.tw/b2b/simulator/signup.aspx#s3" target="_blank">
@@ -3499,13 +3603,15 @@ console.log(value)
 <img src="https://uc.udn.com.tw/upf/2015_money/SSI/ad/202010281_ad.jpg" width="300" height="225" alt="股債雙存獲利六堂課"  title="股債雙存獲利六堂課">
 </a>
 
-
-
-
-<!--聯合報×星宇航空夏令營
-<a href="https://utravel.udn.com/activities/travel_intro.jsp?type=new&cate=7&aid=968&utm_source=economic&utm_medium=display&utm_campaign=starluxsummer" target="_blank">
-<img src="https://uc.udn.com.tw/upf/2015_money/SSI/ad/20210407_ad.jpg" width="300" height="250" alt="聯合報×星宇航空夏令營"  title="聯合報×星宇航空夏令營">
+<!--創新論壇
+<a href="https://money.udn.com/ACT/2020/innovation5G/index.html" target="_blank">
+<img src="https://uc.udn.com.tw/upf/2015_money/SSI/ad/20201102_ad.jpg" width="300" height="200" alt="創新論壇"  title="創新論壇">
 </a>-->
+
+<!--國家公園偉人行館-->
+<a href="https://bit.ly/2WepYDl" target="_blank">
+<img src="https://uc.udn.com.tw/upf/2015_money/SSI/ad/20201215_ad.gif" width="300" height="250" alt="國家公園偉人行館"  title="國家公園偉人行館">
+</a>
 
 
 <!--會員專案行銷素材
@@ -3544,12 +3650,17 @@ console.log(value)
 <img src="https://uc.udn.com.tw/upf/2015_money/SSI/ad/202004201_ad.jpg" width="300" height="250" alt="豐存股"  title="豐存股">
 </a>-->
 
-
+<!--第四屆創業之星
+<a href="https://money.udn.com/ACT/2020/innovation/index.html" target="_blank">
+<img src="https://uc.udn.com.tw/upf/2015_money/SSI/ad/20200305_ad.jpg" width="300" alt="第四屆創業之星"  title="第四屆創業之星">
+</a>-->
 
 <!--企業家的山居歲月
 <a href="https://bit.ly/2CHqTWE" target="_blank">
 <img src="https://uc.udn.com.tw/upf/2015_money/SSI/ad/20200717_ad.gif" width="300" height="250" alt="企業家的山居歲月"  title="企業家的山居歲月">
 </a>-->
+
+
 
 
 
@@ -3599,19 +3710,19 @@ if(num === 0) {
 		<div class="area_body">
 	<dl>
 					<dt>
-				<a href="/money/story/5710/5612607?from=edn_catehotlist_story" target="_parent">松下售8.5代廠 群創、友達利多</a>
+				<a href="/money/story/5607/5152190?from=edn_catehotlist_story" target="_parent">台股爆4,342億天量 跌16點收14,983點</a>
 			</dt>
 					<dt>
-				<a href="/money/story/5607/5612239?from=edn_catehotlist_story" target="_parent">0050第二階段配息增50元！21日將除息0.35元</a>
+				<a href="/money/story/5607/5151963?from=edn_catehotlist_story" target="_parent">台股巨震360點！總量估突破5,000億元</a>
 			</dt>
 					<dt>
-				<a href="/money/story/5607/5612409?from=edn_catehotlist_story" target="_parent">外資大逃殺單日賣超424億 這十檔賣最大</a>
+				<a href="/money/story/5607/5151430?from=edn_catehotlist_story" target="_parent">鴻海拚新天價！二外資目標價喊上130元</a>
 			</dt>
 					<dt>
-				<a href="/money/story/5710/5613446?from=edn_catehotlist_story" target="_parent">法說會失靈？陽明股價跌破現增價 長榮、萬海齊挫</a>
+				<a href="/money/story/5607/5152535?from=edn_catehotlist_story" target="_parent">台股創天量收跌16.9點 三大法人賣超89.56億</a>
 			</dt>
 					<dt>
-				<a href="/money/story/5607/5613218?from=edn_catehotlist_story" target="_parent">7月20日 五件財經大事搶先看</a>
+				<a href="/money/story/5607/5153029?from=edn_catehotlist_story" target="_parent">台股今成交爆量、一度萬五 黃天牧：外資又回來了</a>
 			</dt>
 			</dl>
 </div>
@@ -3626,23 +3737,32 @@ if(num === 0) {
 		<div class="area_body">
 	<dl>
 					<dt>
-				<a href="/money/story/5607/5614626?from=edn_catenewest_story" target="_parent">航運股領跌台股重挫260.51點 三大法人賣超357.92億</a>
+				<a href="/money/story/5607/5153236?from=edn_catenewest_story" target="_parent">臺灣半導體指數 上線</a>
 			</dt>
 					<dt>
-				<a href="/money/story/5607/5614577?from=edn_catenewest_story" target="_parent">陽明跌破現增價 賠錢的是這兩類人</a>
+				<a href="/money/story/5607/5153380?from=edn_catenewest_story" target="_parent">績優中小電子股 強勢</a>
 			</dt>
 					<dt>
-				<a href="/money/story/5607/5614548?from=edn_catenewest_story" target="_parent">三大法人賣超台股357.92億元</a>
+				<a href="/money/story/5607/5153388?from=edn_catenewest_story" target="_parent">穎崴競拍熱 明開放申購</a>
 			</dt>
 					<dt>
-				<a href="/money/story/5607/5614344?from=edn_catenewest_story" target="_parent">台股大跌260點失守17600點  電金傳軟腳</a>
+				<a href="/money/story/5607/5153945?from=edn_catenewest_story" target="_parent">台股巨震 爆5,339億天量</a>
 			</dt>
 					<dt>
-				<a href="/money/story/5607/5614258?from=edn_catenewest_story" target="_parent">台股大跌260點月線失守 生技股獨紅</a>
+				<a href="/money/story/5607/5153944?from=edn_catenewest_story" target="_parent">零股交易 爆近23億大量</a>
 			</dt>
 			</dl>
 </div>
 <!-- /#news_break_body --></div>
+<!-- /#mag_topic -->		                                           
+			<div class='area only_web' >
+			<h3>
+							<!--<a href="javascript:void(0);"></a>-->
+				商情快訊				<a href="http://money.udn.com/money/cate/5597" title="more" class="more" target=""></a>
+						
+		</h3>
+		 <iframe width="298" height="205" src="https://p.udn.com.tw/upf/2015_money/biz/money_5997.htm"  frameborder="0" scrolling="no" marginwidth="0"></iframe>
+</div>
 <!-- /#mag_topic -->		                                           
 			<div class='area only_web' >
 			<h3>
@@ -3715,7 +3835,7 @@ googletag.cmd.push(function() { googletag.display('div-gpt-ad-1524818828734-4');
             
 		<b>產業</b>
 			<dd><a href="//money.udn.com/money/cate/5591?from=edn_sitemap#sub_5612" target="_blank">產業熱點</a></dd>
-			<dd><a href="//money.udn.com/money/cate/5591?from=edn_sitemap#sub_121824" target="_blank">台中韓大戰</a></dd>
+			<dd><a href="//money.udn.com/money/cate/5591?from=edn_sitemap#sub_121824" target="_blank">護國神山</a></dd>
 			<dd><a href="//money.udn.com/money/cate/5591?from=edn_sitemap#sub_12524" target="_blank">消費生活</a></dd>
 			<dd><a href="//money.udn.com/money/cate/5591?from=edn_sitemap#sub_6709" target="_blank">職場風向</a></dd>
 			<dd><a href="//money.udn.com/money/cate/5591?from=edn_sitemap#sub_12825" target="_blank">創業之星</a></dd>
@@ -3893,12 +4013,12 @@ googletag.cmd.push(function() { googletag.display('div-gpt-ad-1524818828734-4');
 
 		<dt>
 		<dl>
-		<b><a href="https://money.udn.com/about" target="_blank" style="font-weight: 800;">經濟日報財經媒體集團</a></b>
-			<dd><a href="https://money.udn.com/about/#introduction" target="_blank">簡介</a></dd>	
-			<dd><a href="https://money.udn.com/forum/" target="_blank">論壇活動總覽</a></dd>	
-			<dd><a href="https://money.udn.com/about/#event" target="_blank">近十年大事紀</a></dd>	
-			<dd><a href="https://money.udn.com/about/#app" target="_blank">經濟App</a></dd>	
-			<dd><a href="https://money.udn.com/about/#contactus" target="_blank">聯絡我們</a></dd>
+		<b><a href="https://money.udn.com/about/?from=edn_sitemap" target="_blank" style="font-weight: 800;">經濟日報財經媒體集團</a></b>
+			<dd><a href="https://money.udn.com/about/#introduction?from=edn_sitemap" target="_blank">簡介</a></dd>	
+			<dd><a href="https://money.udn.com/forum/?from=edn_sitemap" target="_blank">論壇活動總覽</a></dd>	
+			<dd><a href="https://money.udn.com/about/#event?from=edn_sitemap" target="_blank">近十年大事紀</a></dd>	
+			<dd><a href="https://money.udn.com/about/#app?from=edn_sitemap" target="_blank">經濟App</a></dd>	
+			<dd><a href="https://money.udn.com/about/#contactus?from=edn_sitemap" target="_blank">聯絡我們</a></dd>
 			<dd><a href="https://goo.gl/EWjYU4" target="_blank">原版報紙資料庫</a></dd>
 			<dd><a href="https://goo.gl/VTwHvw" target="_blank">電子報紙</a></dd>
 			<dd><a href="https://goo.gl/bMHDdZ" target="_blank">訂閱優惠</a></dd>
@@ -3965,9 +4085,9 @@ googletag.cmd.push(function() { googletag.display('div-gpt-ad-1524818828734-4');
 <div id="bottomAd" class="only_mobile">
 	<style>
 #bottomAd {
-  // display:none!important;
+  display:none!important;
   height:auto;
-  // opacity:0;
+  opacity:0;
   transition:all 0.3s linear;
 }
 #bottomAd.show {

@@ -8,7 +8,7 @@ using System.Linq;
 #if (DEBUG)
 namespace StockCrawler.UnitTest.Jobs
 {
-    //[TestClass]
+    [TestClass]
     public class StockForumsUpdateJobTests : UnitTestBase
     {
         [TestInitialize]
@@ -52,7 +52,6 @@ namespace StockCrawler.UnitTest.Jobs
                 foreach (var d in data2)
                 {
                     _logger.DebugFormat("{0}\t{1}\t{2}", d.StockNo, d.Subject, d.Url);
-                    Assert.IsFalse(d.Subject.StartsWith("[新聞]"));
                     Assert.AreEqual(StockHelper.GetStock(d.StockNo).StockName, d.StockName, StockHelper.GetStock(d.StockNo).StockName);
                 }
             }

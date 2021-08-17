@@ -1,4 +1,4 @@
-<!--getArticle 0.0096 --><!--hottest_news long cache--><!--getReporter 0.0047 --><!--extend_news 0.0008 --><!-- enter else --><!-- 554 --><!--related_news 0.0248 --><!--content 0.2021 --><!--ad_1 0.0236 --><!--ad 0.0679 --><!--view_type 0.0000 --><!--meta 0.0020 --><!--family_bar 0.0006 --><!--family_bar sub  --><!--breaking_news 0.0012 --><!--top 0.0034 --><!--bottom 0.0026 --><!--nav 0.0000 --><!--code 0.2859 --><!DOCTYPE html>
+<!--getArticle 0.0008 --><!--hottest_news 0.0112 --><!--getReporter 0.0042 --><!--extend_news 0.0008 --><!-- enter else --><!-- 25 --><!--related_news 0.0845 --><!--content 0.1751 --><!--ad_1 0.0218 --><!--ad 0.1689 --><!--view_type 0.0000 --><!--meta 0.0137 --><!--family_bar 0.0049 --><!--family_bar sub  --><!--breaking_news 0.0009 --><!--top 0.0103 --><!--bottom 0.0089 --><!--nav 0.0000 --><!--code 0.3826 --><!DOCTYPE html>
 <html lang="zh-TW">
 <head>
 <!--
@@ -46,6 +46,8 @@
 <meta name="sub_id" content="7253">
 <meta name="art_id" content="5146905">
 
+<!-- for udn track -->
+<meta name="list-image" content="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/04/realtime/10700345.jpg&s=Y&x=0&y=5&sw=799&sh=532&exp=3600" /> 
 
 
 
@@ -88,19 +90,18 @@
   <!--<link href="https://s.udn.com.tw/static/font-icons/css/fontello.css" rel="stylesheet" type="text/css">
   <link href="https://s.udn.com.tw/static/font-icons/css/animation.css" rel="stylesheet" type="text/css"> -->
     
-<link rel="preload" href="/static/js/vendor.bundle.js?202107191012" as="script">
-<link rel="preload" href="/static/js/story.bundle.js?202107191012" as="script">
+<link rel="preload" href="/static/js/vendor.bundle.js?202101051231" as="script">
+<link rel="preload" href="/static/js/story.bundle.js?202101051231" as="script">
 <!-- #Location: /inc/meta/cssjs_preload -->
   
-    <!--<link href="https://s.udn.com.tw/static/font-icons/css/fontello.css" rel="stylesheet" type="text/css">-->
-<link href="https://s.udn.com.tw/static/font-icons/css/fontello.css?202107191012" rel="stylesheet" type="text/css">
-<link href="https://s.udn.com.tw/static/font-icons/css/animation.css?202107191012" rel="stylesheet" type="text/css">
-<link href="/static/css/google-dfp-native.css?202107191012" rel="stylesheet" type="text/css">
-<link href="/static/css/story.css?202107191012" rel="stylesheet" type="text/css">
+    <link href="https://s.udn.com.tw/static/font-icons/css/fontello.css?202101051231" rel="stylesheet" type="text/css">
+<link href="https://s.udn.com.tw/static/font-icons/css/animation.css?202101051231" rel="stylesheet" type="text/css">
+<link href="/static/css/google-dfp-native.css?202101051231" rel="stylesheet" type="text/css">
+<link href="/static/css/story.css?202101051231" rel="stylesheet" type="text/css">
 
-<script src="/static/js/vendor_head.bundle.js?202107191012" ></script>
-<script src="/static/js/utils_head.bundle.js?202107191012" ></script>
-<script src="/static/js/google-dfp-native.js?202107191012" ></script>
+<script src="/static/js/vendor_head.bundle.js?202101051231" ></script>
+<script src="/static/js/utils_head.bundle.js?202101051231" ></script>
+<script src="/static/js/google-dfp-native.js?202101051231" ></script>
 <!-- #Location: /inc/meta/cssjs_header -->
 <!--[if lt IE 9]><script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
     <script>
@@ -146,7 +147,7 @@ google_id = google_id.substring(0,google_id.length-1);
 //if (typeof _ga !== 'undefined') var google_id = _ga.split(".")[2]+'.'+_ga.split(".")[3];
 //else var google_id = '__';
 var user_id = getCookie("udnland");
-if (typeof user_id === 'undefined') user_id = '';
+if (typeof user_id === 'undefined') user_id = 'noset';
 var etu_id = getCookie("__eruid");
 
 console.log('1.   etu_id: '+etu_id);
@@ -177,6 +178,105 @@ el.parentNode.insertBefore(s, el);
 </noscript>
 <!-- End comScore Tag -->
 <!-- #Location: /inc/meta/trace_comScore -->
+<script id="etu-recommender" type="text/javascript">
+	function getLocation(){
+		if (navigator.geolocation){
+			navigator.geolocation.getCurrentPosition(getCurrentPosition, errorCallback ,positionOptions);
+		}else{
+			//alert("此瀏覽器不支援 Geolocation");
+			return;
+		}
+	}
+
+	var ua = navigator.userAgent || navigator.vendor || window.opera;
+	if ( (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1) ) {}
+	else if ( ua.indexOf("Twitter") > -1 ) {}
+	else if ( ua.indexOf("Line") > -1 ) {}
+	else if ( ua.indexOf("Safari") > -1 && ua.indexOf("Chrome") == -1) {}
+	else getLocation();
+
+	var latitude = '';
+	var longitude = '';
+	var latCookieName = 'latitude';
+	var lonCookieName = 'longitude';
+	var latValue = getCookie(latCookieName);
+	var lonValue = getCookie(lonCookieName);
+	if(latValue != null && latValue.length > 0){
+		latitude = latValue;
+	}
+	if(lonValue != null && lonValue > 0){
+		longitude = lonValue;
+	}
+	function getCurrentPosition(position){
+		console.log("pos:"+position);
+		latitude = position.coords.latitude;
+		longitude = position.coords.longitude;
+		//domready(function() {
+		//	$.cookie(latCookieName, latitude, { path: '/', expires: 1/24/2});
+		//	$.cookie(lonCookieName, longitude, { path: '/', expires: 1/24/2});
+		//});
+	}
+	//選用項目
+	var positionOptions = {
+		enableHighAccuracy: false,//高準確度
+		timeout: 15000, //瀏覽器判斷位置時可用的時間長短。
+		maximumAge: 0 //瀏覽器必需重新計算位置的最大時限
+	};
+	//錯誤處理器
+	function errorCallback( error ) {
+		// 不處理
+		console.log("errPos:");
+		console.log(error);
+	}
+
+	var sereff = '';
+	if (document.referrer != "http://"+location.host+"/" || document.referrer != "http://"+location.host+"/index.html") {
+		sereff = document.referrer;
+	}
+	else {
+		sereff = getCookie('dreffer');
+	}
+	console.log('referrer: '+sereff);
+
+	var atid = rId();	
+	var erUrlPrefix = 'https://rec.udn.com/';
+	var logicid = 'ER_news_w_article_01';
+
+	//console.log('erUrlPrefix: '+erUrlPrefix);
+
+	var _qevents = _qevents || [];
+	var etuData = {
+		group : 'udn',
+		cid : 'udn_hard',
+		act : 'view',
+		cat : ['news','cms','6645,股市','7253,上市電子','7253,上市電子'],
+		uid : user_id,
+		bid : '',
+		pid : atid,
+		page :'ARTICLE',
+		title: '大摩估台積電上月營收1,300億元 挑戰新高',
+		etulogic: logicid,
+		Rank_cat:'0',
+		Rank_pid:'20',
+		tag:["營收","台積電"],
+		keywords:[],
+		referral : sereff,
+		lat : getCookie(latCookieName),
+		lon : getCookie(lonCookieName)
+	};
+	_qevents.push(etuData);
+
+	(function() {
+		var er = document.createElement('script');
+		er.type = 'text/javascript';
+		//er.async = true;
+		er.defer = true;
+		er.src = erUrlPrefix + 'er.js?' + (new Date().getTime());
+		var currentJs = document.getElementById('etu-recommender');
+		currentJs.parentNode.insertBefore(er, currentJs);
+	})();
+</script>
+<!-- #Location: /inc/meta/trace_etu -->
 <!-- Data Layer -->
 <script>
 dataLayer = [{
@@ -279,28 +379,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- #Location: /inc/meta/structured_schemaorg_nav -->
 <!-- #Location: /inc/meta/structured -->
 
-  <!-- taboola desktop after comment -->
-<script type="text/javascript">
-  window._taboola = window._taboola || [];
-  window.__UDN__.isMobile = window.innerWidth < 767;
-  var taboolaScriptRoute = window.__UDN__.isMobile ? 'udntw2-udnmobile' : 'udntw-udndesktop';
-  console.log('isMobile', window.__UDN__.isMobile);
-  _taboola.push({article:'auto'});
-  !function (e, f, u, i) {
-    if (!document.getElementById(i)){
-      e.async = 1;
-      e.src = u;
-      e.id = i;
-      f.parentNode.insertBefore(e, f);
-    }
-  }(document.createElement('script'),
-  document.getElementsByTagName('script')[0],
-  '//cdn.taboola.com/libtrc/' + taboolaScriptRoute + '/loader.js',
-  'tb_loader_script');
-  if(window.performance && typeof window.performance.mark == 'function')
-    {window.performance.mark('tbl_ic');}
-</script>
-<!-- 20180717 要塞進 DFP key-value 的 client id -->
+  <!-- 20200623 for DFP key-value -->
 <script>
     console.log('DFP clientId: '+google_id);
     console.log('DFP eruId: '+etu_id);
@@ -309,6 +388,51 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <!-- 20181204 -->
 <!-- 20180913 Prebid 0628 0723 0904-->
+<!-- Prebid and Criteo CDB Combined Section START -->
+<script>
+    // timeout config for both PREBID and CRITEO CDB
+    var HB_TIMEOUT = 1500;
+    var PREBID_TIMEOUT = HB_TIMEOUT;
+    var CRITEO_CDB_TIMEOUT = HB_TIMEOUT;
+    var prebidTargerting = false;
+    // callback function, No Need to Edit
+    window.hb_status = {
+        n_adserver_callback: [],
+        adserverRequestSent: false
+    };
+    var n_adserver_callback = 0;
+    var adServerCallback = function (source) {
+        if (window.hb_status.adserverRequestSent) return;
+        // add source to the processed list
+        window.hb_status.n_adserver_callback.push(source);
+        if (source == 'prebid') {
+            googletag.cmd.push(function () {
+                pbjs.que.push(function () {
+                    prebidTargerting = true;
+                    pbjs.setTargetingForGPTAsync();
+                });
+            });
+        } else if (source == 'criteo') {
+            googletag.cmd.push(function () {
+                Criteo.SetDFPKeyValueTargeting();
+            });
+        }
+        if (window.hb_status.n_adserver_callback.length >= 2 || "timeout" == source) {
+            console.log('timeout check', window.hb_status.n_adserver_callback, source);
+            googletag.cmd.push(function () {
+                if (!prebidTargerting) {
+                    pbjs.que.push(function() { 
+                        pbjs.setTargetingForGPTAsync(); 
+                    })
+                }
+                // pbjs.setTargetingForGPTAsync();
+                googletag.pubads().refresh();
+                window.hb_status.adserverRequestSent = true;
+            });
+        };
+    }
+</script>
+<!-- Prebid and Criteo CDB Combined Section END-->
 
 <!-- Prebid Config Section START -->
 <!-- Make sure this is inserted before your GPT tag -->
@@ -333,8 +457,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     bidder: 'bridgewell',
                     labelAny: ['display'],
                     params: {
-                        //ChannelID: 'CgUxNzk3MxIBMRoENDczMSIJdWRucHJlYmlkKgwIygcQ-gEaAjE2IAE4AA'
-                        cid: 17973
+                        ChannelID: 'CgUxNzk3MxIBMRoENDczMSIJdWRucHJlYmlkKgwIygcQ-gEaAjE2IAE4AA'
                     }
                 },{
                     bidder: 'openx',
@@ -360,11 +483,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                             //additional parameters here
                         }
                     }
-                },{
-                  bidder: 'criteo', 
-                  params: {
-                    networkId: 4424
-                  }
                 }]
             }, {
                 // 大佈告版位
@@ -385,8 +503,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     bidder: 'bridgewell',
                     labelAny: ['display'],
                     params: {
-                        //ChannelID: 'CgUxNzk3NBIBMRoENDczMSIJdWRucHJlYmlkKgsIrAIQ2AQaATYgATgA'
-                        cid: 17974
+                        ChannelID: 'CgUxNzk3NBIBMRoENDczMSIJdWRucHJlYmlkKgsIrAIQ2AQaATYgATgA'
                     }
                 },{
                     bidder: 'openx',
@@ -412,11 +529,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                             //additional parameters here
                         }
                     }
-                },{
-                  bidder: 'criteo', 
-                  params: {
-                    networkId: 4424
-                  }
                 }]
             }, {
                 // PC延伸閱讀三
@@ -430,8 +542,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     bidder: 'bridgewell',
                     labelAny: ['display'],
                     params: {
-                        //ChannelID: 'CgUxODIwNhIBMRoENDczMSIJdWRucHJlYmlkKgsIrAIQ-gEaATkgATgA'
-                        cid: 18206
+                        ChannelID: 'CgUxODIwNhIBMRoENDczMSIJdWRucHJlYmlkKgsIrAIQ-gEaATkgATgA'
                     }
                 },{
                     bidder : 'aol',
@@ -455,8 +566,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     bidder: 'bridgewell',
                     labelAny: ['display'],
                     params: {
-                        //ChannelID: 'CgUxODIwNxIBMRoENDczMSIJdWRucHJlYmlkKgsIrAIQ-gEaATkgATgA'
-                        cid: 18207
+                        ChannelID: 'CgUxODIwNxIBMRoENDczMSIJdWRucHJlYmlkKgsIrAIQ-gEaATkgATgA'
                     }
                 },{
                     bidder : 'aol',
@@ -495,8 +605,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     bidder: 'bridgewell',
                     labelAny: ['display'],
                     params: {
-                        //ChannelID: 'CgUxNTc5MRIBMRoENDczMSIJdWRucHJlYmlkKgsIrAIQ-gEaATkgAQ'
-                        cid: 18752
+                        ChannelID: 'CgUxNTc5MRIBMRoENDczMSIJdWRucHJlYmlkKgsIrAIQ-gEaATkgAQ'
                     }
                 },{
                     bidder: 'openx',
@@ -514,11 +623,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                             //additional parameters here
                         }
                     }
-                },{
-                  bidder: 'criteo', 
-                  params: {
-                    networkId: 4424
-                  }
                 }]
             }, {
                 // PC_精準版位_1
@@ -547,8 +651,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     bidder: 'bridgewell',
                     labelAny: ['display'],
                     params: {
-                        //ChannelID: 'CgUxNTgxNhIBMRoENDczMSIJdWRucHJlYmlkKgsIrAIQ-gEaATkgAQ'
-                        cid: 18753
+                        ChannelID: 'CgUxNTgxNhIBMRoENDczMSIJdWRucHJlYmlkKgsIrAIQ-gEaATkgAQ'
                     }
                 },{
                     bidder: 'openx',
@@ -566,11 +669,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                             //additional parameters here
                         }
                     }
-                },{
-                  bidder: 'criteo', 
-                  params: {
-                    networkId: 4424
-                  }
                 }]
             }, {
                 // PC_精準版位_2
@@ -599,8 +697,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     bidder: 'bridgewell',
                     labelAny: ['display'],
                     params: {
-                        //ChannelID: 'CgUxNTgxNxIBMRoENDczMSIJdWRucHJlYmlkKgsIrAIQ-gEaATkgAQ'
-                        cid: 18754
+                        ChannelID: 'CgUxNTgxNxIBMRoENDczMSIJdWRucHJlYmlkKgsIrAIQ-gEaATkgAQ'
                     }
                 },{
                     bidder: 'openx',
@@ -618,11 +715,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                             //additional parameters here
                         }
                     }
-                },{
-                  bidder: 'criteo', 
-                  params: {
-                    networkId: 4424
-                  }
                 }]
             }, {
                 // Mobile_頭版大佈告
@@ -643,8 +735,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     bidder: 'bridgewell',
                     labelAny: ['phone'],
                     params: {
-                        //ChannelID: 'CgUxNzk3NRIBMRoENDczMSIJdWRucHJlYmlkKgsIrAIQ-gEaATkgATgA'
-                        cid: 17975
+                        ChannelID: 'CgUxNzk3NRIBMRoENDczMSIJdWRucHJlYmlkKgsIrAIQ-gEaATkgATgA'
                     }
                 },{
                     bidder: 'openx',
@@ -662,11 +753,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                             //additional parameters here
                         }
                     }
-                },{
-                  bidder: 'criteo', 
-                  params: {
-                    networkId: 4424
-                  }
                 }]
             }, {
                 // Mobile_文中大佈告
@@ -695,8 +781,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     bidder: 'bridgewell',
                     labelAny: ['phone'],
                     params: {
-                        //ChannelID: 'CgUxNzk3NhIBMRoENDczMSIJdWRucHJlYmlkKgsIrAIQ-gEaATkgATgA'
-                        cid: 17976
+                        ChannelID: 'CgUxNzk3NhIBMRoENDczMSIJdWRucHJlYmlkKgsIrAIQ-gEaATkgATgA'
                     }
                 },{
                     bidder: 'openx',
@@ -714,11 +799,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                             //additional parameters here
                         }
                     }
-                },{
-                  bidder: 'criteo', 
-                  params: {
-                    networkId: 4424
-                  }
                 }]
             }, {
                 // Mobile_文末大佈告
@@ -747,8 +827,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     bidder: 'bridgewell',
                     labelAny: ['phone'],
                     params: {
-                        //ChannelID: 'CgUxNTgyMBIBMRoENDczMSIJdWRucHJlYmlkKgsIrAIQ-gEaATkgAQ'
-                        cid: 18755
+                        ChannelID: 'CgUxNTgyMBIBMRoENDczMSIJdWRucHJlYmlkKgsIrAIQ-gEaATkgAQ'
                     }
                 },{
                     bidder: 'openx',
@@ -766,15 +845,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                             //additional parameters here
                         }
                     }
-                },{
-                  bidder: 'criteo', 
-                  params: {
-                    networkId: 4424
-                  }
                 }]
             }, {
                 // Mobile_置底廣告
-                code: 'stickyAds',
+                code: 'ads_Mobile_sticky',
                 mediaTypes: {
                     banner: {
                         sizes: [[320, 50]],
@@ -789,17 +863,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                             //additional parameters here
                         }
                     }
-                },{
-                    bidder: 'bridgewell',
-                    labelAny: ['phone'],
-                    params: {
-                        cid: 18756
-                    }
-                },{
-                  bidder: 'criteo', 
-                  params: {
-                    networkId: 4424
-                  }
                 }]
             }];
     var pbjs = pbjs || {};
@@ -808,16 +871,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- Prebid Config Section END -->
 
 <!-- Prebid Boilerplate Section START. No Need to Edit. -->
+<!-- <script type="text/javascript" src='https://s.udn.com.tw/prebid.js' async></script> -->
+<!-- <script src="https://p.udn.com.tw/upf/static/common/prebid.js?1" async></script> -->
 <!-- <script async='async' src='https://p.udn.com.tw/upf/static/common/prebid20200204.js'></script> -->
 <!-- <script async='async' src='https://p.udn.com.tw/upf/static/common/prebid20200409.js?1'></script> -->
-<!-- <script async='async' src='https://p.udn.com.tw/upf/static/common/prebid4.7.0_20200918.js'></script> -->
-<!-- <script async='async' src='https://p.udn.com.tw/upf/static/common/prebid4.30.0_202103.js'></script> -->
-<!-- <script async='async' src='https://p.udn.com.tw/upf/static/common/prebid4.31.0_20210322.js'></script> -->
-<script async='async' src='https://p.udn.com.tw/upf/static/common/prebid4.35.0_20210415.js'></script>
-
+<script async='async' src='https://p.udn.com.tw/upf/static/common/prebid4.7.0_20200918.js'></script>
 <script>
-    //var PREBID_TIMEOUT = 1500;
-    var PREBID_TIMEOUT = 800;
     var googletag = googletag || {};
     googletag.cmd = googletag.cmd || [];
     googletag.cmd.push(function () {
@@ -830,7 +889,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         enableSendAllBids: true, // Default will be `true` as of 1.0
     sizeConfig: [{
         'mediaQuery': '(min-width: 767px)',
-        'sizesSupported': [[1024,768], [970,250], [970,90], [800,600], [768,1024], [728,90], [640,360], [480,360], [480,320], [480,270], [480,60], [336,280], [320,480], [320,100], [320,50], [300,1050], [300,600], [300,250], [300,276], [300,100], [320,50], [300,75], [300,50], [250,250], [240,400], [160,600], [1,1]],
+        'sizesSupported': [[1024,768], [970,250], [970,90], [800,600], [768,1024], [728,90], [640,360], [480,360], [480,320], [480,270], [480,60], [336,280], [320,480], [320,100], [320,50], [300,1050], [300,600], [300,250], [300,100], [320,50], [300,75], [300,50], [250,250], [240,400], [160,600], [1,1]],
         'labels': ['display']
         }, {
         'mediaQuery': '(min-width: 0px) and (max-width: 767px)',
@@ -848,26 +907,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     };
     pbjs.addAdUnits(adUnits);
     pbjs.requestBids({
-        bidsBackHandler: function () {sendAdServerRequest}
+        bidsBackHandler: function () {adServerCallback('prebid')}
     });
     });
     setTimeout(function () {
-      sendAdServerRequest();
+        adServerCallback('timeout');
     }, PREBID_TIMEOUT);
-  
-    function sendAdServerRequest() {
-      if (pbjs.adserverRequestSent) return;
-      pbjs.adserverRequestSent = true;
-      googletag.cmd.push(function () {
-        pbjs.que.push(function () {
-          pbjs.setTargetingForGPTAsync();
-          googletag.pubads().refresh();
-        });
-      });
-    }
 </script>
 <!-- Prebid Boilerplate Section END -->
 
+<!-- 20200511更新新criteo設定 起 -->
+<!-- BEGIN CRITEO CDB -->
+<script async='async' type="text/javascript" src="https://static.criteo.net/js/ld/publishertag.js"></script>
+<script>
+    window.Criteo = window.Criteo || {};
+    window.Criteo.events = window.Criteo.events || [];
+</script>
+<!-- END CRITEO CDB -->
+<!-- 20200511更新新criteo設定 止 -->
+
+<!-- <script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script> -->
 <script async='async' src='https://securepubads.g.doubleclick.net/tag/js/gpt.js'></script>
 <script>
     //var googletag = googletag || {};
@@ -879,13 +938,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </script>
     
 <script>
+    /*ga(function(tracker) {
+        var clientId = tracker.get('clientId');
+        console.log('clientId: '+clientId);
+    });*/
+
     googletag.cmd.push(function() {
     
     /* 尺寸設定 */
     /* 唯網頁呈現 */
 
     var ads_pcfluid = googletag.sizeMapping().
-        addSize([1280, 200], ['fluid']).
+        addSize([1024, 200], ['fluid']).
         addSize([0, 0], []).
 		build();
 
@@ -909,11 +973,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         addSize([0, 0], []).
         build();
 
-    var ads_SP_300x250 = googletag.sizeMapping().
-        //addSize([1024, 200], [[1, 1], [300, 250], 'fluid']).
-        addSize([0, 0], [300, 250]).
-        build();
-
     var ads_news_txtdown = googletag.sizeMapping().
         //addSize([1024, 200], ['fluid']).
         addSize([0, 0], [[1, 1], 'fluid']).
@@ -931,11 +990,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     var ads_news_extend_mb = googletag.sizeMapping().
         addSize([1024, 200], []).
-        addSize([0, 0], [[1, 1], [320, 100], [350, 110], 'fluid']).
+        addSize([0, 0], [[1, 1], 'fluid']).
         build();
 
+
     var ads_news_hottest = googletag.sizeMapping().
-        addSize([1024, 200], [[1, 1], [300, 50], 'fluid']).
+        addSize([1024, 200], ['fluid']).
         addSize([0, 0], []).
         build();
 
@@ -947,7 +1007,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     /*
     var ads_news_related = googletag.sizeMapping().
         addSize([1024, 200], [[300, 250], 'fluid']).
-        addSize([0, 0], [[1, 1], 'fluid']).
+        addSize([0, 0], ['fluid']).
         build();
 
     var ads_news_related_banner = googletag.sizeMapping().
@@ -957,7 +1017,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     */
 
     var ads_idle = googletag.sizeMapping().
-        addSize([1024, 200], [970, 250]).
+        addSize([1024, 200], [[970, 250], 'fluid']).
         addSize([0, 0], []).
         build(); 
 
@@ -998,7 +1058,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     /* (ads_superBanner) */
     /* CMS -- 【新聞網_2020】PC_SuperBanner_970x250 (google DFP) google拆code */
-    googletag.defineSlot('/129853887/udn.com/2_News/3_News-PC/4_News-PC-a06', [[970, 90], [970, 250], [970, 400], 'fluid'], 'ads-superBanner').defineSizeMapping(ads_superBanner).setCollapseEmptyDiv(true).addService(googletag.pubads());
+    googletag.defineSlot('/129853887/udn.com/2_News/3_News-PC/4_News-PC-a06', [[970, 1], [970, 90], [970, 250], [970, 400], 'fluid'], 'ads-superBanner').defineSizeMapping(ads_superBanner).setCollapseEmptyDiv(true).addService(googletag.pubads());
     
 
     /* (ads_billboard) */
@@ -1008,7 +1068,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     
     /* (ads_billboard_300x250) */
     /* CMS -- 【新聞網_2020】PC_Billboard_多媒體_300x250 (google DFP) google拆code */
-    googletag.defineSlot('/129853887/udn.com/2_News/3_News-PC/4_News-PC-a03', [[300, 250], [1, 1], 'fluid'], 'ads-recommendation-300x250').defineSizeMapping(ads_billboard_300x250).setCollapseEmptyDiv(true).addService(googletag.pubads());
+    googletag.defineSlot('/129853887/udn.com/2_News/3_News-PC/4_News-PC-a03', [[300, 250], 'fluid'], 'ads-recommendation-300x250').defineSizeMapping(ads_billboard_300x250).setCollapseEmptyDiv(true).addService(googletag.pubads());
     /* CMS -- 【新聞網_2020】PC_猜你喜歡&精準1&精準2&內頁大佈告A&內頁大佈告B_300x250 (google DFP) google拆code */
     googletag.defineSlot('/129853887/udn.com/2_News/3_News-PC/4_News-PC-a04', [300, 250], 'ads-300x250-1').defineSizeMapping(ads_billboard_300x250).setCollapseEmptyDiv(true).addService(googletag.pubads());
     /* CMS -- 【新聞網_2020】PC_猜你喜歡&精準1&精準2&內頁大佈告A&內頁大佈告B_300x250 (google DFP) google拆code */
@@ -1017,13 +1077,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     googletag.defineSlot('/4576170/free-1_News-PC-a03', [300, 250], 'ads-300x250-side-3').defineSizeMapping(ads_billboard_300x250).setCollapseEmptyDiv(true).addService(googletag.pubads());
     /* CMS -- 【新聞網_2020】PC_猜你喜歡&精準1&精準2&內頁大佈告A&內頁大佈告B_300x250 (google DFP) google拆code */
     googletag.defineSlot('/4576170/free-1_News-PC-a04', [300, 250], 'ads-300x250-sponsor-list-2').defineSizeMapping(ads_billboard_300x250).setCollapseEmptyDiv(true).addService(googletag.pubads());
-
-
-    /* (ads_SP_300x250) */
     /* CMS -- 【新聞網_2020】PC_贊助廣告_300x250 (google DFP) google拆code */
-    googletag.defineSlot('/129853887/udn.com/2_News/3_News-PC/4_News-PC-a09', [300, 250], 'ads-SP300x259_L').defineSizeMapping(ads_SP_300x250).setCollapseEmptyDiv(true).addService(googletag.pubads());
+    googletag.defineSlot('/129853887/udn.com/2_News/3_News-PC/4_News-PC-a09', [300, 250], 'ads-SP300x259_L').defineSizeMapping(ads_billboard_300x250).setCollapseEmptyDiv(true).addService(googletag.pubads());
     /* CMS -- 【新聞網_2020】PC_贊助廣告_300x250 (google DFP) google拆code */
-    googletag.defineSlot('/129853887/udn.com/2_News/3_News-PC/4_News-PC-a10', [300, 250], 'ads-SP300x259_R').defineSizeMapping(ads_SP_300x250).setCollapseEmptyDiv(true).addService(googletag.pubads());
+    googletag.defineSlot('/129853887/udn.com/2_News/3_News-PC/4_News-PC-a10', [300, 250], 'ads-SP300x259_R').defineSizeMapping(ads_billboard_300x250).setCollapseEmptyDiv(true).addService(googletag.pubads());
 
     
     /* (ads_news_txtdown) */
@@ -1037,7 +1094,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     /* CMS -- 【閒置頁面無CMS位置】 */
     /* window.idle_slot1 = googletag.defineSlot('/4576170/idle_Native', [[380, 120], 'fluid'], 'idle-1').defineSizeMapping(ads_idle).setCollapseEmptyDiv(true).addService(googletag.pubads()); */
     /* window.idle_slot2 = googletag.defineSlot('/4576170/idle_Native', [[380, 120], 'fluid'], 'idle-2').defineSizeMapping(ads_idle).setCollapseEmptyDiv(true).addService(googletag.pubads()); */
-    window.idle_slot1 = googletag.defineSlot('/4576170/idle_Native', [970, 250], 'idle-1').defineSizeMapping(ads_idle).setCollapseEmptyDiv(true).addService(googletag.pubads());
+    window.idle_slot1 = googletag.defineSlot('/4576170/idle_Native', [[970, 250], 'fluid'], 'idle-1').defineSizeMapping(ads_idle).setCollapseEmptyDiv(true).addService(googletag.pubads());
 
 
     /* (ads_news_extend) */
@@ -1060,12 +1117,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     googletag.defineSlot('/4576170/news_WelcomeVideo_MEDICAL', [[1, 1], 'fluid'], 'desktopSticky').defineSizeMapping(ads_pc_welcomevideo).setCollapseEmptyDiv(true).addService(googletag.pubads());
 
 
+
     /* (ads_news_hottest) */
     /* CMS -- 【新聞網_2020】熱門新聞第六則_PC (免費版 google DFP) google拆code */
-    googletag.defineSlot('/4576170/free-1_News-PC-a13', [[1, 1], [300, 50], 'fluid'], 'div-gpt-ad-1602729579465-0').defineSizeMapping(ads_news_hottest).setCollapseEmptyDiv(true).addService(googletag.pubads());
+    googletag.defineSlot('/4576170/free-1_News-PC-a13', ['fluid'], 'div-gpt-ad-1602729579465-0').defineSizeMapping(ads_news_hottest).setCollapseEmptyDiv(true).addService(googletag.pubads());
     /* (ads_news_hottest_mb) */
     /* CMS -- 【新聞網_2020】熱門新聞第六則_Mobile (免費版 google DFP) google拆code */
-    /* googletag.defineSlot('/4576170/free-1_News-PC-a13', ['fluid'], 'div-gpt-ad-1602729579465-1').defineSizeMapping(ads_news_hottest_mb).setCollapseEmptyDiv(true).addService(googletag.pubads()); */
+    googletag.defineSlot('/4576170/free-1_News-PC-a13', ['fluid'], 'div-gpt-ad-1602729579465-1').defineSizeMapping(ads_news_hottest_mb).setCollapseEmptyDiv(true).addService(googletag.pubads());
+
 
 
 	/* (ads_Mobile_cover) */
@@ -1089,7 +1148,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     /* (ads_news_related) */
     /* CMS -- 【新聞網_2020】PC&Mobile 相關新聞_3 (免費版 google DFP) google拆code */
-    /* googletag.defineSlot('/4576170/free-1_News-PC-a05', [[1, 1], [300, 250], 'fluid'], 'ads-native_related-3').defineSizeMapping(ads_news_related).setCollapseEmptyDiv(true).addService(googletag.pubads()); */
+    /* googletag.defineSlot('/4576170/free-1_News-PC-a05', [[300, 250], 'fluid'], 'ads-native_related-3').defineSizeMapping(ads_news_related).setCollapseEmptyDiv(true).addService(googletag.pubads()); */
 	/* CMS -- 【新聞網_2020】PC&Mobile 相關新聞_8 (免費版 google DFP) google拆code */
     /* googletag.defineSlot('/4576170/free-1_News-PC-a07', [[300, 250], 'fluid'], 'ads-native_related-8').defineSizeMapping(ads_news_related).setCollapseEmptyDiv(true).addService(googletag.pubads()); */
 	/* CMS -- 【新聞網_2020】PC&Mobile 相關新聞_13 (免費版 google DFP) google拆code */
@@ -1106,10 +1165,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     /* CMS -- 【新聞網_2020】Andbeyond 1x1 (免費版) */
     googletag.defineSlot('/4576170/free-1_News-PC-a12', [1, 1], 'ads-Andbeyond').defineSizeMapping(ads_news_Andbeyond).setCollapseEmptyDiv(true).addService(googletag.pubads());
 
+    
+    /* Criteo Section BEGIN */ 
+    Criteo.events.push(function () {
+      Criteo.RequestBidsOnGoogleTagSlots(4424, function () {
+        adServerCallback('criteo')
+      }, CRITEO_CDB_TIMEOUT);
+    });
+    /* Criteo Section END */
+
+
+    googletag.pubads().enableSingleRequest();
     googletag.pubads().setTargeting("eruid", etu_id);
     googletag.pubads().setTargeting("clientId", google_id);
     googletag.pubads().setTargeting("userId", user_id);
-    googletag.pubads().enableSingleRequest();
     
 		googletag.pubads().setTargeting('cat', ["2","聯合新聞網","6645","股市","7253","上市電子"]);
 		googletag.pubads().setTargeting('aid', '5146905');
@@ -1144,7 +1213,28 @@ fbq('track', 'PageView');
 <noscript><img height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id=498033667216293&ev=PageView&noscript=1"
 /></noscript>
-<!-- End Facebook Pixel Code Sales--><!-- #Location: /inc/ads/no_more_top -->
+<!-- End Facebook Pixel Code Sales--><!-- taboola desktop after comment -->
+<script type="text/javascript">
+  window._taboola = window._taboola || [];
+  window.__UDN__.isMobile = window.innerWidth < 767;
+  var taboolaScriptRoute = window.__UDN__.isMobile ? 'udntw2-udnmobile' : 'udntw-udndesktop';
+  console.log('isMobile', window.__UDN__.isMobile);
+  _taboola.push({article:'auto'});
+  !function (e, f, u, i) {
+    if (!document.getElementById(i)){
+      e.async = 1;
+      e.src = u;
+      e.id = i;
+      f.parentNode.insertBefore(e, f);
+    }
+  }(document.createElement('script'),
+  document.getElementsByTagName('script')[0],
+  '//cdn.taboola.com/libtrc/' + taboolaScriptRoute + '/loader.js',
+  'tb_loader_script');
+  if(window.performance && typeof window.performance.mark == 'function')
+    {window.performance.mark('tbl_ic');}
+</script>
+<!-- #Location: /inc/ads/no_more_top -->
 
 </head>
 <body>
@@ -1175,6 +1265,11 @@ console.log('test scroll');
         current: '6645', // which menu is active
         version: '1',
         fixed: [
+	          {
+            id: '8799',
+            title: '聯合報',
+            href: 'https://vip.udn.com',
+          },
 	          {
             id: '1',
             title: '即時',
@@ -1222,11 +1317,6 @@ console.log('test scroll');
             href: '/news/cate/2/6639',
           },
 	          {
-            id: '6641',
-            title: '地方',
-            href: '/news/cate/2/6641',
-          },
-	          {
             id: '6644',
             title: '產經',
             href: '/news/cate/2/6644',
@@ -1242,19 +1332,14 @@ console.log('test scroll');
             href: 'https://house.udn.com',
           },
 	          {
-            id: '6649',
-            title: '生活',
-            href: '/news/cate/2/6649',
-          },
-	          {
             id: '1005',
             title: '健康',
             href: 'https://health.udn.com',
           },
 	          {
-            id: '8887',
-            title: '橘世代',
-            href: 'https://orange.udn.com',
+            id: '6649',
+            title: '生活',
+            href: '/news/cate/2/6649',
           },
 	          {
             id: '11195',
@@ -1267,6 +1352,11 @@ console.log('test scroll');
             href: '/news/cate/2/6643',
           },
 	          {
+            id: '6641',
+            title: '地方',
+            href: '/news/cate/2/6641',
+          },
+	          {
             id: '6640',
             title: '兩岸',
             href: '/news/cate/2/6640',
@@ -1277,14 +1367,14 @@ console.log('test scroll');
             href: '/news/cate/2/7226',
           },
 	          {
-            id: '120909',
-            title: 'Oops',
-            href: '/news/cate/2/120909',
-          },
-	          {
             id: '1013',
             title: '旅遊',
             href: '/news/cate/1013',
+          },
+	          {
+            id: '120909',
+            title: 'Oops',
+            href: '/news/cate/2/120909',
           },
 	          {
             id: '12659',
@@ -1300,6 +1390,11 @@ console.log('test scroll');
             id: '8787',
             title: '500輯',
             href: 'https://500times.udn.com',
+          },
+	          {
+            id: '8887',
+            title: '橘世代',
+            href: 'https://orange.udn.com',
           },
 	          {
             id: '1020',
@@ -1372,17 +1467,19 @@ console.log('test scroll');
         </div>
         <div class="tools-box">
           <nav class="channel-link">
-            <a title="聯合報數位版" href="https://vip.udn.com/vip/index?utm_source=udnnews&utm_medium=familybar" style="color: #cb2529;"><i class="i-vip-udn"></i>聯合報數位版</a>
-            <a title="願景工程" href="https://vision.udn.com/?utm_source=udnnews&utm_medium=familybar"><i class="i-vision"></i>願景工程</a>
+            <a title="願景工程" href="https://vision.udn.com/"><i class="i-vision"></i>願景工程</a>
+            <a title="橘世代" href="https://orange.udn.com/orange/index?utm_source=udnnews&utm_medium=familybar"><i class="i-orangetag2"></i>橘世代</a>
             <a title="有設計" href="https://udesign.udnfunlife.com/mall/Cc1a00.do?sid=91_udn&utm_source=udn.com&utm_medium=referral_familybar_udn&utm_term=familybar_udn&utm_campaign=20170118_UDN"><i class="i-udesign"></i>有設計</a>
             <a title="售票網" href="https://tickets.udnfunlife.com/application/utk01/utk0101_.aspx?sid=91_udn&utm_source=udn.com&utm_medium=referral_familybar_udn&utm_term=familybar_udn&utm_campaign=20170118_UDN"><i class="i-ticket"></i>售票網</a>
-            <a title="有行旅" href="https://utravel.udn.com/?utm_source=udnnews&utm_medium=familybar"><i class="i-utravel"></i>有行旅</a>
-            <a title="我的新聞" href="https://udn.com/mypage/mynewsFeature?utm_source=udnnews&utm_medium=familybar"><i class="i-heart-fill"></i>我的新聞</a>
+            <a title="有行旅" href="https://utravel.udn.com/"><i class="i-utravel"></i>有行旅</a>
+            <a title="我的新聞" href="https://udn.com/mypage/mynewsFeature"><i class="i-heart-fill"></i>我的新聞</a>
           </nav>
   
           <div class="tools-box__items">
-            <a title="聯合報數位版" href="https://vip.udn.com/vip/index?utm_source=udnnews&utm_medium=mobileheader" class="cart-button" style="color: #cb2529;">
-              <i class="i-vip-udn"></i>
+          <a title="橘世代" href="https://orange.udn.com/orange/index?utm_source=udnnews&utm_medium=mobileheader" class="cart-button">
+              <img src="https://udn.com/upf/news/2021/orange-promotion.gif" 
+
+style="transform: translateX(5px)" height="24" alt="橘世代">
             </a>
             <div class="menu-toggler" role="button" aria-label="menu" aria-pressed="false">
               <i class="i-list-rounded"></i>
@@ -1395,6 +1492,8 @@ console.log('test scroll');
               <img class="lazyload member-avatar" data-src="" alt="">
               <span></span>
             </span>
+  
+  
           </div>
         </div><!-- #Location: /inc/ads/menu_top_right-->
       </section>
@@ -1404,6 +1503,7 @@ console.log('test scroll');
           <a href="/news/index" class="navigation-list navigation-fixed home" aria-label="回聯合新聞網首頁">
             <img alt="udn-logo" title="回聯合新聞網首頁" src="/static/img/logo.svg?2020020601">
           </a>
+          <a href="https://vip.udn.com" class="navigation-list navigation-fixed" data-id="8799">聯合報</a>
           <a href="/news/breaknews/1" class="navigation-list navigation-fixed" data-id="1">即時</a>
 
           <a href="/news/cate/2/6638" class="navigation-list" data-id="6638">要聞</a>
@@ -1411,22 +1511,22 @@ console.log('test scroll');
           <a href="/news/cate/2/7227" class="navigation-list" data-id="7227">運動</a>
           <a href="/news/cate/2/7225" class="navigation-list" data-id="7225">全球</a>
           <a href="/news/cate/2/6639" class="navigation-list" data-id="6639">社會</a>
-          <a href="/news/cate/2/6641" class="navigation-list" data-id="6641">地方</a>
           <a href="/news/cate/2/6644" class="navigation-list" data-id="6644">產經</a>
           <a href="/news/cate/2/6645" class="navigation-list" data-id="6645">股市</a>
           <a href="https://house.udn.com" class="navigation-list" data-id="1009">房市</a>
-          <a href="/news/cate/2/6649" class="navigation-list" data-id="6649">生活</a>
           <a href="https://health.udn.com" class="navigation-list" data-id="1005">健康</a>
-          <a href="https://orange.udn.com" class="navigation-list" data-id="8887">橘世代</a>
+          <a href="/news/cate/2/6649" class="navigation-list" data-id="6649">生活</a>
           <a href="/news/cate/2/11195" class="navigation-list" data-id="11195">文教</a>
           <a href="/news/cate/2/6643" class="navigation-list" data-id="6643">評論</a>
+          <a href="/news/cate/2/6641" class="navigation-list" data-id="6641">地方</a>
           <a href="/news/cate/2/6640" class="navigation-list" data-id="6640">兩岸</a>
           <a href="/news/cate/2/7226" class="navigation-list" data-id="7226">數位</a>
-          <a href="/news/cate/2/120909" class="navigation-list" data-id="120909">Oops</a>
           <a href="/news/cate/1013" class="navigation-list" data-id="1013">旅遊</a>
+          <a href="/news/cate/2/120909" class="navigation-list" data-id="120909">Oops</a>
           <a href="/news/cate/2/12659" class="navigation-list" data-id="12659">閱讀</a>
           <a href="/news/cate/1015" class="navigation-list" data-id="1015">雜誌</a>
           <a href="https://500times.udn.com" class="navigation-list" data-id="8787">500輯</a>
+          <a href="https://orange.udn.com" class="navigation-list" data-id="8887">橘世代</a>
           <a href="https://global.udn.com" class="navigation-list" data-id="1020">轉角國際</a>
           <a href="https://nba.udn.com" class="navigation-list" data-id="2000">NBA</a>
           <a href="https://style.udn.com" class="navigation-list" data-id="2002">時尚</a>
@@ -1457,18 +1557,6 @@ console.log('test scroll');
         <section class="site-links">
           <h3 class="site-links__title">全產品速覽</h3>
           <div class="site-links__wrapper">
-
-            <section class="site-product">
-              <h4 class="context-box__title--orange site-product__title">新聞評論</h4>
-              <a href="https://udn.com/news/index" title="聯合新聞網" target="_blank" class="site-product__link list-ellipsis">聯合新聞網</a>
-              <a href="https://vision.udn.com/index.html" title="願景工程" target="_blank" class="site-product__link list-ellipsis">願景工程</a>
-              <a href="https://vip.udn.com/vip/index" title="聯合報數位版" target="_blank" class="site-product__link list-ellipsis">聯合報數位版</a>
-              <a href="https://global.udn.com/global_vision/index" title="轉角國際" target="_blank" class="site-product__link list-ellipsis">轉角國際</a>
-              <a href="https://opinion.udn.com/opinion/index" title="鳴人堂" target="_blank" class="site-product__link list-ellipsis">鳴人堂</a>
-              <a href="https://ubrand.udn.com/ubrand/index" title="倡議家" target="_blank" class="site-product__link list-ellipsis">倡議家</a>
-              <a href="https://theme.udn.com/theme/index" title="時事話題" target="_blank" class="site-product__link list-ellipsis">時事話題</a>
-              <a href="https://www.worldjournal.com/" title="世界日報" target="_blank" class="site-product__link list-ellipsis">世界日報</a>
-            </section>
   
             <section class="site-product">
               <h4 class="context-box__title--orange site-product__title">服務</h4>
@@ -1479,6 +1567,18 @@ console.log('test scroll');
               <a href="http://event.udn.com/index/index.html" title="活動專區" target="_blank" class="site-product__link list-ellipsis">活動專區</a>
               <a href="https://www.facebook.com/myudn" title="udn粉絲團" target="_blank" class="site-product__link list-ellipsis">udn粉絲團</a>
               <a href="https://event.udn.com/line/" title="udn line 好友" target="_blank" class="site-product__link list-ellipsis">udn line 好友</a>
+            </section>
+  
+            <section class="site-product">
+              <h4 class="context-box__title--orange site-product__title">新聞評論</h4>
+              <a href="https://udn.com/news/index" title="聯合新聞網" target="_blank" class="site-product__link list-ellipsis">聯合新聞網</a>
+              <a href="https://vision.udn.com/index.html" title="願景工程" target="_blank" class="site-product__link list-ellipsis">願景工程</a>
+              <a href="https://vip.udn.com/vip/index" title="聯合報數位版" target="_blank" class="site-product__link list-ellipsis">聯合報數位版</a>
+              <a href="https://global.udn.com/global_vision/index" title="轉角國際" target="_blank" class="site-product__link list-ellipsis">轉角國際</a>
+              <a href="https://opinion.udn.com/opinion/index" title="鳴人堂" target="_blank" class="site-product__link list-ellipsis">鳴人堂</a>
+              <a href="https://ubrand.udn.com/ubrand/index" title="倡議家" target="_blank" class="site-product__link list-ellipsis">倡議家</a>
+              <a href="https://theme.udn.com/theme/index" title="時事話題" target="_blank" class="site-product__link list-ellipsis">時事話題</a>
+              <a href="https://www.worldjournal.com/" title="世界日報" target="_blank" class="site-product__link list-ellipsis">世界日報</a>
             </section>
   
             <section class="site-product">
@@ -1692,25 +1792,6 @@ console.log('test scroll');
   <main class="main-content two-column main-story ">
 <div class="container">
 	<!-- breaking-news : add "breaking-news-\-single" classes if only 1 news  -->
-<section class="breaking-news__wrapper ">
-      
-	<div class="breaking-news__icon">快訊
-		<span class="breaking-news__arrow"></span>
-		<span class="breaking-news__arrow"></span>
-	</div>
-	<h2 class="breaking-news">
-		<a href="https://udn.com/tokyo2020/story/122317/5614657">
-			<span class="breaking-news__title">奧運國手搭乘經濟艙生波 傳體育署長張少熙請辭</span>
-			<time class="breaking-news__time" datetime="15:48">15:48</time>
-		</a>
-	</h2>
-	<h2 class="breaking-news">
-		<a href="https://udn.com/tokyo2020/story/122317/5614486">
-			<span class="breaking-news__title">戴資穎所屬羽球隊住宿被批寒酸 體育署回應了</span>
-			<time class="breaking-news__time" datetime="15:22">15:22</time>
-		</a>
-	</h2>
-</section>
 		<style>
 #ads-index-top--mobile {
   min-height: inherit;
@@ -1764,7 +1845,7 @@ googletag.cmd.push(function() { googletag.display('ads-superBanner'); });
                 </div>
               
               </div>
-              <audio id="customAudio" preload="none" data-src="https://artts.udn.com.tw/udn/5146905-TTS.mp3">
+              <audio id="customAudio" preload="none" data-src="https://artts.udn.com.tw/udnnews/prod/5146905-TTS.mp3">
                 Your browser does not support HTML5 Audio! 😢
               </audio>
             </div>
@@ -1827,11 +1908,6 @@ googletag.cmd.push(function() { googletag.display('ads-superBanner'); });
                 <!--0--><p><a href='/search/tagging/2/台積電' rel='台積電'><strong>台積電</strong></a>（2330）去年11月<a href='/search/tagging/2/營收' rel='營收'><strong>營收</strong></a>1,248億元，締造歷史次高，多數外資預期，12月營收持續超過1,000億元，全年可達1.3兆元。摩根士丹利推算，台積電去年12月營收不僅將優於11月，還會突破1,300億元、有望達1,305億元，再度創下單月新高，全年營收落在1.35兆元。</p><!--1--><p>
 </p><p>
 摩根士丹利在台灣主要供應商12月營收預測中指出，台積電先進製程動能強勁，去年12月可望持續繳出好成績，推估單月營收可達1,305億元，首度衝破1,300億元，累積全年約1.35兆元，年增26%。</p><style>
-.innity-apps-underlay-ad {z-index: 34 !important; }
-.innity-apps-underlay-ad ~ .header {z-index: 35;}
-.innity-apps-underlay-ad ~ .main-content .inline-ads { background: transparent;}
-
-
 .article-content__editor video {max-width: 100%;} /* to be remove*/
 </style>
 <!-- /129853887/udn.com/2_News/3_News-Mobile/4_News-Mobile-a02 ※Mobile文中大佈告_3000x250※-->
@@ -1860,7 +1936,7 @@ googletag.cmd.push(function() { googletag.display('ads-superBanner'); });
                 <a data-rel="/2/103337" href="/search/tagging/2/台積電" class="btn btn-border btn-border--blue btn-keyword">台積電</a>
               </section>
               <!-- /4576170/news_txtdown ※PC&Mobile_文尾文字※-->
-<div class='udn-ads ads-all' id='news_txtdown' style="margin-top: 20px; margin-bottom: 20px;">
+<div class='udn-ads ads-all' id='news_txtdown' style="margin-top: 20px; margin-bottom: 0px;">
   <script>
     googletag.cmd.push(function() { googletag.display('news_txtdown'); });
   </script>
@@ -1880,12 +1956,11 @@ googletag.cmd.push(function() { googletag.display('ads-superBanner'); });
 <div class='article-content__ads--bd'>
 <script>
 
-tips = new Array(5); //設定隨機顯示文字數
-tips[0] = "<a href=https://vip.udn.com/vip/story/122151/5609796?utm_source=udn&utm_medium=keyword&utm_campaign=goldenselection&utm_term=bd target=_blank><font color=#2f76aa>拉法葉巡防艦終於要改良防空火力 新的飛彈垂直發射有望台灣自製？</font></a>";
-tips[1] = "<a href=https://vip.udn.com/vip/story/121938/5610232?utm_source=udn&utm_medium=keyword&utm_campaign=goldenselection&utm_term=bd target=_blank><font color=#2f76aa>家樂福、大潤發有意出售台灣股權？ 傳聞買家都否認但恐非空穴來風</font></a>";
-tips[2] = "<a href=https://vip.udn.com/vip/story/121160/5595449?utm_source=udn&utm_medium=keyword&utm_campaign=goldenselection&utm_term=bd target=_blank><font color=#2f76aa>2年180個大學進修學制停招 北科大電機、虎尾科大材料都收攤</font></a>";
-tips[3] = "<a href=https://orange.udn.com/orange/story/121452/5550230?utm_source=newsweb&utm_medium=article&utm_campaign=0719orangeword01 target=_blank><font color=#2f76aa>寫下珍貴回憶！作家親授系統寫作法＋線上點評→立即看</font></a>";
-tips[4] = "<a href=https://lihi1.com/YrtXi  target=_blank><font color=#2f76aa>生活大小事不漏接，是你最麻吉的好夥伴>>立刻加入Line好友→</font></a>";
+tips = new Array(4); //設定隨機顯示文字數
+tips[0] = "<a href=https://vip.udn.com/vip/story/121162/5152148?utm_source=udn&utm_medium=keyword&utm_campaign=stories&utm_term=bd target=_blank><font color=#2f76aa>洛杉磯郡每15分死1人！ 新冠疫情讓加州醫療大崩潰</font></a>";
+tips[1] = "<a href=https://vip.udn.com/vip/story/121163/5150808?utm_source=udn&utm_medium=keyword&utm_campaign=stories&utm_term=bd target=_blank><font color=#2f76aa>找專家算過！ 歌劇院前變動物森友會現場...</font></a>";
+tips[2] = "<a href=https://orange.udn.com/orange/vip/8889?utm_source=newsweb&utm_medium=article&utm_campaign=0105orangeword02 target=_blank><font color=#2f76aa>金融界專家「勞退教母」王儷玲　給40、50、60歲的理財專業建議！</font></a>";
+tips[3] = "<a href=https://lihi1.com/e3Sjn target=_blank><font color=#2f76aa>想要生活娛樂一把抓、聊天超有梗>>立刻加入Line好友</font></a>";
 
 index = Math.floor(Math.random() * tips.length);
 document.write( tips[index] );
@@ -2002,91 +2077,91 @@ document.write( tips[index] );
 
               <div  class="story-list__news"  >
                 <div class="story-list__image ">
-                  <a href="/news/story/7253/5612041?from=udn-relatednews_ch2" aria-label="鴻海23日股東會防疫優先 劉揚偉不與股東同場" class="story-list__image--holder"><picture><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/07/19/98/13071595.jpg&s=Y&x=0&y=17&sw=400&sh=267&exp=3600&w=300&nt=1" type="image/webp"><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/07/19/98/13071595.jpg&s=Y&x=0&y=17&sw=400&sh=267&exp=3600&w=300" type="image/jpeg"><img class="lazyload" data-src="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/07/19/98/13071595.jpg&s=Y&x=0&y=17&sw=400&sh=267&exp=3600&w=300" alt=""></picture></a>
+                  <a href="/news/story/7253/5151570?from=udn-relatednews_ch2" aria-label="封裝需求強 法人：日月光簽長約今年獲利衝高" class="story-list__image--holder"><picture><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/06/98/10818018.jpg&x=&y=&sw=&sh=&exp=3600&w=300&nt=1" type="image/webp"><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/06/98/10818018.jpg&x=&y=&sw=&sh=&exp=3600&w=300" type="image/jpeg"><img class="lazyload" data-src="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/06/98/10818018.jpg&x=&y=&sw=&sh=&exp=3600&w=300" alt=""></picture></a>
                 </div>
                 <div class="story-list__text">
                   <h3>
-                    <a href="/news/story/7253/5612041?from=udn-relatednews_ch2" title="鴻海23日股東會防疫優先 劉揚偉不與股東同場">鴻海23日股東會防疫優先 劉揚偉不與股東同場</a>
+                    <a href="/news/story/7253/5151570?from=udn-relatednews_ch2" title="封裝需求強 法人：日月光簽長約今年獲利衝高">封裝需求強 法人：日月光簽長約今年獲利衝高</a>
                   </h3>
                   <p>
-                    因本土COVID-19疫情影響，鴻海實體股東會延至23日舉辦，鴻海透過電話語音傳送訊息表示，因應疫情，此次股東會不安排股...                  </p>
+                    半導體封裝需求強勁，法人指出日月光投控規劃擴充產能，與客戶簽訂長約確保投資回本，估今年投控獲利目標超過新台幣290億元，...                  </p>
                   <div class="story-list__info">
-                    <time class="story-list__time">2021-07-19 16:32</time>
+                    <time class="story-list__time">2021-01-06 11:21</time>
                   </div>
                 </div>
               </div>
               <div  class="story-list__news"  >
                 <div class="story-list__image ">
-                  <a href="/news/story/7253/5610681?from=udn-relatednews_ch2" aria-label="封測五強 今年資本支出衝千億元" class="story-list__image--holder"><picture><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/07/19/2/13065647.jpg&s=Y&x=0&y=0&sw=888&sh=592&exp=3600&w=300&nt=1" type="image/webp"><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/07/19/2/13065647.jpg&s=Y&x=0&y=0&sw=888&sh=592&exp=3600&w=300" type="image/jpeg"><img class="lazyload" data-src="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/07/19/2/13065647.jpg&s=Y&x=0&y=0&sw=888&sh=592&exp=3600&w=300" alt=""></picture></a>
+                  <a href="/news/story/7253/5151487?from=udn-relatednews_ch2" aria-label="美光大漲逾4% 南亞科股價創2年多新高" class="story-list__image--holder"><picture><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/05/1/10767287.jpg&s=Y&x=0&y=0&sw=1280&sh=853&exp=3600&w=300&nt=1" type="image/webp"><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/05/1/10767287.jpg&s=Y&x=0&y=0&sw=1280&sh=853&exp=3600&w=300" type="image/jpeg"><img class="lazyload" data-src="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/05/1/10767287.jpg&s=Y&x=0&y=0&sw=1280&sh=853&exp=3600&w=300" alt=""></picture></a>
                 </div>
                 <div class="story-list__text">
                   <h3>
-                    <a href="/news/story/7253/5610681?from=udn-relatednews_ch2" title="封測五強 今年資本支出衝千億元">封測五強 今年資本支出衝千億元</a>
+                    <a href="/news/story/7253/5151487?from=udn-relatednews_ch2" title="美光大漲逾4% 南亞科股價創2年多新高">美光大漲逾4% 南亞科股價創2年多新高</a>
                   </h3>
                   <p>
-                    半導體景氣熱絡，不僅晶圓代工廠產能滿載，下游封測業接單同步強強滾。因應龐大訂單需求，日月光投控、力成、京元電、矽格、南茂...                  </p>
+                    記憶體市況好轉，分析師紛紛調高美光（Micron）目標價，激勵美光股價大漲4.33%，帶動南亞科股價走揚，一度達新台幣9...                  </p>
                   <div class="story-list__info">
-                    <time class="story-list__time">2021-07-19 00:45</time>
+                    <time class="story-list__time">2021-01-06 10:27</time>
                   </div>
                 </div>
               </div>
               <div  class="story-list__news"  >
                 <div class="story-list__image ">
-                  <a href="/news/story/7253/5604919?from=udn-relatednews_ch2" aria-label="台積Q2財報 雙率雙降" class="story-list__image--holder"><picture><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/07/15/realtime/13048190.jpg&s=Y&x=0&y=4&sw=613&sh=408&exp=3600&w=300&nt=1" type="image/webp"><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/07/15/realtime/13048190.jpg&s=Y&x=0&y=4&sw=613&sh=408&exp=3600&w=300" type="image/jpeg"><img class="lazyload" data-src="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/07/15/realtime/13048190.jpg&s=Y&x=0&y=4&sw=613&sh=408&exp=3600&w=300" alt=""></picture></a>
+                  <a href="/news/story/7253/5151406?from=udn-relatednews_ch2" aria-label="大立光營收失色 股價破2個月新低" class="story-list__image--holder"><picture><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2020/12/31/98/10410429.jpg&s=Y&x=0&y=102&sw=799&sh=533&exp=3600&w=300&nt=1" type="image/webp"><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2020/12/31/98/10410429.jpg&s=Y&x=0&y=102&sw=799&sh=533&exp=3600&w=300" type="image/jpeg"><img class="lazyload" data-src="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2020/12/31/98/10410429.jpg&s=Y&x=0&y=102&sw=799&sh=533&exp=3600&w=300" alt=""></picture></a>
                 </div>
                 <div class="story-list__text">
                   <h3>
-                    <a href="/news/story/7253/5604919?from=udn-relatednews_ch2" title="台積Q2財報 雙率雙降">台積Q2財報 雙率雙降</a>
+                    <a href="/news/story/7253/5151406?from=udn-relatednews_ch2" title="大立光營收失色 股價破2個月新低">大立光營收失色 股價破2個月新低</a>
                   </h3>
                   <p>
-                    台積電昨（15）日公布第2季財報，毛利率、營益率「雙率雙降」，其中，毛利率險守五成，為七季來低點；營益率降至39.1%，...                  </p>
+                    大立光去年12月營收意外滑落50億關卡，不如市場與公司預期，為5個月來低點，衝擊大立光股價開低走低，交易約10分鐘失守3...                  </p>
                   <div class="story-list__info">
-                    <time class="story-list__time">2021-07-16 00:15</time>
+                    <time class="story-list__time">2021-01-06 10:01</time>
                   </div>
                 </div>
               </div>
               <div  class="story-list__news"  >
                 <div class="story-list__image ">
-                  <a href="/news/story/7253/5604614?from=udn-relatednews_ch2" aria-label="三大法人連4日齊買超 台積電創3個月收盤最高價" class="story-list__image--holder"><picture><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/07/04/realtime/12854153.jpg&s=Y&x=0&y=0&sw=1279&sh=853&exp=3600&w=300&nt=1" type="image/webp"><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/07/04/realtime/12854153.jpg&s=Y&x=0&y=0&sw=1279&sh=853&exp=3600&w=300" type="image/jpeg"><img class="lazyload" data-src="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/07/04/realtime/12854153.jpg&s=Y&x=0&y=0&sw=1279&sh=853&exp=3600&w=300" alt=""></picture></a>
+                  <a href="/news/story/7253/5146614?from=udn-relatednews_ch2" aria-label="鴻海為何大漲？原來是外資喊這個「驚天價」" class="story-list__image--holder"><picture><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/04/realtime/10691482.jpg&s=Y&x=0&y=0&sw=798&sh=538&exp=3600&w=300&nt=1" type="image/webp"><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/04/realtime/10691482.jpg&s=Y&x=0&y=0&sw=798&sh=538&exp=3600&w=300" type="image/jpeg"><img class="lazyload" data-src="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/04/realtime/10691482.jpg&s=Y&x=0&y=0&sw=798&sh=538&exp=3600&w=300" alt=""></picture></a>
                 </div>
                 <div class="story-list__text">
                   <h3>
-                    <a href="/news/story/7253/5604614?from=udn-relatednews_ch2" title="三大法人連4日齊買超 台積電創3個月收盤最高價">三大法人連4日齊買超 台積電創3個月收盤最高價</a>
+                    <a href="/news/story/7253/5146614?from=udn-relatednews_ch2" title="鴻海為何大漲？原來是外資喊這個「驚天價」">鴻海為何大漲？原來是外資喊這個「驚天價」</a>
                   </h3>
                   <p>
-                    台積電線上法人說明會今天登場，在三大法人連4個交易日同步買超推升下，台積電股價收在新台幣614元，創3個月來收盤最高價，...                  </p>
+                    台灣代工廠加速轉型，從手機供應鏈晉升全球伺服器產業鏈核心，瑞銀證券今（4）日發布報告指出，「後蘋果時代」轉型策略及執行力...                  </p>
                   <div class="story-list__info">
-                    <time class="story-list__time">2021-07-15 21:41</time>
+                    <time class="story-list__time">2021-01-04 16:32</time>
                   </div>
                 </div>
               </div>
               <div  class="story-list__news"  >
                 <div class="story-list__image ">
-                  <a href="/news/story/7253/5547395?from=udn-relatednews_ch2" aria-label="購買疫苗引質疑？ 台積電遭外資降評 583元收盤、市值急縮5,186億" class="story-list__image--holder"><picture><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/06/19/realtime/12592260.jpg&s=Y&x=0&y=0&sw=1280&sh=853&exp=3600&w=300&nt=1" type="image/webp"><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/06/19/realtime/12592260.jpg&s=Y&x=0&y=0&sw=1280&sh=853&exp=3600&w=300" type="image/jpeg"><img class="lazyload" data-src="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/06/19/realtime/12592260.jpg&s=Y&x=0&y=0&sw=1280&sh=853&exp=3600&w=300" alt=""></picture></a>
+                  <a href="/news/story/7253/5146180?from=udn-relatednews_ch2" aria-label="鴻海股價創37個月新高 郭台銘持股市值大增106億" class="story-list__image--holder"><picture><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2020/12/01/realtime/9175705.jpg&s=Y&x=0&y=10&sw=1279&sh=852&exp=3600&w=300&nt=1" type="image/webp"><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2020/12/01/realtime/9175705.jpg&s=Y&x=0&y=10&sw=1279&sh=852&exp=3600&w=300" type="image/jpeg"><img class="lazyload" data-src="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2020/12/01/realtime/9175705.jpg&s=Y&x=0&y=10&sw=1279&sh=852&exp=3600&w=300" alt=""></picture></a>
                 </div>
                 <div class="story-list__text">
                   <h3>
-                    <a href="/news/story/7253/5547395?from=udn-relatednews_ch2" title="購買疫苗引質疑？ 台積電遭外資降評 583元收盤、市值急縮5,186億">購買疫苗引質疑？ 台積電遭外資降評 583元收盤、市值急縮5,186億</a>
+                    <a href="/news/story/7253/5146180?from=udn-relatednews_ch2" title="鴻海股價創37個月新高 郭台銘持股市值大增106億">鴻海股價創37個月新高 郭台銘持股市值大增106億</a>
                   </h3>
                   <p>
-                    台積電（2330）遭外資降評，投資評等下修至中立，目標價也從655元調降至580元，加上計畫購買新冠肺炎疫苗捐贈給政府引...                  </p>
+                    鴻海集團今天股價氣勢如虹，鴻海一度衝上百元大關，終場收在99.9元，創37個月高點，創辦人郭台銘持有鴻海股票一天市值大增...                  </p>
                   <div class="story-list__info">
-                    <time class="story-list__time">2021-06-21 15:41</time>
+                    <time class="story-list__time">2021-01-04 14:30</time>
                   </div>
                 </div>
               </div>
               <div  class="story-list__news"  >
                 <div class="story-list__image ">
-                  <a href="/news/story/7253/5431359?from=udn-relatednews_ch2" aria-label="矽力奪股王 超車大立光" class="story-list__image--holder"><picture><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/05/04/2/12220617.jpg&s=Y&x=147&y=0&sw=591&sh=394&exp=3600&w=300&nt=1" type="image/webp"><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/05/04/2/12220617.jpg&s=Y&x=147&y=0&sw=591&sh=394&exp=3600&w=300" type="image/jpeg"><img class="lazyload" data-src="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/05/04/2/12220617.jpg&s=Y&x=147&y=0&sw=591&sh=394&exp=3600&w=300" alt=""></picture></a>
+                  <a href="/news/story/7253/5145979?from=udn-relatednews_ch2" aria-label="聯發科盤中股價直逼800元 登台股八強" class="story-list__image--holder"><picture><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/04/realtime/10681075.jpg&s=Y&x=22&y=0&sw=1236&sh=825&exp=3600&w=300&nt=1" type="image/webp"><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/04/realtime/10681075.jpg&s=Y&x=22&y=0&sw=1236&sh=825&exp=3600&w=300" type="image/jpeg"><img class="lazyload" data-src="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/04/realtime/10681075.jpg&s=Y&x=22&y=0&sw=1236&sh=825&exp=3600&w=300" alt=""></picture></a>
                 </div>
                 <div class="story-list__text">
                   <h3>
-                    <a href="/news/story/7253/5431359?from=udn-relatednews_ch2" title="矽力奪股王 超車大立光">矽力奪股王 超車大立光</a>
+                    <a href="/news/story/7253/5145979?from=udn-relatednews_ch2" title="聯發科盤中股價直逼800元 登台股八強">聯發科盤中股價直逼800元 登台股八強</a>
                   </h3>
                   <p>
-                    電源管理晶片廠矽力-KY昨（3）日不畏台股重挫344點，終場逆勢大漲105元、收3,030元，超越大立光的3,015元，...                  </p>
+                    台積電（2330）紅盤日登高一呼，半導體股全面大漲，包括晶片大廠聯發科（2454）今（4）日盤中噴漲6%，直逼800元「...                  </p>
                   <div class="story-list__info">
-                    <time class="story-list__time">2021-05-04 00:57</time>
+                    <time class="story-list__time">2021-01-04 13:13</time>
                   </div>
                 </div>
               </div>
@@ -2106,26 +2181,7 @@ document.write( tips[index] );
 		});
 	}
 </script>
-						<section class="sponsor-ads article-section context-box">
-	<header class="context-box__header">
-		<h3 class="context-box__title">贊助廣告</h3>
-	</header>
-
-	<div class="context-box__content">
-		<!-- /129853887/udn.com/2_News/3_News-PC/4_News-PC-a09 ※PC贊助廣告L_3000x250※-->
-		<div class='udn-ads' id='ads-SP300x259_L'>
-			<script>
-	  		googletag.cmd.push(function() { googletag.display('ads-SP300x259_L'); });
-			</script>
-  		</div>           
-		<!-- /129853887/udn.com/2_News/3_News-PC/4_News-PC-a10 ※PC贊助廣告R_3000x250※-->
-		<div class='udn-ads' id='ads-SP300x259_R'>
-			<script>
-	  		googletag.cmd.push(function() { googletag.display('ads-SP300x259_R'); });
-			</script>
-  		</div>  
-	</div>
-</section><section class="ec-section article-section context-box">
+						<section class="ec-section article-section context-box">
 <header class="context-box__header"><h3 class="context-box__title">商品推薦</h3></header>
 <div class="context-box__content"><iframe id="udesign" src="https://udesign.udnfunlife.com/mall/cus/cat/OutWebAd.do?dc_btn_0=udnComNews&kdid=ERustock" width="100%" height="320" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" align="center"></iframe></div>
 </section><section class="facebook-comment article-section context-box">
@@ -2230,45 +2286,47 @@ googletag.cmd.push(function() { googletag.display('ads-billboard'); });
 
               <div class="rounded-thumb__list">
                 <div class="rounded-thumb__image">
-                <picture><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://p.udn.com.tw/upf/2017_news/noimg_cid6645_8.jpg&w=300&nt=1" type="image/webp"><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://p.udn.com.tw/upf/2017_news/noimg_cid6645_8.jpg&w=300" type="image/jpeg"><img class="lazyload" data-src="https://pgw.udn.com.tw/gw/photo.php?u=https://p.udn.com.tw/upf/2017_news/noimg_cid6645_8.jpg&w=300" alt=""></picture>                </div>
+                <picture><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/06/2/10826156.jpg&s=Y&x=102&y=0&sw=1134&sh=756&exp=3600&w=300&nt=1" type="image/webp"><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/06/2/10826156.jpg&s=Y&x=102&y=0&sw=1134&sh=756&exp=3600&w=300" type="image/jpeg"><img class="lazyload" data-src="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/06/2/10826156.jpg&s=Y&x=102&y=0&sw=1134&sh=756&exp=3600&w=300" alt=""></picture>                </div>
                 <h3 class="rounded-thumb__title">
-                  <a href="/news/story/7253/5612607?from=udn-catehotnews_ch2">松下售8.5代廠 群創、友達利多</a>
+                  <a href="/news/story/7251/5152190?from=udn-catehotnews_ch2">台股爆天量震盪 跌16點收14,983點</a>
                 </h3>
               </div>
               <div class="rounded-thumb__list">
                 <div class="rounded-thumb__image">
-                <picture><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/07/19/realtime/13071199.jpg&s=Y&x=0&y=0&sw=1280&sh=853&exp=3600&w=300&nt=1" type="image/webp"><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/07/19/realtime/13071199.jpg&s=Y&x=0&y=0&sw=1280&sh=853&exp=3600&w=300" type="image/jpeg"><img class="lazyload" data-src="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/07/19/realtime/13071199.jpg&s=Y&x=0&y=0&sw=1280&sh=853&exp=3600&w=300" alt=""></picture>                </div>
+                <picture><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/06/realtime/10822865.jpg&s=Y&x=0&y=6&sw=800&sh=532&exp=3600&w=300&nt=1" type="image/webp"><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/06/realtime/10822865.jpg&s=Y&x=0&y=6&sw=800&sh=532&exp=3600&w=300" type="image/jpeg"><img class="lazyload" data-src="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/06/realtime/10822865.jpg&s=Y&x=0&y=6&sw=800&sh=532&exp=3600&w=300" alt=""></picture>                </div>
                 <h3 class="rounded-thumb__title">
-                  <a href="/news/story/7252/5612292?from=udn-catehotnews_ch2">陽明：歐洲水患塞港夢魘再起 下半年仍一櫃難求</a>
+                  <a href="/news/story/7251/5151963?from=udn-catehotnews_ch2">台股巨震360點！ 總量估突破5,000億元</a>
                 </h3>
               </div>
               <div class="rounded-thumb__list">
                 <div class="rounded-thumb__image">
-                <picture><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/07/19/realtime/13071738.png&s=Y&x=0&y=8&sw=943&sh=628&exp=3600&w=300&nt=1" type="image/webp"><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/07/19/realtime/13071738.png&s=Y&x=0&y=8&sw=943&sh=628&exp=3600&w=300" type="image/jpeg"><img class="lazyload" data-src="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/07/19/realtime/13071738.png&s=Y&x=0&y=8&sw=943&sh=628&exp=3600&w=300" alt=""></picture>                </div>
+                <picture><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/06/realtime/10813395.jpg&s=Y&x=0&y=0&sw=798&sh=538&exp=3600&w=300&nt=1" type="image/webp"><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/06/realtime/10813395.jpg&s=Y&x=0&y=0&sw=798&sh=538&exp=3600&w=300" type="image/jpeg"><img class="lazyload" data-src="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/06/realtime/10813395.jpg&s=Y&x=0&y=0&sw=798&sh=538&exp=3600&w=300" alt=""></picture>                </div>
                 <h3 class="rounded-thumb__title">
-                  <a href="/news/story/7251/5612239?from=udn-catehotnews_ch2">0050第二階段配息增50元！21日將除息0.35元</a>
+                  <a href="/news/story/7251/5151430?from=udn-catehotnews_ch2">鴻海拚新天價！ 二外資目標價喊上130元</a>
                 </h3>
               </div>
               <div class="rounded-thumb__list">
                 <div class="rounded-thumb__image">
-                <picture><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://p.udn.com.tw/upf/2017_news/noimg_cid6645_0.jpg&w=300&nt=1" type="image/webp"><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://p.udn.com.tw/upf/2017_news/noimg_cid6645_0.jpg&w=300" type="image/jpeg"><img class="lazyload" data-src="https://pgw.udn.com.tw/gw/photo.php?u=https://p.udn.com.tw/upf/2017_news/noimg_cid6645_0.jpg&w=300" alt=""></picture>                </div>
+                <picture><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/06/2/10790403.jpg&x=&y=&sw=&sh=&exp=3600&w=300&nt=1" type="image/webp"><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/06/2/10790403.jpg&x=&y=&sw=&sh=&exp=3600&w=300" type="image/jpeg"><img class="lazyload" data-src="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/06/2/10790403.jpg&x=&y=&sw=&sh=&exp=3600&w=300" alt=""></picture>                </div>
                 <h3 class="rounded-thumb__title">
-                  <a href="/news/story/7252/5613518?from=udn-catehotnews_ch2">萬海通過配發2元股利 嚴重大缺船將持續推升運價</a>
+                  <a href="/news/story/7251/5150644?from=udn-catehotnews_ch2">台積目標價 外資喊650</a>
                 </h3>
               </div>
               <div class="rounded-thumb__list">
                 <div class="rounded-thumb__image">
-                <picture><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/07/19/2/13072512.jpg&s=Y&x=0&y=0&sw=1023&sh=682&exp=3600&w=300&nt=1" type="image/webp"><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/07/19/2/13072512.jpg&s=Y&x=0&y=0&sw=1023&sh=682&exp=3600&w=300" type="image/jpeg"><img class="lazyload" data-src="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/07/19/2/13072512.jpg&s=Y&x=0&y=0&sw=1023&sh=682&exp=3600&w=300" alt=""></picture>                </div>
+                <picture><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/06/2/10830780.jpg&s=Y&x=0&y=0&sw=1280&sh=853&exp=3600&w=300&nt=1" type="image/webp"><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/06/2/10830780.jpg&s=Y&x=0&y=0&sw=1280&sh=853&exp=3600&w=300" type="image/jpeg"><img class="lazyload" data-src="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/06/2/10830780.jpg&s=Y&x=0&y=0&sw=1280&sh=853&exp=3600&w=300" alt=""></picture>                </div>
                 <h3 class="rounded-thumb__title">
-                  <a href="/news/story/7251/5612409?from=udn-catehotnews_ch2">外資大逃殺單日賣超424億 這十檔賣最大</a>
+                  <a href="/news/story/7251/5152535?from=udn-catehotnews_ch2">台股創歷史天量收跌16.9點 三大法人賣超89.56億</a>
                 </h3>
               </div>
-<!-- /4576170/free-1_News-PC-a13 -->
-<div id='div-gpt-ad-1602729579465-0'>
-  <script>
-    googletag.cmd.push(function() { googletag.display('div-gpt-ad-1602729579465-0'); });
-  </script>
-</div>
+              <div class="rounded-thumb__list">
+                <div class="rounded-thumb__image">
+                <picture><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/06/2/10838845.jpg&s=Y&x=0&y=32&sw=1279&sh=853&exp=3600&w=300&nt=1" type="image/webp"><source data-srcset="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/06/2/10838845.jpg&s=Y&x=0&y=32&sw=1279&sh=853&exp=3600&w=300" type="image/jpeg"><img class="lazyload" data-src="https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2021/01/06/2/10838845.jpg&s=Y&x=0&y=32&sw=1279&sh=853&exp=3600&w=300" alt=""></picture>                </div>
+                <h3 class="rounded-thumb__title">
+                  <a href="/news/story/7251/5153029?from=udn-catehotnews_ch2">台股今成交爆量一度萬五 黃天牧：外資又回來了</a>
+                </h3>
+              </div>
+
           </div>
         </div>
 			<!-- BEGIN 498848 - UDN - TW - RTA - Adblocking - 300x250 -->
@@ -2444,9 +2502,9 @@ Criteo.events.push(function() {
   </div>
 </div><script language=javascript>
 		var i, i_s, i_su;
-		var sars = new Array("https://p.udn.com.tw/upf/2014_banners/hype/210630_member7_jane.gif","https://p.udn.com.tw/upf/2014_banners/hype/210715_RR_jane.jpeg","https://p.udn.com.tw/upf/2014_banners/hype/210712_NBA_jane.jpg");
+		var sars = new Array("https://p.udn.com.tw/upf/2014_banners/hype/201222_RR7_jane.gif","https://p.udn.com.tw/upf/2014_banners/hype/201201_newyear_jane.jpg","https://p.udn.com.tw/upf/2014_banners/hype/201225_love_jane.jpg");
 		var sars_url = new 
-Array("https://lihi1.com/f1QHn","https://vip.udn.com/vip/order?utm_source=udn&utm_medium=banner&utm_campaign=trial&utm_content=ad_bd","https://lihi1.com/E181f");
+Array("https://vip.udn.com/vip/order?utm_source=udn&utm_medium=banner&utm_campaign=grandopening&utm_content=ad7_bd","https://bit.ly/3qoyEoT","http://bit.ly/2MdGoKD");
 		i = Math.random() * 3; i = Math.ceil(i); i = i - 1;
 		i_s = sars[i]; i_su = sars_url[i];
 		document.write("<a href='"+i_su+"' target='_blank'><img src='"+i_s+"' width='300' height='250' border='0'></a>");
@@ -2501,16 +2559,39 @@ googletag.cmd.push(function() { googletag.display('stickyAds'); });
     googletag.cmd.push(function() { googletag.display('ads-Andbeyond'); });
   </script>
 </div><script>
-// fixed safari bug : css invalidation on position upon iPhone XS;
-window.addEventListener('message', function (e) {
-  if (e.data.type === 'overlayIframeReady') {
-    setTimeout(function() {
-      document.querySelector('#ads-Mobile_cover > div').style.position = 'relative';
-    }, 0);
+console.log('vippppppppppppppp');
+var VIP_NEWS_CONST = 'news-vip-2020';
+if (__UDN__ && localStorage) {
+  checkVipStatus();
+}
+
+function checkVipStatus() {
+  var showTimesCount = localStorage.getItem(VIP_NEWS_CONST) || 0;
+  if (parseInt(showTimesCount) >= 2) return;
+
+  if (!__UDN__.Cookies.get(VIP_NEWS_CONST)) {
+    fetch('//udn.com/api/vip_users').then(function(res) { return res.json(); }).then(function(data) {
+      if(data.state && data.matched) {
+         showTimesCount = parseInt(showTimesCount) + 1;
+         __UDN__.BOX.confirm({
+            title: '★.限時快閃.★ \n【專屬你的獨享優惠】',
+            message: '<style>.udn-box__container {width: 450px;}.udn-box__content{text-align: left;} .udn-box__content > div {padding: 0 15px;}</style><div>即日起至12/23 止，訂閱聯合報數位版 <br> ✔️ 送摩登文具組外 <br> ✔️ 限量加贈報時光老派摩登手帳乙本 (定價 580 元)<br><br> <span style="display: block; text-align: center;">VIP 專屬 ▶️▶️▶️ <a style="color: #cb2529; font-weight: bold;" href="https://vip.udn.com/vip/order?utm_source=udn&utm_medium=flash&utm_campaign=grandopening&utm_term=vipmember" target="_blank">立即訂閱</a></span></div>'
+         }, function() {
+            window.open('https://vip.udn.com/vip/order?utm_source=udn&utm_medium=flash&utm_campaign=grandopening&utm_term=vipmember');
+         });
+         localStorage.setItem(VIP_NEWS_CONST, showTimesCount);
+      } else {
+         if (!data.matched) {
+            showTimesCount = 99;
+            localStorage.setItem(VIP_NEWS_CONST, showTimesCount);
+         }
+      }
+    });
+   __UDN__.Cookies.set(VIP_NEWS_CONST, showTimesCount, {expires: 1});
   }
-});
-</script>
-<!-- taboola body end -->
+}
+
+</script><!-- taboola body end -->
 <script type="text/javascript">
   window._taboola = window._taboola || [];
   _taboola.push({flush: true});
@@ -2522,10 +2603,10 @@ window.addEventListener('message', function (e) {
   </div>
 
     
-<script src="/static/js/vendor.bundle.js?202107191012"></script>
-<!--<link rel="preload" href="/static/js/vendor.bundle.js?202107191012" as="script">-->
-<script src="/static/js/story.bundle.js?202107191012"></script>
-<!--<link rel="preload" href="/static/js/story.bundle.js?202107191012" as="script">-->
+<script src="/static/js/vendor.bundle.js?202101051231"></script>
+<!--<link rel="preload" href="/static/js/vendor.bundle.js?202101051231" as="script">-->
+<script src="/static/js/story.bundle.js?202101051231"></script>
+<!--<link rel="preload" href="/static/js/story.bundle.js?202101051231" as="script">-->
 <!--udn.com--><script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js?2020041701"></script>
 <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-messaging.js?2020041701"></script>
 <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-performance.js?2020041701"></script>
