@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net;
-using System.Threading;
 using System.Web;
 
 namespace StockCrawler.Services.Collectors
@@ -30,10 +29,11 @@ namespace StockCrawler.Services.Collectors
                 var html = DownloadData(uri);
                 if (string.IsNullOrEmpty(html)) return null;
                 doc.LoadHtml(html);
-                var previos_url = doc.DocumentNode
+                var previous_url = doc.DocumentNode
                     .SelectSingleNode("//*[@id=\"action-bar-container\"]/div/div[2]/a[2]")
                     .Attributes["href"]?.Value;
-                foreach (var node in doc.DocumentNode.SelectNodes("//div[@class=\"r-ent\"]"))
+                var a_list = doc.DocumentNode.SelectNodes("//div[@class=\"r-ent\"]");
+                foreach (var node in a_list)
                 {
                     var a = node.SelectSingleNode("div[@class=\"title\"]/a");
                     if (a != null)
@@ -47,7 +47,7 @@ namespace StockCrawler.Services.Collectors
                             if (!title.StartsWith("[活動]")
                                 && !title.StartsWith("[公告]"))
                             {
-                                string url = a.Attributes["href"]?.Value;
+                                var url = a.Attributes["href"]?.Value;
                                 if (string.IsNullOrEmpty(url) || !url.Contains("M."))
                                     continue;
 
@@ -76,10 +76,10 @@ namespace StockCrawler.Services.Collectors
                 else
                     missing_right_date_page_counter++;
 
-                if (string.IsNullOrEmpty(previos_url))
+                if (string.IsNullOrEmpty(previous_url))
                     break;
                 else
-                    uri = new Uri(uri.Scheme + "://" + uri.Authority + "/" + previos_url);
+                    uri = new Uri(uri.Scheme + "://" + uri.Authority + "/" + previous_url);
 
                 _logger.DebugFormat("missing_right_date_page_counter: {0}", missing_right_date_page_counter);
 #if (!DEBUG)
@@ -99,6 +99,7 @@ namespace StockCrawler.Services.Collectors
             if (article.Subject.StartsWith("[新聞]"))
             {
                 var html = DownloadData(new Uri(article.Url));
+                if (string.IsNullOrEmpty(html)) return null;
                 var doc = new HtmlDocument();
                 doc.LoadHtml(html);
                 var node = doc.DocumentNode.SelectSingleNode("//*[@id=\"main-content\"]");

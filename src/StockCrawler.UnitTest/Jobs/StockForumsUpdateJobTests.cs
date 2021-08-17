@@ -24,12 +24,12 @@ namespace StockCrawler.UnitTest.Jobs
         {
             StockForumsUpdateJob.Logger = new UnitTestLogger();
             var target = new StockForumsUpdateJob();
-            Services.SystemTime.SetFakeTime(new DateTime(2021, 1, 5));
+            Services.SystemTime.SetFakeTime(new DateTime(2021, 1, 6));
             IJobExecutionContext context = new ArgumentJobExecutionContext(target);
             target.Execute(context);
             using (var db = RepositoryProvider.GetRepositoryInstance())
             {
-                var data = db.GetStockMarketNews(10, TEST_STOCKNO_台積電, "mops", new DateTime(2021, 1, 5), new DateTime(2021, 1, 5));
+                var data = db.GetStockMarketNews(10, TEST_STOCKNO_台積電, "mops", Services.SystemTime.Yesterday, Services.SystemTime.Tomorrow);
                 Assert.IsNotNull(data);
                 Assert.IsTrue(data.Any());
                 foreach (var d in data)
@@ -38,7 +38,7 @@ namespace StockCrawler.UnitTest.Jobs
                     Assert.IsFalse(d.Subject.StartsWith("[新聞]"));
                     Assert.AreEqual(TEST_STOCKNO_台積電, d.StockNo);
                 }
-                data = db.GetStockMarketNews(10, null, "twse", new DateTime(2021, 1, 5), new DateTime(2021, 1, 5));
+                data = db.GetStockMarketNews(10, null, "twse", Services.SystemTime.Yesterday, Services.SystemTime.Tomorrow);
                 Assert.IsTrue(data.Any());
                 foreach (var d in data)
                 {
@@ -46,9 +46,9 @@ namespace StockCrawler.UnitTest.Jobs
                     Assert.AreEqual("0000", d.StockNo);
                     Assert.IsFalse(d.Subject.StartsWith("[新聞]"));
                 }
-                var data2 = db.GetStockForumData(1000, new DateTime(2021, 1, 5), new DateTime(2021, 1, 5), null, null);
+                var data2 = db.GetStockForumData(1000, Services.SystemTime.Yesterday, Services.SystemTime.Tomorrow, null, null);
                 Assert.IsTrue(data2.Any());
-                Assert.AreEqual(17, data2.Length);
+                Assert.AreEqual(59, data2.Length);
                 foreach (var d in data2)
                 {
                     _logger.DebugFormat("{0}\t{1}\t{2}", d.StockNo, d.Subject, d.Url);
