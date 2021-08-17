@@ -20,10 +20,12 @@ namespace StockCrawler.Services
             try
             {
                 var args = (string[])context.Get("args");
-                if (null == args && args.Length > 1) SystemTime.SetFakeTime(DateTime.Parse(args[1]));
+                var date = SystemTime.Today;
+                if (null != args && args.Length > 1) date = DateTime.Parse(args[1]);
 
                 var collector = CollectorServiceProvider.GetStockForumCollector();
-                var data = collector.GetPttData(SystemTime.Today);
+                var data = collector.GetPttData(date);
+                if(data != null)
                 {
                     var twse = (from d in data
                                 where d.Article.Source == "twse"

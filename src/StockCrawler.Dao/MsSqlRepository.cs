@@ -100,8 +100,13 @@ namespace StockCrawler.Dao
                         db.InsertStockForums(d.forum.Source, d.forum.Subject, d.forum.Hash, d.forum.Url, d.forum.ArticleDate, ref id);
                         d.forum.ID = id ?? 0;
                         if (d.forum.ID > 0)
-                            foreach (var s in d.stock)
-                                db.InsertStockForumRelations(s.StockNo, d.forum.ID);
+                            if (d.stock.Any())
+                            {
+                                foreach (var s in d.stock)
+                                    db.InsertStockForumRelations(s.StockNo, d.forum.ID);
+                            }
+                            else
+                                db.InsertStockForumRelations("0000", d.forum.ID);
                     }
                     db.Transaction.Commit();
                 }

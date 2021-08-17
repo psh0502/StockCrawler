@@ -20,7 +20,14 @@ namespace StockCrawler.Services
                     return FakeTime;
             }
         }
-
+        public static DateTime Tomorrow
+        {
+            get { return Today.AddDays(1); }
+        }
+        public static DateTime Yesterday
+        {
+            get { return Today.AddDays(-1); }
+        }
         public static void SetFakeTime(DateTime fakeTime)
         {
             FakeTime = fakeTime;
