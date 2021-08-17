@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StockCrawler.Services;
 using StockCrawler.Services.Collectors;
+using System;
 using System.Linq;
 
 #if (DEBUG)
@@ -18,7 +19,7 @@ namespace StockCrawler.UnitTest.Collectors
             SqlTool.ExecuteSqlFile(@"..\..\..\StockCrawler.UnitTest\TestData\Sql\Stock.data.sql");
         }
         [TestMethod]
-        public void CollectorTestMethod_GetData_20200105()
+        public void CollectorTestMethod_GetData()
         {
             var collector = new StockForumCollector()
             {
