@@ -26,8 +26,8 @@ namespace StockCrawler.Services
             string stockNo = null;
             if (context != null) {
                 var args = (string[])context.Get("args");
-                if (null == args && args.Length > 2) stockNo = args[2];
-                if (null == args && args.Length > 1) bgnDate = DateTime.Parse(args[1]);
+                if (null != args && args.Length > 2) stockNo = args[2];
+                if (null != args && args.Length > 1) bgnDate = DateTime.Parse(args[1]);
             }
             IJob job = new StockPriceUpdateJob();
             for (var date = bgnDate; date <= endDate; date = date.AddDays(1))

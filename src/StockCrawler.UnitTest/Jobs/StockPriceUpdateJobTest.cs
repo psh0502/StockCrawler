@@ -56,7 +56,7 @@ namespace StockCrawler.UnitTest.Jobs
                     Assert.AreEqual(275.5M, d1.ClosePrice);
                     Assert.AreEqual(59712754, d1.Volume);
                     Assert.AreEqual(4, d1.DeltaPrice);
-                    Assert.AreEqual(0.0146M, d1.DeltaPercent);
+                    Assert.AreEqual(0.0147M, d1.DeltaPercent);
                     Assert.AreEqual(20.68M, d1.PE);
 
                     data = db.GetStockPriceHistoryPaging("0000", Services.SystemTime.Today, Services.SystemTime.Today, 1, 100, 1, 10, ref pageCount).ToList();
@@ -73,7 +73,7 @@ namespace StockCrawler.UnitTest.Jobs
                     Assert.AreEqual(9818.74M, d1.ClosePrice);
                     Assert.AreEqual(4521499478, d1.Volume);
                     Assert.AreEqual(155.11M, d1.DeltaPrice);
-                    Assert.AreEqual(0.0160M, d1.DeltaPercent);
+                    Assert.AreEqual(0.0161M, d1.DeltaPercent);
                 }
             }
         }

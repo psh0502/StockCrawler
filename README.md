@@ -6,7 +6,6 @@
 - Company basic information.
 - Business finanicial reports.
 - Market news about stock.
-- 3rd-Party analytic.
 - Forum news about stock.
 - History interest issuing result.
 
@@ -51,8 +50,6 @@ StockCrawlerRunner.exe <mode>
      Update the company finance report since 2015 to this year.
  <mode>: -n
      Get the latest Taiwan stock market news.
- <mode>: -lz
-     Get the latest LazyStock data.
  <mode>: -is
      Get the latest interest issued result.
  <mode>: -ptt [Date:yyyy/MM/dd]
@@ -90,7 +87,6 @@ Here is the injection setting in *.exe.config
     <container>
       <register type="IStockDataService" mapTo="StockDataServiceMSSQL" />
       <register type="IStockForumCollector" mapTo="StockForumCollector" />
-      <register type="IStockHistoryPriceCollector" mapTo="YaooStockHistoryPriceCollector" />
       <register type="IStockBasicInfoCollector" mapTo="TwseStockBasicInfoCollector" />
       <register type="IStockDailyInfoCollector" mapTo="TwseStockDailyInfoCollector" />
       <register type="IStockReportCollector" mapTo="TwseReportCollector" />

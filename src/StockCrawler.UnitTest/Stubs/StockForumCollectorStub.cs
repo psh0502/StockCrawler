@@ -18,7 +18,7 @@ namespace StockCrawler.UnitTest.Stubs
         /// <returns>從測試資料檔案內直接回傳已經下載的 html 資料</returns>
         protected override string DownloadData(Uri uri)
         {
-            uri = new Uri("https://reurl.cc/ze7MO6");
+            uri = new Uri("https://www.ptt.cc/bbs/Stock/index.html");
             _logger.Info($"Mock DownloadData!!!uri={uri}");
             var file_name = uri.LocalPath.Replace("/", string.Empty);
             if (!string.IsNullOrEmpty(file_name))
