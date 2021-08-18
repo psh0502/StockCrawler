@@ -70,7 +70,8 @@ namespace StockCrawler.Services.Collectors
 
                     var d = GetParsedStockDailyInfo(day, data);
                     daily_info.Add(d.StockNo, d);
-                    _categoriedVolume["0000"] += d.Volume;
+                    if (StockHelper.IsCompany(d.StockNo))
+                        _categoriedVolume["0000"] += d.Volume;
                     if (_stockCategoryNo.ContainsKey(d.StockNo))
                         _categoriedVolume[_stockCategoryNo[d.StockNo]] += d.Volume;
                 }

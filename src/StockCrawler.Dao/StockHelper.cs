@@ -11,6 +11,7 @@ namespace StockCrawler.Dao
     {
         private static IList<GetStocksResult> _STOCK_LIST = null;
         private static IList<GetStocksResult> _STOCK_COMPANY_LIST = null;
+        private static ISet<string> _COMPANY_STOCKNO_HASH = null;
         private static IList<GetStocksResult> _STOCK_INDEX_LIST = null;
         private static IList<GetStocksResult> _STOCK_FOUND_LIST = null;
         private static ConcurrentDictionary<string, GetStocksResult> _STOCK_DICT = null;
@@ -73,6 +74,24 @@ namespace StockCrawler.Dao
                 return null;
         }
         /// <summary>
+        /// 判斷該股票代碼是否屬於公司
+        /// </summary>
+        /// <param name="data">股票資料</param>
+        /// <returns>是否屬於公司</returns>
+        public static bool IsCompany(this GetStocksResult data)
+        {
+            return IsCompany(data.StockNo);
+        }
+        /// <summary>
+        /// 判斷該股票代碼是否屬於公司
+        /// </summary>
+        /// <param name="stockNo">股票代碼</param>
+        /// <returns>是否屬於公司</returns>
+        public static bool IsCompany(string stockNo)
+        {
+            return _COMPANY_STOCKNO_HASH.Contains(stockNo);
+        }
+        /// <summary>
         /// 取得完整的上市公司列表
         /// </summary>
         /// <returns>上市公司列表</returns>
@@ -81,10 +100,16 @@ namespace StockCrawler.Dao
             if (null == _STOCK_COMPANY_LIST)
                 lock (typeof(StockHelper))
                     if (null == _STOCK_COMPANY_LIST)
-                        _STOCK_COMPANY_LIST = GetAllStockList().Where(
-                            d => !d.StockNo.StartsWith("0")
+                    {
+                        _STOCK_COMPANY_LIST = GetAllStockList()
+                            .Where(d => !d.StockNo.StartsWith("0")
                                 && int.TryParse(d.StockNo, out _))
-                                .ToList();
+                            .ToList();
+
+                        _COMPANY_STOCKNO_HASH = _STOCK_COMPANY_LIST
+                            .Select(d => d.StockNo)
+                            .ToHashSet();
+                    }
 
             return _STOCK_COMPANY_LIST;
         }
