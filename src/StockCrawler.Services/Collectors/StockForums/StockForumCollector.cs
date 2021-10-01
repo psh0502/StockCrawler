@@ -45,7 +45,8 @@ namespace StockCrawler.Services.Collectors
                         {
                             hasArticleInRightDate = true;
                             if (!title.StartsWith("[活動]")
-                                && !title.StartsWith("[公告]"))
+                                && !title.StartsWith("[公告]")
+                                && !title.StartsWith("[創作]"))
                             {
                                 var url = a.Attributes["href"]?.Value;
                                 if (string.IsNullOrEmpty(url) || !url.Contains("M."))

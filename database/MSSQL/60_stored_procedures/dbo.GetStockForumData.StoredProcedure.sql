@@ -26,7 +26,7 @@ BEGIN
 		INNER JOIN [dbo].[Stock] c(NOLOCK) ON b.StockNo = c.StockNo
 	WHERE 
 		(@pID IS NULL OR a.[ID] = @pID)
-		AND (@pStockNo IS NULL OR @pStockNo = '' OR c.StockNo = @pStockNo)
+		AND ((@pStockNo IS NULL AND c.StockNo != '0000') OR (@pStockNo = '' AND c.StockNo != '0000') OR c.StockNo = @pStockNo)
 		AND (a.ArticleDate BETWEEN @pBgnDate AND @pEndDate)
 END
 GO
