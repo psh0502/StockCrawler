@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using StockCrawler.Services.Collectors;
+using System;
 using System.Linq;
 
 #if (DEBUG)
@@ -9,12 +10,8 @@ namespace StockCrawler.UnitTest.Collectors
     [TestClass]
     public class TwseReportCollectorTests : UnitTestBase
     {
-        /// <summary>
-        /// 本測試僅能在 110 年二月底對應線上財報公布 109 全年度財報方能成功
-        /// 當時的資料下載如 StockCrawler.UnitTest\TestData\TWSE\2330_109_-1_3_2020-04-06_1.html
-        /// </summary>
         [TestMethod]
-        public void GetStockFinancialReportTest_109Q3()
+        public void GetStockFinancialReportTest_2330()
         {
             var collector = new TwseReportCollector
             {
@@ -31,6 +28,38 @@ namespace StockCrawler.UnitTest.Collectors
 
             d = data[2];
             _logger.Debug(JsonConvert.SerializeObject(d));
+        }
+        [TestMethod]
+        public void GetStockFinancialReportTest_9945()
+        {
+            var collector = new TwseReportCollector
+            {
+                _logger = new UnitTestLogger()
+            };
+            var data = collector.GetStockFinancialReport("9945");
+            Assert.IsTrue(data.Any(), "data count");
+            var d = data[0];
+            _logger.Debug(JsonConvert.SerializeObject(d));
+            Assert.AreEqual("9945", d.StockNo);
+
+            d = data[1];
+            _logger.Debug(JsonConvert.SerializeObject(d));
+
+            d = data[2];
+            _logger.Debug(JsonConvert.SerializeObject(d));
+        }
+        /// <summary>
+        /// [美德醫療-DR]存託憑證類型股票應不在國內有財務報表
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GetStockFinancialReportTest_9103()
+        {
+            var collector = new TwseReportCollector
+            {
+                _logger = new UnitTestLogger()
+            };
+            collector.GetStockFinancialReport("9103");
         }
     }
 }

@@ -24,7 +24,8 @@ namespace StockCrawler.Services
             {
                 var collector = CollectorServiceProvider.GetStockReportCollector();
                 using (var db = GetDB())
-                    foreach (var stock in StockHelper.GetCompanyStockList())
+                    foreach (var stock in StockHelper.GetCompanyStockList()
+                        .Where(d => !d.StockName.Contains("-DR")))
                     {
                         try
                         {
@@ -40,6 +41,10 @@ namespace StockCrawler.Services
                                 Logger.InfoFormat("[{0}] has no financial report", stock.StockNo);
                         }
                         catch (ApplicationException) { }
+                        catch (Exception ex)
+                        {
+                            Logger.Warn($"[{stock.StockNo}] has error: {ex.Message}", ex);
+                        }
                         Thread.Sleep(_breakInternval);
                     }
             }
