@@ -181,7 +181,7 @@ namespace StockCrawler.Services
             }
             else
             {
-                _logger.Info($"[{stockNo}] get the body node successfully.");
+                _logger.Debug($"[{stockNo}] get the body node successfully.");
                 return tableNode;
             }
         }
