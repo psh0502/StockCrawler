@@ -12,7 +12,8 @@ namespace StockCrawler.UnitTest.Stubs
             _logger = new UnitTestLogger();
             string html = null;
             _logger.Info($"Mock DownloadData!!!");
-            var file = new FileInfo($@"..\..\..\StockCrawler.UnitTest\TestData\TWSE\2330_109_-1_3_2020-04-06_1.html");
+
+            var file = new FileInfo($@"..\..\..\StockCrawler.UnitTest\TestData\TWSE\TwseReportCollector\{stockNo}_1.html");
             if (file.Exists)
             {
                 using (var sr = file.OpenText())

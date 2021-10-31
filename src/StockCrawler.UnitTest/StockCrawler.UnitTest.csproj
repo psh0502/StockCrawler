@@ -372,10 +372,12 @@
     <Content Include="TestData\Ptt\ZQa92W.html" />
     <Content Include="TestData\Sql\Stock.data.sql" />
     <Content Include="TestData\TWSE\2020-12-03.html" />
-    <Content Include="TestData\TWSE\2330_109_-1_3_2020-04-06_1.html" />
-    <Content Include="TestData\TWSE\Issued\1477_110_-1_-1_2021-03-16_1.html" />
-    <Content Include="TestData\TWSE\Issued\2330_110_-1_-1_2021-03-16_1.html" />
+    <Content Include="TestData\TWSE\TwseReportCollector\2330_1.html" />
+    <Content Include="TestData\TWSE\TwseReportCollector\1477_1.html" />
     <Content Include="TestData\TWSE\SimplfiedFinancialReport_2330.html" />
+    <Content Include="TestData\TWSE\TwseReportCollector\9103_1.html" />
+    <Content Include="TestData\TWSE\TwseReportCollector\9103_2.html" />
+    <Content Include="TestData\TWSE\TwseReportCollector\9945_1.html" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StockCrawler.Dao\StockCrawler.Dao.csproj">
