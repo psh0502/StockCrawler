@@ -6,7 +6,7 @@ namespace StockCrawler.Services.Collectors
 {
     public interface IStockDailyInfoCollector
     {
-        GetStockPeriodPriceResult GetStockDailyPriceInfo(string stockNo, DateTime date);
-        IEnumerable<GetStockPeriodPriceResult> GetStockDailyPriceInfo(DateTime date);
+        GetStockPriceHistoryResult GetStockDailyPriceInfo(string stockNo, DateTime date);
+        IEnumerable<GetStockPriceHistoryResult> GetStockDailyPriceInfo(DateTime date);
     }
 }

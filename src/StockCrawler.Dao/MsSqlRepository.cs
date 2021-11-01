@@ -18,7 +18,6 @@ namespace StockCrawler.Dao
             string stockNo
             , DateTime bgnDate
             , DateTime endDate
-            , short period
             , int top
             , int currentPage
             , int pageSize
@@ -26,7 +25,7 @@ namespace StockCrawler.Dao
         {
             pageCount = 0;
             using (var db = GetMSSQLStockDataContext())
-                return db.GetStockPriceHistoryPaging(stockNo, bgnDate, endDate, period, top, currentPage, pageSize, ref pageCount).ToArray();
+                return db.GetStockPriceHistoryPaging(stockNo, bgnDate, endDate, top, currentPage, pageSize, ref pageCount).ToArray();
         }
         public GetCategoryMappingResult[] GetCategoryMapping()
         {
@@ -48,10 +47,10 @@ namespace StockCrawler.Dao
             using (var db = GetMSSQLStockDataContext())
                 return db.GetStockMarketNews(top, stockNo, source, startDate, endDate).ToArray();
         }
-        public GetStockPeriodPriceResult[] GetStockPeriodPrice(string stockNo, short period, DateTime bgnDate, DateTime endDate)
+        public GetStockPriceHistoryResult[] GetStockPriceHistory(string stockNo, DateTime bgnDate, DateTime endDate)
         {
             using (var db = GetMSSQLStockDataContext())
-                return db.GetStockPeriodPrice(stockNo, period, bgnDate, endDate).ToArray();
+                return db.GetStockPriceHistory(stockNo, bgnDate, endDate).ToArray();
         }
         public GetStockAveragePriceResult[] GetStockAveragePrice(string stockNo, DateTime bgnDate, DateTime endDate, short period)
         {
@@ -135,14 +134,13 @@ namespace StockCrawler.Dao
                         throw;
                     }
         }
-        public void InsertOrUpdateStockPrice(GetStockPeriodPriceResult[] data)
+        public void InsertOrUpdateStockPrice(GetStockPriceHistoryResult[] data)
         {
             using (var db = GetMSSQLStockDataContext())
                 foreach (var d in data)
                     db.InsertOrUpdateStockPriceHistory(
                         d.StockNo,
                         d.StockDT,
-                        d.Period,
                         d.OpenPrice,
                         d.HighPrice,
                         d.LowPrice,

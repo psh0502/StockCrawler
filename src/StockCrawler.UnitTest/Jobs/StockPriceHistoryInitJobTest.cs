@@ -50,9 +50,8 @@ namespace StockCrawler.UnitTest.Jobs
         {
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
             {
-                short period = 1;
                 int? pageCount = null;
-                var data = db.GetStockPriceHistoryPaging(stockNo, today, today, period, 100, 1, 10, ref pageCount).ToList();
+                var data = db.GetStockPriceHistoryPaging(stockNo, today, today, 100, 1, 10, ref pageCount).ToList();
                 Assert.AreEqual(1, data.Count);
                 Assert.AreEqual(1, pageCount);
                 var d1 = data.First();
@@ -81,7 +80,7 @@ namespace StockCrawler.UnitTest.Jobs
                     "2888",
                     new DateTime(2020, 3, 1),
                     new DateTime(2020, 3, 31),
-                    period, 100, 1, 10, ref pageCount).ToList();
+                    period, 100, 10, ref pageCount).ToList();
 
                 Assert.AreEqual(10, data.Count);
                 Assert.AreEqual(3, pageCount);

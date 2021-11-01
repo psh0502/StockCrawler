@@ -24,7 +24,7 @@ BEGIN
 	FROM(
 		SELECT TOP (@pPeriod) ClosePrice
 		FROM StockPriceHistory(NOLOCK)
-		WHERE StockNo = @pStockNo AND StockDT <= @pDateEnd AND [Period] = 1
+		WHERE StockNo = @pStockNo AND StockDT <= @pDateEnd
 		ORDER BY StockDT DESC
 	) t
 	SET @oAvgClosePrice = ISNULL(@oAvgClosePrice, 0)

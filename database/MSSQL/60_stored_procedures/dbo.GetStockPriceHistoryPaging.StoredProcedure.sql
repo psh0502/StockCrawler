@@ -15,7 +15,6 @@ CREATE OR ALTER PROCEDURE [dbo].[GetStockPriceHistoryPaging]
 @pStockNo VARCHAR(10),
 @pDateBegin DATE,
 @pDateEnd DATE,
-@pPeriod SMALLINT,
 @pTop INT,
 @pCurrentPage INT,
 @pPageSize INT,
@@ -33,7 +32,6 @@ BEGIN
 	WHERE
 		sph.StockNo = @pStockNo
 		AND sph.StockDT BETWEEN @pDateBegin AND @pDateEnd
-		AND sph.[Period] = @pPeriod
 
 	IF (@vRowCount > @pTop) SET @vRowCount = @pTop
 	
@@ -56,7 +54,6 @@ BEGIN
 		WHERE
 			sph.StockNo = @pStockNo
 			AND sph.StockDT BETWEEN @pDateBegin AND @pDateEnd
-			AND sph.[Period] = @pPeriod
 	) ResultTable
 	WHERE RNO BETWEEN @vFROM_IDX AND @vTO_IDX
 	ORDER BY StockDT DESC

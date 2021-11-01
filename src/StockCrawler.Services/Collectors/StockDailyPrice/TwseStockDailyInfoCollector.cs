@@ -12,17 +12,17 @@ namespace StockCrawler.Services.Collectors
 {
     internal class TwseStockDailyInfoCollector : TwseCollectorBase, IStockDailyInfoCollector
     {
-        private Dictionary<string, GetStockPeriodPriceResult> _stockInfoDictCache = null;
+        private Dictionary<string, GetStockPriceHistoryResult> _stockInfoDictCache = null;
         private Dictionary<string, string> _stockCategoryNo = null;
         private Dictionary<string, long> _categoriedVolume = null;
-        public virtual GetStockPeriodPriceResult GetStockDailyPriceInfo(string stockNo, DateTime date)
+        public virtual GetStockPriceHistoryResult GetStockDailyPriceInfo(string stockNo, DateTime date)
         {
             InitStockDailyPriceCache(date);
             if (_stockInfoDictCache == null) return null;
             return (_stockInfoDictCache.ContainsKey(stockNo)) ? 
                 _stockInfoDictCache[stockNo] : null;
         }
-        public virtual IEnumerable<GetStockPeriodPriceResult> GetStockDailyPriceInfo(DateTime date)
+        public virtual IEnumerable<GetStockPriceHistoryResult> GetStockDailyPriceInfo(DateTime date)
         {
             InitStockDailyPriceCache(date);
             if (_stockInfoDictCache == null) return null;
@@ -46,7 +46,7 @@ namespace StockCrawler.Services.Collectors
             var data = GetAllStockDailyPriceInfo(date);
             if (null != data) _stockInfoDictCache = data.ToDictionary(d => d.StockNo);
         }
-        protected virtual GetStockPeriodPriceResult[] GetAllStockDailyPriceInfo(DateTime day)
+        protected virtual GetStockPriceHistoryResult[] GetAllStockDailyPriceInfo(DateTime day)
         {
             if (Tools.IsWeekend(day)) return null;
 
@@ -55,7 +55,7 @@ namespace StockCrawler.Services.Collectors
 
             // Usage of CsvReader: https://blog.darkthread.net/post-2017-05-13-servicestack-text-csvserializer.aspx
             var csv_lines = CsvReader.ParseLines(csv_data);
-            var daily_info = new Dictionary<string, GetStockPeriodPriceResult>();
+            var daily_info = new Dictionary<string, GetStockPriceHistoryResult>();
             bool found_stock_list = false;
             for (int i = 1; i < csv_lines.Count; i++)
             {
@@ -91,7 +91,7 @@ namespace StockCrawler.Services.Collectors
             {
                 foreach (var d in _categoriedVolume)
                     if (!daily_info.ContainsKey(d.Key))
-                        daily_info.Add(d.Key, new GetStockPeriodPriceResult() { StockNo = d.Key, Volume = d.Value });
+                        daily_info.Add(d.Key, new GetStockPriceHistoryResult() { StockNo = d.Key, Volume = d.Value });
                     else
                         daily_info[d.Key].Volume = d.Value;
 
@@ -113,7 +113,7 @@ namespace StockCrawler.Services.Collectors
             }
             return daily_info.Values.ToArray();
         }
-        private GetStockPeriodPriceResult GetParsedStockDailyInfo(DateTime day, string[] data)
+        private GetStockPriceHistoryResult GetParsedStockDailyInfo(DateTime day, string[] data)
         {
             #region csv index comment
             /*
@@ -135,11 +135,10 @@ namespace StockCrawler.Services.Collectors
             15. 本益比
             */
             #endregion
-            var tmp = new GetStockPeriodPriceResult()
+            var tmp = new GetStockPriceHistoryResult()
             {
                 StockNo = data[0].Replace("=\"", string.Empty).Replace("\"", string.Empty),
                 StockName = data[1],
-                Period = 1,
                 Volume = long.Parse(data[2]),
                 StockDT = day,
                 OpenPrice = decimal.Parse(data[5]),
@@ -161,13 +160,12 @@ namespace StockCrawler.Services.Collectors
         /// <param name="data"></param>
         /// <param name="s"></param>
         /// <returns>類股指數資訊</returns>
-        private static GetStockPeriodPriceResult GetParsedCategoryMarketIndexData(DateTime day, string[] data, GetStocksResult s)
+        private static GetStockPriceHistoryResult GetParsedCategoryMarketIndexData(DateTime day, string[] data, GetStocksResult s)
         {
-            var d = new GetStockPeriodPriceResult()
+            var d = new GetStockPriceHistoryResult()
             {
                 StockNo = s.StockNo,
                 StockName = s.StockName,
-                Period = 1,
                 Volume = 0,
                 StockDT = day,
                 OpenPrice = decimal.Parse(data[1]),

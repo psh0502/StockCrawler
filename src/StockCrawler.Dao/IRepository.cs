@@ -13,7 +13,6 @@ namespace StockCrawler.Dao
             string stockNo
             , DateTime bgnDate
             , DateTime endDate
-            , short period
             , int top
             , int currentPage
             , int pageSize
@@ -58,9 +57,8 @@ namespace StockCrawler.Dao
         /// <param name="stockNo">股票代碼</param>
         /// <param name="bgnDate">起始日期</param>
         /// <param name="endDate">結束日期</param>
-        /// <param name="period">週期天數</param>
-        /// <returns>每日收盤資料列表</returns>
-        GetStockPeriodPriceResult[] GetStockPeriodPrice(string stockNo, short period, DateTime bgnDate, DateTime endDate);
+        /// <returns cref="GetStockPriceHistoryResult">每日收盤資料列表</returns>
+        GetStockPriceHistoryResult[] GetStockPriceHistory(string stockNo, DateTime bgnDate, DateTime endDate);
         GetStockAveragePriceResult[] GetStockAveragePrice(string stockNo, DateTime bgnDate, DateTime endDate, short period);
         GetStockAnalysisDataResult GetStockAnalysisData(string stockNo);
         GetStockForumDataResult[] GetStockForumData(int top, DateTime bgnDate, DateTime endDate, long? id = null, string stockNo = null);
@@ -77,7 +75,7 @@ namespace StockCrawler.Dao
         /// <param name="data">Collection of stock company's basic information</param>
         void InsertOrUpdateStockBasicInfo(GetStockBasicInfoResult[] data);
         void InsertOrUpdateStockBasicInfo(GetStockBasicInfoResult data);
-        void InsertOrUpdateStockPrice(GetStockPeriodPriceResult[] data);
+        void InsertOrUpdateStockPrice(GetStockPriceHistoryResult[] data);
         void InsertOrUpdateStock(GetStocksResult[] data);
         /// <summary>
         /// Update stock name and category no by stock no

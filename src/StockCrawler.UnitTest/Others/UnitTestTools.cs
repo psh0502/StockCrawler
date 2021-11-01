@@ -44,7 +44,7 @@ namespace StockCrawler.UnitTest.Others
             var collector = new TwseStockDailyInfoCollector();
             do
             {
-                var list = new List<GetStockPeriodPriceResult>();
+                var list = new List<GetStockPriceHistoryResult>();
                 var d = collector.GetStockDailyPriceInfo("0022", bgnDate);
                 if (null != d) list.Add(d);
                 using (var db = RepositoryProvider.GetRepositoryInstance())

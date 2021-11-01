@@ -1,4 +1,4 @@
-/****** Object:  StoredProcedure [dbo].[GetStockPeriodPrice] ******/
+/****** Object:  StoredProcedure [dbo].[GetStockPriceHistory] ******/
 SET ANSI_NULLS ON
 GO
 
@@ -8,12 +8,11 @@ GO
 -- =============================================
 -- Author:		Tom Tang
 -- Create date: 2019-09-10
--- Description:	Get stock close price by specified period
+-- Description:	Get stock close price
 -- Revision:
 -- =============================================
-CREATE OR ALTER PROCEDURE [dbo].[GetStockPeriodPrice]
+CREATE OR ALTER PROCEDURE [dbo].[GetStockPriceHistory]
 @pStockNo VARCHAR(10),
-@pPeriod SMALLINT,
 @pBeginDate DATE,
 @pEndDate DATE
 AS
@@ -24,7 +23,6 @@ BEGIN
 		INNER JOIN Stock a(NOLOCK) ON a.StockNo = b.StockNo 
 	WHERE (@pStockNo IS NULL OR @pStockNo = '' OR b.StockNo = @pStockNo)
 		AND b.StockDT BETWEEN @pBeginDate AND @pEndDate
-		AND b.[Period] = @pPeriod
 	ORDER BY b.StockDT DESC
 END
 GO

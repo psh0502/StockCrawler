@@ -34,6 +34,7 @@
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
     <ElementType Name="GetStockAnalysisDataResult">
       <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Year" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
       <Column Name="Price" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="StockCashDivi" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
       <Column Name="DiviRatio" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
@@ -170,16 +171,14 @@
       <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
-  <Function Name="dbo.GetStockPeriodPrice" Method="GetStockPeriodPrice">
+  <Function Name="dbo.GetStockPriceHistory" Method="GetStockPriceHistory">
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
-    <Parameter Name="pPeriod" Type="System.Int16" DbType="SmallInt" />
     <Parameter Name="pBeginDate" Type="System.DateTime" DbType="Date" />
     <Parameter Name="pEndDate" Type="System.DateTime" DbType="Date" />
-    <ElementType Name="GetStockPeriodPriceResult">
+    <ElementType Name="GetStockPriceHistoryResult">
       <Column Name="StockName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="StockDT" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
-      <Column Name="Period" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
       <Column Name="OpenPrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
       <Column Name="HighPrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
       <Column Name="LowPrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
@@ -195,7 +194,6 @@
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
     <Parameter Name="pDateBegin" Type="System.DateTime" DbType="Date" />
     <Parameter Name="pDateEnd" Type="System.DateTime" DbType="Date" />
-    <Parameter Name="pPeriod" Type="System.Int16" DbType="SmallInt" />
     <Parameter Name="pTop" Type="System.Int32" DbType="Int" />
     <Parameter Name="pCurrentPage" Type="System.Int32" DbType="Int" />
     <Parameter Name="pPageSize" Type="System.Int32" DbType="Int" />
@@ -203,7 +201,6 @@
     <ElementType Name="GetStockPriceHistoryPagingResult">
       <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="StockDT" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
-      <Column Name="Period" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
       <Column Name="OpenPrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
       <Column Name="HighPrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
       <Column Name="LowPrice" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
@@ -311,7 +308,6 @@
   <Function Name="dbo.InsertOrUpdateStockPriceHistory" Method="InsertOrUpdateStockPriceHistory">
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(20)" />
     <Parameter Name="pStockDT" Type="System.DateTime" DbType="Date" />
-    <Parameter Name="pPeriod" Type="System.Int16" DbType="SmallInt" />
     <Parameter Name="pOpenPrice" Type="System.Decimal" DbType="Decimal(10,4)" />
     <Parameter Name="pHighPrice" Type="System.Decimal" DbType="Decimal(10,4)" />
     <Parameter Name="pLowPrice" Type="System.Decimal" DbType="Decimal(10,4)" />

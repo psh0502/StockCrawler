@@ -42,7 +42,7 @@ namespace StockCrawler.UnitTest.Jobs
                 }
                 {
                     int? pageCount = null;
-                    var data = db.GetStockPriceHistoryPaging(TEST_STOCKNO_台積電, Services.SystemTime.Today, Services.SystemTime.Today, 1, 100, 1, 10, ref pageCount).ToList();
+                    var data = db.GetStockPriceHistoryPaging(TEST_STOCKNO_台積電, Services.SystemTime.Today, Services.SystemTime.Today, 1, 100, 10, ref pageCount).ToList();
                     Assert.AreEqual(1, data.Count);
                     Assert.AreEqual(1, pageCount);
                     var d1 = data.First();
@@ -59,7 +59,7 @@ namespace StockCrawler.UnitTest.Jobs
                     Assert.AreEqual(0.0147M, d1.DeltaPercent);
                     Assert.AreEqual(20.68M, d1.PE);
 
-                    data = db.GetStockPriceHistoryPaging("0000", Services.SystemTime.Today, Services.SystemTime.Today, 1, 100, 1, 10, ref pageCount).ToList();
+                    data = db.GetStockPriceHistoryPaging("0000", Services.SystemTime.Today, Services.SystemTime.Today, 1, 100, 10, ref pageCount).ToList();
                     Assert.AreEqual(1, data.Count);
                     Assert.AreEqual(1, pageCount);
                     d1 = data.First();
