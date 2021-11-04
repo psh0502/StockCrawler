@@ -82,7 +82,7 @@ namespace StockCrawlerRunner
             Console.WriteLine(" <mode>: -i");
             Console.WriteLine("     Initialize all stock history data. It will drop all existing data.");
             Console.WriteLine(" <mode>: -i [Date:yyyy/MM/dd]");
-            Console.WriteLine("     Initialize all stock history data by the specified date. It will drop all existing data.");
+            Console.WriteLine("     Initialize all stock history data by the specified date. It will drop existing data in the specified date.");
             Console.WriteLine(" <mode>: -i <Date:yyyy/MM/dd> [stock number]");
             Console.WriteLine("     Initialize only one specified stock history data. It will drop all old data by this stock.");
             Console.WriteLine(" <mode>: -u");

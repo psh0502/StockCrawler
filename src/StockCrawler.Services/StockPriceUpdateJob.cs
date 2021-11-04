@@ -21,8 +21,10 @@ namespace StockCrawler.Services
             {
                 var args = (string[])context.Get("args");
                 var targetDate = SystemTime.Today;
+                string stockNo = null;
                 if (null != args && args.Length > 1) targetDate = DateTime.Parse(args[1]);
-                if (!Tools.IsWeekend(targetDate))
+                if (null != args && args.Length > 2) stockNo = args[2];
+                if (!targetDate.IsWeekend())
                 {
                     var collector = CollectorServiceProvider.GetStockDailyPriceCollector();
                     var priceInfo = collector.GetStockDailyPriceInfo(targetDate);
@@ -37,10 +39,12 @@ namespace StockCrawler.Services
                             }).ToList();
                         // #34 Filter out non-trade day price data
                         priceInfo = priceInfo.Where(d => d.ClosePrice > 0).ToArray();
+                        if (!string.IsNullOrEmpty(stockNo)) 
+                            priceInfo = priceInfo.Where(d => d.StockNo == stockNo).ToArray();
 
                         using (var db = GetDB())
                         {
-                            if (stocks.Any())
+                            if (string.IsNullOrEmpty(stockNo) && stocks.Any())
                                 db.InsertOrUpdateStock(stocks.ToArray());
 
                             if (priceInfo.Any())
