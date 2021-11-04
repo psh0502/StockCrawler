@@ -17,17 +17,23 @@ namespace StockCrawler.Services
             Logger.InfoFormat("Invoke [{0}]...", MethodBase.GetCurrentMethod().Name);
             // init stock list
 #if (DEBUG)
-            var endDate = SystemTime.Today.AddMonths(-2);
+            var endDate = SystemTime.Today.AddWeeks(-2);
 #else
-            var endDate = SystemTime.Today.AddYears(-5);
+            var endDate = new DateTime(2015, 9, 30);
 #endif
             var bgnDate = SystemTime.Today;
 
             string stockNo = null;
             if (context != null) {
                 var args = (string[])context.Get("args");
+                if (null != args && args.Length > 1)
+                {
+                    if (DateTime.TryParse(args[1], out endDate))
+                        stockNo = null;
+                    else
+                        stockNo = args[1];
+                }
                 if (null != args && args.Length > 2) stockNo = args[2];
-                if (null != args && args.Length > 1) endDate = DateTime.Parse(args[1]);
             }
             IJob job = new StockPriceUpdateJob();
             for (var date = bgnDate; date > endDate; date = date.AddDays(-1))
