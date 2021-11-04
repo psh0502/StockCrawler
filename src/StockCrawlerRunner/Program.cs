@@ -80,11 +80,11 @@ namespace StockCrawlerRunner
             Console.WriteLine("Usage:");
             Console.WriteLine("StockCrawlerRunner.exe <mode>");
             Console.WriteLine(" <mode>: -i");
-            Console.WriteLine("     Initialize all stock history data. It will drop all existing data.");
+            Console.WriteLine("     Initialize all stock history data. It deletes all existing data.");
             Console.WriteLine(" <mode>: -i [Date:yyyy/MM/dd]");
-            Console.WriteLine("     Initialize all stock history data by the specified date. It will drop existing data in the specified date.");
+            Console.WriteLine("     Initialize all stock history data by the specified date. It deletes existing data after the specified date.");
             Console.WriteLine(" <mode>: -i <Date:yyyy/MM/dd> [stock number]");
-            Console.WriteLine("     Initialize only one specified stock history data. It will drop all old data by this stock.");
+            Console.WriteLine("     Initialize only one specified stock history data. It deletes existing data with this stock.");
             Console.WriteLine(" <mode>: -u");
             Console.WriteLine("     Append the latest price data.");
             Console.WriteLine(" <mode>: -u [Date:yyyy/MM/dd]");
