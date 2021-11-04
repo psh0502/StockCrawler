@@ -14,14 +14,17 @@ namespace StockCrawler.UnitTest.Stubs
         protected override string DownloadData(DateTime day)
         {
             _logger.Info($"Mock DownloadData!!!day={day:yyyyMMdd}");
-            var file = new FileInfo($@"..\..\..\StockCrawler.UnitTest\TestData\TWSE\MI_INDEX_ALLBUT0999_{day:yyyyMMdd}.csv");
+            var file = new FileInfo($@"..\..\..\StockCrawler.UnitTest\TestData\TWSE\{typeof(TwseStockDailyInfoCollector).Name}\MI_INDEX_ALLBUT0999_{day:yyyyMMdd}.csv");
+            if (!file.Directory.Exists) file.Directory.Create();
             if (file.Exists)
             {
                 using (var sr = file.OpenText())
                     return sr.ReadToEnd();
             }
             else
-                return null;
+            {
+                return base.DownloadData(new DateTime(2021, 11, 03));
+            }
         }
     }
 }

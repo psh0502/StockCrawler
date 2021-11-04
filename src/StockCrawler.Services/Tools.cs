@@ -184,15 +184,6 @@ namespace StockCrawler.Services
             return (short)(month / 3 + (month % 3 == 0 ? 0 : 1));
         }
         /// <summary>
-        /// 判斷該日期是否為周末六日假日
-        /// </summary>
-        /// <param name="date">日期</param>
-        /// <returns>是否</returns>
-        public static bool IsWeekend(this DateTime date)
-        {
-            return (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday);
-        }
-        /// <summary>
         /// 取得台灣的中華民國年
         /// </summary>
         /// <param name="date">西園日期物件</param>

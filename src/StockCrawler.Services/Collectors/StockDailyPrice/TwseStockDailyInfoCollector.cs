@@ -3,6 +3,7 @@ using ServiceStack.Text;
 using StockCrawler.Dao;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -48,7 +49,7 @@ namespace StockCrawler.Services.Collectors
         }
         protected virtual GetStockPriceHistoryResult[] GetAllStockDailyPriceInfo(DateTime day)
         {
-            if (Tools.IsWeekend(day)) return null;
+            if (day.IsWeekend()) return null;
 
             var csv_data = DownloadData(day);
             if (string.IsNullOrEmpty(csv_data)) return null;
@@ -70,13 +71,14 @@ namespace StockCrawler.Services.Collectors
 
                     var d = GetParsedStockDailyInfo(day, data);
                     daily_info.Add(d.StockNo, d);
-                    if (StockHelper.IsCompany(d.StockNo))
-                        _categoriedVolume["0000"] += d.Volume;
                     if (_stockCategoryNo.ContainsKey(d.StockNo))
                         _categoriedVolume[_stockCategoryNo[d.StockNo]] += d.Volume;
                 }
                 else
                 {
+                    if (data[0] == "1.一般股票")
+                        _categoriedVolume["0000"] = long.Parse(data[1]);
+
                     found_stock_list = ("證券代號" == data[0]);
                     if (!found_stock_list && data.Length == 7 && i < 100)
                         foreach (var s in StockHelper.GetIndexStockList())
@@ -94,22 +96,6 @@ namespace StockCrawler.Services.Collectors
                         daily_info.Add(d.Key, new GetStockPriceHistoryResult() { StockNo = d.Key, Volume = d.Value });
                     else
                         daily_info[d.Key].Volume = d.Value;
-
-                // 未含金融指數(0009) = 大盤指數(0000) - 金融保險類指數(0040) - 
-                daily_info["0009"].Volume = daily_info["0000"].Volume - daily_info["0040"].Volume;
-                // 未含電子指數(0010) = 
-                daily_info["0010"].Volume = 
-                    daily_info["0000"].Volume // 大盤指數(0000) 
-                    - daily_info["0029"].Volume // 半導體業 - 通信網路業(0032) - 電子零組件業(0033) - 電子通路業(0034) - 其他電子業(0036)
-                    - daily_info["0030"].Volume // 電腦及週邊設備業
-                    - daily_info["0031"].Volume // 光電業
-                    - daily_info["0032"].Volume // 通信網路業
-                    - daily_info["0033"].Volume // 電子零組件業
-                    - daily_info["0034"].Volume // 電子通路業
-                    - daily_info["0035"].Volume // 資訊服務業
-                    - daily_info["0036"].Volume;    // 其他電子業
-                // 未含電子與金融的指數
-                daily_info["0011"].Volume = daily_info["0010"].Volume - daily_info["0040"].Volume;
             }
             return daily_info.Values.ToArray();
         }
@@ -193,14 +179,15 @@ namespace StockCrawler.Services.Collectors
 
                     if (string.IsNullOrEmpty(csv_data))
                     {
-                        _logger.WarnFormat("Download has no data by date[{0}]", day.ToString("yyyyMMdd"));
+                        _logger.WarnFormat("Download has no data by date[{0}]", day.ToShortDateString());
                         return null;
                     }
 #if (DEBUG)
-            //var file = new FileInfo($"D:\\tmp\\MI_INDEX_ALLBUT0999_{day:yyyyMMdd}.csv");
-            //if (file.Exists) file.Delete();
-            //using (var sw = file.CreateText())
-            //    sw.Write(csv_data);
+                    var file = new FileInfo($@"..\..\..\StockCrawler.UnitTest\TestData\TWSE\{GetType().Name}\MI_INDEX_ALLBUT0999_{day:yyyyMMdd}.csv");
+                    if (!file.Directory.Exists) file.Directory.Create();
+                    if (file.Exists) file.Delete();
+                    using (var sw = file.CreateText())
+                        sw.Write(csv_data);
 #endif
                     return csv_data;
                 }
