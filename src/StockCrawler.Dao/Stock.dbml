@@ -171,6 +171,26 @@
       <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
+  <Function Name="dbo.GetStockMonthlyIncome" Method="GetStockMonthlyIncome">
+    <Parameter Name="pTop" Type="System.Int32" DbType="Int" />
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="pMonth" Type="System.Int16" DbType="SmallInt" />
+    <ElementType Name="GetStockMonthlyIncomeResult">
+      <Column Name="StockName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Year" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="Month" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="Income" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="PreIncome" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="DeltaPercent" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="CumMonthIncome" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="PreCumMonthIncome" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="DeltaCumMonthIncomePercent" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
   <Function Name="dbo.GetStockPriceHistory" Method="GetStockPriceHistory">
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
     <Parameter Name="pBeginDate" Type="System.DateTime" DbType="Date" />
@@ -303,6 +323,18 @@
     <Parameter Name="pSsrStockIssued" Type="System.Decimal" DbType="Money" />
     <Parameter Name="pCapitalReserveCashIssued" Type="System.Decimal" DbType="Money" />
     <Parameter Name="pCapitalReserveStockIssued" Type="System.Decimal" DbType="Money" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.InsertOrUpdateStockMonthlyIncome" Method="InsertOrUpdateStockMonthlyIncome">
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pYear" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="pMonth" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="pIncome" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pPreIncome" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pDeltaPercent" Type="System.Decimal" DbType="Decimal(18,4)" />
+    <Parameter Name="pCumMonthIncome" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pPreCumMonthIncome" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pDeltaCumMonthIncomePercent" Type="System.Decimal" DbType="Money" />
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.InsertOrUpdateStockPriceHistory" Method="InsertOrUpdateStockPriceHistory">

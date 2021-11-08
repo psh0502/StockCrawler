@@ -70,16 +70,18 @@ namespace StockCrawler.Services
         {
             if (null == node) return default;
             var innerText = Tools.CleanString(node.InnerText).Replace(",", string.Empty).Trim();
+            var has_percentage = innerText.Contains("%");
+            if (has_percentage) innerText = innerText.Replace("%", string.Empty);
             try
             {
                 if (typeof(T) == typeof(int))
                     return (T)((object)int.Parse(innerText));
                 else if (typeof(T) == typeof(decimal))
-                    return (T)((object)decimal.Parse(innerText));
+                    return (T)((object)(decimal.Parse(innerText) / (has_percentage ? 100M : 1M)));
                 else if (typeof(T) == typeof(double))
-                    return (T)((object)double.Parse(innerText));
+                    return (T)((object)(double.Parse(innerText) / (has_percentage ? 100 : 1)));
                 else if (typeof(T) == typeof(float))
-                    return (T)((object)float.Parse(innerText));
+                    return (T)((object)(float.Parse(innerText) / (has_percentage ? 100 : 1)));
                 else if (typeof(T) == typeof(string))
                     return (T)((object)innerText.Trim());
                 else if (typeof(T) == typeof(bool))

@@ -133,6 +133,7 @@
     <Compile Include="Collectors\StockForumCollectorTest.cs" />
     <Compile Include="Collectors\TwseMarketNewsCollectorTest.cs" />
     <Compile Include="Collectors\TwseInterestIssuedCollectorTests.cs" />
+    <Compile Include="Collectors\TwseMonthlyIncomeCollectorTests.cs" />
     <Compile Include="Collectors\TwseStockBasicInfoCollectorTest.cs" />
     <Compile Include="Collectors\TwseStockDailyInfoCollectorTest.cs" />
     <Compile Include="Collectors\GoodInfoCollectorTest.cs" />
@@ -372,6 +373,7 @@
     <Content Include="TestData\Ptt\ZQa92W.html" />
     <Content Include="TestData\Sql\Stock.data.sql" />
     <Content Include="TestData\TWSE\2020-12-03.html" />
+    <Content Include="TestData\TWSE\TwseMonthlyIncomeCollector\2330_2.html" />
     <Content Include="TestData\TWSE\TwseReportCollector\2330_1.html" />
     <Content Include="TestData\TWSE\TwseReportCollector\1477_1.html" />
     <Content Include="TestData\TWSE\SimplfiedFinancialReport_2330.html" />

@@ -147,6 +147,13 @@ namespace StockCrawler.Dao
 			return ((ISingleResult<GetStockMarketNewsResult>)(result.ReturnValue));
 		}
 		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetStockMonthlyIncome")]
+		public ISingleResult<GetStockMonthlyIncomeResult> GetStockMonthlyIncome([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Int")] System.Nullable<int> pTop, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pYear, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pMonth)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pTop, pStockNo, pYear, pMonth);
+			return ((ISingleResult<GetStockMonthlyIncomeResult>)(result.ReturnValue));
+		}
+		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetStockPriceHistory")]
 		public ISingleResult<GetStockPriceHistoryResult> GetStockPriceHistory([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pBeginDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pEndDate)
 		{
@@ -228,6 +235,13 @@ namespace StockCrawler.Dao
 		public int InsertOrUpdateStockInterestIssuedInfo([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pYear, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pSeason, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pDecisionDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pProfitCashIssued, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pProfitStockIssued, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pSsrCashIssued, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pSsrStockIssued, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pCapitalReserveCashIssued, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pCapitalReserveStockIssued)
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pYear, pSeason, pDecisionDate, pProfitCashIssued, pProfitStockIssued, pSsrCashIssued, pSsrStockIssued, pCapitalReserveCashIssued, pCapitalReserveStockIssued);
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertOrUpdateStockMonthlyIncome")]
+		public int InsertOrUpdateStockMonthlyIncome([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pYear, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pMonth, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pIncome, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pPreIncome, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(18,4)")] System.Nullable<decimal> pDeltaPercent, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pCumMonthIncome, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pPreCumMonthIncome, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pDeltaCumMonthIncomePercent)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pYear, pMonth, pIncome, pPreIncome, pDeltaPercent, pCumMonthIncome, pPreCumMonthIncome, pDeltaCumMonthIncomePercent);
 			return ((int)(result.ReturnValue));
 		}
 		
@@ -1969,6 +1983,230 @@ namespace StockCrawler.Dao
 				if ((this._CreatedAt != value))
 				{
 					this._CreatedAt = value;
+				}
+			}
+		}
+	}
+	
+	public partial class GetStockMonthlyIncomeResult
+	{
+		
+		private string _StockName;
+		
+		private string _StockNo;
+		
+		private short _Year;
+		
+		private short _Month;
+		
+		private decimal _Income;
+		
+		private decimal _PreIncome;
+		
+		private decimal _DeltaPercent;
+		
+		private decimal _CumMonthIncome;
+		
+		private decimal _PreCumMonthIncome;
+		
+		private decimal _DeltaCumMonthIncomePercent;
+		
+		private System.DateTime _CreatedAt;
+		
+		private System.DateTime _LastModifiedAt;
+		
+		public GetStockMonthlyIncomeResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string StockName
+		{
+			get
+			{
+				return this._StockName;
+			}
+			set
+			{
+				if ((this._StockName != value))
+				{
+					this._StockName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockNo", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string StockNo
+		{
+			get
+			{
+				return this._StockNo;
+			}
+			set
+			{
+				if ((this._StockNo != value))
+				{
+					this._StockNo = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Year", DbType="SmallInt NOT NULL")]
+		public short Year
+		{
+			get
+			{
+				return this._Year;
+			}
+			set
+			{
+				if ((this._Year != value))
+				{
+					this._Year = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Month", DbType="SmallInt NOT NULL")]
+		public short Month
+		{
+			get
+			{
+				return this._Month;
+			}
+			set
+			{
+				if ((this._Month != value))
+				{
+					this._Month = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Income", DbType="Money NOT NULL")]
+		public decimal Income
+		{
+			get
+			{
+				return this._Income;
+			}
+			set
+			{
+				if ((this._Income != value))
+				{
+					this._Income = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PreIncome", DbType="Money NOT NULL")]
+		public decimal PreIncome
+		{
+			get
+			{
+				return this._PreIncome;
+			}
+			set
+			{
+				if ((this._PreIncome != value))
+				{
+					this._PreIncome = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DeltaPercent", DbType="Decimal(18,4) NOT NULL")]
+		public decimal DeltaPercent
+		{
+			get
+			{
+				return this._DeltaPercent;
+			}
+			set
+			{
+				if ((this._DeltaPercent != value))
+				{
+					this._DeltaPercent = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CumMonthIncome", DbType="Money NOT NULL")]
+		public decimal CumMonthIncome
+		{
+			get
+			{
+				return this._CumMonthIncome;
+			}
+			set
+			{
+				if ((this._CumMonthIncome != value))
+				{
+					this._CumMonthIncome = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PreCumMonthIncome", DbType="Money NOT NULL")]
+		public decimal PreCumMonthIncome
+		{
+			get
+			{
+				return this._PreCumMonthIncome;
+			}
+			set
+			{
+				if ((this._PreCumMonthIncome != value))
+				{
+					this._PreCumMonthIncome = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DeltaCumMonthIncomePercent", DbType="Decimal(18,4) NOT NULL")]
+		public decimal DeltaCumMonthIncomePercent
+		{
+			get
+			{
+				return this._DeltaCumMonthIncomePercent;
+			}
+			set
+			{
+				if ((this._DeltaCumMonthIncomePercent != value))
+				{
+					this._DeltaCumMonthIncomePercent = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedAt", DbType="DateTime NOT NULL")]
+		public System.DateTime CreatedAt
+		{
+			get
+			{
+				return this._CreatedAt;
+			}
+			set
+			{
+				if ((this._CreatedAt != value))
+				{
+					this._CreatedAt = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastModifiedAt", DbType="DateTime NOT NULL")]
+		public System.DateTime LastModifiedAt
+		{
+			get
+			{
+				return this._LastModifiedAt;
+			}
+			set
+			{
+				if ((this._LastModifiedAt != value))
+				{
+					this._LastModifiedAt = value;
 				}
 			}
 		}

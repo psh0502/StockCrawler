@@ -17,7 +17,7 @@ namespace StockCrawler.Services
             Logger.InfoFormat("Invoke [{0}]...", MethodBase.GetCurrentMethod().Name);
             // init stock list
 #if (DEBUG)
-            var bgnDate = SystemTime.Today.AddWeeks(-2);
+            var bgnDate = SystemTime.Today.AddDays(-2 * 7);
 #else
             var bgnDate = SystemTime.Today.AddYears(-5);
 #endif

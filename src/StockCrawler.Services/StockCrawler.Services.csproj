@@ -137,6 +137,8 @@
     <Compile Include="Collectors\StockInterestIssued\TwseInterestIssuedCollector.cs" />
     <Compile Include="Collectors\StockMarketNews\IStockMarketNewsCollector.cs" />
     <Compile Include="Collectors\StockMarketNews\TwseMarketNewsCollector.cs" />
+    <Compile Include="Collectors\StockMonthlyIncome\IStockMonthlyIncomeCollector.cs" />
+    <Compile Include="Collectors\StockMonthlyIncome\TwseMonthlyIncomeCollector.cs" />
     <Compile Include="JobBase.cs" />
     <Compile Include="Collectors\StockBasicInfo\TwseStockBasicInfoCollector.cs" />
     <Compile Include="StockAnalysisUpdateJob.cs" />

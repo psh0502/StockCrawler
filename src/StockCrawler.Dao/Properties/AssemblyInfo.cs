@@ -32,7 +32,7 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.1.0.5")]
-[assembly: AssemblyFileVersion("1.1.2.1")]
+[assembly: AssemblyFileVersion("1.1.2.2")]
 #if(DEBUG)
 [assembly: AssemblyDescription("Debug build")]
 [assembly: InternalsVisibleTo("StockCrawler.UnitTest")]
