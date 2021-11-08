@@ -103,6 +103,7 @@ namespace StockCrawler.Services
         /// <param name="year">中華民國年度</param>
         /// <param name="season">季度</param>
         /// <param name="month">月份</param>
+        /// <param name="step">網站設定的資料步驟</param>
         /// <param name="xpath">搜尋資料的 xpath 提示</param>
         /// <returns>含有資料的 html 節點</returns>
         /// <exception cref="WebException">網站讀取過於頻繁, 需要稍等後再讀取</exception>

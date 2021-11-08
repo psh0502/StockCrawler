@@ -131,7 +131,7 @@ namespace StockCrawler.Services
         /// <summary>
         /// 根據本日收盤資料, 計算 均線(MA 移動線)
         /// </summary>
-        /// <param name="list">今日收盤價</param>
+        /// <param name="date">計算日期</param>
         public static void CalculateMA(DateTime date)
         {
             _logger.InfoFormat("Begin caculation MA...{0}", date.ToString("yyyyMMdd"));
