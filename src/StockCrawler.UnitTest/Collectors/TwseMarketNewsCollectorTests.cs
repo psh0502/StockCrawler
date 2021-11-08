@@ -8,7 +8,7 @@ using System.Linq;
 namespace StockCrawler.UnitTest.Collectors
 {
     [TestClass]
-    public class TwseMarketNewsCollectorTest : UnitTestBase
+    public class TwseMarketNewsCollectorTests : UnitTestBase
     {
         [TestMethod]
         public void CollectorTestMethod_GetLatestNews()

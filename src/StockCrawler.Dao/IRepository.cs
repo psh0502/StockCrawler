@@ -62,8 +62,9 @@ namespace StockCrawler.Dao
         GetStockAveragePriceResult[] GetStockAveragePrice(string stockNo, DateTime bgnDate, DateTime endDate, short period);
         GetStockAnalysisDataResult GetStockAnalysisData(string stockNo);
         GetStockForumDataResult[] GetStockForumData(int top, DateTime bgnDate, DateTime endDate, long? id = null, string stockNo = null);
-        GetStockFinancialReportResult[] GetStockFinancialReport(int top, string stockNo, short year, short season);
-        GetStockInterestIssuedInfoResult[] GetStockInterestIssuedInfo(int top, string stockNo, short year, short season);
+        GetStockFinancialReportResult[] GetStockFinancialReport(int top, string stockNo, short year = -1, short season = -1);
+        GetStockInterestIssuedInfoResult[] GetStockInterestIssuedInfo(int top, string stockNo, short year = -1, short season = -1);
+        GetStockMonthlyIncomeResult[] GetStockMonthlyIncomeData(int top, string stockNo, short year = -1, short month = -1);
         #endregion
 
         #region 新增修改
@@ -92,6 +93,11 @@ namespace StockCrawler.Dao
         /// </summary>
         /// <param name="data">Interest issued info</param>
         void InsertOrUpdateStockInterestIssuedInfo(GetStockInterestIssuedInfoResult data);
+        /// <summary>
+        /// 新增或更新股票月營收數據
+        /// </summary>
+        /// <param name="data">股票月營收數據</param>
+        void InsertOrUpdateStockMonthlyIncome(GetStockMonthlyIncomeResult[] data);
         #endregion
 
         #region 刪除

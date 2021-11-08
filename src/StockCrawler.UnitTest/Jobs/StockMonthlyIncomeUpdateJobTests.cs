@@ -1,0 +1,48 @@
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
+using Quartz;
+using StockCrawler.Dao;
+using StockCrawler.Services;
+using System.Linq;
+
+#if (DEBUG)
+namespace StockCrawler.UnitTest.Jobs
+{
+    [TestClass]
+    public class StockMonthlyIncomeUpdateJobTests : UnitTestBase
+    {
+        [TestInitialize]
+        public override void InitBeforeTest()
+        {
+            base.InitBeforeTest();
+            SqlTool.ExecuteSqlFile(@"..\..\..\..\database\MSSQL\20_initial_data\Stock.data.sql");
+        }
+        [TestMethod]
+        public void ExecuteTest()
+        {
+            StockMonthlyIncomeUpdateJob.Logger = new UnitTestLogger();
+            var target = new StockMonthlyIncomeUpdateJob();
+            IJobExecutionContext context = new ArgumentJobExecutionContext(target);
+            target.Execute(context);
+            using (var db = RepositoryProvider.GetRepositoryInstance())
+            {
+                var data = db.GetStockMonthlyIncomeData(100, TEST_STOCKNO_台積電);
+                Assert.IsNotNull(data);
+                Assert.IsTrue(data.Any(), "No data!");
+                Assert.AreEqual(12, data.Length, "Count is not right!");
+                var d = data[0];
+                _logger.Debug(JsonConvert.SerializeObject(d));
+                Assert.AreEqual(TEST_STOCKNO_台積電, d.StockNo);
+                Assert.AreEqual(110, d.Year, "年份錯誤");
+                Assert.AreEqual(9, d.Month, "月份錯誤");
+                Assert.AreEqual(152685418, d.Income, "[當月營收]錯誤");
+                Assert.AreEqual(127584492, d.PreIncome, "[去年當月營收]錯誤");
+                Assert.AreEqual(0.1967M, d.DeltaPercent, "[去年同月增減(%)]錯誤");
+                Assert.AreEqual(1149225731, d.CumMonthIncome, "[當月累計營收]錯誤");
+                Assert.AreEqual(977721754, d.PreCumMonthIncome, "[去年累計營收]錯誤");
+                Assert.AreEqual(0.1754M, d.DeltaCumMonthIncomePercent, "[前期比較增減(%)]錯誤");
+            }
+        }
+    }
+}
+#endif

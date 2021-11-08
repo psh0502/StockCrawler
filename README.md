@@ -50,6 +50,8 @@ StockCrawlerRunner.exe <mode>
      Update the company finance report since 2015 to this year.
  <mode>: -n
      Get the latest Taiwan stock market news.
+ <mode>: -m
+     Get the latest 12 monthy income data by each stock.
  <mode>: -is
      Get the latest interest issued result.
  <mode>: -ptt [Date:yyyy/MM/dd]
@@ -92,7 +94,7 @@ Here is the injection setting in *.exe.config
       <register type="IStockReportCollector" mapTo="TwseReportCollector" />
       <register type="IStockInterestIssuedCollector" mapTo="TwseInterestIssuedCollector" />
       <register type="IStockMarketNewsCollector" mapTo="TwseMarketNewsCollector" />
-      <register type="ILazyStockCollector" mapTo="LazyStockCollector" />
+      <register type="IStockMonthlyIncomeCollector" mapTo="TwseMonthlyIncomeCollector" />
     </container>
   </unity>
 </configuration>

@@ -130,13 +130,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Collectors\StockForumCollectorTest.cs" />
-    <Compile Include="Collectors\TwseMarketNewsCollectorTest.cs" />
+    <Compile Include="Collectors\StockForumCollectorTests.cs" />
+    <Compile Include="Collectors\TwseMarketNewsCollectorTests.cs" />
     <Compile Include="Collectors\TwseInterestIssuedCollectorTests.cs" />
     <Compile Include="Collectors\TwseMonthlyIncomeCollectorTests.cs" />
-    <Compile Include="Collectors\TwseStockBasicInfoCollectorTest.cs" />
-    <Compile Include="Collectors\TwseStockDailyInfoCollectorTest.cs" />
-    <Compile Include="Collectors\GoodInfoCollectorTest.cs" />
+    <Compile Include="Collectors\TwseStockBasicInfoCollectorTests.cs" />
+    <Compile Include="Collectors\TwseStockDailyInfoCollectorTests.cs" />
+    <Compile Include="Collectors\GoodInfoCollectorTests.cs" />
+    <Compile Include="Jobs\StockMonthlyIncomeUpdateJobTests.cs" />
     <Compile Include="Jobs\StockInterestIssuedUpdateJobTests.cs" />
     <Compile Include="Jobs\StockForumsUpdateJobTests.cs" />
     <Compile Include="Jobs\StockMarketNewsUpdateJobTest.cs" />
@@ -145,6 +146,7 @@
     <Compile Include="Stubs\StockMarketNewsCollectorStub.cs" />
     <Compile Include="Stubs\StockBasicInfoCollectorStub.cs" />
     <Compile Include="Stubs\StockInterestIssuedCollectorStub.cs" />
+    <Compile Include="Stubs\StockMonthlyIncomeCollectorStub.cs" />
     <Compile Include="Stubs\StockReportCollectorStub.cs" />
     <Compile Include="Stubs\StockDailyInfoCollectorStub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -373,7 +375,11 @@
     <Content Include="TestData\Ptt\ZQa92W.html" />
     <Content Include="TestData\Sql\Stock.data.sql" />
     <Content Include="TestData\TWSE\2020-12-03.html" />
+    <Content Include="TestData\TWSE\TwseMonthlyIncomeCollector\1477_2.html" />
     <Content Include="TestData\TWSE\TwseMonthlyIncomeCollector\2330_2.html" />
+    <Content Include="TestData\TWSE\TwseMonthlyIncomeCollector\2888_2.html" />
+    <Content Include="TestData\TWSE\TwseMonthlyIncomeCollector\4142_2.html" />
+    <Content Include="TestData\TWSE\TwseMonthlyIncomeCollector\9945_2.html" />
     <Content Include="TestData\TWSE\TwseReportCollector\2330_1.html" />
     <Content Include="TestData\TWSE\TwseReportCollector\1477_1.html" />
     <Content Include="TestData\TWSE\SimplfiedFinancialReport_2330.html" />
@@ -448,7 +454,6 @@
     <None Include="TestData\TWSE\TwseStockDailyInfoCollector\MI_INDEX_ALLBUT0999_20200324.csv" />
     <None Include="TestData\TWSE\TwseStockDailyInfoCollector\MI_INDEX_ALLBUT0999_20200325.csv" />
     <None Include="TestData\TWSE\TwseStockDailyInfoCollector\MI_INDEX_ALLBUT0999_20200326.csv" />
-    <None Include="TestData\TWSE\MI_INDEX_ALLBUT0999_20200327.csv" />
     <None Include="TestData\TWSE\TwseStockDailyInfoCollector\MI_INDEX_ALLBUT0999_20200330.csv" />
     <None Include="TestData\TWSE\TwseStockDailyInfoCollector\MI_INDEX_ALLBUT0999_20200331.csv" />
     <None Include="TestData\TWSE\TwseStockDailyInfoCollector\MI_INDEX_ALLBUT0999_20200401.csv" />

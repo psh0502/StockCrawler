@@ -46,6 +46,9 @@ namespace StockCrawlerRunner
                         case "-a":
                             job = new StockAnalysisUpdateJob();
                             break;
+                        case "-m":
+                            job = new StockMonthlyIncomeUpdateJob();
+                            break;
                         default:
                             ShowHelp();
                             break;
@@ -97,6 +100,8 @@ namespace StockCrawlerRunner
             Console.WriteLine("     Update the company finance report this year.");
             Console.WriteLine(" <mode>: -n");
             Console.WriteLine("     Get the latest Taiwan stock market news.");
+            Console.WriteLine(" <mode>: -m");
+            Console.WriteLine("     Get the latest 12 monthy income data by each stock.");
             Console.WriteLine(" <mode>: -is");
             Console.WriteLine("     Get the latest interest issued result.");
             Console.WriteLine(" <mode>: -a");

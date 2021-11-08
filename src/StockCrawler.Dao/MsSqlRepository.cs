@@ -72,15 +72,20 @@ namespace StockCrawler.Dao
             using (var db = GetMSSQLStockDataContext())
                 return db.GetStockForumData(top, id, stockNo, bgnDate, endDate).ToArray();
         }
-        public GetStockFinancialReportResult[] GetStockFinancialReport(int top, string stockNo, short year, short season)
+        public GetStockFinancialReportResult[] GetStockFinancialReport(int top, string stockNo, short year = -1, short season = -1)
         {
             using (var db = GetMSSQLStockDataContext())
                 return db.GetStockFinancialReport(top, stockNo, year, season).ToArray();
         }
-        public GetStockInterestIssuedInfoResult[] GetStockInterestIssuedInfo(int top, string stockNo, short year, short season)
+        public GetStockInterestIssuedInfoResult[] GetStockInterestIssuedInfo(int top, string stockNo, short year = -1, short season = -1)
         {
             using (var db = GetMSSQLStockDataContext())
                 return db.GetStockInterestIssuedInfo(top, stockNo, year, season).ToArray();
+        }
+        public GetStockMonthlyIncomeResult[] GetStockMonthlyIncomeData(int top, string stockNo, short year = -1, short month = -1)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                return db.GetStockMonthlyIncome(top, stockNo, year, month).ToArray();
         }
         #endregion
 
@@ -256,6 +261,21 @@ namespace StockCrawler.Dao
                     data.CapitalReserveCashIssued,
                     data.CapitalReserveStockIssued
                     );
+        }
+        public void InsertOrUpdateStockMonthlyIncome(GetStockMonthlyIncomeResult[] data)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                foreach (var d in data)
+                    db.InsertOrUpdateStockMonthlyIncome(
+                        d.StockNo,
+                        d.Year,
+                        d.Month,
+                        d.Income,
+                        d.PreIncome,
+                        d.DeltaPercent,
+                        d.CumMonthIncome,
+                        d.PreCumMonthIncome,
+                        d.DeltaCumMonthIncomePercent);
         }
         #endregion
 

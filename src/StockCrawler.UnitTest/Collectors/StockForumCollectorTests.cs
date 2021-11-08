@@ -8,7 +8,7 @@ using System.Linq;
 namespace StockCrawler.UnitTest.Collectors
 {
     [TestClass]
-    public class StockForumCollectorTest : UnitTestBase
+    public class StockForumCollectorTests : UnitTestBase
     {
         [TestInitialize]
         public override void InitBeforeTest()
