@@ -227,7 +227,7 @@ namespace StockCrawler.Services
             {
                 try
                 {
-                    var yesterday_d = db.GetStockTechnicalIndicators(stockNo, date.AddDays(-1), date.AddDays(-20), "D").First().Value;
+                    var yesterday_d = db.GetStockTechnicalIndicators(stockNo, date.AddDays(-20), date.AddDays(-1), "D").First().Value;
                     return yesterday_d * 2 / 3 + k / 3;
                 }
                 catch (InvalidOperationException)
