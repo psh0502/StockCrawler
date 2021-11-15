@@ -277,7 +277,7 @@ namespace StockCrawler.Services
                     var l = db.GetStockPriceHistory(stockNo, date.AddDays(-period), date).Min(d => d.LowPrice);
                     var h = db.GetStockPriceHistory(stockNo, date.AddDays(-period), date).Max(d => d.HighPrice);
                     if ((h - l) > 0)
-                        return (c - l) / (h - l);
+                        return (c - l) / (h - l) * 100;
                     else
                         return 0;
                 }
