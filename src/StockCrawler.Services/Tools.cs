@@ -210,6 +210,7 @@ namespace StockCrawler.Services
             var rsv = CaculateRSV(stockNo, date, period);
             var k = CaculateK(stockNo, date, rsv);
             var d = CaculateD(stockNo, date, k);
+            _logger.Debug($"RSV: {rsv}, K: {k}, D: {d}");
             indicators.Add((stockNo, date, "K", k));
             indicators.Add((stockNo, date, "D", d));
         }
@@ -274,8 +275,9 @@ namespace StockCrawler.Services
                     // 該日收盤價
                     var c = db.GetStockPriceHistory(stockNo, date, date).First().ClosePrice;
                     // 最近 period 天的最低價
-                    var l = db.GetStockPriceHistory(stockNo, date.AddDays(-period), date).Min(d => d.LowPrice);
-                    var h = db.GetStockPriceHistory(stockNo, date.AddDays(-period), date).Max(d => d.HighPrice);
+                    var l = db.GetStockPriceHistory(stockNo, date.AddDays(-period * 2), date).Take(period).Min(d => d.LowPrice);
+                    var h = db.GetStockPriceHistory(stockNo, date.AddDays(-period * 2), date).Take(period).Max(d => d.HighPrice);
+                    _logger.Debug($"C:{c},H:{h},L:{l}");
                     if ((h - l) > 0)
                         return (c - l) / (h - l) * 100;
                     else
