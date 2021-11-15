@@ -229,7 +229,7 @@ namespace StockCrawler.Services
                     var yesterday_d = db.GetStockTechnicalIndicators(stockNo, date.AddDays(-1), date.AddDays(-20), "D").First().Value;
                     return yesterday_d * 2 / 3 + k / 3;
                 }
-                catch (IndexOutOfRangeException)
+                catch (InvalidOperationException)
                 {
                     return 0;
                 }
@@ -252,7 +252,7 @@ namespace StockCrawler.Services
                     var yesterday_k = db.GetStockTechnicalIndicators(stockNo, date.AddDays(-1), date.AddDays(-20), "K").First().Value;
                     return yesterday_k * 2 / 3 + rsv / 3;
                 }
-                catch (IndexOutOfRangeException)
+                catch (InvalidOperationException)
                 {
                     return 0;
                 }
