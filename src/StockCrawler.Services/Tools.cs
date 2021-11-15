@@ -210,7 +210,7 @@ namespace StockCrawler.Services
             var rsv = CaculateRSV(stockNo, date, period);
             var k = CaculateK(stockNo, date, rsv);
             var d = CaculateD(stockNo, date, k);
-            _logger.Debug($"RSV: {rsv}, K: {k}, D: {d}");
+            _logger.Debug($"stockNo: {stockNo} Date: {date.ToShortDateString()} RSV: {rsv}, K: {k}, D: {d}");
             indicators.Add((stockNo, date, "K", k));
             indicators.Add((stockNo, date, "D", d));
         }
@@ -250,7 +250,7 @@ namespace StockCrawler.Services
             {
                 try
                 {
-                    var yesterday_k = db.GetStockTechnicalIndicators(stockNo, date.AddDays(-1), date.AddDays(-20), "K").First().Value;
+                    var yesterday_k = db.GetStockTechnicalIndicators(stockNo, date.AddDays(-20), date.AddDays(-1), "K").First().Value;
                     return yesterday_k * 2 / 3 + rsv / 3;
                 }
                 catch (InvalidOperationException)
@@ -277,7 +277,7 @@ namespace StockCrawler.Services
                     // 最近 period 天的最低價
                     var l = db.GetStockPriceHistory(stockNo, date.AddDays(-period * 2), date).Take(period).Min(d => d.LowPrice);
                     var h = db.GetStockPriceHistory(stockNo, date.AddDays(-period * 2), date).Take(period).Max(d => d.HighPrice);
-                    _logger.Debug($"C:{c},H:{h},L:{l}");
+                    _logger.Debug($"stockNo: {stockNo} Date: {date.ToShortDateString()} C:{c},H:{h},L:{l}");
                     if ((h - l) > 0)
                         return (c - l) / (h - l) * 100;
                     else
