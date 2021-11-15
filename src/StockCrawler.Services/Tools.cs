@@ -276,7 +276,10 @@ namespace StockCrawler.Services
                     // 最近 period 天的最低價
                     var l = db.GetStockPriceHistory(stockNo, date.AddDays(-period), date).Min(d => d.LowPrice);
                     var h = db.GetStockPriceHistory(stockNo, date.AddDays(-period), date).Max(d => d.HighPrice);
-                    return (c - l) / (h - l);
+                    if ((h - l) > 0)
+                        return (c - l) / (h - l);
+                    else
+                        return 0;
                 }
                 catch (InvalidOperationException)
                 {
