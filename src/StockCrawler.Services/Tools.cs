@@ -278,7 +278,7 @@ namespace StockCrawler.Services
                     var h = db.GetStockPriceHistory(stockNo, date.AddDays(-period), date).Max(d => d.HighPrice);
                     return (c - l) / (h - l);
                 }
-                catch (IndexOutOfRangeException)
+                catch (InvalidOperationException)
                 {
                     return 0;
                 }
