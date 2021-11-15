@@ -16,4 +16,6 @@ ALTER TABLE [dbo].[StockMonthlyIncome] DROP CONSTRAINT [FK_StockMonthlyIncome_St
 GO
 ALTER TABLE [dbo].[StockPriceHistory] DROP CONSTRAINT [FK_StockPriceHistory_Stock]
 GO
+ALTER TABLE [dbo].[StockTechnicalIndicators] DROP CONSTRAINT [FK_StockTechnicalIndicators_Stock]
+GO
 

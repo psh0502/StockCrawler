@@ -28,6 +28,9 @@ namespace StockCrawlerRunner
                         case "-u":
                             job = new StockPriceUpdateJob();
                             break;
+                        case "-c":
+                            job = new StockCaculationJob();
+                            break;
                         case "-b":
                             job = new StockBasicInfoUpdateJob();
                             break;
@@ -92,6 +95,8 @@ namespace StockCrawlerRunner
             Console.WriteLine("     Append the latest price data.");
             Console.WriteLine(" <mode>: -u [Date:yyyy/MM/dd]");
             Console.WriteLine("     Append the specified date price data.");
+            Console.WriteLine(" <mode>: -c [Date:yyyy/MM/dd]");
+            Console.WriteLine("     Caculate SMA and Technical Indicators(KD, MACD...etc).");
             Console.WriteLine(" <mode>: -b");
             Console.WriteLine("     Update the latest company basic information.");
             Console.WriteLine(" <mode>: -b <stock number>");

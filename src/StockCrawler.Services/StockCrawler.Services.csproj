@@ -155,6 +155,7 @@
     <Compile Include="Collectors\StockFinanceReport\IStockReportCollector.cs" />
     <Compile Include="Collectors\StockFinanceReport\TwseReportCollector.cs" />
     <Compile Include="StockMonthlyIncomeUpdateJob.cs" />
+    <Compile Include="StockCaculationJob.cs" />
     <Compile Include="StockPriceUpdateJob.cs" />
     <Compile Include="StockPriceHistoryInitJob.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

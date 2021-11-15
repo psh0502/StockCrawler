@@ -53,7 +53,6 @@ namespace StockCrawler.Services
                         }
                     }
                 }
-                Tools.CalculateMA(targetDate);
             }
             catch (Exception ex)
             {

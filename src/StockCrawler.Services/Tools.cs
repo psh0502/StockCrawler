@@ -152,11 +152,136 @@ namespace StockCrawler.Services
                     // 季線
                     period_price = db.CaculateStockClosingAveragePrice(d.StockNo, date, 60);
                     if (period_price > 0) avgPriceList.Add((d.StockNo, date, 60, period_price));
+                    // 半年線
+                    period_price = db.CaculateStockClosingAveragePrice(d.StockNo, date, 120);
+                    if (period_price > 0) avgPriceList.Add((d.StockNo, date, 120, period_price));
+                    // 年線
+                    period_price = db.CaculateStockClosingAveragePrice(d.StockNo, date, 240);
+                    if (period_price > 0) avgPriceList.Add((d.StockNo, date, 240, period_price));
                 }
                 // 寫入均價
                 if (avgPriceList.Any())
                     db.InsertOrUpdateStockAveragePrice(avgPriceList.ToArray());
             }
+        }
+        /// <summary>
+        /// 根據本日收盤資料，計算 技術指標，如 KD, MACD
+        /// </summary>
+        /// <param name="date">計算日期</param>
+        public static void CalculateTechnicalIndicators(DateTime date)
+        {
+            _logger.InfoFormat("Begin caculation Indicators...{0}", date.ToString("yyyyMMdd"));
+            var indicators = new List<(string StockNo, DateTime StockDT, string Type, decimal Value)>();
+            var period = 14;
+            foreach (var d in StockHelper.GetAllStockList())
+            {
+                // 計算 KD 線
+                CalucateKD(d.StockNo, date, ref indicators, period);
+                CaculateMACD(d.StockNo, date, ref indicators, period);
+            }
+            using (var db = RepositoryProvider.GetRepositoryInstance())
+                // 寫入均價
+                if (indicators.Any())
+                    db.InsertOrUpdateStockTechnicalIndicators(indicators.ToArray());
+        }
+        /// <summary>
+        /// 平滑異同移動平均線指標
+        /// </summary>
+        /// <param name="stockNo">股票代碼</param>
+        /// <param name="date">計算日期</param>
+        /// <param name="indicators">指標清單</param>
+        /// <param name="period1">週期1，最常用的值為12天</param>
+        /// <param name="period2">週期2，最常用的值為26天</param>
+        /// <param name="period3">週期3，最常用的值為9天</param>
+        private static void CaculateMACD(string stockNo, DateTime date, ref List<(string StockNo, DateTime StockDT, string Type, decimal Value)> indicators, int period1 = 12, int period2 = 26, int period3 = 9)
+        {
+            // TODO: 
+        }
+        /// <summary>
+        /// 計算 KD 隨機指標
+        /// </summary>
+        /// <param name="stockNo">股票代碼</param>
+        /// <param name="date">計算日期</param>
+        /// <param name="indicators">指標清單</param>
+        /// <param name="period">週期, 通常 9 or 14</param>
+        /// <remarks>K 值 > D 值：上漲行情，適合做多。D 值 > K 值：下跌行情，適合空手或做空。</remarks>
+        private static void CalucateKD(string stockNo, DateTime date, ref List<(string StockNo, DateTime StockDT, string Type, decimal Value)> indicators, int period)
+        {
+            var rsv = CaculateRSV(stockNo, date, period);
+            var k = CaculateK(stockNo, date, rsv);
+            var d = CaculateD(stockNo, date, k);
+            indicators.Add((stockNo, date, "K", k));
+            indicators.Add((stockNo, date, "D", d));
+        }
+        /// <summary>
+        /// 慢速平均值，又稱慢線。
+        /// </summary>
+        /// <param name="stockNo">股票代碼</param>
+        /// <param name="date">計算日期</param>
+        /// <param name="k">當日 K 值</param>
+        /// <returns>以公式來看就知道，今天的 D 值是把昨天 D 值和今天的 K 值再加權平均一次的結果，經過兩次平均後，今天股價對 D 值的影響就比較小，所以 D值對股價變化的反應較不靈敏。</returns>
+        private static decimal CaculateD(string stockNo, DateTime date, decimal k)
+        {
+            using (var db = RepositoryProvider.GetRepositoryInstance())
+            {
+                try
+                {
+                    var yesterday_d = db.GetStockTechnicalIndicators(stockNo, date.AddDays(-1), date.AddDays(-20), "D").First().Value;
+                    return yesterday_d * 2 / 3 + k / 3;
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    return 0;
+                }
+            }
+        }
+        /// <summary>
+        /// 快速平均值，又稱快線。
+        /// </summary>
+        /// <param name="stockNo">股票代碼</param>
+        /// <param name="date">計算日期</param>
+        /// <param name="rsv">未成熟隨機值</param>
+        /// <returns>快速平均值(K), 若無資料可計算則回傳 0</returns>
+        /// <remarks>以公式來看就知道，今天的 K 值是把昨天的 K 值和今天的 RSV 加權平均的結果，所以對股價變化的反應較靈敏、快速。</remarks>
+        private static decimal CaculateK(string stockNo, DateTime date, decimal rsv)
+        {
+            using (var db = RepositoryProvider.GetRepositoryInstance())
+            {
+                try
+                {
+                    var yesterday_k = db.GetStockTechnicalIndicators(stockNo, date.AddDays(-1), date.AddDays(-20), "K").First().Value;
+                    return yesterday_k * 2 / 3 + rsv / 3;
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    return 0;
+                }
+            }
+        }
+        /// <summary>
+        /// 計算 RSV = (C-L)/(H-L), 中文:未成熟隨機值, 衡量當天收盤價在這 period 天內來說，股價是強勢還是弱勢
+        /// </summary>
+        /// <param name="stockNo">股票代碼</param>
+        /// <param name="date">當天日期</param>
+        /// <param name="period">週期, 通常 9 or 14</param>
+        /// <returns>RSV 未成熟隨機值, 若無資料可計算則回傳 0</returns>
+        /// <remarks>計算方式是「(該日收盤價 – 最近 period 天的最低價)÷(最近 period 天的最高價 – 最近 period 天最低價)」</remarks>
+        private static decimal CaculateRSV(string stockNo, DateTime date, int period)
+        {
+            using (var db = RepositoryProvider.GetRepositoryInstance())
+                try
+                {
+                    // 該日收盤價
+                    var c = db.GetStockPriceHistory(stockNo, date, date).First().ClosePrice;
+                    // 最近 period 天的最低價
+                    var l = db.GetStockPriceHistory(stockNo, date.AddDays(-period), date).Min(d => d.LowPrice);
+                    var h = db.GetStockPriceHistory(stockNo, date.AddDays(-period), date).Max(d => d.HighPrice);
+                    return (c - l) / (h - l);
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    return 0;
+                }
         }
         /// <summary>
         /// 取得今日的台灣民國年

@@ -57,6 +57,11 @@ namespace StockCrawler.Dao
             using (var db = GetMSSQLStockDataContext())
                 return db.GetStockAveragePrice(stockNo, bgnDate, endDate, period).ToArray();
         }
+        public GetStockTechnicalIndicatorsResult[] GetStockTechnicalIndicators(string stockNo, DateTime bgnDate, DateTime endDate, string type)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                return db.GetStockTechnicalIndicators(stockNo, bgnDate, endDate, type).ToArray();
+        }
         public GetStockBasicInfoResult GetStockBasicInfo(string stockNo)
         {
             using (var db = GetMSSQLStockDataContext())
@@ -200,6 +205,16 @@ namespace StockCrawler.Dao
                         info.stockDT,
                         info.period,
                         info.averagePrice);
+        }
+        public void InsertOrUpdateStockTechnicalIndicators((string stockNo, DateTime stockDT, string type, decimal value)[] indicators)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                foreach (var info in indicators)
+                    db.InsertOrUpdateStockTechnicalIndicators(
+                        info.stockNo,
+                        info.stockDT,
+                        info.type,
+                        info.value);
         }
         public void InsertOrUpdateStockAnalysis(GetStockAnalysisDataResult data)
         {
