@@ -27,6 +27,6 @@ BEGIN
 	WHERE
 		b.StockNo = @pStockNo
 		AND b.StockDT BETWEEN @pDateBegin AND @pDateEnd
-		AND b.[Type] = @pType
+		AND (@pType IS NULL OR @pType = '' OR b.[Type] = @pType)
 END
 GO
