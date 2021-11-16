@@ -75,6 +75,45 @@ namespace StockCrawler.Services
             FakeTime = fakeTime;
         }
         /// <summary>
+        /// 取得今日的台灣民國年
+        /// </summary>
+        /// <returns>回傳今日的台灣民國年</returns>
+        public static short GetTaiwanYear()
+        {
+            return GetTaiwanYear(Today.Year);
+        }
+        public static short GetTaiwanYear(int westernYear)
+        {
+            return (short)(westernYear - 1911);
+        }
+        /// <summary>
+        /// 取得日期對應的四季(Q?)
+        /// </summary>
+        /// <param name="date">日期</param>
+        /// <returns>季</returns>
+        public static short GetSeason(this DateTime date)
+        {
+            return GetSeason(date.Month);
+        }
+        public static short GetSeason(int month)
+        {
+            return (short)(month / 3 + (month % 3 == 0 ? 0 : 1));
+        }
+        /// <summary>
+        /// 取得台灣的中華民國年
+        /// </summary>
+        /// <param name="date">西園日期物件</param>
+        /// <returns>中華民國年</returns>
+        public static short GetTaiwanYear(this DateTime date)
+        {
+            return GetTaiwanYear(date.Year);
+        }
+        public static DateTime AddSeason(this DateTime date, short season)
+        {
+            var current_season = GetSeason(date);
+            return new DateTime(date.Year, current_season * 3, 1).AddMonths(3 * season);
+        }
+        /// <summary>
         /// 清除假時間的設定，恢復到正確的系統時間
         /// </summary>
         public static void Reset()

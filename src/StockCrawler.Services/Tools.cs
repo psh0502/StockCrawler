@@ -36,13 +36,13 @@ namespace StockCrawler.Services
         /// <param name="refer">呼叫來源</param>
         /// <returns>下載到的字串資料</returns>
         public static string DownloadStringData(
-            Uri url, 
+            Uri url,
             out IList<Cookie> respCookies,
             Encoding encode = null,
-            string contentType = null, 
-            IList<Cookie> cookies = null, 
-            string method = "GET", 
-            NameValueCollection formdata = null, 
+            string contentType = null,
+            IList<Cookie> cookies = null,
+            string method = "GET",
+            NameValueCollection formdata = null,
             string refer = null)
         {
             _logger.DebugFormat("url=[{0}]", url.OriginalString);
@@ -76,10 +76,10 @@ namespace StockCrawler.Services
                 if (redirect)
                 {
                     return DownloadStringData(
-                        new Uri(target), 
-                        out respCookies, 
-                        encode, 
-                        contentType, 
+                        new Uri(target),
+                        out respCookies,
+                        encode,
+                        contentType,
                         cookies,
                         method,
                         formdata,
@@ -135,33 +135,69 @@ namespace StockCrawler.Services
         public static void CalculateMA(DateTime date)
         {
             _logger.InfoFormat("Begin caculation MA...{0}", date.ToString("yyyyMMdd"));
-            var avgPriceList = new List<(string StockNo, DateTime StockDT, short Period, decimal AveragePrice)>();
+            var avgPrices = new List<GetStockAveragePriceResult>();
             using (var db = RepositoryProvider.GetRepositoryInstance())
             {
                 foreach (var d in StockHelper.GetAllStockList())
                 {
                     // 週線
                     var period_price = db.CaculateStockClosingAveragePrice(d.StockNo, date, 5);
-                    if (period_price > 0) avgPriceList.Add((d.StockNo, date, 5, period_price));
+                    if (period_price > 0) avgPrices.Add(new GetStockAveragePriceResult()
+                    {
+                        StockNo = d.StockNo,
+                        StockDT = date,
+                        Period = 5,
+                        ClosePrice = period_price
+                    });
                     // 雙週線
                     period_price = db.CaculateStockClosingAveragePrice(d.StockNo, date, 10);
-                    if (period_price > 0) avgPriceList.Add((d.StockNo, date, 10, period_price));
+                    if (period_price > 0) avgPrices.Add(new GetStockAveragePriceResult()
+                    {
+                        StockNo = d.StockNo,
+                        StockDT = date,
+                        Period = 10,
+                        ClosePrice = period_price
+                    });
                     // 月線
                     period_price = db.CaculateStockClosingAveragePrice(d.StockNo, date, 20);
-                    if (period_price > 0) avgPriceList.Add((d.StockNo, date, 20, period_price));
+                    if (period_price > 0) avgPrices.Add(new GetStockAveragePriceResult()
+                    {
+                        StockNo = d.StockNo,
+                        StockDT = date,
+                        Period = 20,
+                        ClosePrice = period_price
+                    });
                     // 季線
                     period_price = db.CaculateStockClosingAveragePrice(d.StockNo, date, 60);
-                    if (period_price > 0) avgPriceList.Add((d.StockNo, date, 60, period_price));
+                    if (period_price > 0) avgPrices.Add(new GetStockAveragePriceResult()
+                    {
+                        StockNo = d.StockNo,
+                        StockDT = date,
+                        Period = 60,
+                        ClosePrice = period_price
+                    });
                     // 半年線
                     period_price = db.CaculateStockClosingAveragePrice(d.StockNo, date, 120);
-                    if (period_price > 0) avgPriceList.Add((d.StockNo, date, 120, period_price));
+                    if (period_price > 0) avgPrices.Add(new GetStockAveragePriceResult()
+                    {
+                        StockNo = d.StockNo,
+                        StockDT = date,
+                        Period = 120,
+                        ClosePrice = period_price
+                    });
                     // 年線
                     period_price = db.CaculateStockClosingAveragePrice(d.StockNo, date, 240);
-                    if (period_price > 0) avgPriceList.Add((d.StockNo, date, 240, period_price));
+                    if (period_price > 0) avgPrices.Add(new GetStockAveragePriceResult()
+                    {
+                        StockNo = d.StockNo,
+                        StockDT = date,
+                        Period = 240,
+                        ClosePrice = period_price
+                    });
                 }
                 // 寫入均價
-                if (avgPriceList.Any())
-                    db.InsertOrUpdateStockAveragePrice(avgPriceList.ToArray());
+                if (avgPrices.Any())
+                    db.InsertOrUpdateStockAveragePrice(avgPrices.ToArray());
             }
         }
         /// <summary>
@@ -171,7 +207,7 @@ namespace StockCrawler.Services
         public static void CalculateTechnicalIndicators(DateTime date)
         {
             _logger.InfoFormat("Begin caculation Indicators...{0}", date.ToString("yyyyMMdd"));
-            var indicators = new List<(string StockNo, DateTime StockDT, string Type, decimal Value)>();
+            var indicators = new List<GetStockTechnicalIndicatorsResult>();
             var period = 14;
             foreach (var d in StockHelper.GetAllStockList())
             {
@@ -193,7 +229,7 @@ namespace StockCrawler.Services
         /// <param name="period1">週期1，最常用的值為12天</param>
         /// <param name="period2">週期2，最常用的值為26天</param>
         /// <param name="period3">週期3，最常用的值為9天</param>
-        private static void CaculateMACD(string stockNo, DateTime date, ref List<(string StockNo, DateTime StockDT, string Type, decimal Value)> indicators, int period1 = 12, int period2 = 26, int period3 = 9)
+        private static void CaculateMACD(string stockNo, DateTime date, ref List<GetStockTechnicalIndicatorsResult> indicators, int period1 = 12, int period2 = 26, int period3 = 9)
         {
             // TODO: 
         }
@@ -205,14 +241,26 @@ namespace StockCrawler.Services
         /// <param name="indicators">指標清單</param>
         /// <param name="period">週期, 通常 9 or 14</param>
         /// <remarks>K 值 > D 值：上漲行情，適合做多。D 值 > K 值：下跌行情，適合空手或做空。</remarks>
-        private static void CalucateKD(string stockNo, DateTime date, ref List<(string StockNo, DateTime StockDT, string Type, decimal Value)> indicators, int period)
+        private static void CalucateKD(string stockNo, DateTime date, ref List<GetStockTechnicalIndicatorsResult> indicators, int period)
         {
             var rsv = CaculateRSV(stockNo, date, period);
             var k = CaculateK(stockNo, date, rsv);
             var d = CaculateD(stockNo, date, k);
             _logger.Debug($"stockNo: {stockNo} Date: {date.ToShortDateString()} RSV: {rsv}, K: {k}, D: {d}");
-            indicators.Add((stockNo, date, "K", k));
-            indicators.Add((stockNo, date, "D", d));
+            indicators.Add(new GetStockTechnicalIndicatorsResult()
+            {
+                StockNo = stockNo,
+                StockDT = date,
+                Type = "K",
+                Value = k
+            });
+            indicators.Add(new GetStockTechnicalIndicatorsResult()
+            {
+                StockNo = stockNo,
+                StockDT = date,
+                Type = "D",
+                Value = d
+            });
         }
         /// <summary>
         /// 慢速平均值，又稱慢線。
@@ -225,15 +273,8 @@ namespace StockCrawler.Services
         {
             using (var db = RepositoryProvider.GetRepositoryInstance())
             {
-                try
-                {
-                    var yesterday_d = db.GetStockTechnicalIndicators(stockNo, date.AddDays(-20), date.AddDays(-1), "D").First().Value;
-                    return yesterday_d * 2 / 3 + k / 3;
-                }
-                catch (InvalidOperationException)
-                {
-                    return 0;
-                }
+                var yesterday_d = db.GetStockTechnicalIndicators(stockNo, date.AddDays(-20), date.AddDays(-1), "D").FirstOrDefault()?.Value;
+                return (yesterday_d ?? 0) * 2 / 3 + k / 3;
             }
         }
         /// <summary>
@@ -248,15 +289,8 @@ namespace StockCrawler.Services
         {
             using (var db = RepositoryProvider.GetRepositoryInstance())
             {
-                try
-                {
-                    var yesterday_k = db.GetStockTechnicalIndicators(stockNo, date.AddDays(-20), date.AddDays(-1), "K").First().Value;
-                    return yesterday_k * 2 / 3 + rsv / 3;
-                }
-                catch (InvalidOperationException)
-                {
-                    return 0;
-                }
+                var yesterday_k = db.GetStockTechnicalIndicators(stockNo, date.AddDays(-20), date.AddDays(-1), "K").FirstOrDefault()?.Value;
+                return (yesterday_k ?? 0) * 2 / 3 + rsv / 3;
             }
         }
         /// <summary>
@@ -287,45 +321,6 @@ namespace StockCrawler.Services
                 {
                     return 0;
                 }
-        }
-        /// <summary>
-        /// 取得今日的台灣民國年
-        /// </summary>
-        /// <returns>回傳今日的台灣民國年</returns>
-        public static short GetTaiwanYear()
-        {
-            return GetTaiwanYear(SystemTime.Today.Year);
-        }
-        public static short GetTaiwanYear(int westernYear)
-        {
-            return (short)(westernYear - 1911);
-        }
-        /// <summary>
-        /// 取得日期對應的四季(Q?)
-        /// </summary>
-        /// <param name="date">日期</param>
-        /// <returns>季</returns>
-        public static short GetSeason(this DateTime date)
-        {
-            return GetSeason(date.Month);
-        }
-        public static short GetSeason(int month)
-        {
-            return (short)(month / 3 + (month % 3 == 0 ? 0 : 1));
-        }
-        /// <summary>
-        /// 取得台灣的中華民國年
-        /// </summary>
-        /// <param name="date">西園日期物件</param>
-        /// <returns>中華民國年</returns>
-        public static short GetTaiwanYear(this DateTime date)
-        {
-            return GetTaiwanYear(date.Year);
-        }
-        public static DateTime AddSeason(this DateTime date, short season)
-        {
-            var current_season = GetSeason(date);
-            return new DateTime(date.Year, current_season * 3, 1).AddMonths(3 * season);
         }
         /// <summary>
         /// 清理字串內容不必要的垃圾字元

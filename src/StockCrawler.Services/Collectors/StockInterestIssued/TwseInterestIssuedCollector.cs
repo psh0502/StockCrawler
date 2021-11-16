@@ -13,7 +13,7 @@ namespace StockCrawler.Services.Collectors
             var tableNode = GetTwseDataBack(
                 url
                 , stockNo
-                , year: Tools.GetTaiwanYear()
+                , year: SystemTime.GetTaiwanYear()
                 , xpath: "/html/body/center/table[3]");
 
             IList<GetStockInterestIssuedInfoResult> result = TransformNodeToInterestIssuedResult(stockNo, tableNode);

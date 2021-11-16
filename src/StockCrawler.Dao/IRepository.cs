@@ -86,8 +86,8 @@ namespace StockCrawler.Dao
         /// <param name="stockName">stock name</param>
         /// <param name="categoryNo">Industry index stock No</param>
         void InsertOrUpdateStock(string stockNo, string stockName, string categoryNo);
-        void InsertOrUpdateStockAveragePrice((string stockNo, DateTime stockDT, short period, decimal averagePrice)[] avgPriceList);
-        void InsertOrUpdateStockTechnicalIndicators((string stockNo, DateTime stockDT, string type, decimal value)[] indicators);
+        void InsertOrUpdateStockAveragePrice(GetStockAveragePriceResult[] avgPrices);
+        void InsertOrUpdateStockTechnicalIndicators(GetStockTechnicalIndicatorsResult[] indicators);
         void InsertOrUpdateStockAnalysis(GetStockAnalysisDataResult data);
         void InsertOrUpdateStockFinancialReport(GetStockFinancialReportResult data);
         /// <summary>

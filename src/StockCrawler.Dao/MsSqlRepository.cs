@@ -196,25 +196,25 @@ namespace StockCrawler.Dao
                     info.Url,
                     info.Business);
         }
-        public void InsertOrUpdateStockAveragePrice((string stockNo, DateTime stockDT, short period, decimal averagePrice)[] avgPriceList)
+        public void InsertOrUpdateStockAveragePrice(GetStockAveragePriceResult[] avgPrices)
         {
             using (var db = GetMSSQLStockDataContext())
-                foreach (var info in avgPriceList)
+                foreach (var info in avgPrices)
                     db.InsertOrUpdateStockAveragePrice(
-                        info.stockNo,
-                        info.stockDT,
-                        info.period,
-                        info.averagePrice);
+                        info.StockNo,
+                        info.StockDT,
+                        info.Period,
+                        info.ClosePrice);
         }
-        public void InsertOrUpdateStockTechnicalIndicators((string stockNo, DateTime stockDT, string type, decimal value)[] indicators)
+        public void InsertOrUpdateStockTechnicalIndicators(GetStockTechnicalIndicatorsResult[] indicators)
         {
             using (var db = GetMSSQLStockDataContext())
                 foreach (var info in indicators)
                     db.InsertOrUpdateStockTechnicalIndicators(
-                        info.stockNo,
-                        info.stockDT,
-                        info.type,
-                        info.value);
+                        info.StockNo,
+                        info.StockDT,
+                        info.Type,
+                        info.Value);
         }
         public void InsertOrUpdateStockAnalysis(GetStockAnalysisDataResult data)
         {
