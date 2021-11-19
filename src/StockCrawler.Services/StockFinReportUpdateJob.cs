@@ -24,8 +24,7 @@ namespace StockCrawler.Services
             {
                 var collector = CollectorServiceProvider.GetStockReportCollector();
                 using (var db = GetDB())
-                    foreach (var stock in StockHelper.GetCompanyStockList()
-                        .Where(d => !d.StockName.Contains("-DR")))
+                    foreach (var stock in StockHelper.GetCompanyStockList())
                     {
                         try
                         {

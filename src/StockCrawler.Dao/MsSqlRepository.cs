@@ -52,7 +52,7 @@ namespace StockCrawler.Dao
             using (var db = GetMSSQLStockDataContext())
                 return db.GetStockPriceHistory(stockNo, bgnDate, endDate).ToArray();
         }
-        public GetStockAveragePriceResult[] GetStockAveragePrice(string stockNo, DateTime bgnDate, DateTime endDate, short period)
+        public GetStockAveragePriceResult[] GetStockAveragePrice(string stockNo, DateTime bgnDate, DateTime endDate, short period = -1)
         {
             using (var db = GetMSSQLStockDataContext())
                 return db.GetStockAveragePrice(stockNo, bgnDate, endDate, period).ToArray();

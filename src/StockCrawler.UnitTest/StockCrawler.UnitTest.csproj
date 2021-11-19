@@ -142,6 +142,7 @@
     <Compile Include="Jobs\StockForumsUpdateJobTests.cs" />
     <Compile Include="Jobs\StockMarketNewsUpdateJobTest.cs" />
     <Compile Include="Others\UnitTestTools.cs" />
+    <Compile Include="Jobs\StockCaculationJobTests.cs" />
     <Compile Include="Stubs\StockForumCollectorStub.cs" />
     <Compile Include="Stubs\StockMarketNewsCollectorStub.cs" />
     <Compile Include="Stubs\StockBasicInfoCollectorStub.cs" />

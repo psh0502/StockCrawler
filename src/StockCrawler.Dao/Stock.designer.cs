@@ -62,18 +62,18 @@ namespace StockCrawler.Dao
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertStockMarketNews")]
-		public int InsertStockMarketNews([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pSource, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pNewsDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(100)")] string pSubject, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(500)")] string pUrl)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pSource, pNewsDate, pSubject, pUrl);
-			return ((int)(result.ReturnValue));
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.CalculateStockPriceAverage")]
 		public int CalculateStockPriceAverage([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pDateEnd, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pPeriod, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] ref System.Nullable<decimal> oAvgClosePrice)
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pDateEnd, pPeriod, oAvgClosePrice);
 			oAvgClosePrice = ((System.Nullable<decimal>)(result.GetParameterValue(3)));
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertStockMarketNews")]
+		public int InsertStockMarketNews([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pSource, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pNewsDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(100)")] string pSubject, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(500)")] string pUrl)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pSource, pNewsDate, pSubject, pUrl);
 			return ((int)(result.ReturnValue));
 		}
 		
@@ -184,9 +184,9 @@ namespace StockCrawler.Dao
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertOrUpdateStock")]
-		public int InsertOrUpdateStock([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pStockName, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pCategoryNo)
+		public int InsertOrUpdateStock([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pStockName, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pCategoryNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="SmallInt")] System.Nullable<short> pType)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pStockName, pCategoryNo);
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pStockName, pCategoryNo, pType);
 			return ((int)(result.ReturnValue));
 		}
 		
@@ -2683,6 +2683,8 @@ namespace StockCrawler.Dao
 		
 		private string _CategoryNo;
 		
+		private short _Type;
+		
 		private bool _Enable;
 		
 		private System.DateTime _CreatedAt;
@@ -2737,6 +2739,22 @@ namespace StockCrawler.Dao
 				if ((this._CategoryNo != value))
 				{
 					this._CategoryNo = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Type", DbType="SmallInt NOT NULL")]
+		public short Type
+		{
+			get
+			{
+				return this._Type;
+			}
+			set
+			{
+				if ((this._Type != value))
+				{
+					this._Type = value;
 				}
 			}
 		}

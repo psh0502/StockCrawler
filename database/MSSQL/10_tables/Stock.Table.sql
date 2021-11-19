@@ -16,6 +16,7 @@ CREATE TABLE [dbo].[Stock](
 	[StockNo] [varchar](10) NOT NULL,
 	[StockName] [nvarchar](50) NOT NULL,
 	[CategoryNo] [varchar](10) NOT NULL DEFAULT(''),
+	[Type] [smallint] NOT NULL DEFAULT(0),
 	[Enable] [bit] NOT NULL DEFAULT ((0)),
 	[CreatedAt] [datetime] NOT NULL DEFAULT (GETDATE()),
 	[LastModifiedAt] [datetime] NOT NULL DEFAULT (GETDATE()),

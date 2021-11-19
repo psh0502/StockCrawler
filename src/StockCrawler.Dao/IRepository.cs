@@ -59,7 +59,7 @@ namespace StockCrawler.Dao
         /// <param name="endDate">結束日期</param>
         /// <returns cref="GetStockPriceHistoryResult">每日收盤資料列表</returns>
         GetStockPriceHistoryResult[] GetStockPriceHistory(string stockNo, DateTime bgnDate, DateTime endDate);
-        GetStockAveragePriceResult[] GetStockAveragePrice(string stockNo, DateTime bgnDate, DateTime endDate, short period);
+        GetStockAveragePriceResult[] GetStockAveragePrice(string stockNo, DateTime bgnDate, DateTime endDate, short period = -1);
         GetStockTechnicalIndicatorsResult[] GetStockTechnicalIndicators(string stockNo, DateTime bgnDate, DateTime endDate, string type);
         GetStockAnalysisDataResult GetStockAnalysisData(string stockNo);
         GetStockForumDataResult[] GetStockForumData(int top, DateTime bgnDate, DateTime endDate, long? id = null, string stockNo = null);

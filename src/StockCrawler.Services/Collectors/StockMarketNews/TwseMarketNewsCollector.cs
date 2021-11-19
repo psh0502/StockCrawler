@@ -119,9 +119,9 @@ namespace StockCrawler.Services.Collectors
                         return null;
                     }
 #if (DEBUG)
-                    var file = new FileInfo($"D:\\tmp\\{DateTime.Today:yyyy-MM-dd}.html");
-                    if (file.Exists) file.Delete();
+                    var file = new FileInfo($@"..\..\..\StockCrawler.UnitTest\TestData\NEWS\{GetType().Name}\MOP_{SystemTime.Today:yyyyMMdd}.html");
                     if (!file.Directory.Exists) file.Directory.Create();
+                    if (file.Exists) file.Delete();
                     using (var sw = file.CreateText())
                         sw.Write(html);
 #endif

@@ -71,6 +71,6 @@ BEGIN
 	END
 	DECLARE @vCategoryNo VARCHAR(10)
 	SELECT @vCategoryNo = CategoryNo FROM CategoryMapping(NOLOCK) WHERE Category = @pCategory
-	EXEC InsertOrUpdateStock @pStockNo, NULL, @vCategoryNo
+	EXEC InsertOrUpdateStock @pStockNo, NULL, @vCategoryNo, 0
 END
 GO

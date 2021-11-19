@@ -1,18 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Stock" Class="StockDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=.\SQLEXPRESS;Initial Catalog=Stock;Integrated Security=True" SettingsObjectName="StockCrawler.Dao.Properties.Settings" SettingsPropertyName="StockConnectionString" Provider="System.Data.SqlClient" />
+  <Function Name="dbo.CalculateStockPriceAverage" Method="CalculateStockPriceAverage">
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pDateEnd" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="pPeriod" Type="System.Int16" DbType="SmallInt" />
+    <Parameter Name="oAvgClosePrice" Type="System.Decimal" DbType="Money" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
   <Function Name="dbo.InsertStockMarketNews" Method="InsertStockMarketNews">
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
     <Parameter Name="pSource" Type="System.String" DbType="VarChar(10)" />
     <Parameter Name="pNewsDate" Type="System.DateTime" DbType="Date" />
     <Parameter Name="pSubject" Type="System.String" DbType="NVarChar(100)" />
     <Parameter Name="pUrl" Type="System.String" DbType="NVarChar(500)" />
-    <Return Type="System.Int32" />
-  </Function>
-  <Function Name="dbo.CalculateStockPriceAverage" Method="CalculateStockPriceAverage">
-    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
-    <Parameter Name="pDateEnd" Type="System.DateTime" DbType="Date" />
-    <Parameter Name="pPeriod" Type="System.Int16" DbType="SmallInt" />
-    <Parameter Name="oAvgClosePrice" Type="System.Decimal" DbType="Money" Direction="InOut" />
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.DeleteStockPriceHistoryData" Method="DeleteStockPriceHistoryData">
@@ -239,6 +239,7 @@
       <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="StockName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="CategoryNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Type" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
       <Column Name="Enable" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
@@ -262,6 +263,7 @@
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
     <Parameter Name="pStockName" Type="System.String" DbType="NVarChar(50)" />
     <Parameter Name="pCategoryNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pType" Type="System.Int16" DbType="SmallInt" />
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.InsertOrUpdateStockAnalysisData" Method="InsertOrUpdateStockAnalysisData">

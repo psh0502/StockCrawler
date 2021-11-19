@@ -19,9 +19,12 @@ namespace StockCrawler.Services
             Logger.InfoFormat("Invoke [{0}]...", MethodBase.GetCurrentMethod().Name);
             try
             {
-                var args = (string[])context.Get("args");
                 var date = SystemTime.Today;
-                if (null != args && args.Length > 1) date = DateTime.Parse(args[1]);
+                if (context != null)
+                {
+                    var args = ((string[])context.Get("args")) ?? new string[] { };
+                    if (args.Length > 0) date = DateTime.Parse(args[0]);
+                }
 
                 var collector = CollectorServiceProvider.GetStockForumCollector();
                 var data = collector.GetPttData(date);

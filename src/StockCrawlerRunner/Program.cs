@@ -2,6 +2,7 @@
 using Quartz;
 using StockCrawler.Services;
 using System;
+using System.Linq;
 using System.Threading;
 
 namespace StockCrawlerRunner
@@ -57,7 +58,7 @@ namespace StockCrawlerRunner
                             break;
                     }
                     var jobContext = new ArgumentJobExecutionContext(job);
-                    jobContext.Put("args", args);
+                    jobContext.Put("args", args.Skip(1).ToArray());
                     if (null != job)
                         job.Execute(jobContext);
                     else
@@ -96,7 +97,11 @@ namespace StockCrawlerRunner
             Console.WriteLine(" <mode>: -u [Date:yyyy/MM/dd]");
             Console.WriteLine("     Append the specified date price data.");
             Console.WriteLine(" <mode>: -c [Date:yyyy/MM/dd]");
-            Console.WriteLine("     Caculate SMA and Technical Indicators(KD, MACD...etc).");
+            Console.WriteLine("     Caculate SMA and Technical Indicators(KD, MACD...etc) from the specified date to today.");
+            Console.WriteLine(" <mode>: -c [Date:yyyy/MM/dd] [stock no1] [stock no2]... [stock noX]");
+            Console.WriteLine("     Caculate SMA and Technical Indicators(KD, MACD...etc) only for these specified stocks from the specified date to today.");
+            Console.WriteLine(" <mode>: -c [Date:yyyy/MM/dd] [stock no1] [stock no2]... [stock noX] [KD|MACD|RSI] [KD|MACD|RSI] [KD|MACD|RSI]");
+            Console.WriteLine("     Caculate Technical Indicators(KD, MACD...etc) only for these specified stocks from the specified date to today.");
             Console.WriteLine(" <mode>: -b");
             Console.WriteLine("     Update the latest company basic information.");
             Console.WriteLine(" <mode>: -b <stock number>");

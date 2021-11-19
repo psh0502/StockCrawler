@@ -4,6 +4,7 @@ using StockCrawler.Dao;
 using StockCrawler.Services;
 using System;
 using System.Linq;
+using SystemTime = StockCrawler.Services.SystemTime;
 
 #if (DEBUG)
 namespace StockCrawler.UnitTest.Jobs
@@ -33,7 +34,7 @@ namespace StockCrawler.UnitTest.Jobs
         {
             if (!IsExecuted)
             {
-                Services.SystemTime.SetFakeTime(today);
+                SystemTime.SetFakeTime(today);
                 StockPriceHistoryInitJob.Logger = new UnitTestLogger();
                 var target = new StockPriceHistoryInitJob();
                 IJobExecutionContext context = null;

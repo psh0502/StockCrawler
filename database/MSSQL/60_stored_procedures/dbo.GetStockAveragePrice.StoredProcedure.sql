@@ -27,6 +27,6 @@ BEGIN
 	WHERE
 		b.StockNo = @pStockNo
 		AND b.StockDT BETWEEN @pDateBegin AND @pDateEnd
-		AND (@pPeriod IS NULL OR @pPeriod = 0 OR b.[Period] = @pPeriod)
+		AND (@pPeriod = -1 OR b.[Period] = @pPeriod)
 END
 GO

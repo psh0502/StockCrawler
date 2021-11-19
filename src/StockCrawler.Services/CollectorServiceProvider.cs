@@ -1,6 +1,5 @@
 ﻿using Microsoft.Practices.Unity.Configuration;
 using StockCrawler.Services.Collectors;
-using System;
 using Unity;
 
 namespace StockCrawler.Services
@@ -27,6 +26,12 @@ namespace StockCrawler.Services
         {
             return _container.Resolve<IStockDailyInfoCollector>();
         }
+
+        internal static IETFInfoCollector GetETFBasicInfoCollector()
+        {
+            return _container.Resolve<IETFInfoCollector>();
+        }
+
         public static IStockBasicInfoCollector GetStockBasicInfoCollector()
         {
             return _container.Resolve<IStockBasicInfoCollector>();

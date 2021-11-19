@@ -24,16 +24,17 @@ namespace StockCrawler.Services
             var endDate = SystemTime.Today;
 
             string stockNo = null;
-            if (context != null) {
-                var args = (string[])context.Get("args");
-                if (null != args && args.Length > 1)
+            if (context != null)
+            {
+                var args = ((string[])context.Get("args")) ?? new string[] { };
+                if (args.Length > 0)
                 {
-                    if (DateTime.TryParse(args[1], out bgnDate))
+                    if (DateTime.TryParse(args[0], out bgnDate))
                         stockNo = null;
                     else
-                        stockNo = args[1];
+                        stockNo = args[0];
                 }
-                if (null != args && args.Length > 2) stockNo = args[2];
+                if (args.Length > 1) stockNo = args[1];
             }
             IJob job = new StockPriceUpdateJob();
             for (var date = bgnDate; date < endDate; date = date.AddDays(1))

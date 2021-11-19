@@ -12,7 +12,8 @@ GO
 CREATE OR ALTER PROCEDURE [dbo].[InsertOrUpdateStock]
 @pStockNo VARCHAR(10), 
 @pStockName NVARCHAR(50),
-@pCategoryNo VARCHAR(10)
+@pCategoryNo VARCHAR(10),
+@pType SMALLINT
 AS
 BEGIN
 	DECLARE @TRUE BIT = 1
@@ -27,11 +28,13 @@ BEGIN
 			[StockNo],
 			[StockName],
 			[CategoryNo],
+			[Type],
 			[Enable])
 		VALUES(
 			@pStockNo,
 			@pStockName,
 			ISNULL(@pCategoryNo, ''),
+			@pType,
 			@TRUE);
 END
 GO

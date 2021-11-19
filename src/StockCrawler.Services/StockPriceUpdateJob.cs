@@ -19,11 +19,14 @@ namespace StockCrawler.Services
             Logger.InfoFormat("Invoke [{0}]...", MethodBase.GetCurrentMethod().Name);
             try
             {
-                var args = (string[])context.Get("args");
                 var targetDate = SystemTime.Today;
                 string stockNo = null;
-                if (null != args && args.Length > 1) targetDate = DateTime.Parse(args[1]);
-                if (null != args && args.Length > 2) stockNo = args[2];
+                if (context != null)
+                {
+                    var args = ((string[])context.Get("args")) ?? new string[] { };
+                    if (args.Length > 0) targetDate = DateTime.Parse(args[0]);
+                    if (args.Length > 1) stockNo = args[1];
+                }
                 if (!targetDate.IsWeekend())
                 {
                     var collector = CollectorServiceProvider.GetStockDailyPriceCollector();
