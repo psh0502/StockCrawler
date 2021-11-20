@@ -33,17 +33,18 @@ namespace StockCrawler.UnitTest
             SqlTool.ExecuteSql("TRUNCATE TABLE StockMarketNews");
             SqlTool.ExecuteSql("TRUNCATE TABLE StockInterestIssuedInfo");
             SqlTool.ExecuteSql("TRUNCATE TABLE StockAnalysisData");
+            SqlTool.ExecuteSql("TRUNCATE TABLE StockTechnicalIndicators");
             SqlTool.ExecuteSql("DELETE Stock");
             SqlTool.ExecuteSql("DELETE StockForums");
 
 
             using (var db = RepositoryProvider.GetRepositoryInstance())
             {
-                db.InsertOrUpdateStock(TEST_STOCKNO_台積電, "台積電", "0029");
-                db.InsertOrUpdateStock("9945", "潤泰新", "0043");
-                db.InsertOrUpdateStock("2888", "新光金", "0040");
-                db.InsertOrUpdateStock(TEST_STOCKNO_聚陽, "聚陽", "0019");
-                db.InsertOrUpdateStock(TEST_STOCKNO_國光生, "國光生", "0024");
+                db.InsertOrUpdateStock(TEST_STOCKNO_台積電, "台積電", "0029", EnumStockType.STOCK);
+                db.InsertOrUpdateStock("9945", "潤泰新", "0043", EnumStockType.STOCK);
+                db.InsertOrUpdateStock("2888", "新光金", "0040", EnumStockType.STOCK);
+                db.InsertOrUpdateStock(TEST_STOCKNO_聚陽, "聚陽", "0019", EnumStockType.STOCK);
+                db.InsertOrUpdateStock(TEST_STOCKNO_國光生, "國光生", "0024", EnumStockType.STOCK);
             }
 
             SqlTool.ExecuteSql(@"INSERT [dbo].[StockBasicInfo]

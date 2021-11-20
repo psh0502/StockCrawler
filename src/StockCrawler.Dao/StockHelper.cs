@@ -62,6 +62,8 @@ namespace StockCrawler.Dao
         /// <returns>股票資料</returns>
         public static GetStocksResult GetStock(string stockNo)
         {
+            if (string.IsNullOrEmpty(stockNo)) return null;
+
             if (null == _STOCK_DICT)
                 lock (typeof(StockHelper))
                     if (null == _STOCK_DICT)

@@ -25,7 +25,7 @@ namespace StockCrawler.Services
                 if (context != null)
                 {
                     args = ((string[])context.Get("args")) ?? new string[] { };
-                    if (null != args && args.Length > 0)
+                    if (args.Length > 0)
                     {
                         if (DateTime.TryParse(args[0], out targetDate))
                             args = args.Skip(1).ToArray();
@@ -33,7 +33,7 @@ namespace StockCrawler.Services
                     else
                         args = null;
                 }
-
+                if(targetDate == DateTime.MinValue) targetDate = SystemTime.Today;
                 do
                 {
                     CalculateMA(targetDate, args);
@@ -54,7 +54,7 @@ namespace StockCrawler.Services
         /// </summary>
         /// <param name="date">計算日期</param>
         /// <param name="args">額外的指定參數, 可為股票代碼。</param>
-        private static void CalculateMA(DateTime date, string[] args = null)
+        internal static void CalculateMA(DateTime date, string[] args = null)
         {
             Logger.InfoFormat("Begin caculation MA...{0}", date.ToString("yyyyMMdd"));
             if (null == args) args = new string[] { };
@@ -113,10 +113,11 @@ namespace StockCrawler.Services
         /// <param name="args">額外的指定參數, 第一參數可為股票代碼或是技術指標名稱。</param>
         private static void CalculateTechnicalIndicators(DateTime date, string[] args = null)
         {
-            Logger.InfoFormat("Begin caculation Indicators...{0}", date.ToString("yyyyMMdd"));
+            Logger.InfoFormat("Begin caculation Indicators...{0}", date.ToDateText());
             var indicators = new List<GetStockTechnicalIndicatorsResult>();
             if (null == args) args = new string[] { };
             var stock = StockHelper.GetStock(args.FirstOrDefault());
+            if (null != stock) args = args.Skip(1).ToArray();
             foreach (var d in StockHelper.GetAllStockList())
                 if (null == stock || d.StockNo == stock.StockNo)
                 {
@@ -191,7 +192,8 @@ namespace StockCrawler.Services
         {
             using (var db = RepositoryProvider.GetRepositoryInstance())
             {
-                var yesterday_d = db.GetStockTechnicalIndicators(stockNo, date.AddDays(-20), date.AddDays(-1), "D").FirstOrDefault()?.Value;
+                var yesterday_d = db.GetStockTechnicalIndicators(stockNo, date.AddDays(-20), date.AddDays(-1), "D")
+                    .FirstOrDefault()?.Value;
                 return (yesterday_d ?? 0) * 2 / 3 + k / 3;
             }
         }
@@ -207,7 +209,8 @@ namespace StockCrawler.Services
         {
             using (var db = RepositoryProvider.GetRepositoryInstance())
             {
-                var yesterday_k = db.GetStockTechnicalIndicators(stockNo, date.AddDays(-20), date.AddDays(-1), "K").FirstOrDefault()?.Value;
+                var yesterday_k = db.GetStockTechnicalIndicators(stockNo, date.AddDays(-20), date.AddDays(-1), "K")
+                    .FirstOrDefault()?.Value;
                 return (yesterday_k ?? 0) * 2 / 3 + rsv / 3;
             }
         }
@@ -228,6 +231,7 @@ namespace StockCrawler.Services
                     var c = db.GetStockPriceHistory(stockNo, date, date).First().ClosePrice;
                     // 最近 period 天的最低價
                     var l = db.GetStockPriceHistory(stockNo, date.AddDays(-period * 2), date).Take(period).Min(d => d.LowPrice);
+                    // 最近 period 天的最高價
                     var h = db.GetStockPriceHistory(stockNo, date.AddDays(-period * 2), date).Take(period).Max(d => d.HighPrice);
                     Logger.Debug($"stockNo: {stockNo} Date: {date.ToShortDateString()} C:{c},H:{h},L:{l}");
                     if ((h - l) > 0)

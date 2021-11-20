@@ -7,6 +7,14 @@ namespace StockCrawler.Services
     /// </summary>
     public static class SystemTime
     {
+        public static string ToDateText(this DateTime date)
+        {
+            return date.ToString("yyyy-MM-dd");
+        }
+        public static string ToDateTimeText(this DateTime date)
+        {
+            return date.ToString("yyyy-MM-dd HH:mm:ss");
+        }
         private static DateTime FakeTime = DateTime.MinValue;
         private static DateTime LastSetTime { get; set; } = DateTime.MinValue;
         /// <summary>

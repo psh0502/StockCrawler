@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Quartz;
 using StockCrawler.Dao;
 using StockCrawler.Services;
 using System;
@@ -22,6 +21,7 @@ namespace StockCrawler.UnitTest.Jobs
         [TestInitialize]
         public override void InitBeforeTest()
         {
+            //IsExecuted = true;
             if (!IsExecuted)
             {
                 base.InitBeforeTest();
@@ -37,8 +37,13 @@ namespace StockCrawler.UnitTest.Jobs
                 SystemTime.SetFakeTime(today);
                 StockPriceHistoryInitJob.Logger = new UnitTestLogger();
                 var target = new StockPriceHistoryInitJob();
-                IJobExecutionContext context = null;
-                target.Execute(context);
+                var jobContext = new ArgumentJobExecutionContext(target);
+                jobContext.Put("args", new string[] { });
+                if (null != target)
+                    target.Execute(jobContext);
+                else
+                    Assert.Fail("No job execute.");
+
                 IsExecuted = true;
             }
         }
@@ -75,13 +80,12 @@ namespace StockCrawler.UnitTest.Jobs
         {
             using (var db = new StockDataContext(ConnectionStringHelper.StockConnectionString))
             {
-                short period = 1;
                 int? pageCount = null;
                 var data = db.GetStockPriceHistoryPaging(
                     "2888",
                     new DateTime(2020, 3, 1),
                     new DateTime(2020, 3, 31),
-                    period, 100, 10, ref pageCount).ToList();
+                    100, 1, 10, ref pageCount).ToList();
 
                 Assert.AreEqual(10, data.Count);
                 Assert.AreEqual(3, pageCount);

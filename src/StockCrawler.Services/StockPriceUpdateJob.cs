@@ -24,8 +24,12 @@ namespace StockCrawler.Services
                 if (context != null)
                 {
                     var args = ((string[])context.Get("args")) ?? new string[] { };
-                    if (args.Length > 0) targetDate = DateTime.Parse(args[0]);
+                    if (DateTime.TryParse(args[0], out targetDate))
+                        stockNo = null;
+                    else
+                        stockNo = args[0];
                     if (args.Length > 1) stockNo = args[1];
+                    if(targetDate == DateTime.MinValue) targetDate = SystemTime.Today;
                 }
                 if (!targetDate.IsWeekend())
                 {
@@ -39,16 +43,19 @@ namespace StockCrawler.Services
                                 StockNo = d.StockNo,
                                 StockName = d.StockName,
                                 Enable = true
-                            }).ToList();
+                            }).ToArray();
                         // #34 Filter out non-trade day price data
-                        priceInfo = priceInfo.Where(d => d.ClosePrice > 0).ToArray();
-                        if (!string.IsNullOrEmpty(stockNo)) 
+                        priceInfo = priceInfo.Where(d => d.ClosePrice > 0);
+                        if (!string.IsNullOrEmpty(stockNo))
+                        {
                             priceInfo = priceInfo.Where(d => d.StockNo == stockNo).ToArray();
+                            stocks = stocks.Where(d => d.StockNo == stockNo).ToArray();
+                        }
 
                         using (var db = GetDB())
                         {
                             if (string.IsNullOrEmpty(stockNo) && stocks.Any())
-                                db.InsertOrUpdateStock(stocks.ToArray());
+                                db.InsertOrUpdateStock(stocks);
 
                             if (priceInfo.Any())
                                 // 寫入日價
