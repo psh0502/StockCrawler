@@ -24,10 +24,13 @@ namespace StockCrawler.Services
                 if (context != null)
                 {
                     var args = ((string[])context.Get("args")) ?? new string[] { };
-                    if (DateTime.TryParse(args[0], out targetDate))
-                        stockNo = null;
-                    else
-                        stockNo = args[0];
+                    if (args.Length > 0)
+                    {
+                        if (DateTime.TryParse(args[0], out targetDate))
+                            stockNo = null;
+                        else
+                            stockNo = args[0];
+                    }
                     if (args.Length > 1) stockNo = args[1];
                     if(targetDate == DateTime.MinValue) targetDate = SystemTime.Today;
                 }
