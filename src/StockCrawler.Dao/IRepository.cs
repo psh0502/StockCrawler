@@ -66,6 +66,18 @@ namespace StockCrawler.Dao
         GetStockFinancialReportResult[] GetStockFinancialReport(int top, string stockNo, short year = -1, short season = -1);
         GetStockInterestIssuedInfoResult[] GetStockInterestIssuedInfo(int top, string stockNo, short year = -1, short season = -1);
         GetStockMonthlyIncomeResult[] GetStockMonthlyIncomeData(int top, string stockNo, short year = -1, short month = -1);
+        /// <summary>
+        /// 取得 ETF 的基本資料
+        /// </summary>
+        /// <param name="stockNo">股票代碼</param>
+        /// <returns>ETF 的基本資料</returns>
+        GetETFBasicInfoResult GetETFBasicInfo(string stockNo);
+        /// <summary>
+        /// 取得 ETF 成分股清單
+        /// </summary>
+        /// <param name="etfNo">ETF 股票代碼</param>
+        /// <returns>ETF 成分股清單</returns>
+        GetETFIngredientsResult[] GetETFIngredients(string etfNo);
         #endregion
 
         #region 新增修改
@@ -101,10 +113,26 @@ namespace StockCrawler.Dao
         /// </summary>
         /// <param name="data">股票月營收數據</param>
         void InsertOrUpdateStockMonthlyIncome(GetStockMonthlyIncomeResult[] data);
+        /// <summary>
+        /// Update ETF's basic information. If it doesn't exist, it will insert.
+        /// </summary>
+        /// <param name="data">Collection of ETF's basic information</param>
+        void InsertOrUpdateETFBasicInfo(GetETFBasicInfoResult[] data);
+        /// <summary>
+        /// Update ETF's basic information. If it doesn't exist, it will insert.
+        /// </summary>
+        /// <param name="data">ETF's basic information</param>
+        void InsertOrUpdateETFBasicInfo(GetETFBasicInfoResult data);
+        /// <summary>
+        /// Insert bunch of ingredients of ETF
+        /// </summary>
+        /// <param name="data">Bunch of ingredients</param>
+        void InsertETFIngredients(GetETFIngredientsResult[] data);
         #endregion
 
         #region 刪除
         void DeleteStockPriceHistoryData(string stockNo, DateTime? tradeDate = null);
+        void ClearETFIngredients(string ETFNo);
         #endregion
 
         /// <summary>

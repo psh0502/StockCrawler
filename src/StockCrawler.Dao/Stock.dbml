@@ -307,7 +307,6 @@
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
     <Parameter Name="pCategory" Type="System.String" DbType="NVarChar(50)" />
     <Parameter Name="pCompanyName" Type="System.String" DbType="NVarChar(100)" />
-    <Parameter Name="pCompanyID" Type="System.String" DbType="VarChar(10)" />
     <Parameter Name="pBuildDate" Type="System.DateTime" DbType="Date" />
     <Parameter Name="pBuildPrice" Type="System.Decimal" DbType="Money" />
     <Parameter Name="pPublishDate" Type="System.DateTime" DbType="Date" />

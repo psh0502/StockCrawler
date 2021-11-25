@@ -11,9 +11,8 @@ namespace StockCrawler.Dao
     {
         private static IList<GetStocksResult> _STOCK_LIST = null;
         private static IList<GetStocksResult> _STOCK_COMPANY_LIST = null;
-        private static ISet<string> _COMPANY_STOCKNO_HASH = null;
         private static IList<GetStocksResult> _STOCK_INDEX_LIST = null;
-        private static IList<GetStocksResult> _STOCK_FOUND_LIST = null;
+        private static IList<GetStocksResult> _ETF_LIST = null;
         private static ConcurrentDictionary<string, GetStocksResult> _STOCK_DICT = null;
         static StockHelper()
         {
@@ -34,6 +33,20 @@ namespace StockCrawler.Dao
             return _STOCK_LIST;
         }
         /// <summary>
+        /// 取得基金型(ETF)列表
+        /// </summary>
+        /// <returns>基金型(ETF)列表</returns>
+        public static IList<GetStocksResult> GetETFList()
+        {
+            if (null == _ETF_LIST)
+                lock (typeof(StockHelper))
+                    if (null == _ETF_LIST)
+                        _ETF_LIST = GetAllStockList().Where(
+                            d => d.Type == (short)EnumStockType.ETF).ToList();
+
+            return _ETF_LIST;
+        }
+        /// <summary>
         /// 取得與關鍵字相關的股票列表
         /// </summary>
         /// <param name="fuzzyKeyword">關鍵字</param>
@@ -52,7 +65,7 @@ namespace StockCrawler.Dao
         public static GetStocksResult GetMatchedStock(string keyword)
         {
             return GetStock(keyword) ?? GetAllStockList()
-                .Where(d => d.StockNo == keyword || d.StockName == keyword)
+                .Where(d => d.StockName == keyword)
                 .FirstOrDefault();
         }
         /// <summary>
@@ -76,24 +89,6 @@ namespace StockCrawler.Dao
                 return null;
         }
         /// <summary>
-        /// 判斷該股票代碼是否屬於公司
-        /// </summary>
-        /// <param name="data">股票資料</param>
-        /// <returns>是否屬於公司</returns>
-        public static bool IsCompany(this GetStocksResult data)
-        {
-            return IsCompany(data.StockNo);
-        }
-        /// <summary>
-        /// 判斷該股票代碼是否屬於公司
-        /// </summary>
-        /// <param name="stockNo">股票代碼</param>
-        /// <returns>是否屬於公司</returns>
-        public static bool IsCompany(string stockNo)
-        {
-            return _COMPANY_STOCKNO_HASH.Contains(stockNo);
-        }
-        /// <summary>
         /// 取得完整的上市公司列表
         /// </summary>
         /// <returns>上市公司列表</returns>
@@ -107,10 +102,6 @@ namespace StockCrawler.Dao
                             .Where(d => !d.StockNo.StartsWith("0")
                                 && int.TryParse(d.StockNo, out _))
                             .ToList();
-
-                        _COMPANY_STOCKNO_HASH = _STOCK_COMPANY_LIST
-                            .Select(d => d.StockNo)
-                            .ToHashSet();
                     }
 
             return _STOCK_COMPANY_LIST;
@@ -132,24 +123,7 @@ namespace StockCrawler.Dao
 
             return _STOCK_INDEX_LIST;
         }
-        /// <summary>
-        /// 取得基金型(ETF)列表
-        /// </summary>
-        /// <returns>基金型(ETF)列表</returns>
-        public static IList<GetStocksResult> GetFoundStockList()
-        {
-            if (null == _STOCK_FOUND_LIST)
-                lock (typeof(StockHelper))
-                    if (null == _STOCK_FOUND_LIST)
-                        _STOCK_FOUND_LIST = GetAllStockList().Where(
-                            d => d.StockNo.StartsWith("00")
-                                && int.TryParse(d.StockNo, out _)
-                                && int.Parse(d.StockNo.Substring(0, 4)) >= 50)
-                                .ToList();
-
-            return _STOCK_FOUND_LIST;
-        }
-        /// <summary>
+        /// <summary>        
         /// 清空快取重新讀取所有列表
         /// </summary>
         public static void Reload()
@@ -157,8 +131,8 @@ namespace StockCrawler.Dao
             _STOCK_LIST = null;
             _STOCK_COMPANY_LIST = null;
             _STOCK_INDEX_LIST = null;
-            _STOCK_FOUND_LIST = null;
             _STOCK_DICT = null;
+            _ETF_LIST = null;
         }
     }
 }

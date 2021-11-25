@@ -130,6 +130,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collectors\ETFInfoCollector\YuantaETFCollectorTests.cs" />
     <Compile Include="Collectors\StockForumCollectorTests.cs" />
     <Compile Include="Collectors\TwseMarketNewsCollectorTests.cs" />
     <Compile Include="Collectors\TwseInterestIssuedCollectorTests.cs" />

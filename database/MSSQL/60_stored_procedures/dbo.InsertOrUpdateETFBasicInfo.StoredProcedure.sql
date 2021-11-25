@@ -13,7 +13,6 @@ CREATE OR ALTER PROCEDURE [dbo].[InsertOrUpdateETFBasicInfo]
 @pStockNo VARCHAR(10), 
 @pCategory NVARCHAR(50),
 @pCompanyName NVARCHAR(100),
-@pCompanyID VARCHAR(10),
 @pBuildDate DATE,
 @pBuildPrice MONEY,
 @pPublishDate DATE,

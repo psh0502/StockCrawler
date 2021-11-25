@@ -2,8 +2,6 @@
 using Quartz;
 using StockCrawler.Dao;
 using System;
-using System.Data;
-using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,19 +23,18 @@ namespace StockCrawler.Services
                 var args = (string[])context.Get("args");
                 if (null != args && args.Length > 1) stockNo = args[1];
 
-                var collector = CollectorServiceProvider.GetETFInfoCollector();
-                foreach (var d in StockHelper.GetETFList()
-                    .Where(d => string.IsNullOrEmpty(stockNo) || int.Parse(d.StockNo) >= int.Parse(stockNo)))
-                {
+                foreach (var d in StockHelper.GetETFList())
                     try
                     {
+                        var collector = CollectorServiceProvider.GetETFInfoCollector(d.StockName);
                         var info = collector.GetBasicInfo(d.StockNo);
                         var ingredients = collector.GetIngredients(d.StockNo);
                         if (null != info)
                             using (var db = GetDB())
                             {
                                 db.InsertOrUpdateETFBasicInfo(info);
-                                db.InsertOrUpdateETFIngredients(ingredients);
+                                db.ClearETFIngredients(d.StockNo);
+                                db.InsertETFIngredients(ingredients);
                             }
                         else
                             Logger.InfoFormat("[{0}] has no basic info", d.StockNo);
@@ -47,7 +44,6 @@ namespace StockCrawler.Services
                         Logger.Warn(string.Format("[{0}] has no basic info", d.StockNo), e);
                     }
                     Thread.Sleep(_breakInternval);
-                }
             }
             catch (Exception ex)
             {

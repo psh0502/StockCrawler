@@ -133,6 +133,7 @@
     <Compile Include="ArgumentJobExecutionContext.cs" />
     <Compile Include="CollectorServiceProvider.cs" />
     <Compile Include="Collectors\ETFInfoCollector\IETFInfoCollector.cs" />
+    <Compile Include="Collectors\ETFInfoCollector\YuantaETFCollector.cs" />
     <Compile Include="Collectors\StockForums\IStockForumCollector.cs" />
     <Compile Include="Collectors\StockForums\StockForumCollector.cs" />
     <Compile Include="Collectors\StockInterestIssued\IStockInterestIssuedCollector.cs" />

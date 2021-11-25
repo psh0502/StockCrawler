@@ -92,6 +92,16 @@ namespace StockCrawler.Dao
             using (var db = GetMSSQLStockDataContext())
                 return db.GetStockMonthlyIncome(top, stockNo, year, month).ToArray();
         }
+        public GetETFBasicInfoResult GetETFBasicInfo(string stockNo)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                return db.GetETFBasicInfo(stockNo).FirstOrDefault();
+        }
+        public GetETFIngredientsResult[] GetETFIngredients(string etfNo)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                return db.GetETFIngredients(etfNo).ToArray();
+        }
         #endregion
 
         #region 新增修改
@@ -292,6 +302,46 @@ namespace StockCrawler.Dao
                         d.PreCumMonthIncome,
                         d.DeltaCumMonthIncomePercent);
         }
+        public void InsertOrUpdateETFBasicInfo(GetETFBasicInfoResult[] data)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                foreach (var d in data)
+                    InsertOrUpdateETFBasicInfo(d);
+        }
+        public void InsertOrUpdateETFBasicInfo(GetETFBasicInfoResult data)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                db.InsertOrUpdateETFBasicInfo(
+                    data.StockNo,
+                    data.Category,
+                    data.CompanyName,
+                    data.BuildDate,
+                    data.BuildPrice,
+                    data.PublishDate,
+                    data.PublishPrice,
+                    data.KeepingBank,
+                    data.CEO,
+                    data.Url,
+                    data.Distribution,
+                    data.ManagementFee,
+                    data.KeepFee,
+                    data.Business);
+        }
+        public void InsertETFIngredients(GetETFIngredientsResult[] data)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                foreach (var d in data)
+                    InsertETFIngredient(d);
+        }
+        public void InsertETFIngredient(GetETFIngredientsResult data)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                db.InsertETFIngredient(
+                    data.ETFNo,
+                    data.StockNo,
+                    data.Quantity,
+                    data.Weight);
+        }
         #endregion
 
         #region 刪除
@@ -299,6 +349,11 @@ namespace StockCrawler.Dao
         {
             using (var db = GetMSSQLStockDataContext())
                 db.DeleteStockPriceHistoryData(stockNo, tradeDate);
+        }
+        public void ClearETFIngredients(string ETFNo)
+        {
+            using (var db = GetMSSQLStockDataContext())
+                db.ClearETFIngredient(ETFNo);
         }
         #endregion
 

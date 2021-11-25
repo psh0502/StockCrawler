@@ -1,5 +1,6 @@
 ﻿using Microsoft.Practices.Unity.Configuration;
 using StockCrawler.Services.Collectors;
+using System.Collections.Concurrent;
 using Unity;
 
 namespace StockCrawler.Services
@@ -13,8 +14,10 @@ namespace StockCrawler.Services
         static CollectorServiceProvider()
         {
             _container.LoadConfiguration();
+            ETFCollectorDictionary = new ConcurrentDictionary<string, IETFInfoCollector>();
+            ETFCollectorDictionary.TryAdd("元大", new YuantaETFCollector());
         }
-        public static IStockForumCollector GetStockForumCollector()
+        internal static IStockForumCollector GetStockForumCollector()
         {
             return _container.Resolve<IStockForumCollector>();
         }
@@ -22,15 +25,32 @@ namespace StockCrawler.Services
         {
             return _container.Resolve<IStockInterestIssuedCollector>();
         }
-        public static IStockDailyInfoCollector GetStockDailyPriceCollector()
+        internal static IStockDailyInfoCollector GetStockDailyPriceCollector()
         {
             return _container.Resolve<IStockDailyInfoCollector>();
         }
-        internal static IETFInfoCollector GetETFInfoCollector()
+        private static readonly ConcurrentDictionary<string, IETFInfoCollector> ETFCollectorDictionary = null;
+        internal static IETFInfoCollector GetETFInfoCollector(string etfName)
         {
-            return _container.Resolve<IETFInfoCollector>();
+            etfName = TryExtractETFCompnatName(etfName);
+            if (!string.IsNullOrEmpty(etfName))
+                if (ETFCollectorDictionary.TryGetValue(etfName, out IETFInfoCollector collector))
+                    return collector;
+            return null;
         }
-        public static IStockBasicInfoCollector GetStockBasicInfoCollector()
+        private static readonly string[] etfKeywords = { 
+            "元大", "富邦", "國泰", "永豐", "群益", "中信", 
+            "統一", "新光", "台新", "元富", "永昌", "凱基"
+        };
+        private static string TryExtractETFCompnatName(string etfName)
+        {
+            foreach (var keyword in etfKeywords)
+                if (etfName.StartsWith(keyword)) return keyword;
+
+            return null;
+        }
+
+        internal static IStockBasicInfoCollector GetStockBasicInfoCollector()
         {
             return _container.Resolve<IStockBasicInfoCollector>();
         }
@@ -38,11 +58,11 @@ namespace StockCrawler.Services
         {
             return _container.Resolve<IStockMonthlyIncomeCollector>();
         }
-        public static IStockReportCollector GetStockReportCollector()
+        internal static IStockReportCollector GetStockReportCollector()
         {
             return _container.Resolve<IStockReportCollector>();
         }
-        public static IStockMarketNewsCollector GetMarketNewsCollector()
+        internal static IStockMarketNewsCollector GetMarketNewsCollector()
         {
             return _container.Resolve<IStockMarketNewsCollector>();
         }
