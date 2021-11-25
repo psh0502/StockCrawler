@@ -15,6 +15,10 @@
     <Parameter Name="pUrl" Type="System.String" DbType="NVarChar(500)" />
     <Return Type="System.Int32" />
   </Function>
+  <Function Name="dbo.ClearETFIngredient" Method="ClearETFIngredient">
+    <Parameter Name="pETFNo" Type="System.String" DbType="VarChar(10)" />
+    <Return Type="System.Int32" />
+  </Function>
   <Function Name="dbo.DeleteStockPriceHistoryData" Method="DeleteStockPriceHistoryData">
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
     <Parameter Name="pTradeDate" Type="System.DateTime" DbType="Date" />
@@ -28,6 +32,39 @@
       <Column Name="Category" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="CategoryNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
       <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetETFBasicInfo" Method="GetETFBasicInfo">
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <ElementType Name="GetETFBasicInfoResult">
+      <Column Name="StockName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Category" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="BuildDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="BuildPrice" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="PublishDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="PublishPrice" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="KeepingBank" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="CEO" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Url" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Distribution" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ManagementFee" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="KeepFee" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="Business" Type="System.String" DbType="NVarChar(1000) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.GetETFIngredients" Method="GetETFIngredients">
+    <Parameter Name="pETFNo" Type="System.String" DbType="VarChar(10)" />
+    <ElementType Name="GetETFIngredientsResult">
+      <Column Name="ETFNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="StockNo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Quantity" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="Weight" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
   <Function Name="dbo.GetStockAnalysisData" Method="GetStockAnalysisData">
@@ -258,6 +295,31 @@
       <Column Name="Value" Type="System.Decimal" DbType="Decimal(10,4) NOT NULL" CanBeNull="false" />
       <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </ElementType>
+  </Function>
+  <Function Name="dbo.InsertETFIngredient" Method="InsertETFIngredient">
+    <Parameter Name="pETFNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pStockNo" Type="System.String" DbType="NVarChar(10)" />
+    <Parameter Name="pQuantity" Type="System.Int64" DbType="BigInt" />
+    <Parameter Name="pWeight" Type="System.Decimal" DbType="Decimal(18,4)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.InsertOrUpdateETFBasicInfo" Method="InsertOrUpdateETFBasicInfo">
+    <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pCategory" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="pCompanyName" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="pCompanyID" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="pBuildDate" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="pBuildPrice" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pPublishDate" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="pPublishPrice" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pKeepingBank" Type="System.String" DbType="NVarChar(20)" />
+    <Parameter Name="pCEO" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="pUrl" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="pDistribution" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="pManagementFee" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pKeepFee" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pBusiness" Type="System.String" DbType="NVarChar(1000)" />
+    <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.InsertOrUpdateStock" Method="InsertOrUpdateStock">
     <Parameter Name="pStockNo" Type="System.String" DbType="VarChar(10)" />

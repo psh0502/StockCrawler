@@ -23,8 +23,8 @@ namespace StockCrawler.UnitTest.Jobs
             foreach (var d in collector.GetLatestStockNews())
                 using (var db = RepositoryProvider.GetRepositoryInstance())
                 {
-                    db.InsertOrUpdateStock(d.StockNo, string.Empty, string.Empty);
-                    db.InsertOrUpdateStock("0000", "加權指數", "0000");
+                    db.InsertOrUpdateStock(d.StockNo, string.Empty, string.Empty, EnumStockType.STOCK);
+                    db.InsertOrUpdateStock("0000", "加權指數", "0000", EnumStockType.INDEX);
                 }
             StockHelper.Reload();
         }

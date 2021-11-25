@@ -77,6 +77,13 @@ namespace StockCrawler.Dao
 			return ((int)(result.ReturnValue));
 		}
 		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.ClearETFIngredient")]
+		public int ClearETFIngredient([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pETFNo)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pETFNo);
+			return ((int)(result.ReturnValue));
+		}
+		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.DeleteStockPriceHistoryData")]
 		public int DeleteStockPriceHistoryData([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pTradeDate)
 		{
@@ -96,6 +103,20 @@ namespace StockCrawler.Dao
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
 			return ((ISingleResult<GetCategoryMappingResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetETFBasicInfo")]
+		public ISingleResult<GetETFBasicInfoResult> GetETFBasicInfo([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo);
+			return ((ISingleResult<GetETFBasicInfoResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetETFIngredients")]
+		public ISingleResult<GetETFIngredientsResult> GetETFIngredients([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pETFNo)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pETFNo);
+			return ((ISingleResult<GetETFIngredientsResult>)(result.ReturnValue));
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetStockAnalysisData")]
@@ -181,6 +202,20 @@ namespace StockCrawler.Dao
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pDateBegin, pDateEnd, pType);
 			return ((ISingleResult<GetStockTechnicalIndicatorsResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertETFIngredient")]
+		public int InsertETFIngredient([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pETFNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="BigInt")] System.Nullable<long> pQuantity, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(18,4)")] System.Nullable<decimal> pWeight)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pETFNo, pStockNo, pQuantity, pWeight);
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertOrUpdateETFBasicInfo")]
+		public int InsertOrUpdateETFBasicInfo([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pCategory, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(100)")] string pCompanyName, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pCompanyID, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pBuildDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pBuildPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pPublishDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pPublishPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(20)")] string pKeepingBank, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pCEO, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(100)")] string pUrl, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Bit")] System.Nullable<bool> pDistribution, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pManagementFee, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pKeepFee, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(1000)")] string pBusiness)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pCategory, pCompanyName, pCompanyID, pBuildDate, pBuildPrice, pPublishDate, pPublishPrice, pKeepingBank, pCEO, pUrl, pDistribution, pManagementFee, pKeepFee, pBusiness);
+			return ((int)(result.ReturnValue));
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertOrUpdateStock")]
@@ -339,6 +374,436 @@ namespace StockCrawler.Dao
 				if ((this._CreatedAt != value))
 				{
 					this._CreatedAt = value;
+				}
+			}
+		}
+	}
+	
+	public partial class GetETFBasicInfoResult
+	{
+		
+		private string _StockName;
+		
+		private string _StockNo;
+		
+		private string _Category;
+		
+		private string _CompanyName;
+		
+		private System.DateTime _BuildDate;
+		
+		private decimal _BuildPrice;
+		
+		private System.DateTime _PublishDate;
+		
+		private decimal _PublishPrice;
+		
+		private string _KeepingBank;
+		
+		private string _CEO;
+		
+		private string _Url;
+		
+		private bool _Distribution;
+		
+		private decimal _ManagementFee;
+		
+		private decimal _KeepFee;
+		
+		private string _Business;
+		
+		private System.DateTime _CreatedAt;
+		
+		private System.DateTime _LastModifiedAt;
+		
+		public GetETFBasicInfoResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string StockName
+		{
+			get
+			{
+				return this._StockName;
+			}
+			set
+			{
+				if ((this._StockName != value))
+				{
+					this._StockName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockNo", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string StockNo
+		{
+			get
+			{
+				return this._StockNo;
+			}
+			set
+			{
+				if ((this._StockNo != value))
+				{
+					this._StockNo = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Category", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string Category
+		{
+			get
+			{
+				return this._Category;
+			}
+			set
+			{
+				if ((this._Category != value))
+				{
+					this._Category = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompanyName", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string CompanyName
+		{
+			get
+			{
+				return this._CompanyName;
+			}
+			set
+			{
+				if ((this._CompanyName != value))
+				{
+					this._CompanyName = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BuildDate", DbType="Date NOT NULL")]
+		public System.DateTime BuildDate
+		{
+			get
+			{
+				return this._BuildDate;
+			}
+			set
+			{
+				if ((this._BuildDate != value))
+				{
+					this._BuildDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BuildPrice", DbType="Decimal(18,4) NOT NULL")]
+		public decimal BuildPrice
+		{
+			get
+			{
+				return this._BuildPrice;
+			}
+			set
+			{
+				if ((this._BuildPrice != value))
+				{
+					this._BuildPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PublishDate", DbType="Date NOT NULL")]
+		public System.DateTime PublishDate
+		{
+			get
+			{
+				return this._PublishDate;
+			}
+			set
+			{
+				if ((this._PublishDate != value))
+				{
+					this._PublishDate = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PublishPrice", DbType="Decimal(18,4) NOT NULL")]
+		public decimal PublishPrice
+		{
+			get
+			{
+				return this._PublishPrice;
+			}
+			set
+			{
+				if ((this._PublishPrice != value))
+				{
+					this._PublishPrice = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KeepingBank", DbType="NVarChar(20) NOT NULL", CanBeNull=false)]
+		public string KeepingBank
+		{
+			get
+			{
+				return this._KeepingBank;
+			}
+			set
+			{
+				if ((this._KeepingBank != value))
+				{
+					this._KeepingBank = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CEO", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string CEO
+		{
+			get
+			{
+				return this._CEO;
+			}
+			set
+			{
+				if ((this._CEO != value))
+				{
+					this._CEO = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Url", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
+		public string Url
+		{
+			get
+			{
+				return this._Url;
+			}
+			set
+			{
+				if ((this._Url != value))
+				{
+					this._Url = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Distribution", DbType="Bit NOT NULL")]
+		public bool Distribution
+		{
+			get
+			{
+				return this._Distribution;
+			}
+			set
+			{
+				if ((this._Distribution != value))
+				{
+					this._Distribution = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ManagementFee", DbType="Decimal(18,4) NOT NULL")]
+		public decimal ManagementFee
+		{
+			get
+			{
+				return this._ManagementFee;
+			}
+			set
+			{
+				if ((this._ManagementFee != value))
+				{
+					this._ManagementFee = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KeepFee", DbType="Decimal(18,4) NOT NULL")]
+		public decimal KeepFee
+		{
+			get
+			{
+				return this._KeepFee;
+			}
+			set
+			{
+				if ((this._KeepFee != value))
+				{
+					this._KeepFee = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Business", DbType="NVarChar(1000) NOT NULL", CanBeNull=false)]
+		public string Business
+		{
+			get
+			{
+				return this._Business;
+			}
+			set
+			{
+				if ((this._Business != value))
+				{
+					this._Business = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedAt", DbType="DateTime NOT NULL")]
+		public System.DateTime CreatedAt
+		{
+			get
+			{
+				return this._CreatedAt;
+			}
+			set
+			{
+				if ((this._CreatedAt != value))
+				{
+					this._CreatedAt = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastModifiedAt", DbType="DateTime NOT NULL")]
+		public System.DateTime LastModifiedAt
+		{
+			get
+			{
+				return this._LastModifiedAt;
+			}
+			set
+			{
+				if ((this._LastModifiedAt != value))
+				{
+					this._LastModifiedAt = value;
+				}
+			}
+		}
+	}
+	
+	public partial class GetETFIngredientsResult
+	{
+		
+		private string _ETFNo;
+		
+		private string _StockNo;
+		
+		private long _Quantity;
+		
+		private decimal _Weight;
+		
+		private System.DateTime _CreatedAt;
+		
+		private System.DateTime _LastModifiedAt;
+		
+		public GetETFIngredientsResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ETFNo", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string ETFNo
+		{
+			get
+			{
+				return this._ETFNo;
+			}
+			set
+			{
+				if ((this._ETFNo != value))
+				{
+					this._ETFNo = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockNo", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string StockNo
+		{
+			get
+			{
+				return this._StockNo;
+			}
+			set
+			{
+				if ((this._StockNo != value))
+				{
+					this._StockNo = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Quantity", DbType="BigInt NOT NULL")]
+		public long Quantity
+		{
+			get
+			{
+				return this._Quantity;
+			}
+			set
+			{
+				if ((this._Quantity != value))
+				{
+					this._Quantity = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Weight", DbType="Decimal(18,4) NOT NULL")]
+		public decimal Weight
+		{
+			get
+			{
+				return this._Weight;
+			}
+			set
+			{
+				if ((this._Weight != value))
+				{
+					this._Weight = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedAt", DbType="DateTime NOT NULL")]
+		public System.DateTime CreatedAt
+		{
+			get
+			{
+				return this._CreatedAt;
+			}
+			set
+			{
+				if ((this._CreatedAt != value))
+				{
+					this._CreatedAt = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastModifiedAt", DbType="DateTime NOT NULL")]
+		public System.DateTime LastModifiedAt
+		{
+			get
+			{
+				return this._LastModifiedAt;
+			}
+			set
+			{
+				if ((this._LastModifiedAt != value))
+				{
+					this._LastModifiedAt = value;
 				}
 			}
 		}

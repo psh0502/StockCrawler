@@ -132,6 +132,7 @@
   <ItemGroup>
     <Compile Include="ArgumentJobExecutionContext.cs" />
     <Compile Include="CollectorServiceProvider.cs" />
+    <Compile Include="Collectors\ETFInfoCollector\IETFInfoCollector.cs" />
     <Compile Include="Collectors\StockForums\IStockForumCollector.cs" />
     <Compile Include="Collectors\StockForums\StockForumCollector.cs" />
     <Compile Include="Collectors\StockInterestIssued\IStockInterestIssuedCollector.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="Collectors\StockMarketNews\TwseMarketNewsCollector.cs" />
     <Compile Include="Collectors\StockMonthlyIncome\IStockMonthlyIncomeCollector.cs" />
     <Compile Include="Collectors\StockMonthlyIncome\TwseMonthlyIncomeCollector.cs" />
+    <Compile Include="ETFBasicInfoUpdateJob.cs" />
     <Compile Include="JobBase.cs" />
     <Compile Include="Collectors\StockBasicInfo\TwseStockBasicInfoCollector.cs" />
     <Compile Include="StockAnalysisUpdateJob.cs" />

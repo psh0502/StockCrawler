@@ -18,4 +18,9 @@ ALTER TABLE [dbo].[StockPriceHistory] DROP CONSTRAINT [FK_StockPriceHistory_Stoc
 GO
 ALTER TABLE [dbo].[StockTechnicalIndicators] DROP CONSTRAINT [FK_StockTechnicalIndicators_Stock]
 GO
-
+ALTER TABLE [dbo].[ETFBasicInfo] DROP CONSTRAINT [FK_ETFBasicInfo_Stock]
+GO
+ALTER TABLE [dbo].[ETFIngredients] DROP CONSTRAINT [FK_ETFIngredients_Stock]
+GO
+ALTER TABLE [dbo].[ETFIngredients] DROP CONSTRAINT [FK_ETFIngredients_ETFBasic]
+GO

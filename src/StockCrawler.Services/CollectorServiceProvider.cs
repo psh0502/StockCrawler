@@ -26,6 +26,10 @@ namespace StockCrawler.Services
         {
             return _container.Resolve<IStockDailyInfoCollector>();
         }
+        internal static IETFInfoCollector GetETFInfoCollector()
+        {
+            return _container.Resolve<IETFInfoCollector>();
+        }
         public static IStockBasicInfoCollector GetStockBasicInfoCollector()
         {
             return _container.Resolve<IStockBasicInfoCollector>();
