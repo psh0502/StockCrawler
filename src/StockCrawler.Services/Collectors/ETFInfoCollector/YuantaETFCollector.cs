@@ -17,6 +17,7 @@ namespace StockCrawler.Services.Collectors
             {
                 StockNo = etfNo,
             };
+            throw new NotImplementedException();
             return result;
         }
 
@@ -32,6 +33,7 @@ namespace StockCrawler.Services.Collectors
             {
                 ETFNo = etfNo
             });
+            throw new NotImplementedException();
             return result.ToArray();
         }
     }

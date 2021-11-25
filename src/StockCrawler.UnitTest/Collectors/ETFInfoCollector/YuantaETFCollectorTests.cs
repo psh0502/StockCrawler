@@ -7,6 +7,7 @@ using System.Linq;
 
 namespace StockCrawler.UnitTest.Collectors
 {
+#if (DEBUG)
     [TestClass]
     public class YuantaETFCollectorTests : UnitTestBase
     {
@@ -23,7 +24,7 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual(typeof(YuantaETFCollector), collector.GetType());
             var basicInfo = collector.GetBasicInfo("0050");
 
-            #region assert basic info
+#region assert basic info
             Assert.AreEqual("0050", basicInfo.StockNo);
             Assert.AreEqual("元大台灣卓越50基金", basicInfo.CompanyName);
             Assert.AreEqual(new DateTime(2003, 6, 25), basicInfo.BuildDate);
@@ -38,7 +39,7 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual(0.035M, basicInfo.KeepFee);
             Assert.IsTrue(basicInfo.Distribution);
 
-            #endregion
+#endregion
 
         }
         [TestMethod]
@@ -48,14 +49,15 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual(typeof(YuantaETFCollector), collector.GetType());
             var ingredients = collector.GetIngredients("0050");
 
-            #region assert ingredients
+#region assert ingredients
             Assert.AreEqual(50, ingredients.Length);
             var d1 = ingredients[0];
             Assert.AreEqual("0050", d1.ETFNo);
             Assert.AreEqual("2330", d1.StockNo);
             Assert.AreEqual(138433314, d1.Quantity);
             Assert.AreEqual(47.75M, d1.Weight);
-            #endregion
+#endregion
         }
     }
+#endif
 }
