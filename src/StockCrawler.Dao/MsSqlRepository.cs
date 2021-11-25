@@ -166,13 +166,13 @@ namespace StockCrawler.Dao
             {
                 db.DisableAllStocks();
                 foreach (var d in data)
-                    db.InsertOrUpdateStock(d.StockNo, d.StockName, d.CategoryNo);
+                    db.InsertOrUpdateStock(d.StockNo, d.StockName, d.CategoryNo, d.Type);
             }
         }
-        public void InsertOrUpdateStock(string stockNo, string stockName, string categoryNo)
+        public void InsertOrUpdateStock(string stockNo, string stockName, string categoryNo, EnumStockType type)
         {
             using (var db = GetMSSQLStockDataContext())
-                db.InsertOrUpdateStock(stockNo, stockName, categoryNo);
+                db.InsertOrUpdateStock(stockNo, stockName, categoryNo, (short)type);
         }
         public void InsertOrUpdateStockBasicInfo(GetStockBasicInfoResult[] data)
         {
