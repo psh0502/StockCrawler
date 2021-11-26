@@ -36,8 +36,11 @@ namespace StockCrawler.Services
                 if(targetDate == DateTime.MinValue) targetDate = SystemTime.Today;
                 do
                 {
-                    CalculateMA(targetDate, args);
-                    CalculateTechnicalIndicators(targetDate, args);
+                    if (!targetDate.IsWeekend())
+                    {
+                        CalculateMA(targetDate, args);
+                        CalculateTechnicalIndicators(targetDate, args);
+                    }
                     targetDate = targetDate.AddDays(1);
                 } while (targetDate <= SystemTime.Today);
             }
