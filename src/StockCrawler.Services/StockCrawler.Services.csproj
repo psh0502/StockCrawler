@@ -132,6 +132,7 @@
   <ItemGroup>
     <Compile Include="ArgumentJobExecutionContext.cs" />
     <Compile Include="CollectorServiceProvider.cs" />
+    <Compile Include="Collectors\ETFInfoCollector\ETFCollectorBase.cs" />
     <Compile Include="Collectors\ETFInfoCollector\IETFInfoCollector.cs" />
     <Compile Include="Collectors\ETFInfoCollector\YuantaETFCollector.cs" />
     <Compile Include="Collectors\StockForums\IStockForumCollector.cs" />

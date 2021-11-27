@@ -158,11 +158,14 @@
     <Compile Include="Jobs\StockFinReportUpdateJobTests.cs" />
     <Compile Include="Jobs\StockBasicInfoUpdateJobTests.cs" />
     <Compile Include="SqlTool.cs" />
+    <Compile Include="Stubs\YuantaETFCollectorStub.cs" />
     <Compile Include="UnitTestBase.cs" />
     <Compile Include="UnitTestLogger.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AuthoringTests.txt" />
+    <Content Include="TestData\ETF\YuantaETFCollector\0050_basic.html" />
+    <Content Include="TestData\ETF\YuantaETFCollector\0050_ingredients.html" />
     <Content Include="TestData\Ptt\0OV72l.html" />
     <Content Include="TestData\Ptt\1gjg3V.html" />
     <Content Include="TestData\Ptt\1gjgxX.html" />
