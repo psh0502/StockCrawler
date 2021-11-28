@@ -44,6 +44,9 @@ namespace StockCrawlerRunner
                         case "-ptt":
                             job = new StockForumsUpdateJob();
                             break;
+                        case "-etf":
+                            job = new ETFInfoUpdateJob();
+                            break;
                         case "-is":
                             job = new StockInterestIssuedUpdateJob();
                             break;
@@ -118,6 +121,8 @@ namespace StockCrawlerRunner
             Console.WriteLine("     Analyze stock health according to the latest finance reports.");
             Console.WriteLine(" <mode>: -ptt [Date:yyyy/MM/dd]");
             Console.WriteLine("     Get the latest articles from PTT stock forum. If you assign date, it grab articles by the date.");
+            Console.WriteLine(" <mode>: -etf");
+            Console.WriteLine("     Get the latest ETF information from each Brokerage.");
         }
     }
 }
