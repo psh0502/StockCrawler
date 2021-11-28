@@ -6,6 +6,7 @@ using System.Reflection;
 
 namespace StockCrawler.UnitTest.Stubs
 {
+#if (DEBUG)
     class YuantaETFCollectorStub : YuantaETFCollector
     {
         public override GetETFBasicInfoResult GetBasicInfo(string etfNo)
@@ -69,4 +70,5 @@ namespace StockCrawler.UnitTest.Stubs
             }
         }
     }
+#endif
 }
