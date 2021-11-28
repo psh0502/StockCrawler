@@ -224,8 +224,8 @@ namespace StockCrawler.Dao
 					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pCEO, 
 					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(100)")] string pUrl, 
 					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Bit")] System.Nullable<bool> pDistribution, 
-					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pManagementFee, 
-					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pKeepFee, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,6)")] System.Nullable<decimal> pManagementFee, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Decimal(10,6)")] System.Nullable<decimal> pKeepFee, 
 					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(1000)")] string pBusiness, 
 					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pTotalAssetNAV, 
 					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pNAV, 
@@ -523,7 +523,7 @@ namespace StockCrawler.Dao
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BuildPrice", DbType="Decimal(18,4) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BuildPrice", DbType="Decimal(10,6) NOT NULL")]
 		public decimal BuildPrice
 		{
 			get
@@ -635,7 +635,7 @@ namespace StockCrawler.Dao
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ManagementFee", DbType="Decimal(18,4) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ManagementFee", DbType="Decimal(10,6) NOT NULL")]
 		public decimal ManagementFee
 		{
 			get
@@ -651,7 +651,7 @@ namespace StockCrawler.Dao
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KeepFee", DbType="Decimal(18,4) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KeepFee", DbType="Decimal(10,6) NOT NULL")]
 		public decimal KeepFee
 		{
 			get

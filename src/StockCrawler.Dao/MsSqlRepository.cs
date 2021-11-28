@@ -332,9 +332,8 @@ namespace StockCrawler.Dao
         }
         public void InsertETFIngredients(GetETFIngredientsResult[] data)
         {
-            using (var db = GetMSSQLStockDataContext())
-                foreach (var d in data)
-                    InsertETFIngredient(d);
+            foreach (var d in data)
+                InsertETFIngredient(d);
         }
         public void InsertETFIngredient(GetETFIngredientsResult data)
         {

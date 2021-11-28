@@ -21,8 +21,8 @@ CREATE OR ALTER PROCEDURE [dbo].[InsertOrUpdateETFBasicInfo]
 @pCEO NVARCHAR(50),
 @pUrl VARCHAR(100),
 @pDistribution BIT,
-@pManagementFee MONEY,
-@pKeepFee MONEY,
+@pManagementFee DECIMAL(10, 6),
+@pKeepFee DECIMAL(10, 6),
 @pBusiness NVARCHAR(1000),
 @pTotalAssetNAV MONEY,
 @pNAV MONEY,
@@ -60,6 +60,7 @@ BEGIN
 			,[BuildPrice]
 			,[PublishDate]
 			,[PublishPrice]
+			,[KeepingBank]
 			,[CEO]
 			,[Url]
 			,[Distribution]
@@ -77,6 +78,7 @@ BEGIN
 			,@pBuildPrice
 			,@pPublishDate
 			,@pPublishPrice
+			,@pKeepingBank
 			,@pCEO
 			,@pUrl
 			,@pDistribution

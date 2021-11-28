@@ -45,8 +45,8 @@ namespace StockCrawler.Services.Collectors
                 StockNo = etfNo,
                 Category = Tools.CleanString(collection[1].InnerText),
                 CompanyName = Tools.CleanString(doc.DocumentNode.SelectSingleNode("/html/head/title").InnerText
-                .Replace($"({etfNo})", string.Empty)
-                .Split(' ')[0]),
+                    .Replace($"({etfNo})", string.Empty)
+                    .Split(' ')[0]),
                 BuildDate = DateTime.Parse(Tools.CleanString(collection[2].InnerText)),
                 BuildPrice = decimal.Parse(Tools.CleanString(collection[3].InnerText)),
                 PublishDate = DateTime.Parse(Tools.CleanString(collection[4].InnerText)),
@@ -55,8 +55,8 @@ namespace StockCrawler.Services.Collectors
                 CEO = Tools.CleanString(collection[8].InnerText),
                 Url = string.Format(BasicUrl, etfNo),
                 Distribution = Tools.CleanString(collection[10].InnerText) == "是",
-                ManagementFee = decimal.Parse(Tools.CleanString(collection[12].InnerText.Replace("%", string.Empty))) / 100M,
-                KeepFee = decimal.Parse(Tools.CleanString(collection[13].InnerText.Replace("%", string.Empty))) / 100M,
+                ManagementFee = decimal.TryParse(Tools.CleanString(collection[12].InnerText.Replace("%", string.Empty)), out _) ? decimal.Parse(Tools.CleanString(collection[12].InnerText.Replace("%", string.Empty))) / 100M : 0M,
+                KeepFee = decimal.TryParse(Tools.CleanString(collection[13].InnerText.Replace("%", string.Empty)), out _) ? decimal.Parse(Tools.CleanString(collection[13].InnerText.Replace("%", string.Empty))) / 100M : 0M,
                 Business = meta[13].Attributes["content"].Value
             };
             return result;
@@ -80,15 +80,15 @@ namespace StockCrawler.Services.Collectors
                 .Replace(@"\n", string.Empty)
                 .Replace("\\\"", string.Empty);
             _logger.Debug($"{ nameof(js_valueString)}: {js_valueString}");
-            var js_values_0 = CsvReader.ParseFields(js_valueString).ToArray();
-            _logger.Debug($"{nameof(js_values_0)} has arguments count: {js_values_0.Length}");
+            var js_values = CsvReader.ParseFields(js_valueString).ToArray();
+            _logger.Debug($"{nameof(js_values)} has arguments count: {js_values.Length}");
             //Debug.Assert(js_arguments.Count == js_values.Length, "argument count != value count");
-            var js_argument_map_0 = new Dictionary<string, string>();
+            var js_argument_map = new Dictionary<string, string>();
             for (var i = 0; i < js_arguments.Count; i++)
             {
-                var values = js_values_0;
+                var values = js_values;
                 _logger.Debug($"Key: {js_arguments[i].Key}: {values[i].Replace("\\n", string.Empty)}");
-                js_argument_map_0.Add(
+                js_argument_map.Add(
                     js_arguments[i].Key,
                     "null" == values[i] ? null : values[i].Replace("\\n", string.Empty));
             }
@@ -102,17 +102,22 @@ namespace StockCrawler.Services.Collectors
                 .Replace(",name:", "',name:'")
                 .Replace(",ename:", "',ename:'")
                 .Replace(",weights:", "',weights:'")
-                .Replace(",qty:", "',qty:");
+                .Replace(",qty:", "',qty:")
+                .Replace("'\"", "'")
+                .Replace("\"'", "'")
+                .Replace(",qty:", ",qty:'")
+                .Replace("},\r\n", "'},\r\n")
+                .Replace("}]", "'}]");
 
-            _logger.Debug(ingredient_content);
+            _logger.Debug($"{nameof(ingredient_content)}: {ingredient_content}");
             var data = JsonConvert.DeserializeObject<JsonData[]>(ingredient_content);
             int j = 0;
-            var js_argument_map = js_argument_map_0;
             foreach (var d in data)
             {
-                d.code = Tools.CleanString(js_argument_map[d.code]);
-                d.name = Tools.CleanString(js_argument_map[d.name]);
-                d.weights = decimal.TryParse(d.weights, out _) ? d.weights : Tools.CleanString(js_argument_map[d.weights]);
+                d.code = js_argument_map.ContainsKey(d.code) ? Tools.CleanString(js_argument_map[d.code]) : d.code;
+                d.name = js_argument_map.ContainsKey(d.name) ? Tools.CleanString(js_argument_map[d.name]) : d.name;
+                d.weights = js_argument_map.ContainsKey(d.weights) ? Tools.CleanString(js_argument_map[d.weights]) : d.weights;
+                d.qty = js_argument_map.ContainsKey(d.qty) ? Tools.CleanString(js_argument_map[d.qty]) : d.qty;
                 _logger.Debug($"{nameof(d.code)}: {d.code}, " +
                     $"{nameof(d.name)}: {d.name}, " +
                     $"{nameof(d.qty)}: {d.qty}, " +
@@ -124,8 +129,8 @@ namespace StockCrawler.Services.Collectors
                 {
                     ETFNo = etfNo,
                     StockNo = da.code,
-                    Quantity = da.qty,
-                    Weight = decimal.Parse(da.weights)/100M,
+                    Quantity = long.Parse(da.qty),
+                    Weight = decimal.Parse(da.weights) / 100M,
                 }).ToList();
             return result;
         }
@@ -134,13 +139,11 @@ namespace StockCrawler.Services.Collectors
             public string code { get; set; }
             public string name { get; set; }
             public string weights { get; set; }
-            public long qty { get; set; }
+            public string qty { get; set; }
         }
 #if(DEBUG)
         public override GetETFIngredientsResult[] GetIngredients(string etfNo)
         {
-            return base.GetIngredients(etfNo);
-
             _logger.Info($"Mock {MethodBase.GetCurrentMethod().Name}!!!");
             var file = new FileInfo($@"..\..\..\StockCrawler.UnitTest\TestData\ETF\{typeof(YuantaETFCollector).Name}\{etfNo}_ingredients.html");
             if (!file.Directory.Exists) file.Directory.Create();
