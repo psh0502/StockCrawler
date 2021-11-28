@@ -1,4 +1,5 @@
-﻿using StockCrawler.Dao;
+﻿using Common.Logging;
+using StockCrawler.Dao;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,6 +8,7 @@ namespace StockCrawler.Services.Collectors
 {
     internal abstract class ETFCollectorBase
     {
+        internal ILog _logger = null;
         public abstract string BasicUrl { get; }
         public abstract string IngredientsUrl { get; }
         public virtual GetETFBasicInfoResult GetBasicInfo(string etfNo)

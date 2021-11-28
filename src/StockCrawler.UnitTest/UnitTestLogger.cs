@@ -1,4 +1,5 @@
 ﻿using Common.Logging;
+using StockCrawler.Services;
 using System;
 
 namespace StockCrawler.UnitTest
@@ -10,7 +11,7 @@ namespace StockCrawler.UnitTest
         public void Debug(object message, Exception exception)
         {
             if (IsDebugEnabled)
-                System.Diagnostics.Debug.WriteLine(string.Format("[DEBUG] [{2}] {0}\n{1}", message, exception, DateTime.Now).Trim());
+                System.Diagnostics.Debug.WriteLine($"[DEBUG] [{SystemTime.Now.ToDateTimeText()}] {message}{((exception == null) ? "" : "\r\n")}{exception}");
         }
 
         public void Debug(object message)

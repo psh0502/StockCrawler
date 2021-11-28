@@ -165,7 +165,9 @@
   <ItemGroup>
     <Content Include="AuthoringTests.txt" />
     <Content Include="TestData\ETF\YuantaETFCollector\0050_basic.html" />
+    <Content Include="TestData\ETF\YuantaETFCollector\0050_basic_analyze.html" />
     <Content Include="TestData\ETF\YuantaETFCollector\0050_ingredients.html" />
+    <Content Include="TestData\ETF\YuantaETFCollector\0050_ingredients_analyze.html" />
     <Content Include="TestData\Ptt\0OV72l.html" />
     <Content Include="TestData\Ptt\1gjg3V.html" />
     <Content Include="TestData\Ptt\1gjgxX.html" />

@@ -50,6 +50,7 @@ namespace StockCrawler.UnitTest.Collectors
         {
             var collector = CollectorServiceProvider.GetETFInfoCollector(StockHelper.GetETFList().First().StockName);
             Assert.AreEqual(typeof(YuantaETFCollector), collector.GetType());
+            ((YuantaETFCollector)collector)._logger = new UnitTestLogger();
             var ingredients = collector.GetIngredients("0050");
 
             #region assert ingredients
@@ -58,7 +59,7 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual("0050", d1.ETFNo);
             Assert.AreEqual("2330", d1.StockNo);
             Assert.AreEqual(138433314, d1.Quantity);
-            Assert.AreEqual(47.75M, d1.Weight);
+            Assert.AreEqual(0.4792M, d1.Weight);
             #endregion
         }
     }

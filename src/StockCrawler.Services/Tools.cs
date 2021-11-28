@@ -133,6 +133,8 @@ namespace StockCrawler.Services
         /// <returns>乾淨的字元</returns>
         public static string CleanString(string text)
         {
+            if (string.IsNullOrEmpty(text)) return string.Empty;
+
             return HttpUtility.HtmlDecode(text)
                 .Replace("&nbsp;", string.Empty)
                 .Replace(" ", string.Empty)
