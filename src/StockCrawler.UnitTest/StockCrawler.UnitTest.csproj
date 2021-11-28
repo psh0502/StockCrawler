@@ -170,10 +170,15 @@
     <Content Include="TestData\ETF\YuantaETFCollector\0050_ingredients.html" />
     <Content Include="TestData\ETF\YuantaETFCollector\0050_ingredients_analyze.html" />
     <Content Include="TestData\ETF\YuantaETFCollector\0051_basic.html" />
+    <Content Include="TestData\ETF\YuantaETFCollector\0051_ingredients.html" />
     <Content Include="TestData\ETF\YuantaETFCollector\0053_basic.html" />
+    <Content Include="TestData\ETF\YuantaETFCollector\0053_ingredients.html" />
     <Content Include="TestData\ETF\YuantaETFCollector\0054_basic.html" />
+    <Content Include="TestData\ETF\YuantaETFCollector\0054_ingredients.html" />
     <Content Include="TestData\ETF\YuantaETFCollector\0055_basic.html" />
+    <Content Include="TestData\ETF\YuantaETFCollector\0055_ingredients.html" />
     <Content Include="TestData\ETF\YuantaETFCollector\0056_basic.html" />
+    <Content Include="TestData\ETF\YuantaETFCollector\0056_ingredients.html" />
     <Content Include="TestData\ETF\YuantaETFCollector\0061_basic.html" />
     <Content Include="TestData\ETF\YuantaETFCollector\0061_ingredients.html" />
     <Content Include="TestData\ETF\YuantaETFCollector\006203_basic.html" />
