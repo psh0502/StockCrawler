@@ -22,5 +22,5 @@ ALTER TABLE [dbo].[ETFBasicInfo] DROP CONSTRAINT [FK_ETFBasicInfo_Stock]
 GO
 ALTER TABLE [dbo].[ETFIngredients] DROP CONSTRAINT [FK_ETFIngredients_Stock]
 GO
-ALTER TABLE [dbo].[ETFIngredients] DROP CONSTRAINT [FK_ETFIngredients_ETFBasic]
+ALTER TABLE [dbo].[ETFIngredients] DROP CONSTRAINT [FK_ETFIngredients_ETFBasicInfo]
 GO

@@ -52,6 +52,9 @@
       <Column Name="ManagementFee" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
       <Column Name="KeepFee" Type="System.Decimal" DbType="Decimal(18,4) NOT NULL" CanBeNull="false" />
       <Column Name="Business" Type="System.String" DbType="NVarChar(1000) NOT NULL" CanBeNull="false" />
+      <Column Name="TotalAssetNAV" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="NAV" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="TotalPublish" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
       <Column Name="CreatedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="LastModifiedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </ElementType>
@@ -318,6 +321,9 @@
     <Parameter Name="pManagementFee" Type="System.Decimal" DbType="Money" />
     <Parameter Name="pKeepFee" Type="System.Decimal" DbType="Money" />
     <Parameter Name="pBusiness" Type="System.String" DbType="NVarChar(1000)" />
+    <Parameter Name="pTotalAssetNAV" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pNAV" Type="System.Decimal" DbType="Money" />
+    <Parameter Name="pTotalPublish" Type="System.Int64" DbType="BigInt" />
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.InsertOrUpdateStock" Method="InsertOrUpdateStock">

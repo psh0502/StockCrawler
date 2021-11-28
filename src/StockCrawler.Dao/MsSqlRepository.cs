@@ -325,7 +325,10 @@ namespace StockCrawler.Dao
                     data.Distribution,
                     data.ManagementFee,
                     data.KeepFee,
-                    data.Business);
+                    data.Business,
+                    data.TotalAssetNAV,
+                    data.NAV,
+                    data.TotalPublish);
         }
         public void InsertETFIngredients(GetETFIngredientsResult[] data)
         {

@@ -2,7 +2,6 @@
 using StockCrawler.Dao;
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace StockCrawler.Services.Collectors
 {
@@ -10,7 +9,19 @@ namespace StockCrawler.Services.Collectors
     {
         public override string BasicUrl => "https://www.yuantaetfs.com/product/detail/{0}/Basic_information";
         public override string IngredientsUrl => "https://www.yuantaetfs.com/product/detail/{0}/ratio";
-
+        public override GetETFBasicInfoResult GetBasicInfo(string etfNo)
+        {
+            var basic_info = base.GetBasicInfo(etfNo);
+            string url = string.Format(IngredientsUrl, etfNo);
+            var html = Tools.DownloadStringData(new Uri(url), out _);
+            var doc = new HtmlDocument();
+            doc.LoadHtml(html);
+            var data_body = doc.DocumentNode.SelectSingleNode("//*[@id='productinfoR']/div/div[2]/div[3]/div/div/div/div/div[2]/div[1]");
+            basic_info.TotalAssetNAV = decimal.Parse(data_body.SelectSingleNode("div[1]/div/div[2]/span").InnerText.Replace(",", string.Empty).Replace("NTD $", string.Empty));
+            basic_info.NAV = decimal.Parse(data_body.SelectSingleNode("div[2]/div/div[2]/span").InnerText.Replace("NTD $", string.Empty));
+            basic_info.TotalPublish = long.Parse(data_body.SelectSingleNode("div[3]/div/div[2]/span").InnerText.Replace(",", string.Empty));
+            return basic_info;
+        }
         protected override GetETFBasicInfoResult ParseBasicHtml(string html, string etfNo)
         {
             SaveBasicDocument(html, etfNo); 

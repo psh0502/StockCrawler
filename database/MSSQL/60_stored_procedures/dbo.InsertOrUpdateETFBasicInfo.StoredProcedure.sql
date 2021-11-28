@@ -23,7 +23,10 @@ CREATE OR ALTER PROCEDURE [dbo].[InsertOrUpdateETFBasicInfo]
 @pDistribution BIT,
 @pManagementFee MONEY,
 @pKeepFee MONEY,
-@pBusiness NVARCHAR(1000)
+@pBusiness NVARCHAR(1000),
+@pTotalAssetNAV MONEY,
+@pNAV MONEY,
+@pTotalPublish BIGINT
 AS
 BEGIN
 	IF EXISTS(SELECT [StockNo] FROM [ETFBasicInfo](NOLOCK) WHERE [StockNo] = @pStockNo)
@@ -42,6 +45,9 @@ BEGIN
 			,[ManagementFee] = ISNULL(@pManagementFee, [ManagementFee])
 			,[KeepFee] = ISNULL(@pKeepFee, [KeepFee])
 			,[Business] = ISNULL(@pBusiness, [Business])
+			,[TotalAssetNAV] = ISNULL(@pTotalAssetNAV, [TotalAssetNAV])
+			,[NAV] = ISNULL(@pNAV, [NAV])
+			,[TotalPublish] = ISNULL(@pTotalPublish, [TotalPublish])
 			,[LastModifiedAt] = GETDATE()
 		WHERE [StockNo] = @pStockNo
 
@@ -59,7 +65,10 @@ BEGIN
 			,[Distribution]
 			,[ManagementFee]
 			,[KeepFee]
-			,[Business])
+			,[Business]
+			,[TotalAssetNAV]
+			,[NAV]
+			,[TotalPublish])
 		 VALUES
 			(@pStockNo
 			,@pCategory
@@ -73,7 +82,10 @@ BEGIN
 			,@pDistribution
 			,@pManagementFee
 			,@pKeepFee
-			,@pBusiness)
+			,@pBusiness
+			,@pTotalAssetNAV
+			,@pNAV
+			,@pTotalPublish)
 	END
 END
 GO

@@ -34,7 +34,7 @@ namespace StockCrawler.Services.Collectors
             var file = new FileInfo($@"..\..\..\StockCrawler.UnitTest\TestData\ETF\{GetType().Name}\{etfNo}_basic.html");
             SaveFile(file, html);
         }
-        protected virtual void SaveFile(FileInfo file, string html)
+        private void SaveFile(FileInfo file, string html)
         {
 #if (DEBUG)
             if (!file.Directory.Exists) file.Directory.Create();

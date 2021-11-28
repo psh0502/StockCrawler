@@ -38,6 +38,9 @@ namespace StockCrawler.UnitTest.Collectors
             Assert.AreEqual(0.0032M, basicInfo.ManagementFee);
             Assert.AreEqual(0.00035M, basicInfo.KeepFee);
             Assert.IsTrue(basicInfo.Distribution);
+            Assert.AreEqual(172183831394M, basicInfo.TotalAssetNAV);
+            Assert.AreEqual(138.41M, basicInfo.NAV);
+            Assert.AreEqual(1244000000, basicInfo.TotalPublish);
 
             #endregion
 

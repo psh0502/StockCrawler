@@ -212,9 +212,26 @@ namespace StockCrawler.Dao
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InsertOrUpdateETFBasicInfo")]
-		public int InsertOrUpdateETFBasicInfo([global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pCategory, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(100)")] string pCompanyName, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pBuildDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pBuildPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pPublishDate, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pPublishPrice, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(20)")] string pKeepingBank, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pCEO, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(100)")] string pUrl, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Bit")] System.Nullable<bool> pDistribution, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pManagementFee, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pKeepFee, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(1000)")] string pBusiness)
+		public int InsertOrUpdateETFBasicInfo(
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(10)")] string pStockNo, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pCategory, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(100)")] string pCompanyName, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pBuildDate, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pBuildPrice, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Date")] System.Nullable<System.DateTime> pPublishDate, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pPublishPrice, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(20)")] string pKeepingBank, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(50)")] string pCEO, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="VarChar(100)")] string pUrl, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Bit")] System.Nullable<bool> pDistribution, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pManagementFee, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pKeepFee, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="NVarChar(1000)")] string pBusiness, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pTotalAssetNAV, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="Money")] System.Nullable<decimal> pNAV, 
+					[global::System.Data.Linq.Mapping.ParameterAttribute(DbType="BigInt")] System.Nullable<long> pTotalPublish)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pCategory, pCompanyName, pBuildDate, pBuildPrice, pPublishDate, pPublishPrice, pKeepingBank, pCEO, pUrl, pDistribution, pManagementFee, pKeepFee, pBusiness);
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pStockNo, pCategory, pCompanyName, pBuildDate, pBuildPrice, pPublishDate, pPublishPrice, pKeepingBank, pCEO, pUrl, pDistribution, pManagementFee, pKeepFee, pBusiness, pTotalAssetNAV, pNAV, pTotalPublish);
 			return ((int)(result.ReturnValue));
 		}
 		
@@ -411,6 +428,12 @@ namespace StockCrawler.Dao
 		private decimal _KeepFee;
 		
 		private string _Business;
+		
+		private decimal _TotalAssetNAV;
+		
+		private decimal _NAV;
+		
+		private long _TotalPublish;
 		
 		private System.DateTime _CreatedAt;
 		
@@ -656,6 +679,54 @@ namespace StockCrawler.Dao
 				if ((this._Business != value))
 				{
 					this._Business = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalAssetNAV", DbType="Money NOT NULL")]
+		public decimal TotalAssetNAV
+		{
+			get
+			{
+				return this._TotalAssetNAV;
+			}
+			set
+			{
+				if ((this._TotalAssetNAV != value))
+				{
+					this._TotalAssetNAV = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NAV", DbType="Money NOT NULL")]
+		public decimal NAV
+		{
+			get
+			{
+				return this._NAV;
+			}
+			set
+			{
+				if ((this._NAV != value))
+				{
+					this._NAV = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalPublish", DbType="BigInt NOT NULL")]
+		public long TotalPublish
+		{
+			get
+			{
+				return this._TotalPublish;
+			}
+			set
+			{
+				if ((this._TotalPublish != value))
+				{
+					this._TotalPublish = value;
 				}
 			}
 		}

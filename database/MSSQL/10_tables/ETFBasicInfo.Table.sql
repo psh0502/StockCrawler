@@ -27,6 +27,9 @@ CREATE TABLE [dbo].[ETFBasicInfo](
 	[ManagementFee] [decimal](18, 4) NOT NULL,
 	[KeepFee] [decimal](18, 4) NOT NULL,
 	[Business][nvarchar](1000) NOT NULL,
+	[TotalAssetNAV] MONEY NOT NULL,
+	[NAV] MONEY NOT NULL,
+	[TotalPublish] BIGINT NOT NULL,
 	[CreatedAt] [datetime] NOT NULL DEFAULT (GETDATE()),
 	[LastModifiedAt] [datetime] NOT NULL DEFAULT (GETDATE()),
  CONSTRAINT [PK_ETFBasicInfo] PRIMARY KEY CLUSTERED 
