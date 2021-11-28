@@ -41,8 +41,9 @@ namespace StockCrawler.Dao
             if (null == _ETF_LIST)
                 lock (typeof(StockHelper))
                     if (null == _ETF_LIST)
-                        _ETF_LIST = GetAllStockList().Where(
-                            d => d.Type == (short)EnumStockType.ETF).ToList();
+                        _ETF_LIST = GetAllStockList()
+                            .Where(d => d.Type == (short)EnumStockType.ETF)
+                            .ToList();
 
             return _ETF_LIST;
         }
@@ -99,7 +100,7 @@ namespace StockCrawler.Dao
                     if (null == _STOCK_COMPANY_LIST)
                     {
                         _STOCK_COMPANY_LIST = GetAllStockList()
-                            .Where(d => !d.StockNo.StartsWith("0")
+                            .Where(d => d.Type == (short)EnumStockType.STOCK
                                 && int.TryParse(d.StockNo, out _))
                             .ToList();
                     }
@@ -116,7 +117,7 @@ namespace StockCrawler.Dao
                 lock (typeof(StockHelper))
                     if (null == _STOCK_INDEX_LIST)
                         _STOCK_INDEX_LIST = GetAllStockList().Where(
-                            d => d.StockNo.StartsWith("0")
+                            d => d.Type == (short)EnumStockType.INDEX
                                 && int.TryParse(d.StockNo, out int sno)
                                 && sno < 50)
                                 .ToList();
