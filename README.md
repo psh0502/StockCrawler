@@ -4,12 +4,12 @@
 
 - History price information.
 - Company basic information.
-- Business finanicial reports.
+- Business financial reports.
 - Market news about stock.
 - Forum news about stock.
 - History interest issuing result.
 
-It grabs history data from serveral available source, e.g **[Yahoo Finance](http://finance.yahoo.com)**, **[TWSE](http://www.twse.com.tw)** and daily closing price from **[TWSE](http://www.twse.com.tw)**.
+It grabs history data from several available source, e.g **[Yahoo Finance](http://finance.yahoo.com)**, **[TWSE](http://www.twse.com.tw)** and daily closing price from **[TWSE](http://www.twse.com.tw)**.
 
 ***Yahoo** has incompleted price information, **TWSE** is better resource but costs very much time, even days...*
 ## Objective
